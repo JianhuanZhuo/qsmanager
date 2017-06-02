@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.String?>
+<?import java.net.URL?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.ToggleGroup?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" styleClass="delivery-item" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+       <HBox styleClass="hbox-common">
+           <Label text="订单编号："/>
+           <Label text="JQ5566" styleClass="right-spacing"/>
+           <Label text="下单时间："/>
+           <Label text="2017.01.06 22:00" styleClass="right-spacing"/>
+           <Label text="客户："/>
+           <Label text="安利"/>
+           <ImageView fitHeight="22.0" fitWidth="22.0">
+               <Image url="@img/msg.png"/>
+           </ImageView>
+           <Pane HBox.hgrow="ALWAYS"/>
+           <RadioButton mnemonicParsing="false" selected="true" text="全部货项">
+              <toggleGroup>
+                  <ToggleGroup fx:id="goods"/>
+              </toggleGroup>
+           </RadioButton>
+           <RadioButton layoutX="570.0" mnemonicParsing="false" text="剩余未发货" toggleGroup="$goods"/>
+       </HBox>
+       <ScrollPane fitToHeight="true" fitToWidth="true" prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
+           <TableView>
+               <columns>
+                   <TableColumn text="产品名称" />
+                   <TableColumn text="编号" />
+                   <TableColumn text="包装明细" />
+                   <TableColumn text="单价(元/包)" />
+                   <TableColumn text="单位" />
+                   <TableColumn text="装数" />
+                   <TableColumn text="箱数" />
+                   <TableColumn text="金额" />
+                   <TableColumn text="税率" />
+                   <TableColumn text="税金" />
+                   <TableColumn text="税后金额" />
+                   <TableColumn text="每箱返点数" />
+                   <TableColumn text="总共返点数" />
+               </columns>
+           </TableView>
+       </ScrollPane>
+       <HBox>
+           <styleClass>
+               <String fx:value="hbox-common" />
+               <String fx:value="f14-common" />
+           </styleClass>
+           <Label text="箱数统计：" />
+           <Label text="180" />
+           <Label text="税金统计：" />
+           <Label text="180" />
+           <Label text="返点统计：" />
+           <Label text="1080.00" />
+           <Pane HBox.hgrow="ALWAYS" />
+           <Label text="实际应收金额：￥" />
+           <Label text="19,536.00" />
+       </HBox>
+       <HBox layoutX="10.0" layoutY="310.0" styleClass="hbox-common">
+           <Button text="删除订单"/>
+           <Pane HBox.hgrow="ALWAYS"/>
+           <Button text="发货"/>
+           <Button text="送货记录"/>
+           <Button text="修改订单"/>
+       </HBox>
+   </children>
+   <stylesheets>
+      <URL value="@css/common.css" />
+      <URL value="@css/delivery.css" />
+   </stylesheets>
+</VBox>

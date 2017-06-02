@@ -1,0 +1,307 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.String?>
+<?import java.net.URL?>
+<?import javafx.scene.control.Accordion?>
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TitledPane?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+
+<?import javafx.scene.control.Button?>
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <HBox alignment="CENTER_LEFT" styleClass="title-line">
+         <children>
+            <Label text="产品列表" />
+         </children>
+      </HBox>
+      <TabPane prefHeight="200.0" prefWidth="200.0" styleClass="tab-pane-common" tabClosingPolicy="UNAVAILABLE" VBox.vgrow="ALWAYS">
+        <tabs>
+          <Tab styleClass="tab-common" text="送货列表">
+               <content>
+                  <BorderPane prefHeight="200.0" prefWidth="200.0" styleClass="tab-content-common">
+                     <top>
+                        <HBox alignment="CENTER" styleClass="hbox-common" BorderPane.alignment="CENTER">
+                           <children>
+                              <ChoiceBox prefWidth="150.0" />
+                              <ChoiceBox layoutX="10.0" layoutY="10.0" prefWidth="150.0" />
+                              <ChoiceBox layoutX="160.0" layoutY="10.0" prefWidth="150.0" />
+                              <Pane HBox.hgrow="ALWAYS" />
+                              <Label text="添加送货单">
+                                 <graphic>
+                                    <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@img/item-add.png" />
+                                       </image>
+                                    </ImageView>
+                                 </graphic>
+                              </Label>
+                           </children>
+                        </HBox>
+                     </top>
+                     <center>
+                        <ScrollPane fitToHeight="true" fitToWidth="true" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+                           <content>
+                              <VBox prefHeight="200.0" prefWidth="100.0" spacing="10.0">
+                                 <children>
+                                    <fx:include source="receipt.fxml" />
+                                    <fx:include source="receipt.fxml" />
+                                    <fx:include source="receipt.fxml" />
+                                 </children>
+                              </VBox>
+                           </content>
+                        </ScrollPane>
+                     </center></BorderPane>
+               </content>
+          </Tab>
+          <Tab styleClass="tab-common" text="年度对账表">
+               <content>
+                  <BorderPane prefHeight="200.0" prefWidth="200.0">
+                     <top>
+                        <HBox styleClass="hbox-common" stylesheets="@css/common.css" BorderPane.alignment="CENTER">
+                           <children>
+                              <ChoiceBox prefWidth="150.0" />
+                              <ChoiceBox layoutX="10.0" layoutY="10.0" prefWidth="150.0" />
+                              <Pane HBox.hgrow="ALWAYS" />
+                              <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true" styleClass="image-button">
+                                 <image>
+                                    <Image url="@img/print.png" />
+                                 </image>
+                              </ImageView>
+                           </children>
+                        </HBox>
+                     </top>
+                     <center>
+                        <ScrollPane fitToHeight="true" fitToWidth="true" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+                           <content>
+                              <TableView prefHeight="200.0" prefWidth="200.0">
+                                <columns>
+                                  <TableColumn prefWidth="75.0" text="C1" />
+                                  <TableColumn prefWidth="75.0" text="C2" />
+                                </columns>
+                              </TableView>
+                           </content>
+                        </ScrollPane>
+                     </center>
+                     <bottom>
+                        <HBox prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+                           <children>
+                               <GridPane>
+                                   <columnConstraints>
+                                       <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" minWidth="10.0"
+                                                          prefWidth="100.0"/>
+                                       <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
+                                   </columnConstraints>
+                                   <rowConstraints>
+                                       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                                       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                                       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                                       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                                       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                                   </rowConstraints>
+                                   <Label text="年前结余金额："/>
+                                   <Label text="年度金额合计：" GridPane.rowIndex="1"/>
+                                   <Label text="年度税金合计：" GridPane.rowIndex="2"/>
+                                   <Label text="年度付款合计：" GridPane.rowIndex="3"/>
+                                   <Label text="实际总应付合计：" GridPane.rowIndex="4"/>
+                                   <Label text="￥0" GridPane.columnIndex="1"/>
+                                   <Label layoutX="110.0" layoutY="13.0" text="￥0" GridPane.columnIndex="1"
+                                          GridPane.rowIndex="3"/>
+                                   <Label layoutX="90.0" layoutY="13.0" text="￥0" GridPane.columnIndex="1"
+                                          GridPane.rowIndex="1"/>
+                                   <Label layoutX="90.0" layoutY="13.0" text="￥0" GridPane.columnIndex="1"
+                                          GridPane.rowIndex="2"/>
+                                   <Label layoutX="110.0" layoutY="53.0" text="￥0" GridPane.columnIndex="1"
+                                          GridPane.rowIndex="4"/>
+                               </GridPane>
+                              <Pane HBox.hgrow="ALWAYS" />
+                              <Label styleClass="attach-icon" text="附件">
+                                 <graphic>
+                                     <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true"
+                                                preserveRatio="true">
+                                         <Image url="@img/attachment.png"/>
+                                     </ImageView>
+                                 </graphic>
+                              </Label>
+                           </children>
+                           <styleClass>
+                              <String fx:value="income-annu-bottom" />
+                              <String fx:value="report-bottom" />
+                           </styleClass>
+                        </HBox>
+                     </bottom>
+                     <styleClass>
+                        <String fx:value="tab-content-common" />
+                        <String fx:value="income-annu" />
+                     </styleClass>
+                  </BorderPane>
+               </content>
+          </Tab>
+            <Tab styleClass="tab-common" text="购付汇总">
+                <Accordion>
+                  <panes>
+                      <TitledPane animated="false" text="年度采购汇总">
+                          <VBox prefHeight="200.0" prefWidth="100.0" styleClass="vbox-common">
+                              <ChoiceBox prefWidth="100.0"/>
+                              <ScrollPane fitToHeight="true" fitToWidth="true" hbarPolicy="ALWAYS"
+                                          prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
+                                  <TableView prefHeight="200.0" prefWidth="200.0">
+                                      <columns>
+                                          <TableColumn text="供应商"/>
+                                          <TableColumn text="实际应付"/>
+                                          <TableColumn text="一月"/>
+                                          <TableColumn text="二月"/>
+                                          <TableColumn text="三月"/>
+                                          <TableColumn text="四月"/>
+                                          <TableColumn text="五月"/>
+                                          <TableColumn text="六月"/>
+                                          <TableColumn text="七月"/>
+                                          <TableColumn text="八月"/>
+                                          <TableColumn text="九月"/>
+                                          <TableColumn text="十月"/>
+                                          <TableColumn text="十一月"/>
+                                          <TableColumn text="十二月"/>
+                                      </columns>
+                                  </TableView>
+                              </ScrollPane>
+                              <HBox styleClass="hbox-common">
+                                  <Label text="总采购：￥"/>
+                                  <Label layoutX="15.0" layoutY="15.0" text="246,245.15"/>
+                              </HBox>
+                          </VBox>
+                      </TitledPane>
+                      <TitledPane animated="false" text="年度付款汇总">
+                          <VBox styleClass="vbox-common">
+                              <ChoiceBox prefWidth="100.0"/>
+                              <ScrollPane fitToHeight="true" fitToWidth="true" hbarPolicy="ALWAYS"
+                                          VBox.vgrow="ALWAYS">
+                                  <TableView>
+                                      <columns>
+                                          <TableColumn text="供应商"/>
+                                          <TableColumn text="实际应付"/>
+                                          <TableColumn text="一月"/>
+                                          <TableColumn text="二月"/>
+                                          <TableColumn text="三月"/>
+                                          <TableColumn text="四月"/>
+                                          <TableColumn text="五月"/>
+                                          <TableColumn text="六月"/>
+                                          <TableColumn text="七月"/>
+                                          <TableColumn text="八月"/>
+                                          <TableColumn text="九月"/>
+                                          <TableColumn text="十月"/>
+                                          <TableColumn text="十一月"/>
+                                          <TableColumn text="十二月"/>
+                                      </columns>
+                                  </TableView>
+                              </ScrollPane>
+                              <HBox styleClass="hbox-common">
+                                  <Label text="总付款：￥"/>
+                                  <Label text="246,245.15"/>
+                              </HBox>
+                          </VBox>
+                      </TitledPane>
+                      <TitledPane animated="false" text="厂支出">
+                          <VBox styleClass="vbox-common">
+                              <ChoiceBox prefWidth="100.0"/>
+                              <ScrollPane fitToHeight="true" fitToWidth="true" VBox.vgrow="ALWAYS">
+                                  <TableView>
+                                      <columns>
+                                          <TableColumn text="明细"/>
+                                          <TableColumn text="一月"/>
+                                          <TableColumn text="二月"/>
+                                          <TableColumn text="三月"/>
+                                          <TableColumn text="四月"/>
+                                          <TableColumn text="五月"/>
+                                          <TableColumn text="六月"/>
+                                          <TableColumn text="七月"/>
+                                          <TableColumn text="八月"/>
+                                          <TableColumn text="九月"/>
+                                          <TableColumn text="十月"/>
+                                          <TableColumn text="十一月"/>
+                                          <TableColumn text="十二月"/>
+                                          <TableColumn text="年度统计"/>
+                                      </columns>
+                                  </TableView>
+                              </ScrollPane>
+                              <HBox styleClass="hbox-common">
+                                  <Label text="工资总未付：￥"/>
+                                  <Label text="0"/>
+                                  <Pane HBox.hgrow="ALWAYS"/>
+                                  <Label text="查看附件">
+                                      <graphic>
+                                          <ImageView fitHeight="22.0" fitWidth="22.0" styleClass="image-button">
+                                              <Image url="@img/attachment.png"/>
+                                          </ImageView>
+                                      </graphic>
+                                  </Label>
+                                  <Button text="添加明细"/>
+                                  <Button text="删除明细"/>
+                              </HBox>
+                          </VBox>
+                      </TitledPane>
+                      <TitledPane animated="false" text="购付统计">
+                          <HBox alignment="CENTER">
+                              <VBox  styleClass="vbox-common">
+                                  <ChoiceBox prefWidth="100.0"/>
+                                  <ScrollPane VBox.vgrow="ALWAYS" fitToWidth="true" fitToHeight="true">
+                                      <TableView>
+                                          <columns>
+                                              <TableColumn text="月份"/>
+                                              <TableColumn text="采购总结"/>
+                                              <TableColumn text="付款总结"/>
+                                          </columns>
+                                      </TableView>
+                                  </ScrollPane>
+                                  <GridPane>
+                                      <columnConstraints>
+                                          <ColumnConstraints halignment="RIGHT" prefWidth="100.0"/>
+                                          <ColumnConstraints hgrow="ALWAYS" prefWidth="50.0"/>
+                                      </columnConstraints>
+                                      <rowConstraints>
+                                          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                                          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                                          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                                          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                                      </rowConstraints>
+                                      <Label text="总采购金额：¥" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+                                      <Label text="总付款金额：¥" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
+                                      <Label text="未付工资为：¥" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
+                                      <Label text="总支出金额：¥" GridPane.columnIndex="0" GridPane.rowIndex="3"/>
+                                      <Label text="1" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
+                                      <Label text="0" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+                                      <Label text="3" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
+                                      <Label text="8" GridPane.columnIndex="1" GridPane.rowIndex="3"/>
+                                  </GridPane>
+                              </VBox>
+                          </HBox>
+                      </TitledPane>
+                  </panes>
+                </Accordion>
+            </Tab>
+        </tabs>
+      </TabPane>
+   </children>
+   <styleClass>
+      <String fx:value="title-pane" />
+      <String fx:value="content-pane" />
+   </styleClass>
+   <stylesheets>
+      <URL value="@css/common.css" />
+      <URL value="@css/income.css" />
+   </stylesheets>
+</VBox>

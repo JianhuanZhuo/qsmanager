@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.String?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+
+<HBox  maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1">
+    <VBox HBox.hgrow="ALWAYS" prefHeight="400.0" prefWidth="600.0" stylesheets="@css/common.css" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1">
+        <children>
+            <HBox alignment="CENTER_LEFT" styleClass="title-line">
+                <children>
+                    <Label text="产品列表" />
+                    <Pane styleClass="line-holder" HBox.hgrow="ALWAYS" />
+                    <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true" styleClass="image-button">
+                        <image>
+                            <Image url="@img/item-add.png" />
+                        </image>
+                    </ImageView>
+                    <ImageView fitHeight="22.0" fitWidth="22.0" layoutX="581.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true" styleClass="image-button">
+                        <image>
+                            <Image url="@img/item-del.png" />
+                        </image>
+                    </ImageView>
+                </children>
+            </HBox>
+            <HBox alignment="CENTER_LEFT" layoutX="11.0" layoutY="11.0" styleClass="hbox-common">
+                <children>
+                    <ChoiceBox prefWidth="150.0" />
+                    <ChoiceBox layoutX="10.0" layoutY="10.0" prefWidth="150.0" />
+                    <Pane styleClass="line-holder" HBox.hgrow="ALWAYS" />
+                    <Button mnemonicParsing="false" text="添加订单" />
+                    <Button mnemonicParsing="false" text="刷新" />
+                </children>
+            </HBox>
+            <ScrollPane fitToHeight="true" fitToWidth="true" prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
+                <VBox styleClass="vbox-lgap">
+                    <children>
+                        <fx:include source="orderform.fxml" />
+                    </children></VBox>
+            </ScrollPane>
+        </children>
+        <styleClass>
+            <String fx:value="title-pane" />
+            <String fx:value="content-pane" />
+        </styleClass>
+    </VBox>
+</HBox>

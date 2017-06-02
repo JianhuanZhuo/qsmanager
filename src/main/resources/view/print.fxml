@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.ToggleGroup?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox prefHeight="600.0" prefWidth="800.0" stylesheets="@css/common.css" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1">
+    <padding>
+        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+    </padding>
+    <HBox styleClass="hbox-common">
+        <Label text="选择打印机：" />
+        <ChoiceBox />
+        <Button text="页面设置" />
+        <Button text="打印设置" />
+    </HBox>
+    <Separator />
+    <HBox styleClass="hbox-common">
+        <Label text="打印类型：" BorderPane.alignment="CENTER" />
+        <ChoiceBox/>
+    </HBox>
+    <HBox spacing="5.0" styleClass="hbox-common">
+       <Label text="数据源：" />
+        <ChoiceBox/>
+        <ChoiceBox/>
+        <ChoiceBox/>
+    </HBox>
+    <Separator/>
+     <HBox alignment="CENTER_LEFT" spacing="5.0" styleClass="hbox-common">
+         <RadioButton selected="true" text="编辑">
+             <toggleGroup>
+                 <ToggleGroup fx:id="action" />
+             </toggleGroup>
+         </RadioButton>
+         <RadioButton text="预览" toggleGroup="$action" />
+      <Pane HBox.hgrow="ALWAYS" />
+         <Button text="导出Excel" />
+         <Button text="导出图片" />
+     </HBox>
+    <ScrollPane fitToHeight="true" fitToWidth="true" hbarPolicy="ALWAYS" vbarPolicy="ALWAYS" VBox.vgrow="ALWAYS">
+        <BorderPane style="-fx-background-color: white;"/>
+    </ScrollPane>
+     <HBox alignment="CENTER_LEFT" spacing="5.0" styleClass="hbox-common">
+         <Button text="上一页" />
+         <Button text="下一页" />
+      <Pane HBox.hgrow="ALWAYS" />
+        <Button text="打印" />
+         <Button text="重置修改" />
+     </HBox>
+</VBox>

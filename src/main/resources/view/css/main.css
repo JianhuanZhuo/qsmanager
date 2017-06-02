@@ -1,0 +1,31 @@
+#mainpane {
+    -fx-min-width: 600px;
+    -fx-min-height: 700px;
+    -fx-pref-width: 1000px;
+    -fx-pref-height: 700px;
+}
+
+/*center border pane of mainpane*/
+#centerpane {
+    -fx-background-image: url("../img/bg3.jpg");
+}
+
+#user-action .user, .exit{
+    -fx-cursor: hand;
+}
+
+/*left menu bar partition, that is a scroll pane */
+#menuScp {
+    -fx-max-width: 230px;
+    -fx-pref-width: 230px;
+    -fx-min-width: 230px;
+
+    -fx-fit-to-height: true;
+    -fx-fit-to-width: true;
+
+    -fx-hbar-policy: never;
+    -fx-vbar-policy: never;
+    /*-fx-hbar-policy: always;*/
+    /*-fx-vbar-policy: always;*/
+}
+

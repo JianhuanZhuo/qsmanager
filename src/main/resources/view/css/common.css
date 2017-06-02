@@ -1,0 +1,96 @@
+/*这个指向菜单的内容面板*/
+.content-pane{
+    -fx-background-color: white;
+    -fx-pref-width: 740px;
+    -fx-pref-height: 560px;
+}
+
+/*带有标题头的面板*/
+.title-pane{
+    -fx-border-color: #CCCCCC;
+    -fx-border-width: 1px;
+}
+
+.title-pane.padding-content{
+    -fx-padding: 5px;
+}
+
+.title-pane.spacing-content{
+    -fx-spacing: 5px;
+}
+
+.title-pane > .title-line {
+    -fx-background-color: #F5F8FD;
+    -fx-min-height: 30px;
+    -fx-max-height: 30px;
+
+    -fx-border-width: 0 0 1px 0;
+    -fx-border-color: #CCCCCC;
+
+    -fx-padding: 2 5px;
+    -fx-spacing: 5px;
+
+    -fx-font: normal normal 16px "微软雅黑";
+}
+
+.spacing-line{
+    -fx-padding: 2 5px;
+    -fx-spacing: 5px;
+
+    -fx-font: normal normal 14px "微软雅黑";
+}
+
+.title-pane > .title-line .btnable{
+    -fx-background-color: transparent;
+    -fx-cursor: hand;
+}
+
+.image-button{
+    -fx-cursor: hand;
+}
+
+/*common*/
+.hbox-common{
+    -fx-spacing: 5px;
+    -fx-padding: 5px;
+    -fx-alignment: center-left;
+}
+
+.hbox-common .right-spacing{
+    -fx-padding: 5px 12px 5px 0px;
+}
+
+.vbox-common{
+    -fx-spacing: 5px;
+    -fx-padding: 5px;
+}
+
+.vbox-lgap{
+    -fx-spacing: 20px;
+    -fx-padding: 10px;
+}
+
+.f14-common{
+    -fx-font: normal normal 14px "微软雅黑";
+}
+
+.f14b-common{
+    -fx-font: normal bold 14px "微软雅黑";
+}
+
+.tab-pane-common .tab-common{
+    -fx-font: normal normal 16px "微软雅黑";
+    /*-fx-padding: 5px;*/
+}
+
+.tab-pane-common .tab-content-common{
+    -fx-padding: 5px 10px 15px 10px;
+}
+
+.report-bottom{
+    -fx-alignment: bottom-right;
+}
+
+.attach-icon{
+    -fx-cursor: hand;
+}

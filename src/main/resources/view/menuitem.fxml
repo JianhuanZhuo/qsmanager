@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<HBox styleClass="root-item" stylesheets="@css/menuitem.css" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <ImageView fitHeight="45.0" fitWidth="45.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@img/menu-supply.png" />
+         </image>
+      </ImageView>
+      <VBox styleClass="menu-label">
+         <children>
+            <HBox styleClass="title-hbox">
+               <children>
+                  <Label styleClass="menutitle" text="客户管理" />
+                  <Label styleClass="status" text="2" />
+               </children>
+            </HBox>
+            <Label styleClass="title-english" text="Custom Manage" />
+         </children>
+      </VBox>
+   </children>
+</HBox>

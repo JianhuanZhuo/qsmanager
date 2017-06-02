@@ -1,0 +1,35 @@
+
+#custom-root{
+    -fx-spacing: 5px;
+    -fx-padding: 5px;
+}
+
+
+/*带删除和增加按钮的画板头*/
+#custom-root > .custom-select > HBox{
+    -fx-alignment: center-right;
+}
+
+#custom-root > .custom-select > ListView {
+    -fx-background-color: white;
+    -fx-border-width: 1px;
+    -fx-border-color: #CCCCCC;
+
+    -fx-pref-width: 168px;
+}
+
+#custom-root > .detail{
+    -fx-spacing: 10px;
+}
+
+#custom-root .info > GridPane,
+#custom-root .acc > GridPane{
+    -fx-hgap: 10px;
+    -fx-vgap: 5px;
+}
+
+
+#custom-root .info > GridPane Label,
+#custom-root .acc > GridPane Label{
+    -fx-font: normal normal 14px "微软雅黑";
+}
