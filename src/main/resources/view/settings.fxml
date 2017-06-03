@@ -1,45 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.*?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.Pane?>
-<?import javafx.scene.layout.VBox?>
-<?import javafx.scene.layout.GridPane?>
-<?import javafx.scene.layout.ColumnConstraints?>
-<?import javafx.scene.layout.RowConstraints?>
-<?import javafx.scene.control.TextField?>
-<?import javafx.scene.control.Button?>
-<VBox styleClass="title-pane, content-pane" prefHeight="400.0" prefWidth="600.0" stylesheets="@css/common.css">
+<?import javafx.scene.layout.*?>
+<VBox styleClass="title-pane, content-pane" stylesheets="@css/common.css">
     <HBox alignment="CENTER_LEFT" styleClass="title-line">
         <Label text="系统设置"/>
         <Pane HBox.hgrow="ALWAYS"/>
         <Button text="重置" styleClass="btnable">
             <graphic>
-                <ImageView fitHeight="22.0" fitWidth="22.0" styleClass="image-button">
+                <ImageView styleClass="image-button">
                     <Image url="@img/reset.png"/>
                 </ImageView>
             </graphic>
         </Button>
         <Button text="保存" styleClass="btnable">
             <graphic>
-                <ImageView fitHeight="22.0" fitWidth="22.0" styleClass="image-button">
+                <ImageView styleClass="image-button">
                     <Image url="@img/save.png"/>
                 </ImageView>
             </graphic>
         </Button>
     </HBox>
-    <GridPane>
-        <columnConstraints>
-            <ColumnConstraints halignment="RIGHT" prefWidth="100.0"/>
-            <ColumnConstraints prefWidth="300.0"/>
-        </columnConstraints>
-        <rowConstraints>
-            <RowConstraints minHeight="10.0" prefHeight="35.0" vgrow="SOMETIMES"/>
-            <RowConstraints minHeight="10.0" prefHeight="35.0" vgrow="SOMETIMES"/>
-            <RowConstraints minHeight="10.0" prefHeight="35.0" vgrow="SOMETIMES"/>
-        </rowConstraints>
+    <GridPane styleClass="infogp">
         <Label text="服务器地址：" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
         <Label text="服务器端口：" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
         <Label text="制单人员：" GridPane.columnIndex="0" GridPane.rowIndex="2"/>

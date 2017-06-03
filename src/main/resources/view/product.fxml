@@ -11,26 +11,19 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox prefHeight="400.0" prefWidth="600.0" stylesheets="@css/common.css" xmlns="http://javafx.com/javafx/8.0.111"
-      xmlns:fx="http://javafx.com/fxml/1">
-    <styleClass>
-        <String fx:value="title-pane"/>
-        <String fx:value="content-pane"/>
-    </styleClass>
+<VBox stylesheets="@css/common.css" styleClass="title-pane,content-pane">
     <HBox alignment="CENTER_LEFT" styleClass="title-line">
         <Label text="产品列表"/>
         <Pane HBox.hgrow="ALWAYS"/>
-        <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true"
-                   styleClass="image-button">
+        <ImageView styleClass="image-button">
             <Image url="@img/item-add.png"/>
         </ImageView>
-        <ImageView fitHeight="22.0" fitWidth="22.0" layoutX="581.0" layoutY="14.0" pickOnBounds="true"
-                   preserveRatio="true" styleClass="image-button">
+        <ImageView styleClass="image-button">
             <Image url="@img/item-del.png"/>
         </ImageView>
     </HBox>
-    <ScrollPane fitToHeight="true" fitToWidth="true" prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
-        <TableView prefHeight="200.0" prefWidth="200.0">
+    <ScrollPane fitToHeight="true" fitToWidth="true" VBox.vgrow="ALWAYS">
+        <TableView>
             <columns>
                 <TableColumn prefWidth="75.0" text="C1"/>
                 <TableColumn prefWidth="75.0" text="C2"/>

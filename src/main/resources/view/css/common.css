@@ -27,7 +27,7 @@
     -fx-border-width: 0 0 1px 0;
     -fx-border-color: #CCCCCC;
 
-    -fx-padding: 2 5px;
+    -fx-padding: 2px 5px;
     -fx-spacing: 5px;
 
     -fx-font: normal normal 16px "微软雅黑";
@@ -65,6 +65,10 @@
     -fx-padding: 5px;
 }
 
+.vbox-spacing {
+    -fx-spacing: 5px;
+}
+
 .vbox-lgap{
     -fx-spacing: 20px;
     -fx-padding: 10px;
@@ -93,4 +97,27 @@
 
 .attach-icon{
     -fx-cursor: hand;
+    -fx-text-fill: #3366ff;
+    -fx-underline: true;
+}
+
+GridPane.infogp Label {
+    -fx-font: normal normal 12px "微软雅黑";
+}
+
+GridPane.infogp {
+    -fx-hgap: 10px;
+    -fx-vgap: 5px;
+    -fx-padding: 5px;
+}
+
+.image-size-common {
+    -fx-fit-to-height: 22px;
+    -fx-fit-to-width: 22px;
+}
+
+.bill-item {
+    -fx-border-width: 1px;
+    -fx-border-color: #666666;
+    -fx-padding: 10px;
 }

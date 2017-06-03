@@ -17,7 +17,7 @@
                 <ImageView fitHeight="56.0" fitWidth="455.0" pickOnBounds="true" preserveRatio="true">
                     <Image url="@img/main-head.png" />
                 </ImageView>
-                <ImageView fitHeight="20.0" fitWidth="48.0" pickOnBounds="true" preserveRatio="true">
+                <ImageView styleClass="image-size-common" pickOnBounds="true" preserveRatio="true">
                     <Image url="@img/main-head-beta.png" />
                 </ImageView>
             </HBox>

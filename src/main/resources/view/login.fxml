@@ -11,8 +11,7 @@
 <?import javafx.scene.layout.VBox?>
 
 <VBox id="rootpane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
-      prefHeight="515.0" stylesheets="@css/login.css" xmlns="http://javafx.com/javafx/8.0.111"
-      xmlns:fx="http://javafx.com/fxml/1">
+      prefHeight="515.0" stylesheets="@css/login.css" xmlns="http://javafx.com/javafx/8.0.111">
     <VBox id="loginpane" prefHeight="200.0" prefWidth="100.0">
         <VBox.margin>
             <Insets right="62.0"/>
@@ -23,36 +22,28 @@
         <VBox prefHeight="200.0" prefWidth="100.0">
             <children>
                 <HBox prefHeight="100.0" prefWidth="200.0">
-                    <children>
-                        <TextField promptText="账号" HBox.hgrow="ALWAYS"/>
-                        <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
-                            <Image url="@img/login-a.png"/>
-                        </ImageView>
-                    </children>
                     <VBox.margin>
                         <Insets bottom="8.0" left="8.0" right="8.0" top="8.0"/>
                     </VBox.margin>
+                    <TextField promptText="账号" HBox.hgrow="ALWAYS"/>
+                    <ImageView>
+                        <Image url="@img/login-a.png"/>
+                    </ImageView>
                 </HBox>
                 <HBox layoutX="10.0" layoutY="10.0" prefHeight="100.0" prefWidth="200.0">
-                    <children>
-                        <PasswordField promptText="密码"/>
-                        <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
-                            <image>
-                                <Image url="@img/login-p.png"/>
-                            </image>
-                        </ImageView>
-                    </children>
                     <VBox.margin>
                         <Insets bottom="8.0" left="8.0" right="8.0" top="8.0"/>
                     </VBox.margin>
+                    <PasswordField promptText="密码"/>
+                    <ImageView styleClass="image-size-common" pickOnBounds="true" preserveRatio="true">
+                        <Image url="@img/login-p.png"/>
+                    </ImageView>
                 </HBox>
             </children>
         </VBox>
         <HBox id="loginaction" prefHeight="100.0" prefWidth="200.0">
-            <children>
-                <Button mnemonicParsing="false" text="登录"/>
-                <Label text="没有账号？"/>
-            </children>
+            <Button mnemonicParsing="false" text="登录"/>
+            <Label text="没有账号？"/>
         </HBox>
     </VBox>
 </VBox>

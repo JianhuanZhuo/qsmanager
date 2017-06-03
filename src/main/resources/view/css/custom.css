@@ -17,19 +17,3 @@
 
     -fx-pref-width: 168px;
 }
-
-#custom-root > .detail{
-    -fx-spacing: 10px;
-}
-
-#custom-root .info > GridPane,
-#custom-root .acc > GridPane{
-    -fx-hgap: 10px;
-    -fx-vgap: 5px;
-}
-
-
-#custom-root .info > GridPane Label,
-#custom-root .acc > GridPane Label{
-    -fx-font: normal normal 14px "微软雅黑";
-}

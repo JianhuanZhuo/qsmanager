@@ -41,7 +41,7 @@
                               <RadioButton mnemonicParsing="false" text="分单查看" />
                               <RadioButton layoutX="460.0" layoutY="10.0" mnemonicParsing="false" text="按月查看" />
                               <Pane HBox.hgrow="ALWAYS" />
-                              <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
+                               <ImageView styleClass="image-size-common" pickOnBounds="true" preserveRatio="true">
                                  <image>
                                     <Image url="@img/print.png" />
                                  </image>
@@ -124,7 +124,7 @@
                               <Pane HBox.hgrow="ALWAYS" />
                               <Label styleClass="attach-icon" text="附件">
                                  <graphic>
-                                    <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                                     <ImageView styleClass="image-size-common" pickOnBounds="true" preserveRatio="true">
                                        <image>
                                           <Image url="@img/attachment.png" />
                                        </image>
