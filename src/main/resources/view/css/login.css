@@ -1,20 +1,19 @@
 #rootpane{
-    /*-fx-background-color: transparent;*/
-    /*-fx-background-color: aquamarine;*/
-    -fx-alignment: center;
+    -fx-alignment: center-right;
+    -fx-fill-width: false;
 }
 
 #loginpane{
     -fx-background-color: white;
     -fx-pref-width: 400px;
     -fx-pref-height: 300px;
+    -fx-max-width: 400px;
 
     -fx-border-width: 1px;
     -fx-border-color: #2B3245;
 }
 
 #loginpane > VBox{
-    /*-fx-background-color: darkseagreen;*/
     -fx-padding: 13px;
 }
 

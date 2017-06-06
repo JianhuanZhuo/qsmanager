@@ -4,18 +4,23 @@
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.*?>
-<VBox styleClass="title-pane, content-pane" stylesheets="@css/common.css">
+<VBox fx:controller="cn.keepfight.qsmanager.network.controller.Settings"
+      styleClass="title-pane, content-pane"
+      stylesheets="@css/common.css"
+      fx:id="root"
+      xmlns="http://javafx.com/javafx/8.0.111"
+      xmlns:fx="http://javafx.com/fxml/1">
     <HBox alignment="CENTER_LEFT" styleClass="title-line">
         <Label text="系统设置"/>
         <Pane HBox.hgrow="ALWAYS"/>
-        <Button text="重置" styleClass="btnable">
+        <Button fx:id="reset" text="重置" styleClass="btnable">
             <graphic>
                 <ImageView styleClass="image-button">
                     <Image url="@img/reset.png"/>
                 </ImageView>
             </graphic>
         </Button>
-        <Button text="保存" styleClass="btnable">
+        <Button fx:id="save" text="保存" styleClass="btnable">
             <graphic>
                 <ImageView styleClass="image-button">
                     <Image url="@img/save.png"/>
@@ -27,8 +32,8 @@
         <Label text="服务器地址：" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
         <Label text="服务器端口：" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
         <Label text="制单人员：" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
-        <TextField text="www.server.cn" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
-        <TextField text="8088" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
-        <TextField text="张某某" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
+        <TextField fx:id="server" text="www.server.cn" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
+        <TextField fx:id="port" text="8088" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+        <TextField fx:id="man" text="张某某" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
     </GridPane>
 </VBox>

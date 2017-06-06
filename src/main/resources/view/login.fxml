@@ -10,40 +10,41 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox id="rootpane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
-      prefHeight="515.0" stylesheets="@css/login.css" xmlns="http://javafx.com/javafx/8.0.111">
-    <VBox id="loginpane" prefHeight="200.0" prefWidth="100.0">
+<VBox fx:id="root" id="rootpane"
+      stylesheets="@css/login.css"
+      xmlns="http://javafx.com/javafx/8.0.111"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="cn.keepfight.qsmanager.network.controller.LoginPane">
+    <VBox id="loginpane">
         <VBox.margin>
             <Insets right="62.0"/>
         </VBox.margin>
-        <HBox id="loginhead" prefHeight="100.0" prefWidth="200.0">
+        <HBox id="loginhead">
             <Label text="系统登录"/>
         </HBox>
         <VBox prefHeight="200.0" prefWidth="100.0">
-            <children>
-                <HBox prefHeight="100.0" prefWidth="200.0">
-                    <VBox.margin>
-                        <Insets bottom="8.0" left="8.0" right="8.0" top="8.0"/>
-                    </VBox.margin>
-                    <TextField promptText="账号" HBox.hgrow="ALWAYS"/>
-                    <ImageView>
-                        <Image url="@img/login-a.png"/>
-                    </ImageView>
-                </HBox>
-                <HBox layoutX="10.0" layoutY="10.0" prefHeight="100.0" prefWidth="200.0">
-                    <VBox.margin>
-                        <Insets bottom="8.0" left="8.0" right="8.0" top="8.0"/>
-                    </VBox.margin>
-                    <PasswordField promptText="密码"/>
-                    <ImageView styleClass="image-size-common" pickOnBounds="true" preserveRatio="true">
-                        <Image url="@img/login-p.png"/>
-                    </ImageView>
-                </HBox>
-            </children>
+            <HBox prefHeight="100.0" prefWidth="200.0">
+                <VBox.margin>
+                    <Insets bottom="8.0" left="8.0" right="8.0" top="8.0"/>
+                </VBox.margin>
+                <TextField fx:id="acc" promptText="账号" HBox.hgrow="ALWAYS"/>
+                <ImageView>
+                    <Image url="@img/login-a.png"/>
+                </ImageView>
+            </HBox>
+            <HBox prefHeight="100.0" prefWidth="200.0">
+                <VBox.margin>
+                    <Insets bottom="8.0" left="8.0" right="8.0" top="8.0"/>
+                </VBox.margin>
+                <PasswordField fx:id="psw" promptText="密码"/>
+                <ImageView>
+                    <Image url="@img/login-p.png"/>
+                </ImageView>
+            </HBox>
         </VBox>
         <HBox id="loginaction" prefHeight="100.0" prefWidth="200.0">
-            <Button mnemonicParsing="false" text="登录"/>
-            <Label text="没有账号？"/>
+            <Button fx:id="login" text="登录"/>
+            <Label fx:id="noacc" text="没有账号？"/>
         </HBox>
     </VBox>
 </VBox>

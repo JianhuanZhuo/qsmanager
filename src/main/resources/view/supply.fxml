@@ -14,18 +14,22 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
 
-<HBox stylesheets="@css/common.css" styleClass="content-pane,hbox-common">
+<HBox stylesheets="@css/common.css" styleClass="content-pane,hbox-common"
+      fx:controller="cn.keepfight.qsmanager.network.controller.Supply"
+      fx:id="root"
+      xmlns="http://javafx.com/javafx/8.0.111"
+      xmlns:fx="http://javafx.com/fxml/1">
     <VBox styleClass="title-pane">
         <HBox styleClass="title-line">
             <Pane HBox.hgrow="ALWAYS"/>
-            <ImageView>
+            <ImageView fx:id="addSup">
                 <Image url="@img/custom-add.png"/>
             </ImageView>
-            <ImageView>
+            <ImageView fx:id="delSup">
                 <Image url="@img/custom-del.png"/>
             </ImageView>
         </HBox>
-        <ListView VBox.vgrow="ALWAYS"/>
+        <ListView fx:id="supList" VBox.vgrow="ALWAYS"/>
     </VBox>
     <Separator orientation="VERTICAL"/>
     <VBox HBox.hgrow="ALWAYS" styleClass="vbox-spacing">
@@ -33,7 +37,7 @@
             <HBox styleClass="title-line">
                 <Label text="供应商基本信息"/>
                 <Pane HBox.hgrow="ALWAYS"/>
-                <ImageView styleClass="image-size-common">
+                <ImageView fx:id="saveInfo" styleClass="image-size-common">
                     <Image url="@img/save.png"/>
                 </ImageView>
             </HBox>
@@ -44,17 +48,19 @@
                 <Label text="供应商编号：" GridPane.columnIndex="2"/>
                 <Label text="供应商传真：" GridPane.columnIndex="2" GridPane.rowIndex="1"/>
                 <Label text="公帐收款户名：" GridPane.columnIndex="2" GridPane.rowIndex="2"/>
-                <TextField GridPane.columnIndex="1"/>
-                <TextField GridPane.columnIndex="3"/>
-                <TextField GridPane.columnIndex="1" GridPane.rowIndex="1"/>
-                <TextField GridPane.columnIndex="3" GridPane.rowIndex="1"/>
-                <TextField GridPane.columnIndex="1" GridPane.rowIndex="2"/>
-                <TextField GridPane.columnIndex="3" GridPane.rowIndex="2"/>
+                <TextField fx:id="info_name" GridPane.columnIndex="1"/>
+                <TextField fx:id="info_serial" GridPane.columnIndex="3"/>
+                <TextField fx:id="info_phone" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+                <TextField fx:id="info_fax" GridPane.columnIndex="3" GridPane.rowIndex="1"/>
+                <TextField fx:id="info_pvacc" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
+                <TextField fx:id="info_pbacc" GridPane.columnIndex="3" GridPane.rowIndex="2"/>
                 <Label text="供应商地址：" GridPane.rowIndex="3"/>
-                <TextField GridPane.columnIndex="1" GridPane.columnSpan="3" GridPane.rowIndex="3"/>
+                <TextField fx:id="info_addr" GridPane.columnIndex="1" GridPane.columnSpan="3" GridPane.rowIndex="3"/>
                 <Label text="供应商备注：" GridPane.rowIndex="4"/>
-                <TextArea GridPane.columnIndex="1" GridPane.columnSpan="3" GridPane.rowIndex="4" GridPane.rowSpan="2"/>
-                <Label styleClass="attach-icon" text="附件" GridPane.columnIndex="3" GridPane.rowIndex="6">
+                <TextArea fx:id="info_note" GridPane.columnIndex="1" GridPane.columnSpan="3" GridPane.rowIndex="4"
+                          GridPane.rowSpan="2"/>
+                <Label fx:id="info_attach" styleClass="attach-icon" text="附件" GridPane.columnIndex="3"
+                       GridPane.rowIndex="6">
                     <graphic>
                         <ImageView>
                             <Image url="@img/attachment.png"/>
@@ -67,14 +73,14 @@
             <HBox styleClass="title-line">
                 <Label text="原料供应信息"/>
                 <Pane HBox.hgrow="ALWAYS"/>
-                <ImageView styleClass="image-size-common" pickOnBounds="true" preserveRatio="true">
+                <ImageView fx:id="addMat">
                     <Image url="@img/item-add.png"/>
                 </ImageView>
-                <ImageView styleClass="image-size-common">
+                <ImageView fx:id="delMat">
                     <Image url="@img/item-del.png"/>
                 </ImageView>
             </HBox>
-            <TableView VBox.vgrow="ALWAYS">
+            <TableView VBox.vgrow="ALWAYS" fx:id="matTable">
                 <columns>
                     <TableColumn text="产品编号"/>
                     <TableColumn text="产品名称"/>

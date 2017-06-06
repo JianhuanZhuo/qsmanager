@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.String?>
-<?import java.net.URL?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
@@ -11,63 +9,42 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" styleClass="delivery-item" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1">
-   <children>
-      <HBox>
-         <children>
-            <Label text="送货日期：" />
-            <Label layoutX="10.0" layoutY="10.0" text="2017.01.06" />
-            <Label layoutX="10.0" layoutY="10.0" text="送货单号：" />
-            <Label layoutX="70.0" layoutY="10.0" text="JQ5566" />
-            <Label layoutX="133.0" layoutY="10.0" text="订单编号：" />
-            <Label layoutX="193.0" layoutY="10.0" text="JQ5566" />
-            <Pane HBox.hgrow="ALWAYS" />
-            <Label layoutX="236.0" layoutY="10.0" text="客户：" />
-            <Label layoutX="296.0" layoutY="10.0" text="安利" />
-         </children>
-         <styleClass>
-            <String fx:value="hbox-common" />
-            <String fx:value="f14-common" />
-         </styleClass>
-      </HBox>
-      <ScrollPane fitToHeight="true" fitToWidth="true" prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
-         <content>
-            <TableView prefHeight="200.0" prefWidth="200.0">
-              <columns>
-                <TableColumn prefWidth="75.0" text="C1" />
-                <TableColumn prefWidth="75.0" text="C2" />
-              </columns>
-            </TableView>
-         </content>
-      </ScrollPane>
-      <HBox>
-         <children>
-            <Label text="箱数统计：" />
-            <Label text="180" />
-            <Label text="税金统计：" />
-            <Label text="180" />
-            <Label text="返点统计：" />
-            <Label text="1080.00" />
-            <Pane HBox.hgrow="ALWAYS" />
-            <Label text="实际应收金额：￥" />
-            <Label text="19,536.00" />
-         </children>
-         <styleClass>
-            <String fx:value="hbox-common" />
-            <String fx:value="f14-common" />
-         </styleClass>
-      </HBox>
-      <HBox layoutX="10.0" layoutY="310.0" styleClass="hbox-common">
-         <children>
-            <Button mnemonicParsing="false" text="删除送货记录" />
-            <Pane HBox.hgrow="ALWAYS" />
-            <Button mnemonicParsing="false" text="查看附件" />
-            <Button layoutX="50.0" layoutY="10.0" mnemonicParsing="false" text="打印送货单" />
-         </children>
-      </HBox>
-   </children>
-   <stylesheets>
-      <URL value="@css/common.css" />
-      <URL value="@css/delivery.css" />
-   </stylesheets>
+<VBox prefHeight="400.0" prefWidth="600.0" styleClass="bill-item" stylesheets="@css/common.css"
+      xmlns="http://javafx.com/javafx/8.0.111">
+    <HBox styleClass="hbox-common">
+        <Label text="送货日期："/>
+        <Label text="2017.01.06"/>
+        <Label text="送货单号："/>
+        <Label text="JQ5566"/>
+        <Label text="订单编号："/>
+        <Label text="JQ5566"/>
+        <Pane HBox.hgrow="ALWAYS"/>
+        <Label text="客户："/>
+        <Label text="安利"/>
+    </HBox>
+    <ScrollPane fitToHeight="true" fitToWidth="true" VBox.vgrow="ALWAYS">
+        <TableView>
+            <columns>
+                <TableColumn prefWidth="75.0" text="C1"/>
+                <TableColumn prefWidth="75.0" text="C2"/>
+            </columns>
+        </TableView>
+    </ScrollPane>
+    <HBox styleClass="hbox-common">
+        <Label text="箱数统计："/>
+        <Label text="180"/>
+        <Label text="税金统计："/>
+        <Label text="180"/>
+        <Label text="返点统计："/>
+        <Label text="1080.00"/>
+        <Pane HBox.hgrow="ALWAYS"/>
+        <Label text="实际应收金额：￥"/>
+        <Label text="19,536.00"/>
+    </HBox>
+    <HBox styleClass="hbox-common">
+        <Button text="删除送货记录"/>
+        <Pane HBox.hgrow="ALWAYS"/>
+        <Button text="查看附件"/>
+        <Button text="打印送货单"/>
+    </HBox>
 </VBox>

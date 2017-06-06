@@ -6,23 +6,19 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<HBox styleClass="root-item" stylesheets="@css/menuitem.css" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1">
-   <children>
-       <ImageView styleClass="image-size-common" pickOnBounds="true" preserveRatio="true">
-         <image>
-            <Image url="@img/menu-supply.png" />
-         </image>
-      </ImageView>
-      <VBox styleClass="menu-label">
-         <children>
-            <HBox styleClass="title-hbox">
-               <children>
-                  <Label styleClass="menutitle" text="客户管理" />
-                  <Label styleClass="status" text="2" />
-               </children>
-            </HBox>
-            <Label styleClass="title-english" text="Custom Manage" />
-         </children>
-      </VBox>
-   </children>
+<HBox styleClass="root-item" stylesheets="@css/menuitem.css"
+      fx:id="root"
+      fx:controller="cn.keepfight.qsmanager.network.controller.MenuController"
+      xmlns="http://javafx.com/javafx/8.0.111"
+      xmlns:fx="http://javafx.com/fxml/1">
+    <ImageView fx:id="icon" fitHeight="45" fitWidth="45">
+        <Image url="@img/menu-supply.png"/>
+    </ImageView>
+    <VBox styleClass="menu-label">
+        <HBox styleClass="title-hbox">
+            <Label fx:id="title" styleClass="menutitle" text="客户管理"/>
+            <Label fx:id="status" styleClass="status" text="2"/>
+        </HBox>
+        <Label fx:id="english" styleClass="title-english" text="Custom Manage"/>
+    </VBox>
 </HBox>

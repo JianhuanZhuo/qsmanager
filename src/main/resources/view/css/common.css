@@ -3,6 +3,10 @@
     -fx-background-color: white;
     -fx-pref-width: 740px;
     -fx-pref-height: 560px;
+    -fx-min-width: 600px;
+    -fx-min-height: 400px;
+
+    -fx-padding: 5px;
 }
 
 /*带有标题头的面板*/
@@ -54,6 +58,10 @@
     -fx-spacing: 5px;
     -fx-padding: 5px;
     -fx-alignment: center-left;
+}
+
+.hbox-spacing {
+    -fx-spacing: 5px;
 }
 
 .hbox-common .right-spacing{
