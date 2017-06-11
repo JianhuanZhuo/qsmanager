@@ -34,6 +34,8 @@
     -fx-padding: 2px 5px;
     -fx-spacing: 5px;
 
+    -fx-alignment: center;
+
     -fx-font: normal normal 16px "微软雅黑";
 }
 
@@ -44,7 +46,7 @@
     -fx-font: normal normal 14px "微软雅黑";
 }
 
-.title-pane > .title-line .btnable{
+.title-pane > .title-line .btnable, .hbox-common > .btnable {
     -fx-background-color: transparent;
     -fx-cursor: hand;
 }
@@ -57,7 +59,6 @@
 .hbox-common{
     -fx-spacing: 5px;
     -fx-padding: 5px;
-    -fx-alignment: center-left;
 }
 
 .hbox-spacing {

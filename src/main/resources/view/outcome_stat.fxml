@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<HBox styleClass="hbox-common"
+      alignment="CENTER"
+      xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      stylesheets="@css/common.css"
+      fx:controller="cn.keepfight.qsmanager.controller.OutComeStatController">
+    <VBox styleClass="vbox-common">
+        <ChoiceBox fx:id="stat_year_sel" prefWidth="100.0"/>
+        <ScrollPane VBox.vgrow="ALWAYS" fitToWidth="true" fitToHeight="true">
+            <TableView fx:id="stat_takePay_table">
+                <columns>
+                    <TableColumn text="月份"/>
+                    <TableColumn text="采购总结"/>
+                    <TableColumn text="付款总结"/>
+                </columns>
+            </TableView>
+        </ScrollPane>
+        <GridPane styleClass="infogp">
+            <columnConstraints>
+                <ColumnConstraints halignment="RIGHT" prefWidth="100.0"/>
+                <ColumnConstraints hgrow="ALWAYS" prefWidth="50.0"/>
+            </columnConstraints>
+            <Label text="总采购金额：¥" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+            <Label text="总付款金额：¥" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
+            <Label text="未付工资为：¥" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
+            <Label text="总支出金额：¥" GridPane.columnIndex="0" GridPane.rowIndex="3"/>
+            <Label fx:id="tp_total_take" text="1" GridPane.columnIndex="1"
+                   GridPane.rowIndex="0"/>
+            <Label fx:id="tp_total_pay" text="0" GridPane.columnIndex="1"
+                   GridPane.rowIndex="1"/>
+            <Label fx:id="tp_total_un_pay" text="3" GridPane.columnIndex="1"
+                   GridPane.rowIndex="2"/>
+            <Label fx:id="tp_total_spend" text="8" GridPane.columnIndex="1"
+                   GridPane.rowIndex="3"/>
+        </GridPane>
+    </VBox>
+</HBox>

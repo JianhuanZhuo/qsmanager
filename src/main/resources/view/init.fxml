@@ -4,5 +4,5 @@
 
 <AnchorPane fx:id="root" style="-fx-background-color: transparent" xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
-            fx:controller="cn.keepfight.qsmanager.network.controller.Init">
+            fx:controller="cn.keepfight.qsmanager.controller.Init">
 </AnchorPane>

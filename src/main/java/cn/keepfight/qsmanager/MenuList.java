@@ -1,6 +1,6 @@
 package cn.keepfight.qsmanager;
 
-import cn.keepfight.qsmanager.network.controller.ContentController;
+import cn.keepfight.qsmanager.controller.ContentController;
 import cn.keepfight.utils.ViewPathUtil;
 import javafx.application.Platform;
 
@@ -32,7 +32,7 @@ public enum MenuList {
         this.title = title;
         Platform.runLater(() -> {
             try {
-                controller = (ContentController) ViewPathUtil.loadViewForController(view);
+                controller = ViewPathUtil.loadViewForController(view);
             } catch (IOException e) {
                 e.printStackTrace();
             }

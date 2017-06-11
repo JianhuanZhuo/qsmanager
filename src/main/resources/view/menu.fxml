@@ -4,7 +4,7 @@
 
 <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0"
       fx:id="root"
-      fx:controller="cn.keepfight.qsmanager.network.controller.MenuListController"
+      fx:controller="cn.keepfight.qsmanager.controller.MenuListController"
       prefWidth="600.0"
       styleClass="menu-root"
       stylesheets="@css/menu.css"

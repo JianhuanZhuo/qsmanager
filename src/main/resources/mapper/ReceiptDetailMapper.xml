@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.keepfight.qsmanager.Mapper.ReceiptDetailMapper">
+
+    <!--List<ReceiptDetailModel> selectAll(Long sid, Long year, Long month) throws Exception;-->
+    <select id="selectAll" parameterType="long" resultType="ReceiptDetailModel">
+        SELECT *
+        FROM receipt_detail
+        WHERE rid = #{rid}
+    </select>
+
+    <!--void insert(ReceiptDetailModel receipt_detail) throws Exception;-->
+    <insert id="insert" parameterType="ReceiptDetailModel">
+        INSERT INTO
+        receipt_detail (rid, serial, name, color, price, unit, num)
+        VALUES (#{rid}, #{serial}, #{name}, #{color}, #{price}, #{unit}, #{num})
+        <selectKey keyProperty="id" order="AFTER" resultType="long">
+            SELECT last_insert_rowid();
+        </selectKey>
+    </insert>
+
+    <!--void delete(ReceiptDetailModel receipt_detail) throws Exception;-->
+    <delete id="delete" parameterType="ReceiptDetailModel">
+        DELETE FROM receipt_detail
+        WHERE id = #{id}
+    </delete>
+</mapper>

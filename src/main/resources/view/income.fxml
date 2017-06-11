@@ -22,7 +22,7 @@
       stylesheets="@css/common.css"
       xmlns="http://javafx.com/javafx/8.0.111"
       xmlns:fx="http://javafx.com/fxml/1"
-      fx:controller="cn.keepfight.qsmanager.network.controller.Income">
+      fx:controller="cn.keepfight.qsmanager.controller.IncomeController">
     <HBox alignment="CENTER_LEFT" styleClass="title-line">
         <Label text="收入管理"/>
     </HBox>
@@ -43,7 +43,7 @@
                     </HBox>
                 </top>
                 <center>
-                    <ScrollPane fitToHeight="true" fitToWidth="true">
+                    <ScrollPane fitToHeight="true" fitToWidth="true" VBox.vgrow="ALWAYS">
                         <VBox fx:id="deliveryList" styleClass="vbox-lgap">
                             <fx:include source="delivery.fxml"/>
                             <fx:include source="delivery.fxml"/>

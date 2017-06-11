@@ -21,8 +21,9 @@
                     <Image url="@img/main-head-beta.png" />
                 </ImageView>
             </HBox>
-            <HBox id="user-action" fx:id="head_box" alignment="CENTER_RIGHT" spacing="5.0" AnchorPane.bottomAnchor="29.0" AnchorPane.rightAnchor="18.0">
-                <Label styleClass="user" text="张生" textFill="#cccccc" underline="true">
+            <HBox id="userModel-action" fx:id="head_box" alignment="CENTER_RIGHT" spacing="5.0"
+                  AnchorPane.bottomAnchor="29.0" AnchorPane.rightAnchor="18.0">
+                <Label styleClass="userModel" text="张生" textFill="#cccccc" underline="true">
                     <font>
                         <Font size="16.0" />
                     </font>

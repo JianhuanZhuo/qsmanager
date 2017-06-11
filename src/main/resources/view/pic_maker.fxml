@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Slider?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<HBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
+      styleClass="hbox-common" stylesheets="@css/common.css" xmlns="http://javafx.com/javafx/8.0.111"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="cn.keepfight.qsmanager.controller.PicMakerController">
+    <VBox alignment="CENTER" fillWidth="false" prefHeight="300.0" prefWidth="300.0" style="-fx-border-color: pink;">
+        <ImageView fx:id="image" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
+            <Image url="@../graph/g64/collaboration.png"/>
+        </ImageView>
+    </VBox>
+    <VBox style="visibility: collapse" alignment="CENTER" fillWidth="false" styleClass="vbox-common">
+        <HBox fillHeight="false" styleClass="hbox-common">
+            <Label text="适配大小："/>
+            <Slider fx:id="size_s" majorTickUnit="100.0" max="300.0" minorTickCount="5" showTickLabels="true"
+                    showTickMarks="true"
+                    value="64.0"/>
+            <TextField fx:id="size_t" prefWidth="100.0" HBox.hgrow="ALWAYS"/>
+        </HBox>
+        <HBox layoutX="10.0" layoutY="310.0" styleClass="hbox-common">
+            <Label text="旋转角度："/>
+            <Slider fx:id="rota_s" majorTickUnit="90.0" max="180.0" min="-180.0" minorTickCount="6"
+                    showTickLabels="true"
+                    showTickMarks="true" HBox.hgrow="ALWAYS"/>
+            <TextField fx:id="rota_t" prefWidth="100.0" HBox.hgrow="ALWAYS"/>
+        </HBox>
+        <HBox layoutX="10.0" layoutY="333.0" styleClass="hbox-common">
+            <Label text="左右缩放："/>
+            <Slider fx:id="" blockIncrement="0.1" majorTickUnit="1.0" max="5.0" minorTickCount="5" showTickLabels="true"
+                    showTickMarks="true" value="1.0"/>
+            <TextField prefWidth="100.0" HBox.hgrow="ALWAYS"/>
+        </HBox>
+        <HBox layoutX="10.0" layoutY="384.0" styleClass="hbox-common">
+            <Label text="上下缩放："/>
+            <Slider blockIncrement="0.1" majorTickUnit="1.0" max="5.0" minorTickCount="5" showTickLabels="true"
+                    showTickMarks="true" value="1.0"/>
+            <TextField prefWidth="100.0" HBox.hgrow="ALWAYS"/>
+        </HBox>
+        <HBox layoutX="10.0" layoutY="384.0" styleClass="hbox-common">
+            <Label text="左右平移："/>
+            <Slider blockIncrement="0.1" majorTickUnit="1.0" max="5.0" minorTickCount="5" showTickLabels="true"
+                    showTickMarks="true" value="1.0"/>
+            <TextField prefWidth="100.0" HBox.hgrow="ALWAYS"/>
+        </HBox>
+        <HBox layoutX="10.0" layoutY="421.0" styleClass="hbox-common">
+            <Label text="上下平移："/>
+            <Slider blockIncrement="0.1" majorTickUnit="1.0" max="5.0" minorTickCount="5" showTickLabels="true"
+                    showTickMarks="true" value="1.0"/>
+            <TextField prefWidth="100.0" HBox.hgrow="ALWAYS"/>
+        </HBox>
+    </VBox>
+</HBox>

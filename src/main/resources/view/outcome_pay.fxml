@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox styleClass="vbox-common"
+      xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      stylesheets="@css/common.css"
+      fx:controller="cn.keepfight.qsmanager.controller.OutComePayController">
+    <ChoiceBox fx:id="ap_year_sel" prefWidth="100.0"/>
+    <ScrollPane fitToHeight="true" fitToWidth="true" hbarPolicy="ALWAYS" VBox.vgrow="ALWAYS">
+        <TableView fx:id="ap_table">
+            <columns>
+                <TableColumn text="供应商"/>
+                <TableColumn text="实际应付"/>
+                <TableColumn text="一月"/>
+                <TableColumn text="二月"/>
+                <TableColumn text="三月"/>
+                <TableColumn text="四月"/>
+                <TableColumn text="五月"/>
+                <TableColumn text="六月"/>
+                <TableColumn text="七月"/>
+                <TableColumn text="八月"/>
+                <TableColumn text="九月"/>
+                <TableColumn text="十月"/>
+                <TableColumn text="十一月"/>
+                <TableColumn text="十二月"/>
+            </columns>
+        </TableView>
+    </ScrollPane>
+    <HBox styleClass="hbox-common">
+        <Label text="总付款：￥"/>
+        <Label fx:id="ap_total" text="246,245.15"/>
+    </HBox>
+</VBox>

@@ -1,14 +1,17 @@
 package cn.keepfight.utils;
 
+import javafx.application.Platform;
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleObjectProperty;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+
 import java.util.HashMap;
 import java.util.Map;
 
-import javafx.scene.image.Image;
-
 /**
- * 图片加载工具类.
  *
- * @author Tom
+ * Created by tom on 2017/6/7.
  */
 public class ImageLoadUtil {
 
@@ -16,14 +19,14 @@ public class ImageLoadUtil {
     public static final int IMG_SIZE_32 = 32;
     public static final int IMG_SIZE_64 = 64;
 
-    public static final String VIEW_IMAGE_URL = "cn/keepfight/frame/view/image/";
-
+    private static final String VIEW_IMAGE_URL = "graph";
     /**
      * 图像缓存
      */
-    public static Map<String, Image> reusableImageMap = new HashMap<>();
+    private static Map<String, ObjectProperty<Image>> reusableImageMap = new HashMap<>();
 
-    public static Image load(String imageName) {
+
+    public static ObjectProperty<Image> load(String imageName) {
         return load(imageName, IMG_SIZE_32);
     }
 
@@ -32,24 +35,21 @@ public class ImageLoadUtil {
      * 对于第二次请求相同的图片，会直接使用之前加载的图片文件而不是从磁盘中再加载一次
      *
      * @param imageName 指定名字
-     * @param size      指定尺寸，仅支持 {@link #reusableImage16Map} 和
-     *                  {@link #reusableImage32Map}和{@link #reusableImage64Map}
+     * @param size      指定尺寸，仅支持 {@link #IMG_SIZE_16} 和
+     *                  {@link #IMG_SIZE_32}和{@link #IMG_SIZE_64}
      * @return 图片对象，若对象不存在返回null。
      */
-    public static Image load(String imageName, int size) {
+    public static ObjectProperty<Image> load(String imageName, int size) {
         if (size == IMG_SIZE_16 || size == IMG_SIZE_32 || size == IMG_SIZE_64) {
             if (reusableImageMap.containsKey("g" + size + "/" + imageName)) {
                 return reusableImageMap.get("g" + size + "/" + imageName);
             } else {
-                // @TODO 做成配置
-                String imageUrl = "graph/g" + size + "/" + imageName;
-                Image resImage = null;
-                try {
-                    resImage = new Image(imageUrl);
-                } catch (Exception e) {
-                    System.err.println("url is: " + imageUrl);
-                    e.printStackTrace();
-                }
+                String imageUrl = VIEW_IMAGE_URL + "/g" + size + "/" + imageName;
+                ObjectProperty<Image> resImage = new SimpleObjectProperty<>();
+
+                // 在此做加载
+                Platform.runLater(() -> resImage.set(new Image(imageUrl)));
+
                 reusableImageMap.put("g" + size + "/" + imageName, resImage);
                 return resImage;
             }
@@ -57,7 +57,14 @@ public class ImageLoadUtil {
         return null;
     }
 
-    public static Image loadViewImage(String imageName) {
-        return new Image(VIEW_IMAGE_URL + imageName);
+    public static ImageView bindImage(ImageView view, String imageName) {
+        return bindImage(view, imageName, IMG_SIZE_32);
+    }
+
+    public static ImageView bindImage(ImageView view, String imageName, int size) {
+        if (view != null) {
+            view.imageProperty().bind(load(imageName, size));
+        }
+        return view;
     }
 }

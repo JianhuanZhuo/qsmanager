@@ -20,4 +20,8 @@ public class PropertieUtilTest {
                 .get("test1"), "1");
     }
 
+    @Test
+    public void alterProperties() throws Exception {
+        PropertieUtil.alterProperty("fxapp.properties", "login.acc", "resultConverter");
+    }
 }

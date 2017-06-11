@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<VBox stylesheets="@css/common.css" styleClass="title-pane"
+      xmlns="http://javafx.com/javafx/8.0.111"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:id="root"
+      fx:controller="cn.keepfight.qsmanager.controller.SupplyAddController">
+
+    <HBox alignment="CENTER_LEFT" styleClass="title-line">
+        <Label text="新增供应商信息"/>
+        <Pane HBox.hgrow="ALWAYS"/>
+    </HBox>
+    <GridPane styleClass="infogp">
+        <Label text="客户简称：" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+        <Label text="客户编号：" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
+        <TextField fx:id="name" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
+        <TextField fx:id="serial" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+    </GridPane>
+</VBox>

@@ -10,31 +10,40 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
 
+<?import javafx.scene.control.Button?>
 <VBox stylesheets="@css/common.css" styleClass="title-pane,content-pane"
-      fx:controller="cn.keepfight.qsmanager.network.controller.Products"
+      fx:controller="cn.keepfight.qsmanager.controller.ProductsController"
       fx:id="root"
       xmlns="http://javafx.com/javafx/8.0.111"
       xmlns:fx="http://javafx.com/fxml/1">
     <HBox alignment="CENTER_LEFT" styleClass="title-line">
         <Label text="产品列表"/>
         <Pane HBox.hgrow="ALWAYS"/>
-        <ImageView fx:id="add" styleClass="image-button">
-            <Image url="@img/item-add.png"/>
-        </ImageView>
-        <ImageView fx:id="del" styleClass="image-button">
-            <Image url="@img/item-del.png"/>
-        </ImageView>
+        <Button fx:id="add" text="添加" styleClass="btnable">
+            <graphic>
+                <ImageView styleClass="image-button">
+                    <Image url="@img/item-add.png"/>
+                </ImageView>
+            </graphic>
+        </Button>
+        <Button fx:id="del" text="删除" styleClass="btnable">
+            <graphic>
+                <ImageView styleClass="image-button">
+                    <Image url="@img/item-del.png"/>
+                </ImageView>
+            </graphic>
+        </Button>
     </HBox>
     <ScrollPane fitToHeight="true" fitToWidth="true" VBox.vgrow="ALWAYS">
         <TableView fx:id="prodTable">
             <columns>
-                <TableColumn text="编号"/>
-                <TableColumn text="产品名称"/>
-                <TableColumn text="包装明细"/>
-                <TableColumn text="单价(元/包)"/>
-                <TableColumn text="单位"/>
-                <TableColumn text="默认装数"/>
-                <TableColumn text="产品附图"/>
+                <TableColumn fx:id="table_serial" text="编号"/>
+                <TableColumn fx:id="table_name" text="产品名称"/>
+                <TableColumn fx:id="table_detail" text="包装明细"/>
+                <TableColumn fx:id="table_price" text="单价(元/包)"/>
+                <TableColumn fx:id="table_unit" text="单位"/>
+                <TableColumn fx:id="table_pack" text="默认装数"/>
+                <TableColumn fx:id="table_pic" text="产品附图"/>
             </columns>
         </TableView>
     </ScrollPane>

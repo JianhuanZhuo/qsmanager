@@ -1,6 +1,7 @@
 package cn.keepfight.qsmanager.model;
 
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.sql.Connection;
@@ -19,10 +20,11 @@ public class SQLTest {
         cnt = DriverManager.getConnection("jdbc:sqlite:identifier.sqlite");
     }
 
+    @Ignore
     @Test
     public void testConnect() throws SQLException {
         Statement smt = cnt.createStatement();
-        smt.execute("SELECT * FROM user;");
+        smt.execute("SELECT * FROM custom;");
     }
 
 }

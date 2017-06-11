@@ -5,7 +5,8 @@
 <configuration>
     <properties resource="database.properties"/>
     <typeAliases>
-        <typeAlias alias="User" type="cn.keepfight.qsmanager.model.User"/>
+        <!--<typeAlias alias="User" type="cn.keepfight.qsmanager.model.UserModel"/>-->
+        <package name="cn.keepfight.qsmanager.model"/>
     </typeAliases>
     <environments default="development">
         <environment id="development">
@@ -20,6 +21,11 @@
     </environments>
 
     <mappers>
-        <mapper resource="mapper/UserMapper.xml"/>
+        <mapper resource="mapper/CustomMapper.xml"/>
+        <mapper resource="mapper/ProductMapper.xml"/>
+        <mapper resource="mapper/SupplyMapper.xml"/>
+        <mapper resource="mapper/MaterialMapper.xml"/>
+        <mapper resource="mapper/ReceiptMapper.xml"/>
+        <mapper resource="mapper/ReceiptDetailMapper.xml"/>
     </mappers>
 </configuration>

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.image.Image?>
+<VBox styleClass="vbox-common"
+      xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      stylesheets="@css/common.css"
+      fx:controller="cn.keepfight.qsmanager.controller.OutComeFacController">
+    <ChoiceBox prefWidth="100.0"/>
+    <ScrollPane fitToHeight="true" fitToWidth="true" VBox.vgrow="ALWAYS">
+        <TableView>
+            <columns>
+                <TableColumn text="明细"/>
+                <TableColumn text="一月"/>
+                <TableColumn text="二月"/>
+                <TableColumn text="三月"/>
+                <TableColumn text="四月"/>
+                <TableColumn text="五月"/>
+                <TableColumn text="六月"/>
+                <TableColumn text="七月"/>
+                <TableColumn text="八月"/>
+                <TableColumn text="九月"/>
+                <TableColumn text="十月"/>
+                <TableColumn text="十一月"/>
+                <TableColumn text="十二月"/>
+                <TableColumn text="年度统计"/>
+            </columns>
+        </TableView>
+    </ScrollPane>
+    <HBox styleClass="hbox-common">
+        <Label text="工资总未付：￥"/>
+        <Label fx:id="fac_no_pay_total" text="0"/>
+        <Pane HBox.hgrow="ALWAYS"/>
+        <Label fx:id="fac_attach" text="查看附件">
+            <graphic>
+                <ImageView fitHeight="22.0" fitWidth="22.0" styleClass="image-button">
+                    <Image url="@img/attachment.png"/>
+                </ImageView>
+            </graphic>
+        </Label>
+        <Button fx:id="fac_add" text="添加明细"/>
+        <Button fx:id="fac_del" text="删除明细"/>
+    </HBox>
+</VBox>

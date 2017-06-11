@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<HBox fx:id="root" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
+      minWidth="-Infinity"
+      styleClass="hbox-common" stylesheets="@css/common.css" xmlns="http://javafx.com/javafx/8.0.111"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="cn.keepfight.qsmanager.controller.PicMakerController">
+    <VBox alignment="CENTER" fillWidth="false" prefHeight="300.0" prefWidth="300.0" style="-fx-border-color: pink;">
+        <ImageView fx:id="image" fitWidth="300.0" fitHeight="300.0" pickOnBounds="true" preserveRatio="true">
+            <Image url="@../graph/g64/collaboration.png"/>
+        </ImageView>
+    </VBox>
+</HBox>

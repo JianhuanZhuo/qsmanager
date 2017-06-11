@@ -3,6 +3,8 @@ package cn.keepfight.utils;
 import java.util.Optional;
 import java.util.function.Supplier;
 
+import javafx.application.Platform;
+import javafx.beans.property.ObjectProperty;
 import javafx.concurrent.Task;
 import javafx.concurrent.WorkerStateEvent;
 import javafx.event.EventHandler;
@@ -10,6 +12,7 @@ import javafx.scene.control.ButtonBar.ButtonData;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Dialog;
 import javafx.scene.control.ProgressIndicator;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
@@ -17,16 +20,12 @@ import javafx.stage.Stage;
 public class WaitDialog<V> extends Dialog<Boolean> implements EventHandler<WorkerStateEvent> {
 
     private static final String waitIcon = "wait.png";
-
-    private long befStp;
-    private long aftStp;
-
     private Supplier<V> action;
 
     public WaitDialog(Supplier<V> action) {
         setTitle("正在执行");
         setHeaderText("这个操作可能需要花费些时间，请稍等待...");
-        setGraphic(new ImageView(ImageLoadUtil.load(waitIcon, ImageLoadUtil.IMG_SIZE_64)));
+        setGraphic(ImageLoadUtil.bindImage(new ImageView(), waitIcon, ImageLoadUtil.IMG_SIZE_64));
 
         ButtonType buttonTypeCancel = new ButtonType("取消", ButtonData.CANCEL_CLOSE);
 
@@ -41,7 +40,8 @@ public class WaitDialog<V> extends Dialog<Boolean> implements EventHandler<Worke
         Stage stage = (Stage) getDialogPane().getScene().getWindow();
 
         // Add a custom icon.
-        stage.getIcons().add(ImageLoadUtil.load(waitIcon, ImageLoadUtil.IMG_SIZE_16));
+        ObjectProperty<Image> image = ImageLoadUtil.load(waitIcon, ImageLoadUtil.IMG_SIZE_16);
+        Platform.runLater(() -> stage.getIcons().add(image.getValue()));
 
         setResultConverter(dialogButton -> false);
 
@@ -62,12 +62,9 @@ public class WaitDialog<V> extends Dialog<Boolean> implements EventHandler<Worke
             }
         };
         task.setOnSucceeded(this);
-
-        befStp = System.currentTimeMillis();
         new Thread(task).start();
+
         Optional<Boolean> result = showAndWait();
-        aftStp = System.currentTimeMillis();
-        System.out.println("此次等待时间为：" + (aftStp - befStp) + " 毫秒");
 
         if (result.isPresent() && result.get()) {
             return Optional.ofNullable(task.getValue());

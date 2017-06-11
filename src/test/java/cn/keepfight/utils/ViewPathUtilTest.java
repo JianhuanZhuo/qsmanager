@@ -2,6 +2,11 @@ package cn.keepfight.utils;
 
 import org.junit.Test;
 
+import java.io.File;
+import java.io.IOException;
+import java.net.URI;
+import java.nio.file.*;
+
 import static org.junit.Assert.*;
 
 /**
