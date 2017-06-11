@@ -17,12 +17,18 @@ import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.util.Callback;
+import javafx.util.StringConverter;
 
 import javax.swing.text.View;
 import java.io.IOException;
 import java.net.URL;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
+import java.util.stream.LongStream;
 
 /**
  * 支出管理控制器
@@ -95,6 +101,7 @@ public class OutComeController implements ContentController {
     public void initialize() {
         initUI();
         initAction();
+        loadSelection();
     }
 
     private void initUI() {
@@ -113,18 +120,63 @@ public class OutComeController implements ContentController {
                     @Override
                     protected void updateItem(ReceiptModelFull item, boolean empty) {
                         super.updateItem(item, empty);
-                        try {
-                            ReceiptController controller = ViewPathUtil.loadViewForController("receipt.fxml");
-                            setGraphic(controller.getRoot());
-                        } catch (IOException e) {
-                            e.printStackTrace();
+                        if (empty||item==null){
+                            setGraphic(null);
+                        }else {
+                            try {
+                                ReceiptController controller = ViewPathUtil.loadViewForController("receipt.fxml");
+                                controller.fill(item);
+                                setGraphic(controller.getRoot());
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
                         }
                     }
                 };
             }
         });
 
+        rec_sup_sel.setConverter(new StringConverter<SupplyModel>() {
+            @Override
+            public String toString(SupplyModel object) {
+                return object.getSerial()+"-"+object.getName();
+            }
 
+            @Override
+            public SupplyModel fromString(String string) {
+                return null;
+            }
+        });
+
+        rec_year_sel.setConverter(new StringConverter<Long>() {
+            @Override
+            public String toString(Long object) {
+                return object+" 年";
+            }
+
+            @Override
+            public Long fromString(String string) {
+                return null;
+            }
+        });
+
+        List<Long> range = LongStream.range(1, 13).boxed().collect(Collectors.toList());
+        rec_mon_sel.setItems(FXCollections.observableList(range));
+        rec_mon_sel.getItems().add(null);
+        rec_mon_sel.setConverter(new StringConverter<Long>() {
+            @Override
+            public String toString(Long object) {
+                if (object==null){
+                    return "全年";
+                }
+                return object+" 月";
+            }
+
+            @Override
+            public Long fromString(String string) {
+                return null;
+            }
+        });
     }
 
     private void initAction() {
@@ -140,6 +192,10 @@ public class OutComeController implements ContentController {
                 }
             });
         });
+
+        rec_sup_sel.setOnAction(event -> loadReceipt());
+        rec_year_sel.setOnAction(event -> loadReceipt());
+        rec_mon_sel.setOnAction(event -> loadReceipt());
     }
 
     @Override
@@ -150,6 +206,18 @@ public class OutComeController implements ContentController {
     @Override
     public void refresh() {
 
+    }
+
+
+    private void loadSelection() {
+        Platform.runLater(() -> {
+            try {
+                rec_sup_sel.getItems().setAll(QSApp.service.getSupplyService().selectAll());
+                rec_year_sel.getItems().setAll(QSApp.service.getReceiptService().selectYear());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
     }
 
     private void loadReceipt() {
@@ -166,6 +234,9 @@ public class OutComeController implements ContentController {
             try {
                 ObservableList<ReceiptModelFull> receipts = FXCollections.observableList(QSApp.service.getReceiptService().selectAll(sid, year, mon));
                 receiptFullList.getItems().setAll(receipts);
+                receipts.forEach(r->{
+                    System.out.println(r.getRdate());
+                });
             } catch (Exception e) {
                 e.printStackTrace();
             }

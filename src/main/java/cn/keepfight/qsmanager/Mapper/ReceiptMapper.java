@@ -27,4 +27,10 @@ public interface ReceiptMapper extends Mapper {
      * 删除指定供应送货记录，以ID为准。
      */
     void delete(ReceiptModel model) throws Exception;
+
+
+    /**
+     * 获取供应商送货全部可用的年份
+     */
+    List<Long> selectYear() throws Exception;
 }

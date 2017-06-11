@@ -15,7 +15,7 @@ public class ReceiptDetailModel {
     private String spec;
     private BigDecimal price;
     private String unit;
-    private Long num;
+    private BigDecimal num;
 
     public Long getId() {
         return id;
@@ -82,11 +82,11 @@ public class ReceiptDetailModel {
         this.unit = unit;
     }
 
-    public Long getNum() {
+    public BigDecimal getNum() {
         return num;
     }
 
-    public void setNum(Long num) {
+    public void setNum(BigDecimal num) {
         this.num = num;
     }
 }

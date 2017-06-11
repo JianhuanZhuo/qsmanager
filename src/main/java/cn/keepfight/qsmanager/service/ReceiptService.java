@@ -12,14 +12,6 @@ import java.util.List;
  */
 public interface ReceiptService {
 
-//    /**
-//     * 获得指定供应商的送货记录的全部年份
-//     * @param sid
-//     * @return
-//     * @throws Exception
-//     */
-//    List<String> getYears(Long sid) throws Exception;
-
     /**
      * 选择特定供应商、特定时间的全部送货记录
      */
@@ -34,4 +26,9 @@ public interface ReceiptService {
      * 删除指定 ID 的送货记录。
      */
     void delete(ReceiptModel model) throws Exception;
+
+    /**
+     * 获取供应商送货全部可用的年份
+     */
+    List<Long> selectYear() throws Exception;
 }

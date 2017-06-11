@@ -8,6 +8,8 @@ import java.util.Formatter;
  */
 public class ReceiptSelection {
     private Long sid; // 供应商ID
+//    private String year;
+//    private String month;
     private String year;
     private String month;
 
@@ -19,23 +21,41 @@ public class ReceiptSelection {
         this.sid = sid;
     }
 
-    public Long getYear() {
-        return Long.valueOf(year);
+    public String getYear() {
+        return year;
+    }
+
+    public void setYear(String year) {
+        this.year = year;
+    }
+
+    public String getMonth() {
+        return month;
+    }
+
+    public void setMonth(String month) {
+        this.month = month;
     }
 
     public void setYear(Long year) {
         this.year = year.toString();
     }
 
-    public Long getMonth() {
-        return Long.valueOf(month);
-    }
-
     public void setMonth(Long month) {
+        if (month==null){
+            this.month=null;
+            return;
+        }
         if (month < 10) {
             this.month = "0" + month;
         } else {
             this.month = month.toString();
         }
+    }
+
+
+    @Override
+    public String toString() {
+        return "sid:"+sid+";year:"+year+";month:"+month;
     }
 }

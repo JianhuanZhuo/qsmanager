@@ -10,6 +10,15 @@ public class ReceiptModel {
     private Long sid;
     private String serial;
     private Long rdate;
+    private Long xdate;
+
+    public Long getXdate() {
+        return xdate;
+    }
+
+    public void setXdate(Long xdate) {
+        this.xdate = xdate;
+    }
 
     public Long getId() {
         return id;

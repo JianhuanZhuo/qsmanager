@@ -53,7 +53,7 @@ public class ReceiptItemAddController implements DialogContent<ReceiptDetailMode
         FXUtils.limitLength(color, 30);
 
         FXUtils.limitNum(price, 9, 4, true);
-        FXUtils.limitNum(num, 9, 0, true);
+        FXUtils.limitNum(num, 9, 4, true);
 
         // 设置切换恢复默认值
         serial.getSelectionModel().selectedIndexProperty().addListener((x, oldOne, newOne) -> {
@@ -123,11 +123,8 @@ public class ReceiptItemAddController implements DialogContent<ReceiptDetailMode
         BooleanProperty res = new SimpleBooleanProperty();
         res.bind(serial.getSelectionModel().selectedItemProperty().isNotNull()
                 .and(num.textProperty().isNotEmpty())
-                .and(name.textProperty().isNotEmpty())
                 .and(unit.textProperty().isNotEmpty())
                 .and(price.textProperty().isNotEmpty())
-                .and(color.textProperty().isNotEmpty())
-                .and(spec.textProperty().isNotEmpty())
         );
         return res;
     }
@@ -145,7 +142,7 @@ public class ReceiptItemAddController implements DialogContent<ReceiptDetailMode
         res.setUnit(unit.getText());
         res.setPrice(new BigDecimal(price.getText().trim().replace(",", "")));
         res.setColor(color.getText());
-        res.setNum(Long.valueOf(num.getText()));
+        res.setNum(new BigDecimal(num.getText().trim().replace(",", "")));
         return res;
     }
 

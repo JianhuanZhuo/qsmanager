@@ -9,42 +9,42 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox styleClass="bill-item" stylesheets="@css/common.css"
-      fx:controller="cn.keepfight.qsmanager.controller.ReceiptController"
-      fx:id="root"
+<VBox fx:id="root" styleClass="bill-item"
+      stylesheets="@css/common.css"
       xmlns="http://javafx.com/javafx/8.0.111"
-      xmlns:fx="http://javafx.com/fxml/1">
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="cn.keepfight.qsmanager.controller.ReceiptController">
     <HBox styleClass="hbox-common">
         <Label text="送货日期："/>
-        <Label text="2017.01.06"/>
+        <Label fx:id="rdate"/>
         <Label text="送货单号："/>
-        <Label text="JQ5566"/>
+        <Label fx:id="serial"/>
         <Pane HBox.hgrow="ALWAYS"/>
         <Label text="供应商："/>
-        <Label text="安利"/>
+        <Label fx:id="supply"/>
     </HBox>
-    <ScrollPane fitToHeight="true" fitToWidth="true" VBox.vgrow="ALWAYS">
-        <TableView>
+    <ScrollPane fitToHeight="true" fitToWidth="true" prefHeight="150.0" VBox.vgrow="ALWAYS">
+        <TableView fx:id="table">
             <columns>
-                <TableColumn text="编号"/>
-                <TableColumn text="名称"/>
-                <TableColumn text="颜色"/>
-                <TableColumn text="规格"/>
-                <TableColumn text="单位"/>
-                <TableColumn text="单价"/>
-                <TableColumn text="数量"/>
-                <TableColumn text="金额"/>
+                <TableColumn fx:id="tab_serial" text="编号"/>
+                <TableColumn fx:id="tab_name" text="名称"/>
+                <TableColumn fx:id="tab_color" text="颜色"/>
+                <TableColumn fx:id="tab_spec" text="规格"/>
+                <TableColumn fx:id="tab_unit" text="单位"/>
+                <TableColumn fx:id="tab_price" text="单价"/>
+                <TableColumn fx:id="tab_num" text="数量"/>
+                <TableColumn fx:id="tab_total" text="金额"/>
             </columns>
         </TableView>
     </ScrollPane>
     <HBox styleClass="hbox-common">
         <Pane HBox.hgrow="ALWAYS"/>
         <Label text="本次金额总计：￥"/>
-        <Label text="19,536.00"/>
+        <Label fx:id="total" text="0"/>
     </HBox>
     <HBox styleClass="hbox-common">
-        <Button mnemonicParsing="false" text="删除送货记录"/>
+        <Button fx:id="del" text="删除送货记录"/>
         <Pane HBox.hgrow="ALWAYS"/>
-        <Button mnemonicParsing="false" text="查看附件"/>
+        <Button fx:id="attach" text="查看附件"/>
     </HBox>
 </VBox>

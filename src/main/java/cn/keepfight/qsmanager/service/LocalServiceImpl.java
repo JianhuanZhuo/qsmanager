@@ -176,8 +176,11 @@ public class LocalServiceImpl implements ServerService {
             @Override
             public List<ReceiptModelFull> selectAll(Long sid, Long year, Long month) throws Exception {
                 ReceiptSelection selection = new ReceiptSelection();
+                selection.setSid(sid);
+                selection.setYear(year);
+                selection.setMonth(month);
+                System.out.println(selection);
                 List<ReceiptModel> receiptModels = FXUtils.getMapper(factory, ReceiptMapper.class, ReceiptMapper::selectAll, selection);
-
                 // 按ID查询全部的明细
                 List<ReceiptModelFull> fulls = new ArrayList<>();
                 if (receiptModels != null) {
@@ -206,6 +209,11 @@ public class LocalServiceImpl implements ServerService {
             @Override
             public void delete(ReceiptModel model) throws Exception {
                 FXUtils.getMapper(factory, ReceiptMapper.class, ReceiptMapper::delete, model);
+            }
+
+            @Override
+            public List<Long> selectYear() throws Exception {
+                return FXUtils.getMapper(factory, ReceiptMapper.class, ReceiptMapper::selectYear);
             }
         };
     }

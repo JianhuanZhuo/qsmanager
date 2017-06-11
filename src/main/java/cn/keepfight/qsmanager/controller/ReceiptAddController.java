@@ -95,7 +95,7 @@ public class ReceiptAddController implements DialogContent<ReceiptModelFull> {
         tab_num.setCellValueFactory(item -> new SimpleStringProperty(item.getValue().getNum().toString()));
         tab_total.setCellValueFactory(item -> {
             ReceiptDetailModel model = item.getValue();
-            return new SimpleStringProperty(model.getPrice().multiply(new BigDecimal(model.getNum())).toString());
+            return new SimpleStringProperty(model.getPrice().multiply(model.getNum()).toString());
         });
 
         // 新增明细按钮
@@ -136,7 +136,7 @@ public class ReceiptAddController implements DialogContent<ReceiptModelFull> {
         // 设置自动计算总金额
         tabs.getItems().addListener((ListChangeListener<ReceiptDetailModel>) c -> {
                     Optional t = tabs.getItems().stream()
-                            .map(i -> i.getPrice().multiply(new BigDecimal(i.getNum())))
+                            .map(i -> i.getPrice().multiply(i.getNum()))
                             .reduce(BigDecimal::add);
                     String text = "";
                     if (t.isPresent()) {

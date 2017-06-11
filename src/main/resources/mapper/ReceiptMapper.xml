@@ -6,11 +6,13 @@
 
     <!--List<ReceiptModel> selectAll(Long sid, Long year, Long month) throws Exception;-->
     <select id="selectAll" parameterType="ReceiptSelection" resultType="ReceiptModel">
-        SELECT *
+        SELECT id, sid, serial, strftime('%s',rdate)||'000' AS rdate
         FROM receipt
         WHERE sid = #{sid}
-              AND strftime('%Y', rdate) = '#{year}'
-              AND strftime('%m', rdate) = '#{month}'
+              AND strftime('%Y', rdate) = #{year}
+            <if test="month!=null">
+              AND strftime('%m', rdate) = #{month}
+            </if>
     </select>
 
     <!--void insert(ReceiptModel receipt) throws Exception;-->
@@ -28,4 +30,9 @@
         DELETE FROM receipt
         WHERE id = #{id}
     </delete>
+
+    <!--List<Long> selectYear() throws Exception;-->
+    <select id="selectYear" resultType="long">
+        SELECT DISTINCT strftime('%Y', rdate) FROM receipt
+    </select>
 </mapper>
