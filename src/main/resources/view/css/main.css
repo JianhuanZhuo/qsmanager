@@ -31,9 +31,7 @@
     -fx-font: normal normal 18px "微软雅黑";
 }
 
-.hide {
-    visibility: hidden;
-}
+
 
 .bottompane {
     -fx-alignment: center;

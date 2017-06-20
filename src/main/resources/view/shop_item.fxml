@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<HBox fx:id="root" styleClass="prod-item, hbox-common" stylesheets="@css/product.css,@css/common.css"
+      xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="cn.keepfight.qsmanager.controller.ShopItemController">
+    <VBox styleClass="item-pic">
+        <ImageView fx:id="pic" fitHeight="80" fitWidth="80" styleClass="item-pic-img">
+            <Image url="@img/custom-add.png"/>
+        </ImageView>
+    </VBox>
+    <VBox styleClass="vbox-common, item-title" HBox.hgrow="ALWAYS">
+        <Label fx:id="head" styleClass="item-title-head" wrapText="true" text="C1-靓靓刷"/>
+        <Label fx:id="detail" styleClass="item-title-detail" text="包装明细：27*32" wrapText="true"/>
+    </VBox>
+    <HBox styleClass="hbox-common, item-price">
+        <Label styleClass="item-title-detail" text="￥"/>
+        <Label fx:id="price" styleClass="item-title-detail" text="1.26"/>
+        <Label styleClass="item-title-detail" text="元/包"/>
+    </HBox>
+    <HBox styleClass="hbox-common, item-pack">
+        <ChoiceBox fx:id="pack" styleClass="item-pack-choice"/>
+    </HBox>
+    <HBox styleClass="hbox-common, item-num">
+        <TextField fx:id="num" text="60"/>
+        <Label fx:id="unit" text="箱"/>
+    </HBox>
+    <HBox styleClass="hbox-common, item-total">
+        <Label text="合计￥"/>
+        <Label fx:id="total" text="0"/>
+    </HBox>
+</HBox>

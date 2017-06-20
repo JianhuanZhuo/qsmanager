@@ -16,7 +16,12 @@ public class Init implements ContentController {
     }
 
     @Override
-    public void refresh() {
+    public void loaded() {
+
+    }
+
+    @Override
+    public void showed() {
 
     }
 }

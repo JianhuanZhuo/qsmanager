@@ -9,28 +9,28 @@
       stylesheets="@css/common.css"
       fx:controller="cn.keepfight.qsmanager.controller.OutComeTakeController">
     <ChoiceBox fx:id="at_year_sel" prefWidth="100.0"/>
-    <ScrollPane fitToHeight="true" fitToWidth="true" hbarPolicy="ALWAYS" VBox.vgrow="ALWAYS">
+    <ScrollPane fitToHeight="true" fitToWidth="true" VBox.vgrow="ALWAYS">
         <TableView fx:id="at_table">
             <columns>
-                <TableColumn text="供应商"/>
-                <TableColumn text="实际应付"/>
-                <TableColumn text="一月"/>
-                <TableColumn text="二月"/>
-                <TableColumn text="三月"/>
-                <TableColumn text="四月"/>
-                <TableColumn text="五月"/>
-                <TableColumn text="六月"/>
-                <TableColumn text="七月"/>
-                <TableColumn text="八月"/>
-                <TableColumn text="九月"/>
-                <TableColumn text="十月"/>
-                <TableColumn text="十一月"/>
-                <TableColumn text="十二月"/>
+                <TableColumn fx:id="sup" text="供应商"/>
+                <TableColumn fx:id="total" text="年度采购合计"/>
+                <TableColumn fx:id="mon1" text="一月"/>
+                <TableColumn fx:id="mon2" text="二月"/>
+                <TableColumn fx:id="mon3" text="三月"/>
+                <TableColumn fx:id="mon4" text="四月"/>
+                <TableColumn fx:id="mon5" text="五月"/>
+                <TableColumn fx:id="mon6" text="六月"/>
+                <TableColumn fx:id="mon7" text="七月"/>
+                <TableColumn fx:id="mon8" text="八月"/>
+                <TableColumn fx:id="mon9" text="九月"/>
+                <TableColumn fx:id="mon10" text="十月"/>
+                <TableColumn fx:id="mon11" text="十一月"/>
+                <TableColumn fx:id="mon12" text="十二月"/>
             </columns>
         </TableView>
     </ScrollPane>
     <HBox styleClass="hbox-common">
         <Label text="总采购：￥"/>
-        <Label fx:id="at_total" text="246,245.15"/>
+        <Label fx:id="at_total" text="0"/>
     </HBox>
 </VBox>

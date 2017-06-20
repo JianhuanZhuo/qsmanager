@@ -1,28 +1,32 @@
 package cn.keepfight.qsmanager.controller;
 
+import cn.keepfight.qsmanager.QSApp;
 import cn.keepfight.qsmanager.model.ReceiptDetailModel;
 import cn.keepfight.qsmanager.model.ReceiptModelFull;
+import cn.keepfight.utils.FXUtils;
+import cn.keepfight.utils.FXWidgetUtil;
+import cn.keepfight.utils.WarningBuilder;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.scene.Node;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
 import javafx.util.Callback;
 
 import java.math.BigDecimal;
+import java.net.URL;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Optional;
+import java.util.ResourceBundle;
 
 /**
  * Created by tom on 2017/6/11.
  */
-public class ReceiptController implements ContentController {
+public class ReceiptController implements ContentController, Initializable{
 
     @FXML
     private VBox root;
@@ -62,6 +66,13 @@ public class ReceiptController implements ContentController {
     @FXML
     private Button attach;
 
+    @FXML
+    private Button update;
+
+    // 内部表现数据
+    private ReceiptModelFull modelFull;
+    private OutComeController outComeController;
+
     // 静态
     private static SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
 
@@ -70,12 +81,19 @@ public class ReceiptController implements ContentController {
         return root;
     }
 
+
     @Override
-    public void refresh() {
+    public void loaded() {
+
     }
 
-    @FXML
-    public void initialize() {
+    @Override
+    public void showed() {
+    }
+
+
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
         tab_serial.setCellValueFactory(param -> new SimpleStringProperty(param.getValue().getSerial()));
         tab_name.setCellValueFactory(param -> new SimpleStringProperty(param.getValue().getName()));
         tab_color.setCellValueFactory(param -> new SimpleStringProperty(param.getValue().getColor()));
@@ -84,23 +102,31 @@ public class ReceiptController implements ContentController {
         tab_price.setCellValueFactory(param -> new SimpleStringProperty(param.getValue().getPrice().toString()));
         tab_num.setCellValueFactory(param -> new SimpleStringProperty(param.getValue().getNum().toString()));
         tab_total.setCellValueFactory(param -> new SimpleStringProperty(param.getValue().getPrice().multiply(param.getValue().getNum()).toString()));
+
+        del.setOnAction(event -> {
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.setHeaderText("是否要删除这条记录？");
+            Optional<ButtonType> result = alert.showAndWait();
+            if (result.isPresent() && result.get() == ButtonType.OK) {
+                outComeController.deleteSelected(modelFull);
+            }
+        });
+
+        update.setOnAction(event -> outComeController.updateReceipt(modelFull));
     }
 
-    public void fill(ReceiptModelFull modelFull) {
+    public void fill(ReceiptModelFull modelFull, OutComeController outComeController) {
+        this.modelFull = modelFull;
+        this.outComeController = outComeController;
+
+        // 填充数据
         rdate.setText(formatter.format(new Date(modelFull.getRdate())));
-
         serial.setText(modelFull.getSerial());
-        supply.setText(modelFull.getSid().toString());
-
+        supply.setText(modelFull.getSupply());
         table.getItems().setAll(modelFull.getDetailList());
 
-        Optional t = table.getItems().stream()
-                .map(i -> i.getPrice().multiply(i.getNum()))
-                .reduce(BigDecimal::add);
-        String text = "";
-        if (t.isPresent()) {
-            text += t.get().toString();
-        }
-        total.setText(text);
+        // 计算总额
+        FXWidgetUtil.calculate(table.getItems(), i -> i.getPrice().multiply(i.getNum()), total::setText);
     }
+
 }

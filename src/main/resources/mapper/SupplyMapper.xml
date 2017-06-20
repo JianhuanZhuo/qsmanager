@@ -8,6 +8,7 @@
     <select id="selectAll" resultType="SupplyModel">
         SELECT *
         FROM supply
+        ORDER BY serial
     </select>
 
 

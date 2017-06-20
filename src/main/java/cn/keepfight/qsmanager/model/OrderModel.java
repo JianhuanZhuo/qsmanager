@@ -1,7 +1,5 @@
 package cn.keepfight.qsmanager.model;
 
-import java.sql.Timestamp;
-
 /**
  * 订单表模型
  * Created by tom on 2017/6/6.
@@ -10,8 +8,9 @@ public class OrderModel {
     private Long id;
     private Long cid;
     private String serial;
-    private Timestamp orderdate;
+    private Long orderdate;
     private String note;
+    private Long ct;
 
     public Long getId() {
         return id;
@@ -37,11 +36,11 @@ public class OrderModel {
         this.serial = serial;
     }
 
-    public Timestamp getOrderdate() {
+    public Long getOrderdate() {
         return orderdate;
     }
 
-    public void setOrderdate(Timestamp orderdate) {
+    public void setOrderdate(Long orderdate) {
         this.orderdate = orderdate;
     }
 
@@ -51,5 +50,13 @@ public class OrderModel {
 
     public void setNote(String note) {
         this.note = note;
+    }
+
+    public Long getCt() {
+        return ct;
+    }
+
+    public void setCt(Long ct) {
+        this.ct = ct;
     }
 }

@@ -19,12 +19,14 @@ public class ImageLoadUtil {
     public static final int IMG_SIZE_32 = 32;
     public static final int IMG_SIZE_64 = 64;
 
-    private static final String VIEW_IMAGE_URL = "graph";
+    private static final String VIEW_IMAGE_URL = "graph/";
+
+    private static final Image preloadImage = new Image(VIEW_IMAGE_URL + "picture_preload.png");
+    private static final Image loadfailImage = new Image(VIEW_IMAGE_URL + "picture_loadfail.png");
     /**
      * 图像缓存
      */
     private static Map<String, ObjectProperty<Image>> reusableImageMap = new HashMap<>();
-
 
     public static ObjectProperty<Image> load(String imageName) {
         return load(imageName, IMG_SIZE_32);
@@ -44,11 +46,18 @@ public class ImageLoadUtil {
             if (reusableImageMap.containsKey("g" + size + "/" + imageName)) {
                 return reusableImageMap.get("g" + size + "/" + imageName);
             } else {
-                String imageUrl = VIEW_IMAGE_URL + "/g" + size + "/" + imageName;
-                ObjectProperty<Image> resImage = new SimpleObjectProperty<>();
+                String imageUrl = VIEW_IMAGE_URL + "g" + size + "/" + imageName;
+                ObjectProperty<Image> resImage = new SimpleObjectProperty<>(preloadImage);
 
                 // 在此做加载
-                Platform.runLater(() -> resImage.set(new Image(imageUrl)));
+                Platform.runLater(() -> {
+                    try {
+                        resImage.set(new Image(imageUrl));
+                    }catch (Exception e){
+                        e.printStackTrace();
+                        resImage.set(loadfailImage);
+                    }
+                });
 
                 reusableImageMap.put("g" + size + "/" + imageName, resImage);
                 return resImage;
@@ -66,5 +75,26 @@ public class ImageLoadUtil {
             view.imageProperty().bind(load(imageName, size));
         }
         return view;
+    }
+
+    public static void bindImageDirectly(ImageView view, String imageUrl) {
+        if (view != null) {
+            ObjectProperty<Image> resImage = new SimpleObjectProperty<>(preloadImage);
+            Platform.runLater(() -> {
+                try {
+                    resImage.set(new Image(imageUrl));
+                }catch (Exception e){
+//                    e.printStackTrace();
+                    resImage.set(loadfailImage);
+                }
+            });
+            view.imageProperty().bind(resImage);
+        }
+    }
+
+    public static void bindDefault(ImageView view){
+        if (view!=null){
+            view.imageProperty().bind(new SimpleObjectProperty<>(preloadImage));
+        }
     }
 }

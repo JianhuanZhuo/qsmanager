@@ -1,10 +1,7 @@
 package cn.keepfight.qsmanager.Mapper;
 
-import cn.keepfight.qsmanager.model.ReceiptModel;
-import cn.keepfight.qsmanager.model.ReceiptSelection;
-import cn.keepfight.qsmanager.model.SupplyModel;
+import cn.keepfight.qsmanager.model.*;
 
-import java.sql.Timestamp;
 import java.util.List;
 
 /**
@@ -16,7 +13,18 @@ public interface ReceiptMapper extends Mapper {
     /**
      * 选择特定供应送货记录、特定时间的全部送货记录
      */
-    List<ReceiptModel> selectAll(ReceiptSelection selection) throws Exception;
+    List<ReceiptModelFull> selectAll(ReceiptSelection selection) throws Exception;
+
+
+    /**
+     * 查询指定供应商和年份的全部月份的供应总额
+     */
+    List<AnnualTotalModel> supAnnualTotal(ReceiptSelection selection);
+
+    /**
+     * 查询指定年份的全部供应商采购总额
+     */
+    List<MonStatModel> takeStat(String year);
 
     /**
      * 插入指定供应送货记录，插入后，该供应送货记录的ID将得到更新

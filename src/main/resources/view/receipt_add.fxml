@@ -20,7 +20,7 @@
 <?import javafx.scene.layout.VBox?>
 
 <VBox fx:id="root"
-      stylesheets="@css/common.css"
+      stylesheets="@css/common.css, @css/test.css"
       xmlns="http://javafx.com/javafx/8.0.111"
       xmlns:fx="http://javafx.com/fxml/1"
       fx:controller="cn.keepfight.qsmanager.controller.ReceiptAddController">
@@ -74,7 +74,7 @@
     <HBox styleClass="hbox-common">
         <Pane HBox.hgrow="ALWAYS"/>
         <Label text="本次金额总计：￥"/>
-        <Label fx:id="all_total" text="19,536.00"/>
+        <Label fx:id="all_total" text="0"/>
     </HBox>
     <styleClass>
         <String fx:value="title-pane"/>

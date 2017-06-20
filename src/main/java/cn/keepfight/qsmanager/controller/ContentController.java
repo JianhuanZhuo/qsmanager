@@ -10,5 +10,13 @@ public interface ContentController {
 
     Node getRoot();
 
-    void refresh();
+    /**
+     * 该接口在界面加载完成后只调用一次，该调用一般会延迟到首次显示时调用
+     */
+    void loaded();
+
+    /**
+     * 该接口在每次显示（即点击菜单切换到该面板时）调用
+     */
+    void showed();
 }

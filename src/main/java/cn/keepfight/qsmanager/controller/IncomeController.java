@@ -37,8 +37,13 @@ public class IncomeController implements ContentController {
         return root;
     }
 
+
     @Override
-    public void refresh() {
+    public void loaded() {
+    }
+
+    @Override
+    public void showed() {
 
     }
 }

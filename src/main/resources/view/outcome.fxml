@@ -26,7 +26,8 @@
       stylesheets="@css/common.css,@css/income.css"
       xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1">
     <HBox styleClass="title-line">
-        <Label text="产品列表"/>
+        <Label text="支出管理"/>
+        <Pane HBox.hgrow="ALWAYS"/>
     </HBox>
     <TabPane styleClass="tab-pane-common" tabClosingPolicy="UNAVAILABLE" VBox.vgrow="ALWAYS">
         <Tab styleClass="tab-common" text="送货列表">
@@ -39,8 +40,15 @@
                         <Pane HBox.hgrow="ALWAYS"/>
                         <Button fx:id="rec_add" text="添加送货单">
                             <graphic>
-                                <ImageView>
+                                <ImageView fitWidth="16" fitHeight="16" >
                                     <Image url="@img/item-add.png"/>
+                                </ImageView>
+                            </graphic>
+                        </Button>
+                        <Button fx:id="rec_print_mon" text="打印月明细表">
+                            <graphic>
+                                <ImageView fitWidth="16" fitHeight="16" >
+                                    <Image url="@img/print.png"/>
                                 </ImageView>
                             </graphic>
                         </Button>
@@ -48,11 +56,7 @@
                 </top>
                 <center>
                     <ScrollPane fitToHeight="true" fitToWidth="true">
-                        <!--<VBox fx:id="receiptList" styleClass="vbox-lgap">-->
-                        <!--</VBox>-->
-                        <ListView fx:id="receiptFullList">
-
-                        </ListView>
+                        <ListView fx:id="receiptFullList" styleClass="itemlist"/>
                     </ScrollPane>
                 </center>
             </BorderPane>
@@ -66,7 +70,7 @@
                         <Pane HBox.hgrow="ALWAYS"/>
                         <Button fx:id="an_print" text="打印年度对账表">
                             <graphic>
-                                <ImageView styleClass="image-button">
+                                <ImageView  fitWidth="16" fitHeight="16" styleClass="image-button">
                                     <Image url="@img/print.png"/>
                                 </ImageView>
                             </graphic>
@@ -77,18 +81,18 @@
                     <ScrollPane fitToHeight="true" fitToWidth="true">
                         <TableView fx:id="anTable">
                             <columns>
-                                <TableColumn text="日期"/>
-                                <TableColumn text="金额"/>
-                                <TableColumn text="开票单位"/>
-                                <TableColumn text="开票日期"/>
-                                <TableColumn text="开票金额"/>
-                                <TableColumn text="税率"/>
-                                <TableColumn text="税金"/>
-                                <TableColumn text="汇款单位"/>
-                                <TableColumn text="汇款方式"/>
-                                <TableColumn text="汇款日期"/>
-                                <TableColumn text="本月付款金额"/>
-                                <TableColumn text="备注"/>
+                                <TableColumn fx:id="mon" text="日期"/>
+                                <TableColumn fx:id="total" text="金额"/>
+                                <TableColumn fx:id="billunit" text="开票单位"/>
+                                <TableColumn fx:id="billdate" text="开票日期"/>
+                                <TableColumn fx:id="billtotal" text="开票金额"/>
+                                <TableColumn fx:id="rate" text="税率"/>
+                                <TableColumn fx:id="ratetotal" text="税金"/>
+                                <TableColumn fx:id="remitunit" text="汇款单位"/>
+                                <TableColumn fx:id="pattern" text="汇款方式"/>
+                                <TableColumn fx:id="remitdate" text="汇款日期"/>
+                                <TableColumn fx:id="paytotal" text="本月付款金额"/>
+                                <TableColumn fx:id="note" text="备注"/>
                             </columns>
                         </TableView>
                     </ScrollPane>
@@ -107,9 +111,9 @@
                             <Label text="年度付款合计：￥" GridPane.rowIndex="3"/>
                             <Label text="实际应付合计：￥" GridPane.rowIndex="4"/>
                             <Label fx:id="an_count_bf" text="0" GridPane.columnIndex="1"/>
-                            <Label fx:id="an_total_annu" text="0" GridPane.columnIndex="1" GridPane.rowIndex="3"/>
-                            <Label fx:id="an_total_rate" text="0" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
-                            <Label fx:id="an_total_pay" text="0" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
+                            <Label fx:id="an_total_annu" text="0" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+                            <Label fx:id="an_total_rate" text="0" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
+                            <Label fx:id="an_total_pay" text="0" GridPane.columnIndex="1" GridPane.rowIndex="3"/>
                             <Label fx:id="an_total_actu" text="0" GridPane.columnIndex="1" GridPane.rowIndex="4"/>
                         </GridPane>
                         <Pane HBox.hgrow="ALWAYS"/>

@@ -1,31 +1,51 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
-<VBox stylesheets="@css/common.css" styleClass="title-pane"
-      xmlns="http://javafx.com/javafx/8.0.111"
-      xmlns:fx="http://javafx.com/fxml/1"
-      fx:id="root"
-      fx:controller="cn.keepfight.qsmanager.controller.ReceiptItemAddController">
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox fx:id="root" styleClass="title-pane" stylesheets="@css/common.css" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cn.keepfight.qsmanager.controller.ReceiptItemAddController">
 
     <HBox alignment="CENTER_LEFT" styleClass="title-line">
-        <Label text="新增明细信息"/>
-        <Pane HBox.hgrow="ALWAYS"/>
+        <Label text="新增明细信息" />
+        <Pane HBox.hgrow="ALWAYS" />
     </HBox>
     <GridPane styleClass="infogp">
-        <Label text="产品编号：" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
-        <Label text="产品名称：" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
-        <Label text="产品颜色：" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
-        <Label text="产品规格：" GridPane.columnIndex="0" GridPane.rowIndex="3"/>
-        <Label text="产品单价：" GridPane.columnIndex="0" GridPane.rowIndex="4"/>
-        <Label text="计量单位：" GridPane.columnIndex="0" GridPane.rowIndex="5"/>
-        <Label text="产品数量：" GridPane.columnIndex="0" GridPane.rowIndex="6"/>
-        <ChoiceBox fx:id="serial" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
-        <TextField fx:id="name" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
-        <TextField fx:id="color" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
-        <TextField fx:id="spec" GridPane.columnIndex="1" GridPane.rowIndex="3"/>
-        <TextField fx:id="price" GridPane.columnIndex="1" GridPane.rowIndex="4"/>
-        <TextField fx:id="unit" GridPane.columnIndex="1" GridPane.rowIndex="5"/>
-        <TextField fx:id="num" GridPane.columnIndex="1" GridPane.rowIndex="6"/>
+        <Label text="产品编号：" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+        <Label text="产品名称：" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+        <Label text="产品颜色：" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+        <Label text="产品规格：" GridPane.columnIndex="0" GridPane.rowIndex="3" />
+        <Label text="产品单价：" GridPane.columnIndex="0" GridPane.rowIndex="4" />
+        <Label text="计量单位：" GridPane.columnIndex="0" GridPane.rowIndex="5" />
+        <Label text="产品数量：" GridPane.columnIndex="0" GridPane.rowIndex="6" />
+        <HBox GridPane.columnIndex="1" GridPane.rowIndex="0">
+            <TextField fx:id="serial" />
+            <ChoiceBox fx:id="serial_c" />
+        </HBox>
+        <TextField fx:id="name" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+        <TextField fx:id="color" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+        <TextField fx:id="spec" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+        <TextField fx:id="price" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+        <TextField fx:id="unit" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+        <TextField fx:id="num" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+      <columnConstraints>
+         <ColumnConstraints />
+         <ColumnConstraints hgrow="ALWAYS" maxWidth="210.0" />
+      </columnConstraints>
+      <rowConstraints>
+         <RowConstraints />
+         <RowConstraints />
+         <RowConstraints />
+         <RowConstraints />
+         <RowConstraints />
+         <RowConstraints />
+         <RowConstraints />
+      </rowConstraints>
     </GridPane>
 </VBox>

@@ -1,13 +1,11 @@
 package cn.keepfight.qsmanager.controller;
 
 import cn.keepfight.qsmanager.QSApp;
+import cn.keepfight.qsmanager.model.MaterialModel;
 import cn.keepfight.qsmanager.model.ReceiptDetailModel;
 import cn.keepfight.qsmanager.model.ReceiptModelFull;
 import cn.keepfight.qsmanager.model.SupplyModel;
-import cn.keepfight.utils.CustomDialog;
-import cn.keepfight.utils.DialogContent;
-import cn.keepfight.utils.FXUtils;
-import cn.keepfight.utils.ViewPathUtil;
+import cn.keepfight.utils.*;
 import javafx.application.Platform;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
@@ -22,11 +20,13 @@ import javafx.util.StringConverter;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.sql.Date;
+import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 import java.util.Optional;
+import java.util.function.Consumer;
 
 /**
  * 新增产品界面控制器
@@ -112,13 +112,6 @@ public class ReceiptAddController implements DialogContent<ReceiptModelFull> {
         item_del.disableProperty().bind(tabs.getSelectionModel().selectedItemProperty().isNull());
         item_add.disableProperty().bind(sid.getSelectionModel().selectedItemProperty().isNull());
 
-        Platform.runLater(() -> {
-            try {
-                addController = ViewPathUtil.loadViewForController("receipt_item_add.fxml");
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        });
 
         // 设置SID下来文字转换
         sid.setConverter(new StringConverter<SupplyModel>() {
@@ -134,17 +127,24 @@ public class ReceiptAddController implements DialogContent<ReceiptModelFull> {
         });
 
         // 设置自动计算总金额
-        tabs.getItems().addListener((ListChangeListener<ReceiptDetailModel>) c -> {
-                    Optional t = tabs.getItems().stream()
-                            .map(i -> i.getPrice().multiply(i.getNum()))
-                            .reduce(BigDecimal::add);
-                    String text = "";
-                    if (t.isPresent()) {
-                        text += t.get().toString();
-                    }
-                    all_total.setText(text);
+        FXWidgetUtil.calculate(tabs.getItems(), i -> i.getPrice().multiply(i.getNum()), all_total::setText);
+
+        // 禁用手动输入
+        rdate.getEditor().setDisable(true);
+
+        // 双击原料表进行编辑
+        tabs.setRowFactory(tv -> {
+            TableRow<ReceiptDetailModel> row = new TableRow<>();
+            row.setOnMouseClicked(event -> {
+                if (event.getClickCount() == 2 && (!row.isEmpty())) {
+                    ReceiptDetailModel rowData = row.getItem();
+                    addController.setSid(sid.getSelectionModel().getSelectedItem().getId());
+                    Optional<ReceiptDetailModel> op = CustomDialog.gen().build(addController, rowData);
+                    op.ifPresent(rowData::update);
                 }
-        );
+            });
+            return row;
+        });
     }
 
     @Override
@@ -154,11 +154,34 @@ public class ReceiptAddController implements DialogContent<ReceiptModelFull> {
         tabs.getItems().clear();
         // 加载列表
         loadSupply();
+
+        // 加载 FXML
+        if(addController==null){
+            Platform.runLater(() -> {
+                try {
+                    addController = ViewPathUtil.loadViewForController("receipt_item_add.fxml");
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            });
+        }
     }
 
     @Override
     public void fill(ReceiptModelFull receiptModelFull) {
-
+        serial.setText(receiptModelFull.getSerial());
+        Platform.runLater(()->{
+            for (SupplyModel supplyModel : sid.getItems()) {
+                System.out.println("rfullid:"+receiptModelFull.getSid());
+                System.out.println("sid:"+supplyModel.getId());
+                if (supplyModel.getId().equals(receiptModelFull.getSid())){
+                    sid.getSelectionModel().select(supplyModel);
+                    break;
+                }
+            }
+        });
+        rdate.setValue(FXUtils.stampToLocalDate(receiptModelFull.getRdate()));
+        tabs.getItems().setAll(receiptModelFull.getDetailList());
     }
 
     @Override

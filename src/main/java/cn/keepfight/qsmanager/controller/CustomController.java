@@ -2,6 +2,7 @@ package cn.keepfight.qsmanager.controller;
 
 import cn.keepfight.qsmanager.QSApp;
 import cn.keepfight.qsmanager.model.CustomModel;
+import cn.keepfight.qsmanager.model.SupplyModel;
 import cn.keepfight.utils.CustomDialog;
 import cn.keepfight.utils.ViewPathUtil;
 import cn.keepfight.utils.WarningBuilder;
@@ -16,6 +17,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
 import java.io.IOException;
+import java.util.Comparator;
 import java.util.Optional;
 
 import static cn.keepfight.utils.FXUtils.limitLength;
@@ -84,18 +86,8 @@ public class CustomController implements ContentController {
     }
 
     @Override
-    public void refresh() {
+    public void loaded() {
         loadCustom();
-    }
-
-    @FXML
-    public void initialize() throws Exception {
-        initUI();
-        initAction();
-        loadCustom();
-    }
-
-    private void initUI() throws Exception {
         Platform.runLater(() -> {
             try {
                 addController = ViewPathUtil.loadViewForController("custom_add.fxml");
@@ -103,6 +95,20 @@ public class CustomController implements ContentController {
                 e.printStackTrace();
             }
         });
+    }
+
+    @Override
+    public void showed() {
+
+    }
+
+    @FXML
+    public void initialize() throws Exception {
+        initUI();
+        initAction();
+    }
+
+    private void initUI() throws Exception {
 
         custList.setCellFactory(list -> new ListCell<CustomModel>() {
             @Override

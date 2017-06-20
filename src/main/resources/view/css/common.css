@@ -35,20 +35,30 @@
     -fx-spacing: 5px;
 
     -fx-alignment: center;
+}
 
+.title-pane > .title-line > Label{
     -fx-font: normal normal 16px "微软雅黑";
 }
+
+.title-pane > .title-line .btnable, .hbox-common > .btnable {
+    -fx-background-color: transparent;
+    -fx-cursor: hand;
+    -fx-alignment: center;
+}
+
+
+.title-pane > .title-line .btnable Label{
+    -fx-font: normal normal 14px "微软雅黑";
+}
+
+
 
 .spacing-line{
     -fx-padding: 2 5px;
     -fx-spacing: 5px;
 
     -fx-font: normal normal 14px "微软雅黑";
-}
-
-.title-pane > .title-line .btnable, .hbox-common > .btnable {
-    -fx-background-color: transparent;
-    -fx-cursor: hand;
 }
 
 .image-button{
@@ -59,6 +69,7 @@
 .hbox-common{
     -fx-spacing: 5px;
     -fx-padding: 5px;
+    -fx-alignment: center;
 }
 
 .hbox-spacing {
@@ -110,6 +121,10 @@
     -fx-underline: true;
 }
 
+.hide {
+    visibility: hidden;
+}
+
 GridPane.infogp Label {
     -fx-font: normal normal 12px "微软雅黑";
 }
@@ -128,5 +143,28 @@ GridPane.infogp {
 .bill-item {
     -fx-border-width: 1px;
     -fx-border-color: #666666;
+    -fx-border-insets: 10px;
     -fx-padding: 10px;
+}
+
+/*自定义列表取消高亮*/
+.itemlist .list-cell:focused{
+    -fx-background-color: #e8faed;
+    -fx-text-fill: -fx-text-base-color;
+}
+
+/*.itemlist .list-cell:focused Label{*/
+    /*-fx-text-fill: -fx-text-base-color;*/
+/*}*/
+.itemlist .list-cell:focused *{
+    -fx-text-fill: -fx-text-base-color;
+}
+
+/*自定义表格取消隔离线*/
+.xxtable{
+    -fx-table-cell-border-color: transparent;
+}
+
+.xxtable .table-row-cell {
+    -fx-border-width: 1;
 }

@@ -10,14 +10,16 @@ public class ReceiptModel {
     private Long sid;
     private String serial;
     private Long rdate;
-    private Long xdate;
 
-    public Long getXdate() {
-        return xdate;
+    public ReceiptModel(){
+
     }
 
-    public void setXdate(Long xdate) {
-        this.xdate = xdate;
+    public ReceiptModel(ReceiptModelFull modelFull) {
+        id = modelFull.getId();
+        sid = modelFull.getSid();
+        serial = modelFull.getSerial();
+        rdate = modelFull.getRdate();
     }
 
     public Long getId() {

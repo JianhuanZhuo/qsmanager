@@ -58,6 +58,7 @@ public class ViewPathUtil {
      * @return 加载器
      */
     public static FXMLLoader getLoader(String viewURL) {
+        System.out.println("View--------------------getLoader:"+viewURL);
         return new FXMLLoader(ViewPathUtil.getFrameView(viewURL));
     }
 

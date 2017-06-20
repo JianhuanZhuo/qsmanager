@@ -17,6 +17,9 @@ public class CustomDialog {
     private String head;
     private String graph;
 
+    private String okStr = "确定";
+    private String cancelStr = "取消";
+
     public static CustomDialog gen() {
         return new CustomDialog();
     }
@@ -40,8 +43,16 @@ public class CustomDialog {
         this.title = title;
     }
 
+    public void setOkStr(String str){
+        okStr = str;
+    }
+
+    public void setCancelStr(String cancelStr) {
+        this.cancelStr = cancelStr;
+    }
 
     public <T> Optional<T> build(DialogContent<T> content, T initData) {
+        if (content==null) return Optional.empty();
         //初始化内容
         content.init();
         content.fill(initData);
@@ -49,6 +60,7 @@ public class CustomDialog {
     }
 
     public <T> Optional<T> build(DialogContent<T> content) {
+        if (content==null) return Optional.empty();
         //初始化内容
         content.init();
         return construct(content);
@@ -63,8 +75,8 @@ public class CustomDialog {
             dialog.setGraphic(ImageLoadUtil.bindImage(new ImageView(), graph));
 
         // 添加按钮
-        ButtonType okButtonType = new ButtonType("确定", ButtonBar.ButtonData.OK_DONE);
-        ButtonType canButtonType = new ButtonType("取消", ButtonBar.ButtonData.CANCEL_CLOSE);
+        ButtonType okButtonType = new ButtonType(okStr, ButtonBar.ButtonData.OK_DONE);
+        ButtonType canButtonType = new ButtonType(cancelStr, ButtonBar.ButtonData.CANCEL_CLOSE);
         dialog.getDialogPane().getButtonTypes().addAll(okButtonType, canButtonType);
 
         dialog.getDialogPane().setContent(content.getContent());

@@ -1,60 +1,58 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.Slider?>
-<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.*?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.VBox?>
-
-<HBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
-      styleClass="hbox-common" stylesheets="@css/common.css" xmlns="http://javafx.com/javafx/8.0.111"
+<?import javafx.scene.layout.*?>
+<VBox stylesheets="@css/common.css, @css/picmaker.css"
+      xmlns="http://javafx.com/javafx/8.0.111"
+      fx:id="root"
+      fx:controller="cn.keepfight.qsmanager.controller.PicMakerController"
       xmlns:fx="http://javafx.com/fxml/1"
-      fx:controller="cn.keepfight.qsmanager.controller.PicMakerController">
-    <VBox alignment="CENTER" fillWidth="false" prefHeight="300.0" prefWidth="300.0" style="-fx-border-color: pink;">
-        <ImageView fx:id="image" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
-            <Image url="@../graph/g64/collaboration.png"/>
-        </ImageView>
-    </VBox>
-    <VBox style="visibility: collapse" alignment="CENTER" fillWidth="false" styleClass="vbox-common">
-        <HBox fillHeight="false" styleClass="hbox-common">
-            <Label text="适配大小："/>
-            <Slider fx:id="size_s" majorTickUnit="100.0" max="300.0" minorTickCount="5" showTickLabels="true"
-                    showTickMarks="true"
-                    value="64.0"/>
-            <TextField fx:id="size_t" prefWidth="100.0" HBox.hgrow="ALWAYS"/>
-        </HBox>
-        <HBox layoutX="10.0" layoutY="310.0" styleClass="hbox-common">
-            <Label text="旋转角度："/>
-            <Slider fx:id="rota_s" majorTickUnit="90.0" max="180.0" min="-180.0" minorTickCount="6"
-                    showTickLabels="true"
-                    showTickMarks="true" HBox.hgrow="ALWAYS"/>
-            <TextField fx:id="rota_t" prefWidth="100.0" HBox.hgrow="ALWAYS"/>
-        </HBox>
-        <HBox layoutX="10.0" layoutY="333.0" styleClass="hbox-common">
-            <Label text="左右缩放："/>
-            <Slider fx:id="" blockIncrement="0.1" majorTickUnit="1.0" max="5.0" minorTickCount="5" showTickLabels="true"
-                    showTickMarks="true" value="1.0"/>
-            <TextField prefWidth="100.0" HBox.hgrow="ALWAYS"/>
-        </HBox>
-        <HBox layoutX="10.0" layoutY="384.0" styleClass="hbox-common">
-            <Label text="上下缩放："/>
-            <Slider blockIncrement="0.1" majorTickUnit="1.0" max="5.0" minorTickCount="5" showTickLabels="true"
-                    showTickMarks="true" value="1.0"/>
-            <TextField prefWidth="100.0" HBox.hgrow="ALWAYS"/>
-        </HBox>
-        <HBox layoutX="10.0" layoutY="384.0" styleClass="hbox-common">
-            <Label text="左右平移："/>
-            <Slider blockIncrement="0.1" majorTickUnit="1.0" max="5.0" minorTickCount="5" showTickLabels="true"
-                    showTickMarks="true" value="1.0"/>
-            <TextField prefWidth="100.0" HBox.hgrow="ALWAYS"/>
-        </HBox>
-        <HBox layoutX="10.0" layoutY="421.0" styleClass="hbox-common">
-            <Label text="上下平移："/>
-            <Slider blockIncrement="0.1" majorTickUnit="1.0" max="5.0" minorTickCount="5" showTickLabels="true"
-                    showTickMarks="true" value="1.0"/>
-            <TextField prefWidth="100.0" HBox.hgrow="ALWAYS"/>
-        </HBox>
-    </VBox>
-</HBox>
+      styleClass="title-pane">
+    <HBox alignment="CENTER_LEFT" styleClass="title-line">
+        <Label text="图片选择器"/>
+        <Pane HBox.hgrow="ALWAYS"/>
+    </HBox>
+    <HBox alignment="CENTER"
+          styleClass="hbox-common">
+        <VBox styleClass="viewer">
+            <HBox fx:id="preview" styleClass="preview">
+                <ImageView fx:id="imageLoader" fitHeight="260.0" fitWidth="260.0" pickOnBounds="true"
+                           preserveRatio="true" styleClass="image-loader">
+                    <Image url="@img/custom-add.png"/>
+                </ImageView>
+            </HBox>
+        </VBox>
+        <VBox alignment="CENTER" fillWidth="false" styleClass="vbox-common">
+
+            <GridPane styleClass="infogp">
+                <Label text="选择图片：" GridPane.rowIndex="0"/>
+                <HBox GridPane.columnIndex="1" GridPane.rowIndex="0">
+                    <TextField fx:id="picurl" disable="true" />
+                    <Button fx:id="pickBtn" text="..." />
+                </HBox>
+                <Label text="旋转角度：" GridPane.rowIndex="1"/>
+                <Slider fx:id="rotate" majorTickUnit="90.0" max="180.0" min="-180.0" minorTickCount="6"
+                        showTickLabels="true" showTickMarks="true" snapToTicks="true" GridPane.columnIndex="1"
+                        GridPane.rowIndex="1"/>
+                <Label text="左右缩放：" GridPane.rowIndex="2"/>
+                <Slider fx:id="scaleX" majorTickUnit="1.0" max="3.0" minorTickCount="10" showTickLabels="true"
+                        showTickMarks="true" snapToTicks="true" value="1.0" GridPane.columnIndex="1"
+                        GridPane.rowIndex="2"/>
+                <Label text="上下缩放：" GridPane.rowIndex="3"/>
+                <Slider fx:id="scaleY" majorTickUnit="1.0" max="3.0" minorTickCount="10" showTickLabels="true"
+                        showTickMarks="true" snapToTicks="true" value="1.0" GridPane.columnIndex="1"
+                        GridPane.rowIndex="3"/>
+                <Label text="左右平移：" GridPane.rowIndex="4"/>
+                <Slider fx:id="translateX" majorTickUnit="80.0" max="160.0" min="-160.0" minorTickCount="8"
+                        showTickLabels="true" showTickMarks="true" snapToTicks="true" GridPane.columnIndex="1"
+                        GridPane.rowIndex="4"/>
+                <Label text="上下平移：" GridPane.rowIndex="5"/>
+                <Slider fx:id="translateY" majorTickUnit="80.0" max="160.0" min="-160.0" minorTickCount="8"
+                        showTickLabels="true" showTickMarks="true" snapToTicks="true" GridPane.columnIndex="1"
+                        GridPane.rowIndex="5"/>
+            </GridPane>
+        </VBox>
+    </HBox>
+</VBox>

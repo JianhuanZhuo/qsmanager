@@ -109,18 +109,19 @@
                 </Button>
             </HBox>
             <ScrollPane fitToHeight="true" fitToWidth="true">
-                <content>
-                    <TableView fx:id="matTable" prefHeight="266.0">
-                        <columns>
-                            <TableColumn fx:id="mat_serial" text="产品编号"/>
-                            <TableColumn fx:id="mat_name" text="产品名称"/>
-                            <TableColumn fx:id="mat_color" text="产品颜色"/>
-                            <TableColumn fx:id="mat_spec" text="产品规格"/>
-                            <TableColumn fx:id="mat_price" text="产品单价"/>
-                            <TableColumn fx:id="mat_unit" text="计量单位"/>
-                        </columns>
-                    </TableView>
-                </content>
+                <TableView fx:id="matTable" prefHeight="266.0">
+                    <columns>
+                        <TableColumn fx:id="mat_serial" text="产品编号"/>
+                        <TableColumn fx:id="mat_name" text="产品名称"/>
+                        <TableColumn fx:id="mat_color" text="产品颜色"/>
+                        <TableColumn fx:id="mat_spec" text="产品规格"/>
+                        <TableColumn fx:id="mat_price" text="产品单价"/>
+                        <TableColumn fx:id="mat_unit" text="计量单位"/>
+                    </columns>
+                    <columnResizePolicy>
+                        <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                    </columnResizePolicy>
+                </TableView>
             </ScrollPane>
         </VBox>
     </VBox>

@@ -25,15 +25,16 @@
       fx:controller="cn.keepfight.qsmanager.controller.IncomeController">
     <HBox alignment="CENTER_LEFT" styleClass="title-line">
         <Label text="收入管理"/>
+        <Pane HBox.hgrow="ALWAYS"/>
     </HBox>
     <TabPane styleClass="tab-pane-common" tabClosingPolicy="UNAVAILABLE" VBox.vgrow="ALWAYS">
         <Tab styleClass="tab-common" text="账单列表">
             <BorderPane prefHeight="200.0" prefWidth="200.0" styleClass="tab-content-common">
                 <top>
                     <HBox alignment="CENTER" styleClass="hbox-common" BorderPane.alignment="CENTER">
-                        <ChoiceBox fx:id="cust_sel" prefWidth="150.0"/>
-                        <ChoiceBox fx:id="year_sel" prefWidth="150.0"/>
-                        <ChoiceBox fx:id="mon_sel" prefWidth="150.0"/>
+                        <ChoiceBox fx:id="cust_sel"/>
+                        <ChoiceBox fx:id="year_sel"/>
+                        <ChoiceBox fx:id="mon_sel"/>
                         <RadioButton fx:id="sepra" text="分单查看"/>
                         <RadioButton fx:id="aggra" text="按月查看"/>
                         <Pane HBox.hgrow="ALWAYS"/>
@@ -57,8 +58,8 @@
             <BorderPane styleClass="tab-content-common">
                 <top>
                     <HBox styleClass="hbox-common">
-                        <ChoiceBox fx:id="cust_sel_an" prefWidth="150.0"/>
-                        <ChoiceBox fx:id="year_sel_an" prefWidth="150.0"/>
+                        <ChoiceBox fx:id="cust_sel_an"/>
+                        <ChoiceBox fx:id="year_sel_an"/>
                         <Pane HBox.hgrow="ALWAYS"/>
                         <ImageView fx:id="print_an" styleClass="image-button">
                             <Image url="@img/print.png"/>

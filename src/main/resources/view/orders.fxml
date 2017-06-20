@@ -10,6 +10,7 @@
 
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.image.Image?>
+<?import javafx.scene.control.ListView?>
 <VBox styleClass="title-pane,content-pane"
       stylesheets="@css/common.css"
       fx:controller="cn.keepfight.qsmanager.controller.OrdersController"
@@ -18,31 +19,37 @@
       xmlns:fx="http://javafx.com/fxml/1">
     <HBox alignment="CENTER_LEFT" styleClass="title-line">
         <Label text="订单管理"/>
-    </HBox>
-    <HBox styleClass="hbox-common">
-        <ChoiceBox fx:id="cust_sel" prefWidth="100.0"/>
-        <ChoiceBox fx:id="state_sel" prefWidth="100.0"/>
         <Pane HBox.hgrow="ALWAYS"/>
-        <Button fx:id="add_order" text="添加订单" styleClass="btnable">
-            <graphic>
-                <ImageView styleClass="image-button">
-                    <Image url="@img/item-add.png"/>
-                </ImageView>
-            </graphic>
-        </Button>
         <Button fx:id="refresh" text="刷新" styleClass="btnable">
             <graphic>
-                <ImageView styleClass="image-button">
+                <ImageView fitHeight="18" fitWidth="18" styleClass="image-button">
                     <Image url="@img/reset.png"/>
                 </ImageView>
             </graphic>
         </Button>
     </HBox>
+    <HBox styleClass="hbox-common">
+        <ChoiceBox fx:id="cust_sel" prefWidth="150.0"/>
+        <ChoiceBox fx:id="year_sel" prefWidth="80.0"/>
+        <ChoiceBox fx:id="month_sel" prefWidth="80.0"/>
+        <ChoiceBox fx:id="state_sel" prefWidth="80.0"/>
+        <Button fx:id="load" text="加载" >
+            <graphic>
+                <ImageView styleClass="image-button">
+                    <Image url="@img/search.png"/>
+                </ImageView>
+            </graphic>
+        </Button>
+        <Pane HBox.hgrow="ALWAYS"/>
+        <Button fx:id="add_order" text="添加订单">
+            <graphic>
+                <ImageView fitHeight="16" fitWidth="16" styleClass="image-button">
+                    <Image url="@img/item-add.png"/>
+                </ImageView>
+            </graphic>
+        </Button>
+    </HBox>
     <ScrollPane fitToHeight="true" fitToWidth="true" VBox.vgrow="ALWAYS">
-        <VBox fx:id="orderList" styleClass="vbox-lgap">
-            <fx:include source="orderform.fxml"/>
-            <fx:include source="orderform.fxml"/>
-            <fx:include source="orderform.fxml"/>
-        </VBox>
+        <ListView fx:id="orderList" styleClass="itemlist"/>
     </ScrollPane>
 </VBox>

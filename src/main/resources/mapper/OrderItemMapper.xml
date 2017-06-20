@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.keepfight.qsmanager.Mapper.OrderItemMapper">
+
+    <!--查询指定订单的全部订单项-->
+    <!--List<OrderItemModel> selectAllByOid(Long oid) throws Exception;-->
+    <select id="selectAllByOid" parameterType="long" resultType="OrderItemModel">
+        SELECT *
+        FROM order_item
+        WHERE oid = #{oid}
+    </select>
+
+
+    <!--插入货项-->
+    <!--void insert(OrderItemModel item) throws Exception;-->
+    <insert id="insert" parameterType="OrderItemModel">
+        INSERT INTO
+        order_item (oid, num,
+        <if test="rate!=null">
+            rate,
+        </if>
+        <if test="rebate!=null">
+            rebate,
+        </if>
+        <if test="delifee!=null">
+            delifee,
+        </if>
+        serial, name, detail, pack, packDefault, price, unit, picurl)
+        VALUES (#{oid}, #{num},
+        <if test="rate!=null">
+            #{rate},
+        </if>
+        <if test="rebate!=null">
+            #{rebate},
+        </if>
+        <if test="delifee!=null">
+            #{delifee},
+        </if>
+        #{serial}, #{name}, #{detail}, #{pack}, #{packDefault}, #{price}, #{unit}, #{picurl})
+        <selectKey keyProperty="id" order="AFTER" resultType="long">
+            SELECT last_insert_rowid();
+        </selectKey>
+    </insert>
+    
+    
+    <!--删除指定订单项，以ID为准。-->
+    <!--void delete(OrderItemModel model) throws Exception;-->
+    <delete id="delete" parameterType="OrderItemModel">
+        DELETE FROM order_item
+        WHERE id = #{id}
+    </delete>
+
+
+    <!--删除指定订单 ID 的全部明细。-->
+    <!--void deleteByOid(Long Oid) throws Exception;-->
+    <delete id="deleteByOid" parameterType="long">
+        DELETE FROM order_item
+        WHERE oid = #{Oid}
+    </delete>
+</mapper>

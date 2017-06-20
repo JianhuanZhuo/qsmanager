@@ -1,5 +1,7 @@
 package cn.keepfight.utils;
 
+import javafx.util.Pair;
+
 import java.io.*;
 import java.nio.file.Paths;
 import java.util.Properties;
@@ -22,7 +24,7 @@ public class ConfigUtil {
 
         //load properties file
         try (InputStream in = new FileInputStream(getFile(file))) {
-            resProperties.load(in);
+            resProperties.load(new InputStreamReader(in, "UTF-8"));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -35,12 +37,38 @@ public class ConfigUtil {
         props.setProperty(key, value);
 
         try (FileOutputStream out = new FileOutputStream(getFile(file))) {
-            props.store(out, null);
+            props.store(new OutputStreamWriter(out, "UTF-8"), null);
         } catch (IOException e) {
             e.printStackTrace();
             throw new RuntimeException(e);
         }
     }
 
+    @SafeVarargs
+    public synchronized static void alter(String file, Pair<String, String>... ps) {
+        Properties props = load(file);
+        for (Pair<String, String> p : ps) {
+            props.setProperty(p.getKey(), p.getValue());
+        }
 
+        try (FileOutputStream out = new FileOutputStream(getFile(file))) {
+            props.store(new OutputStreamWriter(out, "UTF-8"), null);
+        } catch (IOException e) {
+            e.printStackTrace();
+            throw new RuntimeException(e);
+        }
+    }
+
+    public synchronized static void store(String file, Properties ps){
+        if (file==null || file.trim().equals("") || ps==null){
+            return;
+        }
+
+        try (FileOutputStream out = new FileOutputStream(getFile(file))) {
+            ps.store(new OutputStreamWriter(out, "UTF-8"), null);
+        } catch (IOException e) {
+            e.printStackTrace();
+            throw new RuntimeException(e);
+        }
+    }
 }

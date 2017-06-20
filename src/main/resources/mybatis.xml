@@ -27,5 +27,8 @@
         <mapper resource="mapper/MaterialMapper.xml"/>
         <mapper resource="mapper/ReceiptMapper.xml"/>
         <mapper resource="mapper/ReceiptDetailMapper.xml"/>
+        <mapper resource="mapper/SupAnnuMapper.xml"/>
+        <mapper resource="mapper/OrderMapper.xml"/>
+        <mapper resource="mapper/OrderItemMapper.xml"/>
     </mappers>
 </configuration>

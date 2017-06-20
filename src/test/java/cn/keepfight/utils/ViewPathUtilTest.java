@@ -1,5 +1,7 @@
 package cn.keepfight.utils;
 
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 import org.junit.Test;
 
 import java.io.File;
@@ -30,4 +32,17 @@ public class ViewPathUtilTest {
     public void loadViewForController() throws Exception {
     }
 
+    @Test
+    public void testTime() {
+        StringProperty x = new SimpleStringProperty("xx");
+        StringProperty y = new SimpleStringProperty("yy");
+
+        x.bind(y);
+
+        y.set("yy2");
+        System.out.println(x.get());
+        y.unbind();
+        y.set("yy3");
+        System.out.println(x.get());
+    }
 }

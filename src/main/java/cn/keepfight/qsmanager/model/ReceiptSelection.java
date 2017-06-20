@@ -1,7 +1,5 @@
 package cn.keepfight.qsmanager.model;
 
-import java.util.Formatter;
-
 /**
  * 送货供应表选择器模型
  * Created by tom on 2017/6/10.

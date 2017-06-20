@@ -1,23 +1,20 @@
 package cn.keepfight.qsmanager.controller;
 
-import cn.keepfight.qsmanager.QSApp;
 import cn.keepfight.qsmanager.model.ProductModel;
-import cn.keepfight.utils.CustomDialog;
-import cn.keepfight.utils.DialogContent;
-import cn.keepfight.utils.FXUtils;
-import cn.keepfight.utils.ViewPathUtil;
+import cn.keepfight.utils.*;
+import javafx.application.Platform;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
-import javafx.stage.FileChooser;
 
-import java.io.File;
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.util.Optional;
 
 /**
  * 新增产品界面控制器
@@ -44,16 +41,24 @@ public class ProductAddController implements DialogContent<ProductModel> {
     private Button pickBtn;
 
     @FXML
+    private ImageView imageLoader;
+
+
+    // 子界面控制器
+    private PicMakerController addController;
+
+    @FXML
     public void initialize() {
-        pickBtn.setOnAction(event -> {
-            FileChooser fileChooser = new FileChooser();
-            fileChooser.setTitle("选择产品图片");
-            fileChooser.getExtensionFilters().addAll(
-                    new FileChooser.ExtensionFilter("Image Files", "*.png", "*.jpg", "*.gif"));
-            File selectedFile = fileChooser.showOpenDialog(QSApp.primaryStage);
-            if (selectedFile != null) {
-                picurl.setText(selectedFile.getAbsolutePath());
+        Platform.runLater(() -> {
+            try {
+                addController = ViewPathUtil.loadViewForController("pic_maker.fxml");
+            } catch (IOException e) {
+                e.printStackTrace();
             }
+        });
+        pickBtn.setOnAction(event -> {
+            Optional<String> op = CustomDialog.gen().build(addController, picurl.getText());
+            op.ifPresent(this::setPicurl);
         });
 
         FXUtils.limitLength(serial, 30);
@@ -72,8 +77,9 @@ public class ProductAddController implements DialogContent<ProductModel> {
         detail.setText("");
         unit.setText("");
         price.setText("");
-        picurl.setText("");
         packNum.setText("");
+        picurl.setText("");
+        ImageLoadUtil.bindDefault(imageLoader);
     }
 
     @Override
@@ -83,8 +89,8 @@ public class ProductAddController implements DialogContent<ProductModel> {
         detail.setText(productModel.getDetail());
         unit.setText(productModel.getUnit());
         price.setText(productModel.getPrice().toString());
-        picurl.setText(productModel.getPicurl());
         packNum.setText(productModel.getPack().toString());
+        setPicurl(productModel.getPicurl());
     }
 
     @Override
@@ -97,11 +103,8 @@ public class ProductAddController implements DialogContent<ProductModel> {
         BooleanProperty res = new SimpleBooleanProperty();
         res.bind(serial.textProperty().isNotEmpty()
                 .and(name.textProperty().isNotEmpty())
-                .and(detail.textProperty().isNotEmpty())
                 .and(unit.textProperty().isNotEmpty())
                 .and(price.textProperty().isNotEmpty())
-                .and(picurl.textProperty().isNotEmpty())
-                .and(packNum.textProperty().isNotEmpty())
         );
         return res;
     }
@@ -117,5 +120,12 @@ public class ProductAddController implements DialogContent<ProductModel> {
         res.setPicurl(picurl.getText());
         res.setPack(Long.valueOf(packNum.getText()));
         return res;
+    }
+
+    private void setPicurl(String absolutePath) {
+        if (absolutePath != null && !absolutePath.equals("")) {
+            picurl.setText(absolutePath);
+            ImageLoadUtil.bindImageDirectly(imageLoader, absolutePath);
+        }
     }
 }

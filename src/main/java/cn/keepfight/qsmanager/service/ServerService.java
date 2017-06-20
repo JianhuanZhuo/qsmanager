@@ -40,4 +40,14 @@ public interface ServerService {
      * 获得供应送货记录服务实现实例
      */
     ReceiptService getReceiptService();
+
+    /**
+     * 获得供应商年度对账表操作服务实现实例
+     */
+    SupAnnualService getSupAnnualService();
+
+    /**
+     * 获得订单服务实现实例
+     */
+    OrderService getOrderService();
 }

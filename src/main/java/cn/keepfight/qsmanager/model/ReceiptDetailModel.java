@@ -89,4 +89,15 @@ public class ReceiptDetailModel {
     public void setNum(BigDecimal num) {
         this.num = num;
     }
+
+    public void update(ReceiptDetailModel model){
+        setRid(model.getRid());
+        setSerial(model.getSerial());
+        setName(model.getName());
+        setColor(model.getColor());
+        setSpec(model.getSpec());
+        setPrice(model.getPrice());
+        setUnit(model.getUnit());
+        setNum(model.getNum());
+    }
 }

@@ -9,7 +9,7 @@ import java.math.BigDecimal;
 public class SupAnnualModel {
     private Long id;
     private Long sid;
-    private int year;
+    private Long year;
     private BigDecimal remainder;
 
     public Long getId() {
@@ -28,11 +28,11 @@ public class SupAnnualModel {
         this.sid = sid;
     }
 
-    public int getYear() {
+    public Long getYear() {
         return year;
     }
 
-    public void setYear(int year) {
+    public void setYear(Long year) {
         this.year = year;
     }
 

@@ -14,7 +14,8 @@ public class ReceiptModelFull {
     private Long sid;
     private String serial;
     private Long rdate;
-    private Long xdate;
+
+    private String supply;
 
     private List<ReceiptDetailModel> detailList = new ArrayList<>();
 
@@ -27,15 +28,6 @@ public class ReceiptModelFull {
         setSid(model.getSid());
         setSerial(model.getSerial());
         setRdate(model.getRdate());
-        setXdate(model.getXdate());
-    }
-
-    public Long getXdate() {
-        return xdate;
-    }
-
-    public void setXdate(Long xdate) {
-        this.xdate = xdate;
     }
 
     public ReceiptModel getReceiptModel() {
@@ -45,6 +37,14 @@ public class ReceiptModelFull {
         model.setRdate(getRdate());
         model.setSerial(getSerial());
         return model;
+    }
+
+    public String getSupply() {
+        return supply;
+    }
+
+    public void setSupply(String supply) {
+        this.supply = supply;
     }
 
     public List<ReceiptDetailModel> getDetailList() {

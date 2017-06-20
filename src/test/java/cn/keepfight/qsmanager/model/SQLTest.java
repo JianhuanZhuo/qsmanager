@@ -38,7 +38,6 @@ public class SQLTest {
             System.out.println(e.getSid());
             System.out.println(e.getSerial());
             System.out.println(e.getRdate());
-            System.out.println(e.getXdate());
         });
     }
 
@@ -50,7 +49,6 @@ public class SQLTest {
             System.out.println(e.getSid());
             System.out.println(e.getSerial());
             System.out.println(e.getRdate());
-            System.out.println(e.getXdate());
         });
     }
 }

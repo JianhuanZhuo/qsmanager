@@ -8,27 +8,23 @@ import java.sql.Timestamp;
  * Created by tom on 2017/6/6.
  */
 public class SupAnnualMonModel {
-    private Long id;
+
+    // 这不是模型的数据属性，用于表示该模型对象的是否为数据库读取的
+    // 如果该值为 false，则表示更新时需要新建一个数据
+    private boolean valid;
+
     private Long said;
-    private int mon;
-    private BigDecimal total;
+    private Long mon;
+    private BigDecimal total = new BigDecimal(0);
     private String billunit;
-    private Timestamp billdate;
+    private Long billdate;
     private BigDecimal billtotal;
     private BigDecimal rate;
     private String remitunit;
     private String pattern;
-    private Timestamp remitdate;
+    private Long remitdate;
     private BigDecimal paytotal;
     private String note;
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
 
     public Long getSaid() {
         return said;
@@ -38,16 +34,20 @@ public class SupAnnualMonModel {
         this.said = said;
     }
 
-    public int getMon() {
+    public Long getMon() {
         return mon;
     }
 
-    public void setMon(int mon) {
+    public void setMon(Long mon) {
         this.mon = mon;
     }
 
     public BigDecimal getTotal() {
         return total;
+    }
+
+    public String getTotalStr() {
+        return total==null?"":total.toString();
     }
 
     public void setTotal(BigDecimal total) {
@@ -62,11 +62,11 @@ public class SupAnnualMonModel {
         this.billunit = billunit;
     }
 
-    public Timestamp getBilldate() {
+    public Long getBilldate() {
         return billdate;
     }
 
-    public void setBilldate(Timestamp billdate) {
+    public void setBilldate(Long billdate) {
         this.billdate = billdate;
     }
 
@@ -78,8 +78,17 @@ public class SupAnnualMonModel {
         this.billtotal = billtotal;
     }
 
+    public String getBilltotalStr() {
+        return billtotal==null?"":billtotal.toString();
+    }
+
+
     public BigDecimal getRate() {
         return rate;
+    }
+
+    public String getRateStr() {
+        return rate==null?"":rate.toString();
     }
 
     public void setRate(BigDecimal rate) {
@@ -102,16 +111,20 @@ public class SupAnnualMonModel {
         this.pattern = pattern;
     }
 
-    public Timestamp getRemitdate() {
+    public Long getRemitdate() {
         return remitdate;
     }
 
-    public void setRemitdate(Timestamp remitdate) {
+    public void setRemitdate(Long remitdate) {
         this.remitdate = remitdate;
     }
 
     public BigDecimal getPaytotal() {
         return paytotal;
+    }
+
+    public String getPaytotalStr() {
+        return paytotal==null?"":paytotal.toString();
     }
 
     public void setPaytotal(BigDecimal paytotal) {
@@ -124,5 +137,13 @@ public class SupAnnualMonModel {
 
     public void setNote(String note) {
         this.note = note;
+    }
+
+    public boolean isValid() {
+        return valid;
+    }
+
+    public void setValid(boolean valid) {
+        this.valid = valid;
     }
 }

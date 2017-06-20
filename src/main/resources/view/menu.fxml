@@ -2,11 +2,11 @@
 
 <?import javafx.scene.layout.VBox?>
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0"
+<VBox
       fx:id="root"
       fx:controller="cn.keepfight.qsmanager.controller.MenuListController"
       prefWidth="600.0"
       styleClass="menu-root"
-      stylesheets="@css/menu.css"
+      stylesheets="@css/menu.css, @css/common.css"
       xmlns:fx="http://javafx.com/fxml/1">
 </VBox>

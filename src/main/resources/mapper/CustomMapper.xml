@@ -8,6 +8,8 @@
     <select id="selectAll" resultType="CustomModel">
         SELECT *
         FROM custom
+        WHERE utype=2
+        ORDER BY serial
     </select>
 
 

@@ -1,33 +1,44 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.*?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.*?>
-<VBox stylesheets="@css/common.css" styleClass="title-pane"
-      xmlns="http://javafx.com/javafx/8.0.111"
-      xmlns:fx="http://javafx.com/fxml/1"
-      fx:id="root"
-      fx:controller="cn.keepfight.qsmanager.controller.ProductAddController">
+<?import java.net.URL?>
+<VBox fx:id="root" styleClass="title-pane" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cn.keepfight.qsmanager.controller.ProductAddController">
     <HBox styleClass="title-line">
-        <Label text="新增产品信息"/>
-        <Pane HBox.hgrow="ALWAYS"/>
+        <Label text="新增产品信息" />
+        <Pane HBox.hgrow="ALWAYS" />
     </HBox>
     <GridPane styleClass="infogp">
-        <Label text="产品编号：" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
-        <Label text="产品名称：" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
-        <Label text="包装明细：" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
-        <Label text="产品单位：" GridPane.columnIndex="0" GridPane.rowIndex="3"/>
-        <Label text="产品单价：" GridPane.columnIndex="0" GridPane.rowIndex="4"/>
-        <Label text="默认装数：" GridPane.columnIndex="0" GridPane.rowIndex="5"/>
-        <Label text="产品图片：" GridPane.columnIndex="0" GridPane.rowIndex="6"/>
-        <TextField fx:id="serial" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
-        <TextField fx:id="name" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
-        <TextField fx:id="detail" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
-        <TextField fx:id="unit" GridPane.columnIndex="1" GridPane.rowIndex="3"/>
-        <TextField fx:id="price" GridPane.columnIndex="1" GridPane.rowIndex="4"/>
-        <TextField fx:id="packNum" GridPane.columnIndex="1" GridPane.rowIndex="5"/>
+        <Label text="产品编号：" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+        <Label text="产品名称：" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+        <Label text="包装明细：" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+        <Label text="产品单价：" GridPane.columnIndex="0" GridPane.rowIndex="3" />
+        <Label text="产品单位：" GridPane.columnIndex="0" GridPane.rowIndex="4" />
+        <Label text="默认装数：" GridPane.columnIndex="0" GridPane.rowIndex="5" />
+        <TextField fx:id="serial" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+        <TextField fx:id="name" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+        <TextField fx:id="detail" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+        <TextField fx:id="price" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+        <TextField fx:id="unit" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+        <TextField fx:id="packNum" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+        <Label text="产品图片：" GridPane.rowIndex="6" />
         <HBox GridPane.columnIndex="1" GridPane.rowIndex="6">
-            <TextField fx:id="picurl" disable="true"/>
-            <Button fx:id="pickBtn" text="..."/>
+            <TextField fx:id="picurl" disable="true" />
+            <Button fx:id="pickBtn" text="..." />
         </HBox>
+        <Label text="图片预览：" GridPane.rowIndex="7" />
+        <VBox styleClass="viewer" GridPane.columnIndex="1" GridPane.rowIndex="7">
+            <HBox styleClass="preview">
+                <ImageView fx:id="imageLoader" fitHeight="260.0" fitWidth="260.0" pickOnBounds="true" preserveRatio="true" styleClass="image-loader">
+                    <Image url="@img/bg3.jpg" />
+                </ImageView>
+            </HBox>
+        </VBox>
     </GridPane>
+    <stylesheets>
+        <URL value="@css/common.css" />
+        <URL value="@css/picmaker.css" />
+    </stylesheets>
 </VBox>

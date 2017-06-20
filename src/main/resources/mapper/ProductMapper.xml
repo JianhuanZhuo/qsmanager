@@ -8,6 +8,7 @@
     <select id="selectAll" resultType="ProductModel">
         SELECT *
         FROM Product
+        ORDER BY serial
     </select>
 
     <!--void insert(ProductModel Product) throws Exception;-->

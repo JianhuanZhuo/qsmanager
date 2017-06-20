@@ -5,14 +5,27 @@
 <mapper namespace="cn.keepfight.qsmanager.Mapper.ReceiptMapper">
 
     <!--List<ReceiptModel> selectAll(Long sid, Long year, Long month) throws Exception;-->
-    <select id="selectAll" parameterType="ReceiptSelection" resultType="ReceiptModel">
-        SELECT id, sid, serial, strftime('%s',rdate)||'000' AS rdate
-        FROM receipt
-        WHERE sid = #{sid}
-              AND strftime('%Y', rdate) = #{year}
-            <if test="month!=null">
-              AND strftime('%m', rdate) = #{month}
-            </if>
+    <select id="selectAll" parameterType="ReceiptSelection" resultType="ReceiptModelFull">
+        SELECT r.id AS id, r.sid AS sid, r.serial AS serial, strftime('%s',r.rdate)||'000' AS rdate,
+        s.serial || '-' || s.name AS supply
+        FROM receipt r, supply s
+        WHERE r.sid = #{sid}
+        AND r.sid=s.id
+        AND strftime('%Y', r.rdate) = #{year}
+        <if test="month!=null">
+            AND strftime('%m', r.rdate) = #{month}
+        </if>
+        ORDER BY rdate
+    </select>
+
+    <!--查询指定供应商和年份的全部月份的供应总额-->
+    <!--LAnnualTotalModelodel> supAnnualTotal(ReceiptSelection selection);-->
+    <select id="supAnnualTotal" parameterType="ReceiptSelection" resultType="AnnualTotalModel">
+        SELECT strftime('%m', r.rdate) AS mon, sum(rd.price * rd.num) AS total
+        FROM receipt_detail rd, receipt r, supply s
+        WHERE s.id == #{sid} AND strftime('%Y', r.rdate) == #{year} AND rd.rid == r.id AND s.id == r.sid
+        GROUP BY strftime('%m', r.rdate)
+        ORDER BY mon
     </select>
 
     <!--void insert(ReceiptModel receipt) throws Exception;-->
@@ -33,6 +46,56 @@
 
     <!--List<Long> selectYear() throws Exception;-->
     <select id="selectYear" resultType="long">
-        SELECT DISTINCT strftime('%Y', rdate) FROM receipt
+        SELECT DISTINCT strftime('%Y', rdate) as year
+        FROM receipt
+        ORDER BY year
+    </select>
+
+
+    <!--查询指定年份的全部供应商采购总额-->
+    <!--LMonStatModelodel> takeStat(Long year);-->
+    <select id="takeStat" resultType="MonStatModel">
+        SELECT
+            s.name sup,
+            sum(rd.num*rd.price) AS total,
+            sum(CASE WHEN strftime('%m', r.rdate) == '01'
+                THEN rd.num*rd.price
+                ELSE 0 END) AS mon1,
+            sum(CASE WHEN strftime('%m', r.rdate) == '02'
+                THEN rd.num*rd.price
+                ELSE 0 END) AS mon2,
+            sum(CASE WHEN strftime('%m', r.rdate) == '03'
+                THEN rd.num*rd.price
+                ELSE 0 END) AS mon3,
+            sum(CASE WHEN strftime('%m', r.rdate) == '04'
+                THEN rd.num*rd.price
+                ELSE 0 END) AS mon4,
+            sum(CASE WHEN strftime('%m', r.rdate) == '05'
+                THEN rd.num*rd.price
+                ELSE 0 END) AS mon5,
+            sum(CASE WHEN strftime('%m', r.rdate) == '06'
+                THEN rd.num*rd.price
+                ELSE 0 END) AS mon6,
+            sum(CASE WHEN strftime('%m', r.rdate) == '07'
+                THEN rd.num*rd.price
+                ELSE 0 END) AS mon7,
+            sum(CASE WHEN strftime('%m', r.rdate) == '08'
+                THEN rd.num*rd.price
+                ELSE 0 END) AS mon8,
+            sum(CASE WHEN strftime('%m', r.rdate) == '09'
+                THEN rd.num*rd.price
+                ELSE 0 END) AS mon9,
+            sum(CASE WHEN strftime('%m', r.rdate) == '10'
+                THEN rd.num*rd.price
+                ELSE 0 END) AS mon10,
+            sum(CASE WHEN strftime('%m', r.rdate) == '11'
+                THEN rd.num*rd.price
+                ELSE 0 END) AS mon11,
+            sum(CASE WHEN strftime('%m', r.rdate) == '12'
+                THEN rd.num*rd.price
+                ELSE 0 END) AS mon12
+        FROM receipt_detail rd, receipt r, supply s
+        WHERE strftime('%Y', r.rdate) == #{year} AND rd.rid == r.id AND r.sid == s.id
+        GROUP BY r.sid;
     </select>
 </mapper>

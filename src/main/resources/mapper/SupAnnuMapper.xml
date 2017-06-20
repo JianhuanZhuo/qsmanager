@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.keepfight.qsmanager.Mapper.SupAnnuMapper">
+
+    <!--选择指定年份、指定供应商的年度对账表-->
+    <!--SupAnnualModel selectAnnual(AnnualSelection selection) throws Exception;-->
+    <select id="selectAnnual" parameterType="AnnualSelection" resultType="SupAnnualModel">
+        SELECT *
+        FROM sup_annual
+        WHERE year == #{year}
+              AND sid == #{sid}
+    </select>
+
+    <!--指定年份、指定供应商查询年度对账的每月明细-->
+    <!--List<SupAnnualMonModel> selectMon(AnnualSelection selection) throws Exception;-->
+    <select id="selectMon" parameterType="AnnualSelection" resultType="SupAnnualMonModel">
+        SELECT
+            said,
+            mon,
+            total,
+            billunit,
+            strftime('%s', billdate) || '000'  AS billdate,
+            billtotal,
+            rate,
+            remitunit,
+            pattern,
+            strftime('%s', remitdate) || '000' AS remitdate,
+            paytotal,
+            note
+        FROM sup_annual_mon sm, sup_annual s
+        WHERE s.year == #{year} AND s.sid == #{sid}
+              AND sm.said == s.id
+    </select>
+
+    <!--插入新的年对账表，如果指定的年份的对账表已存在，则异常-->
+    <!--void insertAnnual(SupAnnualModel model) throws Exception;-->
+    <insert id="insertAnnual" parameterType="SupAnnualModel">
+        insert into sup_annual (sid, year
+        <if test="remainder!=null">
+            , remainder
+        </if>
+        ) values (#{sid}, #{year}
+        <if test="remainder!=null">
+            , #{remainder}
+        </if>);
+        <selectKey keyProperty="id" order="AFTER" resultType="long">
+            SELECT last_insert_rowid();
+        </selectKey>
+    </insert>
+
+
+    <!--插入新的月明细，如果指定对账单的当前月份已存在会插入错误-->
+    <!--void insertMon(SupAnnualMonModel model) throws Exception;-->
+    <insert id="insertMon" parameterType="SupAnnualMonModel">
+        INSERT INTO sup_annual_mon (
+            said,
+            mon,
+            total,
+            billunit,
+            billdate,
+            billtotal,
+            rate,
+            remitunit,
+            pattern,
+            remitdate,
+            paytotal,
+            note)
+        VALUES (
+            #{said},
+            #{mon},
+            #{total},
+            #{billunit},
+            DATEtime(#{billdate} / 1000, 'unixepoch', 'localtime'),
+            #{billtotal},
+            #{rate},
+            #{remitunit},
+            #{pattern},
+            DATETIME(#{remitdate} / 1000, 'unixepoch', 'localtime'),
+            #{paytotal},
+            #{note}
+        );
+    </insert>
+
+    <!--更新月明细-->
+    <!--void updateMon(SupAnnualMonModel model) throws Exception;-->
+    <update id="updateMon" parameterType="SupAnnualMonModel">
+        UPDATE sup_annual_mon
+        SET
+            total     = #{total},
+            billunit  = #{billunit},
+            billdate  = DATEtime(#{billdate} / 1000, 'unixepoch', 'localtime'),
+            billtotal = #{billtotal},
+            rate      = #{rate},
+            remitunit = #{remitunit},
+            pattern   = #{pattern},
+            remitdate = DATETIME(#{remitdate} / 1000, 'unixepoch', 'localtime'),
+            paytotal  = #{paytotal},
+            note      = #{note}
+        WHERE said == #{said}
+              AND mon == #{mon}
+    </update>
+
+    <!--指定年份统计付款-->
+    <!--List<MonStatModel> payStat(Long year) throws Exception;-->
+    <select id="payStat" resultType="MonStatModel" parameterType="Long">
+        SELECT
+            s.name            AS sup,
+            sum(sam.paytotal) AS total,
+            sum(CASE WHEN mon == 1
+                THEN sam.paytotal
+                ELSE 0 END)   AS mon1,
+            sum(CASE WHEN mon == 2
+                THEN sam.paytotal
+                ELSE 0 END)   AS mon2,
+            sum(CASE WHEN mon == 3
+                THEN sam.paytotal
+                ELSE 0 END)   AS mon3,
+            sum(CASE WHEN mon == 4
+                THEN sam.paytotal
+                ELSE 0 END)   AS mon4,
+            sum(CASE WHEN mon == 5
+                THEN sam.paytotal
+                ELSE 0 END)   AS mon5,
+            sum(CASE WHEN mon == 6
+                THEN sam.paytotal
+                ELSE 0 END)   AS mon6,
+            sum(CASE WHEN mon == 7
+                THEN sam.paytotal
+                ELSE 0 END)   AS mon7,
+            sum(CASE WHEN mon == 8
+                THEN sam.paytotal
+                ELSE 0 END)   AS mon8,
+            sum(CASE WHEN mon == 9
+                THEN sam.paytotal
+                ELSE 0 END)   AS mon9,
+            sum(CASE WHEN mon == 10
+                THEN sam.paytotal
+                ELSE 0 END)   AS mon10,
+            sum(CASE WHEN mon == 11
+                THEN sam.paytotal
+                ELSE 0 END)   AS mon11,
+            sum(CASE WHEN mon == 12
+                THEN sam.paytotal
+                ELSE 0 END)   AS mon12
+        FROM sup_annual sa, sup_annual_mon sam, supply s
+        WHERE sa.year == #{year} AND sam.said == sa.id AND sa.sid == s.id
+        GROUP BY s.id
+    </select>
+
+    <!--指定年份统计汇总-->
+    <!--List<TPStatModel> tpStat(Long year) throws Exception;-->
+    <select id="tpStat" parameterType="Long" resultType="TPStatModel">
+        SELECT
+        mrec.mon AS mon,
+        mrec.rec AS rec,
+        pay.paytotal AS pay
+        FROM
+        (
+        SELECT
+        m.mon AS mon,
+        rec.rec AS rec
+        FROM
+        (
+        /*月份表*/
+        SELECT mon
+        FROM mons
+        ) m
+        LEFT OUTER JOIN
+        (
+        /*采购统计*/
+        SELECT
+        strftime('%m', r.rdate) AS mon,
+        sum(price * num) AS rec
+        FROM receipt r, receipt_detail rd
+        WHERE r.id == rd.rid AND strftime('%Y', r.rdate) == ''||#{year}
+        GROUP BY strftime('%m', r.rdate)
+        ) rec
+        ON m.mon == rec.mon
+        ) mrec
+        LEFT OUTER JOIN
+        (
+        /*支付统计*/
+        SELECT
+        CASE WHEN mon <![CDATA[ < 10 ]]>
+        THEN '0' || mon
+        ELSE '' || mon END AS mon,
+        paytotal
+        FROM sup_annual s, sup_annual_mon sa
+        WHERE s.id == sa.said AND year == #{year}
+        GROUP BY mon
+        ) pay
+        ON mrec.mon == pay.mon;
+    </select>
+</mapper>

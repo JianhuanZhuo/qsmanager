@@ -1,59 +1,52 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.String?>
-<?import java.net.URL?>
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.RadioButton?>
-<?import javafx.scene.control.ScrollPane?>
-<?import javafx.scene.control.TableColumn?>
-<?import javafx.scene.control.TableView?>
-<?import javafx.scene.control.ToggleGroup?>
+<?import javafx.scene.control.*?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.Pane?>
-<?import javafx.scene.layout.VBox?>
-
+<?import javafx.scene.layout.*?>
+<?import java.lang.String?>
 <VBox stylesheets="@css/common.css"
       styleClass="bill-item"
+      fx:id="root"
+      fx:controller="cn.keepfight.qsmanager.controller.OrderItemController"
       xmlns="http://javafx.com/javafx/8.0.111"
       xmlns:fx="http://javafx.com/fxml/1">
     <HBox styleClass="hbox-common">
         <Label text="订单编号："/>
-        <Label text="JQ5566" styleClass="right-spacing"/>
+        <Label fx:id="o_serial" text="JQ5566" styleClass="right-spacing"/>
         <Label text="下单时间："/>
-        <Label text="2017.01.06 22:00" styleClass="right-spacing"/>
+        <Label fx:id="o_date" text="2017.01.06 22:00" styleClass="right-spacing"/>
         <Label text="客户："/>
-        <Label text="安利"/>
-        <ImageView styleClass="image-size-common">
+        <Label fx:id="o_cust" text="安利"/>
+        <ImageView fx:id="o_msg" styleClass="hide">
             <Image url="@img/msg.png"/>
         </ImageView>
         <Pane HBox.hgrow="ALWAYS"/>
-        <RadioButton mnemonicParsing="false" selected="true" text="全部货项">
+        <RadioButton fx:id="all" selected="true" text="全部货项">
             <toggleGroup>
                 <ToggleGroup fx:id="goods"/>
             </toggleGroup>
         </RadioButton>
-        <RadioButton layoutX="570.0" mnemonicParsing="false" text="剩余未发货" toggleGroup="$goods"/>
+        <RadioButton fx:id="left" text="剩余未发货" toggleGroup="$goods"/>
     </HBox>
-    <ScrollPane fitToHeight="true" fitToWidth="true" prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
-        <TableView>
+    <ScrollPane fitToHeight="true" fitToWidth="true"  prefHeight="120" prefWidth="200.0" VBox.vgrow="ALWAYS">
+        <TableView fx:id="table">
             <columns>
-                <TableColumn text="产品名称"/>
-                <TableColumn text="编号"/>
-                <TableColumn text="包装明细"/>
-                <TableColumn text="单价(元/包)"/>
-                <TableColumn text="单位"/>
-                <TableColumn text="装数"/>
-                <TableColumn text="箱数"/>
-                <TableColumn text="金额"/>
-                <TableColumn text="税率"/>
-                <TableColumn text="税金"/>
-                <TableColumn text="税后金额"/>
-                <TableColumn text="每箱返点数"/>
-                <TableColumn text="总共返点数"/>
+                <TableColumn fx:id="tab_name" text="产品名称"/>
+                <TableColumn fx:id="tab_serial" text="产品编号"/>
+                <TableColumn fx:id="tab_detail" text="包装明细"/>
+                <TableColumn fx:id="tab_price" text="产品单价"/>
+                <!--<TableColumn fx:id="tab_unit" text="计量单位"/>-->
+                <TableColumn fx:id="tab_pack" text="产品装数"/>
+                <TableColumn fx:id="tab_num" text="订购数量"/>
+                <TableColumn fx:id="tab_total" text="合计金额"/>
+                <TableColumn fx:id="tab_rate" text="税率"/>
+                <TableColumn fx:id="tab_ratetotal" text="税金"/>
+                <TableColumn fx:id="tab_totallWithRate" text="税后金额"/>
+                <TableColumn fx:id="tab_rebate" text="返点数"/>
+                <TableColumn fx:id="tab_allrebate" text="总共返点数"/>
+                <TableColumn fx:id="tab_delifee" text="运费"/>
+                <TableColumn fx:id="tab_actPay" text="实际支付"/>
             </columns>
         </TableView>
     </ScrollPane>
@@ -63,20 +56,20 @@
             <String fx:value="f14-common"/>
         </styleClass>
         <Label text="箱数统计："/>
-        <Label text="180"/>
+        <Label fx:id="s_num" text="180"/>
         <Label text="税金统计："/>
-        <Label text="180"/>
+        <Label fx:id="s_rate" text="180"/>
         <Label text="返点统计："/>
-        <Label text="1080.00"/>
+        <Label fx:id="s_rebate" text="1080.00"/>
         <Pane HBox.hgrow="ALWAYS"/>
         <Label text="实际应收金额：￥"/>
-        <Label text="19,536.00"/>
+        <Label fx:id="s_total" text="0"/>
     </HBox>
     <HBox layoutX="10.0" layoutY="310.0" styleClass="hbox-common">
-        <Button text="删除订单"/>
+        <Button fx:id="a_del" text="删除订单"/>
         <Pane HBox.hgrow="ALWAYS"/>
-        <Button text="发货"/>
-        <Button text="送货记录"/>
-        <Button text="修改订单"/>
+        <Button fx:id="a_delivery" text="添加发货"/>
+        <Button fx:id="a_history" text="送货记录"/>
+        <Button fx:id="a_alter" text="修改订单"/>
     </HBox>
 </VBox>

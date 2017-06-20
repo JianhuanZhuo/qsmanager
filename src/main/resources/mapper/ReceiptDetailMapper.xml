@@ -14,8 +14,8 @@
     <!--void insert(ReceiptDetailModel receipt_detail) throws Exception;-->
     <insert id="insert" parameterType="ReceiptDetailModel">
         INSERT INTO
-        receipt_detail (rid, serial, name, color, price, unit, num)
-        VALUES (#{rid}, #{serial}, #{name}, #{color}, #{price}, #{unit}, #{num})
+        receipt_detail (rid, serial, name, color, price, unit, num, spec)
+        VALUES (#{rid}, #{serial}, #{name}, #{color}, #{price}, #{unit}, #{num}, #{spec})
         <selectKey keyProperty="id" order="AFTER" resultType="long">
             SELECT last_insert_rowid();
         </selectKey>

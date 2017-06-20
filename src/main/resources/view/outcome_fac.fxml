@@ -10,30 +10,30 @@
       xmlns:fx="http://javafx.com/fxml"
       stylesheets="@css/common.css"
       fx:controller="cn.keepfight.qsmanager.controller.OutComeFacController">
-    <ChoiceBox prefWidth="100.0"/>
+    <ChoiceBox fx:id="year_select" prefWidth="100.0"/>
     <ScrollPane fitToHeight="true" fitToWidth="true" VBox.vgrow="ALWAYS">
-        <TableView>
+        <TableView fx:id="tab">
             <columns>
-                <TableColumn text="明细"/>
-                <TableColumn text="一月"/>
-                <TableColumn text="二月"/>
-                <TableColumn text="三月"/>
-                <TableColumn text="四月"/>
-                <TableColumn text="五月"/>
-                <TableColumn text="六月"/>
-                <TableColumn text="七月"/>
-                <TableColumn text="八月"/>
-                <TableColumn text="九月"/>
-                <TableColumn text="十月"/>
-                <TableColumn text="十一月"/>
-                <TableColumn text="十二月"/>
-                <TableColumn text="年度统计"/>
+                <TableColumn fx:id="detail" text="明细"/>
+                <TableColumn fx:id="mon1" text="一月"/>
+                <TableColumn fx:id="mon2" text="二月"/>
+                <TableColumn fx:id="mon3" text="三月"/>
+                <TableColumn fx:id="mon4" text="四月"/>
+                <TableColumn fx:id="mon5" text="五月"/>
+                <TableColumn fx:id="mon6" text="六月"/>
+                <TableColumn fx:id="mon7" text="七月"/>
+                <TableColumn fx:id="mon8" text="八月"/>
+                <TableColumn fx:id="mon9" text="九月"/>
+                <TableColumn fx:id="mon10" text="十月"/>
+                <TableColumn fx:id="mon11" text="十一月"/>
+                <TableColumn fx:id="mon12" text="十二月"/>
+                <TableColumn fx:id="year" text="年度统计"/>
             </columns>
         </TableView>
     </ScrollPane>
     <HBox styleClass="hbox-common">
-        <Label text="工资总未付：￥"/>
-        <Label fx:id="fac_no_pay_total" text="0"/>
+        <Label text="实际支出：￥"/>
+        <Label fx:id="actual_total" text="0"/>
         <Pane HBox.hgrow="ALWAYS"/>
         <Label fx:id="fac_attach" text="查看附件">
             <graphic>

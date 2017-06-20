@@ -3,6 +3,7 @@ package cn.keepfight.qsmanager.service;
 import cn.keepfight.qsmanager.Mapper.*;
 import cn.keepfight.qsmanager.model.*;
 import cn.keepfight.utils.FXUtils;
+import cn.keepfight.utils.QSUtil;
 import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.ibatis.session.SqlSessionFactoryBuilder;
@@ -10,9 +11,9 @@ import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 import java.io.File;
 import java.io.IOException;
 import java.io.Reader;
-import java.nio.file.*;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.LongStream;
 
 /**
  * 本地服务实现
@@ -105,11 +106,6 @@ public class LocalServiceImpl implements ServerService {
 
             @Override
             public void insert(ProductModel model) throws Exception {
-                if (model.getPicurl() != null && !model.getPicurl().trim().equals("") &&
-                        !isPrivateUrl(model.getPicurl())) {
-                    model.setPicurl(copyAndTransform(model.getPicurl()));
-                    System.out.println("图片转存为：" + model.getPicurl());
-                }
                 FXUtils.getMapper(factory, ProductMapper.class, ProductMapper::insert, model);
             }
 
@@ -180,17 +176,27 @@ public class LocalServiceImpl implements ServerService {
                 selection.setYear(year);
                 selection.setMonth(month);
                 System.out.println(selection);
-                List<ReceiptModel> receiptModels = FXUtils.getMapper(factory, ReceiptMapper.class, ReceiptMapper::selectAll, selection);
+                List<ReceiptModelFull> receiptModels = FXUtils.getMapper(factory, ReceiptMapper.class, ReceiptMapper::selectAll, selection);
                 // 按ID查询全部的明细
                 List<ReceiptModelFull> fulls = new ArrayList<>();
-                if (receiptModels != null) {
-                    for (ReceiptModel receiptModel : receiptModels) {
-                        ReceiptModelFull modelFull = new ReceiptModelFull(receiptModel);
-                        modelFull.setDetailList(FXUtils.getMapper(factory, ReceiptDetailMapper.class, ReceiptDetailMapper::selectAll, receiptModel.getId()));
-                        fulls.add(modelFull);
-                    }
+                for (ReceiptModelFull modelFull : receiptModels) {
+                    modelFull.setDetailList(FXUtils.getMapper(factory, ReceiptDetailMapper.class, ReceiptDetailMapper::selectAll, modelFull.getId()));
+                    fulls.add(modelFull);
                 }
                 return fulls;
+            }
+
+            @Override
+            public List<AnnualTotalModel> supAnnualTotal(Long sid, Long year) throws Exception {
+                ReceiptSelection selection = new ReceiptSelection();
+                selection.setYear(year);
+                selection.setSid(sid);
+                return FXUtils.getMapper(factory, ReceiptMapper.class, ReceiptMapper::supAnnualTotal, selection);
+            }
+
+            @Override
+            public List<MonStatModel> takeStat(Long year) throws Exception  {
+                return FXUtils.getMapper(factory, ReceiptMapper.class, ReceiptMapper::takeStat, year.toString());
             }
 
             @Override
@@ -207,6 +213,12 @@ public class LocalServiceImpl implements ServerService {
             }
 
             @Override
+            public void update(ReceiptModelFull model) throws Exception {
+                delete(new ReceiptModel(model));
+                insert(model);
+            }
+
+            @Override
             public void delete(ReceiptModel model) throws Exception {
                 FXUtils.getMapper(factory, ReceiptMapper.class, ReceiptMapper::delete, model);
             }
@@ -218,16 +230,135 @@ public class LocalServiceImpl implements ServerService {
         };
     }
 
-    private boolean isPrivateUrl(String picUrl) {
-        return picUrl != null && picUrl.startsWith(picPath);
+    @Override
+    public SupAnnualService getSupAnnualService() {
+        return new SupAnnualService(){
+            @Override
+            public SupAnnualModelFull selectAnnual(Long sid, Long year) throws Exception {
+                SupAnnualModelFull modelFull = new SupAnnualModelFull();
+                AnnualSelection selection = new AnnualSelection(sid, year);
+
+                // 查询对账表记录
+                SupAnnualModel annualModel = FXUtils.getMapper(factory, SupAnnuMapper.class, SupAnnuMapper::selectAnnual, selection);
+                if (annualModel==null){
+                    // 若查无此信息则插入
+                    annualModel = new SupAnnualModel();
+                    annualModel.setSid(sid);
+                    annualModel.setYear(year);
+                    FXUtils.getMapper(factory, SupAnnuMapper.class, SupAnnuMapper::insertAnnual, annualModel);
+                }
+                modelFull.set(annualModel);
+
+
+                // 查询月份的原有记录，并使用 Map 作为存储
+                List<SupAnnualMonModel> mons = FXUtils.getMapper(factory, SupAnnuMapper.class, SupAnnuMapper::selectMon, selection);
+                Map<Long, SupAnnualMonModel> monMap = mons.stream()
+                        .peek(s->s.setValid(true))
+                        .collect(Collectors.toMap(SupAnnualMonModel::getMon, e->e));
+
+                // 查询月份的采购总额
+                ReceiptSelection receiptSelection = new ReceiptSelection();
+                receiptSelection.setSid(sid);
+                receiptSelection.setYear(year);
+                List<AnnualTotalModel> monTotals = FXUtils.getMapper(factory, ReceiptMapper.class, ReceiptMapper::supAnnualTotal, receiptSelection);
+                monTotals.forEach(m-> monMap.compute(m.getMon(), (k, v)->{
+                    if (v==null){
+                        v = new SupAnnualMonModel();
+                    }
+                    v.setTotal(m.getTotal());
+                    v.setMon(m.getMon());
+                    return v;
+                }));
+
+                LongStream.range(1,13).forEach(m-> monMap.compute(m, (k, v)->{
+                    if (v==null){
+                        v = new SupAnnualMonModel();
+                        v.setMon(k);
+                    }
+                    return v;
+                }));
+
+                modelFull.addMon(monMap.values());
+                return modelFull;
+            }
+
+            @Override
+            public void updateAnnual(SupAnnualModel model) throws Exception {
+
+            }
+
+            @Override
+            public List<MonStatModel> payStat(Long year) throws Exception {
+                return FXUtils.getMapper(factory, SupAnnuMapper.class, SupAnnuMapper::payStat, year);
+            }
+
+            @Override
+            public List<TPStatModel> tpStat(Long year) throws Exception {
+                return FXUtils.getMapper(factory, SupAnnuMapper.class, SupAnnuMapper::tpStat, year);
+            }
+
+            @Override
+            public void updateMon(SupAnnualMonModel model) throws Exception {
+                if (model.isValid()) {
+                    FXUtils.getMapper(factory, SupAnnuMapper.class, SupAnnuMapper::updateMon, model);
+                }else {
+                    FXUtils.getMapper(factory, SupAnnuMapper.class, SupAnnuMapper::insertMon, model);
+                }
+            }
+        };
     }
 
-    private String copyAndTransform(String picUrl) throws IOException {
-        Path source = Paths.get(picUrl);
-        File targetFile = new File("./pic/" + source.getFileName()).getCanonicalFile();
-        Path target = targetFile.toPath();
-        Files.copy(source, target);
-        // 添加 file: 本地文件连接
-        return "file:" + targetFile.getAbsolutePath();
+    @Override
+    public OrderService getOrderService() {
+        return new OrderService(){
+
+            @Override
+            public List<OrderModelFull> selectAll(OrderSelection selection) throws Exception {
+                List<OrderModelFull> res = FXUtils.getMapper(factory, OrderMapper.class, OrderMapper::selectAll, selection);
+                for (OrderModelFull modelFull : res) {
+                    modelFull.setOrderItemModels(FXUtils.getMapper(factory, OrderItemMapper.class, OrderItemMapper::selectAllByOid, modelFull.getId()));
+                }
+                return res;
+            }
+
+            @Override
+            public List<AnnualTotalModel> supAnnualTotal(Long cid, Long year) throws Exception {
+                OrderSelection selection = new OrderSelection();
+                selection.setYear(year);
+                selection.setCid(cid);
+                return FXUtils.getMapper(factory, OrderMapper.class, OrderMapper::supAnnualTotal, selection);
+            }
+
+            @Override
+            public void insert(OrderModelFull model) throws Exception {
+                Long ct = FXUtils.getMapper(factory, OrderMapper.class, OrderMapper::getCt, model.getOrderdate());
+                model.setCt(ct);
+                model.setSerial(QSUtil.orderSerial(model.getOrderdate(), ct));
+                OrderModel orderModel = model.get();
+                FXUtils.getMapper(factory, OrderMapper.class, OrderMapper::insert, orderModel);
+
+                // 回设 RID
+                model.setId(orderModel.getId());
+
+                for (OrderItemModel item : model.getOrderItemModels()) {
+                    FXUtils.getMapper(factory, OrderItemMapper.class, OrderItemMapper::insert, item);
+                }
+            }
+
+            @Override
+            public void update(OrderModelFull model) throws Exception {
+            }
+
+            @Override
+            public void delete(OrderModel model) throws Exception {
+                FXUtils.getMapper(factory, OrderItemMapper.class, OrderItemMapper::deleteByOid, model.getId());
+                FXUtils.getMapper(factory, OrderMapper.class, OrderMapper::delete, model);
+            }
+
+            @Override
+            public List<Long> selectYear() throws Exception {
+                return FXUtils.getMapper(factory, OrderMapper.class, OrderMapper::selectYear);
+            }
+        };
     }
 }

@@ -1,5 +1,10 @@
 package cn.keepfight.qsmanager.model;
 
+import javafx.beans.property.LongProperty;
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleLongProperty;
+import javafx.beans.property.SimpleObjectProperty;
+
 import java.math.BigDecimal;
 
 /**
@@ -15,6 +20,22 @@ public class ProductModel {
     private BigDecimal price;
     private String unit;
     private String picurl;
+
+    // 非数据库存储对象，而是计算辅助对象
+//    private ObjectProperty<BigDecimal> num = new SimpleObjectProperty<>(new BigDecimal(0));
+//    private LongProperty packSel = new SimpleLongProperty(-1L);
+
+//    public long getPackSel() {
+//        return packSel.get();
+//    }
+//
+//    public LongProperty packSelProperty() {
+//        return packSel;
+//    }
+//
+//    public void setPackSel(long packSel) {
+//        this.packSel.set(packSel);
+//    }
 
     public Long getId() {
         return id;
@@ -79,4 +100,16 @@ public class ProductModel {
     public void setPicurl(String picurl) {
         this.picurl = picurl;
     }
+
+//    public BigDecimal getNum() {
+//        return num.get();
+//    }
+//
+//    public void setNum(BigDecimal num) {
+//        this.num.set(num);
+//    }
+//
+//    public ObjectProperty<BigDecimal> getNumProperty(){
+//        return num;
+//    }
 }

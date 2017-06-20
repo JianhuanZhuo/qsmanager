@@ -13,8 +13,8 @@
         <Pane HBox.hgrow="ALWAYS"/>
     </HBox>
     <GridPane styleClass="infogp">
-        <Label text="客户简称：" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
-        <Label text="客户编号：" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
+        <Label text="供应商简称：" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+        <Label text="供应商编号：" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
         <TextField fx:id="name" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
         <TextField fx:id="serial" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
     </GridPane>

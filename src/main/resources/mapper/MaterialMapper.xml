@@ -9,6 +9,7 @@
         SELECT *
         FROM material
         WHERE sid=#{sid}
+        ORDER BY serial
     </select>
 
 

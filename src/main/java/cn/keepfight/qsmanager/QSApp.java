@@ -38,7 +38,8 @@ public class QSApp extends Application {
         Scene scene = new Scene(borderPane);
         primaryStage.setScene(scene);
         primaryStage.show();
+        mainPane.logout();
 
-        Platform.runLater(() -> mainPane.logout());
+        Platform.runLater(MenuList::loadMenuView);
     }
 }

@@ -27,7 +27,10 @@ public class ReceiptItemAddController implements DialogContent<ReceiptDetailMode
     private VBox root;
 
     @FXML
-    private ChoiceBox<MaterialModel> serial;
+    private ChoiceBox<MaterialModel> serial_c;
+
+    @FXML
+    private TextField serial;
     @FXML
     private TextField name;
     @FXML
@@ -47,6 +50,7 @@ public class ReceiptItemAddController implements DialogContent<ReceiptDetailMode
 
     @FXML
     public void initialize() {
+        FXUtils.limitLength(serial, 30);
         FXUtils.limitLength(name, 30);
         FXUtils.limitLength(spec, 60);
         FXUtils.limitLength(unit, 15);
@@ -56,11 +60,12 @@ public class ReceiptItemAddController implements DialogContent<ReceiptDetailMode
         FXUtils.limitNum(num, 9, 4, true);
 
         // 设置切换恢复默认值
-        serial.getSelectionModel().selectedIndexProperty().addListener((x, oldOne, newOne) -> {
+        serial_c.getSelectionModel().selectedIndexProperty().addListener((x, oldOne, newOne) -> {
             if (newOne.intValue() < 0) {
                 return;
             }
-            MaterialModel model = serial.getItems().get(newOne.intValue());
+            MaterialModel model = serial_c.getItems().get(newOne.intValue());
+            serial.setText(model.getSerial());
             name.setText(model.getName());
             unit.setText(model.getUnit());
             price.setText(model.getPrice().toString());
@@ -69,7 +74,7 @@ public class ReceiptItemAddController implements DialogContent<ReceiptDetailMode
         });
 
         // 设置转换器
-        serial.setConverter(new StringConverter<MaterialModel>() {
+        serial_c.setConverter(new StringConverter<MaterialModel>() {
             @Override
             public String toString(MaterialModel model) {
                 return model.getSerial() + "-" + model.getName();
@@ -84,7 +89,8 @@ public class ReceiptItemAddController implements DialogContent<ReceiptDetailMode
 
     @Override
     public void init() {
-        serial.getSelectionModel().clearSelection();
+        serial_c.getSelectionModel().clearSelection();
+        serial.setText("");
         name.setText("");
         unit.setText("");
         price.setText("");
@@ -98,6 +104,7 @@ public class ReceiptItemAddController implements DialogContent<ReceiptDetailMode
 
     @Override
     public void fill(ReceiptDetailModel detailModel) {
+        serial.setText(detailModel.getSerial());
         name.setText(detailModel.getName());
         unit.setText(detailModel.getUnit());
         price.setText(detailModel.getPrice().toString());
@@ -105,12 +112,14 @@ public class ReceiptItemAddController implements DialogContent<ReceiptDetailMode
         spec.setText(detailModel.getSpec());
         num.setText(detailModel.getNum().toString());
 
-        for (MaterialModel model : serial.getItems()) {
-            if (model.getSerial().equals(detailModel.getSerial())) {
-                serial.getSelectionModel().select(model);
-                break;
+        Platform.runLater(()->{
+            for (MaterialModel model : serial_c.getItems()) {
+                if (model.getSerial().equals(detailModel.getSerial())) {
+                    serial_c.getSelectionModel().select(model);
+                    break;
+                }
             }
-        }
+        });
     }
 
     @Override
@@ -121,7 +130,7 @@ public class ReceiptItemAddController implements DialogContent<ReceiptDetailMode
     @Override
     public BooleanProperty allValid() {
         BooleanProperty res = new SimpleBooleanProperty();
-        res.bind(serial.getSelectionModel().selectedItemProperty().isNotNull()
+        res.bind(serial.textProperty().isNotEmpty()
                 .and(num.textProperty().isNotEmpty())
                 .and(unit.textProperty().isNotEmpty())
                 .and(price.textProperty().isNotEmpty())
@@ -137,7 +146,7 @@ public class ReceiptItemAddController implements DialogContent<ReceiptDetailMode
     public ReceiptDetailModel pack() {
         ReceiptDetailModel res = new ReceiptDetailModel();
         res.setName(name.getText());
-        res.setSerial(serial.getSelectionModel().getSelectedItem().getSerial());
+        res.setSerial(serial.getText());
         res.setSpec(spec.getText());
         res.setUnit(unit.getText());
         res.setPrice(new BigDecimal(price.getText().trim().replace(",", "")));
@@ -149,7 +158,7 @@ public class ReceiptItemAddController implements DialogContent<ReceiptDetailMode
     private void loadMaterial() {
         Platform.runLater(() -> {
             try {
-                serial.getItems().setAll(QSApp.service.getMaterialService().selectAll(sid));
+                serial_c.getItems().setAll(QSApp.service.getMaterialService().selectAll(sid));
             } catch (Exception e) {
                 e.printStackTrace();
             }

@@ -4,14 +4,28 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
-<HBox fx:id="root" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
-      minWidth="-Infinity"
-      styleClass="hbox-common" stylesheets="@css/common.css" xmlns="http://javafx.com/javafx/8.0.111"
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.Pane?>
+<VBox stylesheets="@css/common.css, @css/picmaker.css"
+      xmlns="http://javafx.com/javafx/8.0.111"
+      fx:id="root"
+      fx:controller="cn.keepfight.qsmanager.controller.PicViewer"
       xmlns:fx="http://javafx.com/fxml/1"
-      fx:controller="cn.keepfight.qsmanager.controller.PicMakerController">
-    <VBox alignment="CENTER" fillWidth="false" prefHeight="300.0" prefWidth="300.0" style="-fx-border-color: pink;">
-        <ImageView fx:id="image" fitWidth="300.0" fitHeight="300.0" pickOnBounds="true" preserveRatio="true">
-            <Image url="@../graph/g64/collaboration.png"/>
-        </ImageView>
+      styleClass="title-pane">
+    <HBox alignment="CENTER_LEFT" styleClass="title-line">
+        <Label text="图片查看器"/>
+        <Pane HBox.hgrow="ALWAYS"/>
+    </HBox>
+    <VBox alignment="CENTER"
+          styleClass="hbox-common">
+        <VBox styleClass="viewer">
+            <HBox styleClass="preview">
+                <ImageView fx:id="imageLoader" fitHeight="260.0" fitWidth="260.0" pickOnBounds="true"
+                           preserveRatio="true" styleClass="image-loader">
+                    <Image url="@img/custom-add.png"/>
+                </ImageView>
+            </HBox>
+        </VBox>
     </VBox>
-</HBox>
+</VBox>

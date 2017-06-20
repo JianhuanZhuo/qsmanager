@@ -23,7 +23,7 @@
         <Label text="供应商："/>
         <Label fx:id="supply"/>
     </HBox>
-    <ScrollPane fitToHeight="true" fitToWidth="true" prefHeight="150.0" VBox.vgrow="ALWAYS">
+    <ScrollPane fitToHeight="true" fitToWidth="true" prefHeight="120" VBox.vgrow="ALWAYS">
         <TableView fx:id="table">
             <columns>
                 <TableColumn fx:id="tab_serial" text="编号"/>
@@ -35,6 +35,9 @@
                 <TableColumn fx:id="tab_num" text="数量"/>
                 <TableColumn fx:id="tab_total" text="金额"/>
             </columns>
+            <columnResizePolicy>
+                <TableView fx:constant="CONSTRAINED_RESIZE_POLICY"/>
+            </columnResizePolicy>
         </TableView>
     </ScrollPane>
     <HBox styleClass="hbox-common">
@@ -45,6 +48,7 @@
     <HBox styleClass="hbox-common">
         <Button fx:id="del" text="删除送货记录"/>
         <Pane HBox.hgrow="ALWAYS"/>
+        <Button fx:id="update" text="修改"/>
         <Button fx:id="attach" text="查看附件"/>
     </HBox>
 </VBox>

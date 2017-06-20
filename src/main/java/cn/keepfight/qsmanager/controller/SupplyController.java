@@ -18,6 +18,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
 import java.io.IOException;
+import java.util.Comparator;
 import java.util.Optional;
 
 import static cn.keepfight.utils.FXUtils.limitLength;
@@ -102,7 +103,6 @@ public class SupplyController implements ContentController {
     public void initialize() throws Exception {
         initUI();
         initAction();
-        loadSupply();
         initEdit();
     }
 
@@ -112,8 +112,20 @@ public class SupplyController implements ContentController {
     }
 
     @Override
-    public void refresh() {
+    public void loaded() {
         loadSupply();
+        Platform.runLater(() -> {
+            try {
+                addController = ViewPathUtil.loadViewForController("supply_add.fxml");
+                addMaterialController = ViewPathUtil.loadViewForController("material_add.fxml");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
+    }
+
+    @Override
+    public void showed() {
     }
 
 
@@ -275,14 +287,6 @@ public class SupplyController implements ContentController {
 
 
     private void initUI() throws Exception {
-        Platform.runLater(() -> {
-            try {
-                addController = ViewPathUtil.loadViewForController("supply_add.fxml");
-                addMaterialController = ViewPathUtil.loadViewForController("material_add.fxml");
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        });
         supList.setCellFactory(list -> new ListCell<SupplyModel>() {
             @Override
             protected void updateItem(SupplyModel item, boolean empty) {

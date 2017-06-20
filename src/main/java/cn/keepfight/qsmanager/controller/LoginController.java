@@ -4,6 +4,7 @@ import cn.keepfight.qsmanager.QSApp;
 import cn.keepfight.qsmanager.model.CustomModel;
 import cn.keepfight.qsmanager.service.LoginService;
 import cn.keepfight.utils.ConfigUtil;
+import cn.keepfight.utils.FXWidgetUtil;
 import cn.keepfight.utils.WaitDialog;
 import cn.keepfight.utils.WarningBuilder;
 import javafx.fxml.FXML;
@@ -14,6 +15,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.Optional;
 
 /**
@@ -40,6 +42,7 @@ public class LoginController implements ContentController {
         // 无账号提示
         noacc.setTooltip(new Tooltip("如无账号，请联系邓维女士获得登录账号与密码（联系方式：****）"));
 
+        // 图片加载测试
 //        noacc.setOnMouseClicked(e->{
 //            String url = "http://www.gdut.edu.cn/images/ztt/zttp170608.jpg";
 //            ObjectProperty<Image> resImage = new SimpleObjectProperty<>();
@@ -47,6 +50,8 @@ public class LoginController implements ContentController {
 ////            ImageLoadUtil.bindImage(xx, "android-book.png");
 //            xx.imageProperty().bind(resImage);
 //        });
+        // 测试
+//        FXWidgetUtil.defaultList(acc, Arrays.asList("acc", "dev", "dengwei"));
 
         // 登录按钮
         login.setOnMouseClicked((MouseEvent event) -> loginAction());
@@ -59,7 +64,11 @@ public class LoginController implements ContentController {
     }
 
     @Override
-    public void refresh() {
+    public void loaded() {
+    }
+
+    @Override
+    public void showed() {
     }
 
     void loginOut() {

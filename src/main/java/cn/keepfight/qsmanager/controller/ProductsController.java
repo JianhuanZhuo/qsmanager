@@ -1,6 +1,7 @@
 package cn.keepfight.qsmanager.controller;
 
 import cn.keepfight.qsmanager.QSApp;
+import cn.keepfight.qsmanager.model.CustomModel;
 import cn.keepfight.qsmanager.model.ProductModel;
 import cn.keepfight.utils.CustomDialog;
 import cn.keepfight.utils.ViewPathUtil;
@@ -10,16 +11,11 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.*;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
 import java.io.IOException;
-import java.net.URLEncoder;
 import java.util.Optional;
 
 /**
@@ -52,9 +48,7 @@ public class ProductsController implements ContentController {
     private TableColumn<ProductModel, String> table_pic;
 
     private ProductAddController addController;
-    private PicMakerController picMakerController;
-
-    private Dialog dialog;
+    private PicViewer picViewer;
 
     @Override
     public Node getRoot() {
@@ -62,23 +56,25 @@ public class ProductsController implements ContentController {
     }
 
     @Override
-    public void refresh() {
+    public void loaded() {
         loadProducts();
-
-        // 把初始化放在这里有点奇怪，但这个初始化需要加载后的世界
-        initDialog();
-    }
-
-    @FXML
-    public void initialize() throws IOException {
         Platform.runLater(() -> {
             try {
                 addController = ViewPathUtil.loadViewForController("product_add.fxml");
-                picMakerController = ViewPathUtil.loadViewForController("pic_viewer.fxml");
+                picViewer = ViewPathUtil.loadViewForController("pic_viewer.fxml");
             } catch (IOException e) {
                 e.printStackTrace();
             }
         });
+    }
+
+    @Override
+    public void showed() {
+
+    }
+
+    @FXML
+    public void initialize() throws IOException {
 
         add.setOnAction(event -> {
             Optional<ProductModel> op = CustomDialog.gen().build(addController);
@@ -114,6 +110,28 @@ public class ProductsController implements ContentController {
             }
         });
 
+        // 双击编辑产品
+        prodTable.setRowFactory(tv -> {
+            TableRow<ProductModel> row = new TableRow<>();
+            row.setOnMouseClicked(event -> {
+                if (event.getClickCount() == 2 && (!row.isEmpty())) {
+                    ProductModel rowData = row.getItem();
+                    Optional<ProductModel> op = CustomDialog.gen().build(addController, rowData);
+                    op.ifPresent(model -> {
+                        try {
+                            model.setId(rowData.getId());
+                            QSApp.service.getProductService().update(model);
+                            loadProducts();
+                        } catch (Exception e1) {
+                            e1.printStackTrace();
+                            WarningBuilder.build("更新产品信息失败", "更新产品信息失败，请检查网络是否通畅！");
+                        }
+                    });
+                }
+            });
+            return row;
+        });
+
         table_serial.setCellValueFactory(cellFeature ->
                 new SimpleStringProperty(cellFeature.getValue().getSerial()));
         table_name.setCellValueFactory(cellFeature ->
@@ -128,6 +146,7 @@ public class ProductsController implements ContentController {
                 new SimpleStringProperty(cellFeature.getValue().getPack().toString()));
         table_pic.setCellValueFactory(cellFeature ->
                 new SimpleStringProperty(cellFeature.getValue().getPicurl()));
+
         table_pic.setCellFactory(param -> new TableCell<ProductModel, String>() {
             Button btn = new Button("查看");
 
@@ -138,20 +157,17 @@ public class ProductsController implements ContentController {
                 setText(null);
                 if (!empty) {
                     btn.setOnAction((ActionEvent event) -> {
-                                picMakerController.setImage(item);
-                                dialog.showAndWait();
+                                CustomDialog.gen().build(picViewer, item);
                             }
                     );
                     setGraphic(btn);
                 }
             }
         });
-
-        loadProducts();
     }
 
 
-    // 加载客户列表
+    // 加载产品列表
     private void loadProducts() {
         Platform.runLater(() -> {
             try {
@@ -160,15 +176,5 @@ public class ProductsController implements ContentController {
                 e.printStackTrace();
             }
         });
-    }
-
-    private void initDialog() {
-        if (dialog != null) {
-            return;
-        }
-        System.out.println("ok");
-        dialog = new Dialog<>();
-        dialog.getDialogPane().getButtonTypes().addAll(ButtonType.CANCEL);
-        dialog.getDialogPane().setContent(picMakerController.getRoot());
     }
 }

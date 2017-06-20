@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.Pane?>
 
 <BorderPane styleClass="mainpane"
-            stylesheets="@css/main.css"
+            stylesheets="@css/main.css, @css/common.css"
             xmlns="http://javafx.com/javafx/8.0.111"
             xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="cn.keepfight.qsmanager.controller.MainPane">

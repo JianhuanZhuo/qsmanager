@@ -6,7 +6,6 @@ import cn.keepfight.utils.FXUtils;
 import cn.keepfight.utils.ViewPathUtil;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
-import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
@@ -37,6 +36,7 @@ public class MainPane {
     private MenuListController listController;
 
     private List<MenuList> legalList;
+    private Map<ContentController, Boolean> isLoaded = new HashMap<>();
 
     @FXML
     public void initialize() throws IOException {
@@ -74,12 +74,14 @@ public class MainPane {
         }
         // 加载至主界面
         ContentController controller = menu.getController();
-        System.out.println("controller：" + controller);
-        System.out.println("centerScp：" + centerScp);
         centerScp.setContent(controller.getRoot());
 
         // 考虑到一次切换界面的刷新意义不大
-//        controller.refresh();
+        if (!isLoaded.getOrDefault(controller, false)){
+            controller.loaded();
+            isLoaded.put(controller, true);
+        }
+        controller.showed();
         state = menu;
     }
 
@@ -95,7 +97,8 @@ public class MainPane {
         //可见
         FXUtils.delStyle("hide", action, menuScrollPane);
 
-        changeTo(MenuList.CUSTOM);
+        centerScp.setContent(null);
+//        changeTo(legalList.get(0));
     }
 
     /**
@@ -109,6 +112,7 @@ public class MainPane {
         //隐藏
         FXUtils.addStyle("hide", action, menuScrollPane);
 
+        listController.unloadMenuList();
         loginController.loginOut();
 
         state = MenuList.SETTINGS;
@@ -118,6 +122,7 @@ public class MainPane {
         switch (userModel.getUtype().intValue()) {
             case 0:
                 legalList = Arrays.asList(
+                        MenuList.SHOP,
                         MenuList.CUSTOM,
                         MenuList.SUPPLY,
                         MenuList.PRODUCTS,
@@ -137,7 +142,8 @@ public class MainPane {
                         MenuList.SETTINGS);
                 break;
             case 2:
-                legalList = Collections.singletonList(
+                legalList = Arrays.asList(
+                        MenuList.SHOP,
                         MenuList.SETTINGS);
                 break;
             default:

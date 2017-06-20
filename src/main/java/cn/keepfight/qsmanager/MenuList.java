@@ -11,6 +11,7 @@ import java.io.IOException;
  * Created by tom on 2017/6/5.
  */
 public enum MenuList {
+    SHOP("浏览下单"),
     SUPPLY("供应商管理"),
     CUSTOM("客户管理"),
     PRODUCTS("产品管理"),
@@ -30,6 +31,18 @@ public enum MenuList {
         image = "menu-" + name().toLowerCase() + ".png";
         english = name().toLowerCase() + " manage";
         this.title = title;
+    }
+
+    private static boolean loaded = false;
+    public static synchronized void loadMenuView(){
+        if (loaded) return;
+        loaded = true;
+        for (MenuList m : MenuList.values()) {
+            m.load();
+        }
+    }
+
+    private void load(){
         Platform.runLater(() -> {
             try {
                 controller = ViewPathUtil.loadViewForController(view);
@@ -49,10 +62,6 @@ public enum MenuList {
 
     public String getEnglish() {
         return english;
-    }
-
-    public String getView() {
-        return view;
     }
 
     public String getTitle() {
