@@ -10,7 +10,6 @@ public class OrderModel {
     private String serial;
     private Long orderdate;
     private String note;
-    private Long ct;
 
     public Long getId() {
         return id;
@@ -50,13 +49,5 @@ public class OrderModel {
 
     public void setNote(String note) {
         this.note = note;
-    }
-
-    public Long getCt() {
-        return ct;
-    }
-
-    public void setCt(Long ct) {
-        this.ct = ct;
     }
 }

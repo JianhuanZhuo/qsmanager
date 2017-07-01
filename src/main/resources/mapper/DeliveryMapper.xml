@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.keepfight.qsmanager.Mapper.DeliveryMapper">
+
+    <!--List<DeliveryModelFull> selectAll(DeliverySelection selection) throws Exception;-->
+    <select id="selectAll" parameterType="DeliverySelection" resultType="DeliveryModelFull">
+        SELECT
+        r.id AS id,
+        r.cid AS cid,
+        r.serial AS serial,
+        order_serial AS order_serial,
+        strftime('%s',r.ddate, 'utc')||'000' AS ddate,
+        s.serial || '-' || s.name AS cust
+        FROM delivery r, custom s
+        WHERE r.cid=s.id
+        <if test="cid!=null">
+            AND r.cid = #{cid}
+        </if>
+        <if test="year!=null">
+            AND strftime('%Y', r.ddate) = #{year}
+        </if>
+        <if test="month!=null">
+            AND strftime('%m', r.ddate) = #{month}
+        </if>
+        <if test="orderStr!=null">
+            AND order_serial LIKE #{orderStr} || '%'
+        </if>
+        ORDER BY ddate
+    </select>
+
+
+    <!--根据ID选择送货单-->
+    <!--DeliveryModelFull selectByID(Long id) throws Exception;-->
+    <select id="selectByID" parameterType="long" resultType="DeliveryModelFull">
+        SELECT *
+        FROM delivery
+        WHERE id = #{id}
+    </select>
+
+
+
+    <!--插入一条新的送货记录-->
+    <!--void insert(DeliveryModel model) throws Exception;-->
+    <insert id="insert" parameterType="DeliveryModel">
+        INSERT INTO
+        delivery (cid, serial, ddate, cust, order_serial)
+        VALUES (#{cid}, #{serial}, DATEtime(#{ddate}/1000, 'unixepoch', 'localtime'), #{cust}, #{order_serial})
+        <selectKey keyProperty="id" order="AFTER" resultType="long">
+            SELECT last_insert_rowid();
+        </selectKey>
+    </insert>
+
+
+    <!--修改送货记录-->
+    <!--void update(DeliveryModel model) throws Exception;-->
+    <update id="update" parameterType="DeliveryModel">
+        UPDATE delivery
+        SET
+            cid          = #{cid},
+            serial       = #{serial},
+            ddate        = DATEtime(#{ddate}/1000, 'unixepoch', 'localtime'),
+            cust         = #{cust},
+            order_serial = #{order_serial}
+        WHERE id == #{id}
+    </update>
+
+    <!--删除送货记录-->
+    <!--void delete(DeliveryModel model) throws Exception;-->
+    <delete id="delete" parameterType="DeliveryModel">
+        DELETE FROM delivery
+        WHERE id = #{id}
+    </delete>
+
+
+    <!--查询指定客户和年份的全部月份的送货总额-->
+    <!--List<AnnualTotalModel> supAnnualTotal(DeliverySelection selection);-->
+    <select id="supAnnualTotal" parameterType="DeliverySelection" resultType="AnnualTotalModel">
+        SELECT strftime('%m', d.ddate) AS mon, sum(di.price * di.num * di.pack) AS total
+        FROM delivery_item di, delivery d
+        WHERE
+            cid == #{cid}
+            AND strftime('%Y', d.ddate) == #{year}
+            AND di.did == d.id
+        GROUP BY strftime('%m', d.ddate)
+        ORDER BY strftime('%m', d.ddate)
+    </select>
+</mapper>

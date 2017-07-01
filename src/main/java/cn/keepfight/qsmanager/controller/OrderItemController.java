@@ -4,7 +4,6 @@ import cn.keepfight.qsmanager.model.OrderItemModel;
 import cn.keepfight.qsmanager.model.OrderModelFull;
 import cn.keepfight.utils.FXUtils;
 import cn.keepfight.utils.FXWidgetUtil;
-import javafx.beans.binding.StringBinding;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -33,6 +32,8 @@ public class OrderItemController implements ContentController, Initializable {
     private RadioButton all;
     @FXML
     private RadioButton left;
+
+
     @FXML
     private VBox root;
 
@@ -96,9 +97,6 @@ public class OrderItemController implements ContentController, Initializable {
     private OrdersController ordersController;
     private Tooltip msg = new Tooltip();
 
-    // 静态
-    private static SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-
     @Override
     public Node getRoot() {
         return root;
@@ -144,11 +142,13 @@ public class OrderItemController implements ContentController, Initializable {
             alert.setHeaderText("是否要删除这条订单记录？");
             Optional<ButtonType> result = alert.showAndWait();
             if (result.isPresent() && result.get() == ButtonType.OK) {
-//                outComeController.deleteSelected(modelFull);
+                ordersController.deleteSelected(modelFull);
             }
         });
 
-//        update.setOnAction(event -> outComeController.updateReceipt(modelFull));
+        a_alter.setOnAction(event -> ordersController.updateOrder(modelFull));
+        a_delivery.setOnAction(event -> ordersController.deliveryAction(modelFull));
+
         FXWidgetUtil.hackTooltipStartTiming(msg);
         Tooltip.install(o_msg, msg);
 
@@ -163,7 +163,7 @@ public class OrderItemController implements ContentController, Initializable {
         this.ordersController = controller;
 
         // 填充数据
-        o_date.setText(formatter.format(new Date(modelFull.getOrderdate())));
+        o_date.setText(FXUtils.stampToDate(modelFull.getOrderdate()));
         o_serial.setText(modelFull.getSerial());
         o_cust.setText(modelFull.getCust());
         if (Objects.nonNull(modelFull.getNote()) && !modelFull.getNote().trim().equals("")) {
@@ -175,7 +175,6 @@ public class OrderItemController implements ContentController, Initializable {
         table.getItems().setAll(modelFull.getOrderItemModels());
 
         // 默认选择为全部货项
-        all.fire();
     }
 
 }

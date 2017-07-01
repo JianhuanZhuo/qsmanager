@@ -1,7 +1,6 @@
 package cn.keepfight.qsmanager.model;
 
 import java.math.BigDecimal;
-import java.sql.Timestamp;
 
 /**
  * 供应商年度对账月明细表模型
@@ -9,18 +8,38 @@ import java.sql.Timestamp;
  */
 public class CustAnnualMonModel {
     private Long id;
-    private Long said;
-    private int mon;
+    private Long caid;
+    private Long mon;
     private BigDecimal total;
     private String billunit;
-    private Timestamp billdate;
+    private Long billdate;
     private BigDecimal billtotal;
     private BigDecimal rate;
     private String remitunit;
     private String pattern;
-    private Timestamp remitdate;
+    private Long remitdate;
     private BigDecimal paytotal;
     private String note;
+
+    public CustAnnualMonModel(){}
+    
+    public CustAnnualMonModel(CustAnnualMonModel m){
+         setId(m.getId());
+         setCaid(m.getCaid());
+         setMon(m.getMon());
+         setTotal(m.getTotal());
+         setBillunit(m.getBillunit());
+         setBilldate(m.getBilldate());
+         setBilltotal(m.getBilltotal());
+         setRate(m.getRate());
+         setRemitunit(m.getRemitunit());
+         setPattern(m.getPattern());
+         setRemitdate(m.getRemitdate());
+         setPaytotal(m.getPaytotal());
+         setNote(m.getNote());
+    }
+    
+    private boolean valid = false;
 
     public Long getId() {
         return id;
@@ -30,19 +49,19 @@ public class CustAnnualMonModel {
         this.id = id;
     }
 
-    public Long getSaid() {
-        return said;
+    public Long getCaid() {
+        return caid;
     }
 
-    public void setSaid(Long said) {
-        this.said = said;
+    public void setCaid(Long caid) {
+        this.caid = caid;
     }
 
-    public int getMon() {
+    public Long getMon() {
         return mon;
     }
 
-    public void setMon(int mon) {
+    public void setMon(Long mon) {
         this.mon = mon;
     }
 
@@ -62,11 +81,11 @@ public class CustAnnualMonModel {
         this.billunit = billunit;
     }
 
-    public Timestamp getBilldate() {
+    public Long getBilldate() {
         return billdate;
     }
 
-    public void setBilldate(Timestamp billdate) {
+    public void setBilldate(Long billdate) {
         this.billdate = billdate;
     }
 
@@ -102,11 +121,11 @@ public class CustAnnualMonModel {
         this.pattern = pattern;
     }
 
-    public Timestamp getRemitdate() {
+    public Long getRemitdate() {
         return remitdate;
     }
 
-    public void setRemitdate(Timestamp remitdate) {
+    public void setRemitdate(Long remitdate) {
         this.remitdate = remitdate;
     }
 
@@ -124,5 +143,33 @@ public class CustAnnualMonModel {
 
     public void setNote(String note) {
         this.note = note;
+    }
+
+    public boolean isValid() {
+        return valid;
+    }
+
+    public void setValid(boolean valid) {
+        this.valid = valid;
+    }
+
+    public BigDecimal getRateTotal(){
+        try {
+            return getRate().multiply(getBilltotal());
+        }catch (Exception e){
+            return new BigDecimal(0);
+        }
+    }
+
+    /**
+     * 获得实际需要支付的金额
+     */
+    public BigDecimal getNeedPayTotal(){
+        // 金额 + 税金 - 付款
+        try {
+            return getTotal().add(getRateTotal()).subtract(getPaytotal());
+        }catch (Exception e){
+            return new BigDecimal(0);
+        }
     }
 }

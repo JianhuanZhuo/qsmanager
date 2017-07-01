@@ -42,9 +42,4 @@ public interface OrderMapper extends Mapper{
      * 获取订单全部可用的年份
      */
     List<Long> selectYear() throws Exception;
-
-    /**
-     * 获得下一个插入的 Ct 数
-     */
-    Long getCt(Long orderdate) throws Exception;
 }

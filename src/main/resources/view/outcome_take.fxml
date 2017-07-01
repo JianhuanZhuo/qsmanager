@@ -3,6 +3,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.Pane?>
 <VBox styleClass="vbox-common"
       xmlns="http://javafx.com/javafx"
       xmlns:fx="http://javafx.com/fxml"
@@ -32,5 +33,6 @@
     <HBox styleClass="hbox-common">
         <Label text="总采购：￥"/>
         <Label fx:id="at_total" text="0"/>
+        <Pane HBox.hgrow="ALWAYS"/>
     </HBox>
 </VBox>

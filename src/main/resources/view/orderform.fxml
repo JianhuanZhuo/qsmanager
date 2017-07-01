@@ -22,12 +22,12 @@
             <Image url="@img/msg.png"/>
         </ImageView>
         <Pane HBox.hgrow="ALWAYS"/>
-        <RadioButton fx:id="all" selected="true" text="全部货项">
-            <toggleGroup>
-                <ToggleGroup fx:id="goods"/>
-            </toggleGroup>
-        </RadioButton>
-        <RadioButton fx:id="left" text="剩余未发货" toggleGroup="$goods"/>
+        <!--<RadioButton fx:id="all" selected="true" text="全部货项">-->
+            <!--<toggleGroup>-->
+                <!--<ToggleGroup fx:id="goods"/>-->
+            <!--</toggleGroup>-->
+        <!--</RadioButton>-->
+        <!--<RadioButton fx:id="left" text="剩余未发货" toggleGroup="$goods"/>-->
     </HBox>
     <ScrollPane fitToHeight="true" fitToWidth="true"  prefHeight="120" prefWidth="200.0" VBox.vgrow="ALWAYS">
         <TableView fx:id="table">

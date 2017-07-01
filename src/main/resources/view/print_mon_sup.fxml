@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox fx:id="root" styleClass="layout_holder, preview" stylesheets="@css/print.css" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cn.keepfight.qsmanager.controller.PrintMonSupController">
+    <VBox styleClass="print_layout,layout_A4H">
+        <VBox>
+            <HBox styleClass="print_title">
+                <Label text="佛山市南海区丹灶晴旭金属制品厂" />
+                <Pane HBox.hgrow="ALWAYS" />
+                <Label text="【供货商每月对账单】" />
+            </HBox>
+            <Pane style="-fx-pref-height: 20px" />
+            <GridPane styleClass="print_font,fitpack">
+                <Label text="对账单时间：" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+                <Label text="供应商地址：" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+                <TextField fx:id="date" text="2017年6月" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+                <TextField fx:id="addr" text="中山市南头镇升辉南工业区腾业路6号" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                <Label text="供应商编号：" GridPane.columnIndex="2" GridPane.rowIndex="0" />
+                <Label text="供应商电话：" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+                <TextField fx:id="item" text="Sp001" GridPane.columnIndex="3" GridPane.rowIndex="0" />
+                <TextField fx:id="phone" text="0760-23139689/23131998" GridPane.columnIndex="3" GridPane.rowIndex="1" />
+                <Label text="供应商名称：" GridPane.columnIndex="4" GridPane.rowIndex="0" />
+                <Label text="供应商传真：" GridPane.columnIndex="4" GridPane.rowIndex="1" />
+                <TextField fx:id="name" text="中山嘉荣泡棉有限公司" GridPane.columnIndex="5" GridPane.rowIndex="0" />
+                <TextField fx:id="fax" text="0760-23139699" GridPane.columnIndex="5" GridPane.rowIndex="1" />
+                <columnConstraints>
+                    <ColumnConstraints />
+                    <ColumnConstraints hgrow="ALWAYS" />
+                    <ColumnConstraints />
+                    <ColumnConstraints prefWidth="170.0" />
+                    <ColumnConstraints />
+                    <ColumnConstraints prefWidth="170.0" />
+                </columnConstraints>
+            <rowConstraints>
+               <RowConstraints />
+               <RowConstraints />
+            </rowConstraints>
+            </GridPane>
+            <Pane style="-fx-pref-height: 20px" />
+            <HBox>
+                <VBox HBox.hgrow="ALWAYS">
+                    <TableView fx:id="table" styleClass="tab" HBox.hgrow="ALWAYS">
+                        <columns>
+                            <TableColumn fx:id="id" prefWidth="35" text="序号" />
+                            <TableColumn fx:id="tab_date" prefWidth="76.0" text="日期" />
+                            <TableColumn fx:id="tab_serial" prefWidth="91.0" text="送货号" />
+                            <TableColumn fx:id="tab_name" prefWidth="93.0" text="产品名称" />
+                            <TableColumn fx:id="tab_color" prefWidth="74.0" text="产品颜色" />
+                            <TableColumn fx:id="tab_spec" prefWidth="76.0" text="产品规格" />
+                            <TableColumn fx:id="tab_num" prefWidth="71.0" text="订购数量" />
+                            <TableColumn fx:id="tab_unit" prefWidth="66.0" text="计量单位" />
+                            <TableColumn fx:id="tab_price" prefWidth="89.0" text="单价(元)含税" />
+                            <TableColumn fx:id="tab_total" prefWidth="93.0" text="金额" />
+                        </columns>
+                    </TableView>
+                    <HBox alignment="CENTER_RIGHT" styleClass="additional_cell">
+                        <Label text="本月合计：" />
+                        <TextField style="-fx-pref-width: 120px" />
+                    </HBox>
+                    <HBox styleClass="stamp">
+                        <Label text="尊敬" />
+                        <Label text="**" />
+                        <Label text="的供货商您好！以上是" />
+                        <Label text="****年**月" />
+                        <Label text="的对账单明细，请于当月15号对账无误后签名确认，谢谢！" />
+                    </HBox>
+                    <HBox styleClass="stamp">
+                        <Label text="佛山市南海区丹灶晴旭金属制品厂财务 " />
+                        <Label text="****年*月" />
+                    </HBox>
+                </VBox>
+                <VBox styleClass="rightp">
+                    <Label text="①存根②客户③回单④记帐⑤仓库" VBox.vgrow="ALWAYS" />
+                </VBox>
+            </HBox>
+        </VBox>
+    </VBox>
+</VBox>

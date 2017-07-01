@@ -1,5 +1,8 @@
 package cn.keepfight.qsmanager.model;
 
+import javafx.beans.binding.ObjectBinding;
+import javafx.beans.property.*;
+
 import java.math.BigDecimal;
 
 /**
@@ -7,87 +10,146 @@ import java.math.BigDecimal;
  * Created by tom on 2017/6/6.
  */
 public class ReceiptDetailModel {
-    private Long id;
-    private Long rid;
-    private String serial;
-    private String name;
-    private String color;
-    private String spec;
-    private BigDecimal price;
-    private String unit;
-    private BigDecimal num;
+    private LongProperty id = new SimpleLongProperty();
+    private LongProperty rid = new SimpleLongProperty();
+    private StringProperty serial = new SimpleStringProperty();
+    private StringProperty name = new SimpleStringProperty();
+    private StringProperty color = new SimpleStringProperty();
+    private StringProperty spec = new SimpleStringProperty();
+    private ObjectProperty<BigDecimal> price = new SimpleObjectProperty<>();
+    private StringProperty unit = new SimpleStringProperty();
+    private ObjectProperty<BigDecimal> num = new SimpleObjectProperty<>();
 
-    public Long getId() {
+    // 辅助属性
+    private ObjectProperty<BigDecimal> totalProperty;
+
+    public long getId() {
+        return id.get();
+    }
+
+    public LongProperty idProperty() {
         return id;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setId(long id) {
+        this.id.set(id);
     }
 
-    public Long getRid() {
+    public long getRid() {
+        return rid.get();
+    }
+
+    public LongProperty ridProperty() {
         return rid;
     }
 
-    public void setRid(Long rid) {
-        System.out.println("设置 RID：" + rid);
-        this.rid = rid;
+    public void setRid(long rid) {
+        this.rid.set(rid);
     }
 
     public String getSerial() {
+        return serial.get();
+    }
+
+    public StringProperty serialProperty() {
         return serial;
     }
 
     public void setSerial(String serial) {
-        this.serial = serial;
+        this.serial.set(serial);
     }
 
     public String getName() {
+        return name.get();
+    }
+
+    public StringProperty nameProperty() {
         return name;
     }
 
     public void setName(String name) {
-        this.name = name;
+        this.name.set(name);
     }
 
     public String getColor() {
+        return color.get();
+    }
+
+    public StringProperty colorProperty() {
         return color;
     }
 
     public void setColor(String color) {
-        this.color = color;
+        this.color.set(color);
     }
 
     public String getSpec() {
+        return spec.get();
+    }
+
+    public StringProperty specProperty() {
         return spec;
     }
 
     public void setSpec(String spec) {
-        this.spec = spec;
+        this.spec.set(spec);
     }
 
     public BigDecimal getPrice() {
+        return price.get();
+    }
+
+    public ObjectProperty<BigDecimal> priceProperty() {
         return price;
     }
 
     public void setPrice(BigDecimal price) {
-        this.price = price;
+        this.price.set(price);
     }
 
     public String getUnit() {
+        return unit.get();
+    }
+
+    public StringProperty unitProperty() {
         return unit;
     }
 
     public void setUnit(String unit) {
-        this.unit = unit;
+        this.unit.set(unit);
     }
 
     public BigDecimal getNum() {
+        return num.get();
+    }
+
+    public ObjectProperty<BigDecimal> numProperty() {
         return num;
     }
 
     public void setNum(BigDecimal num) {
-        this.num = num;
+        this.num.set(num);
+    }
+
+
+    public BigDecimal getTotal(){
+        return getPrice().multiply(getNum());
+    }
+
+    public ObjectProperty<BigDecimal> totalProperty(){
+        if (totalProperty==null){
+            totalProperty = new SimpleObjectProperty<>();
+            totalProperty.bind(new ObjectBinding<BigDecimal>() {
+                {
+                    bind(price, num);
+                }
+                @Override
+                protected BigDecimal computeValue() {
+                    return getTotal();
+                }
+            });
+        }
+        return totalProperty;
     }
 
     public void update(ReceiptDetailModel model){

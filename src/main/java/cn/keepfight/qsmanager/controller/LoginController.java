@@ -3,10 +3,7 @@ package cn.keepfight.qsmanager.controller;
 import cn.keepfight.qsmanager.QSApp;
 import cn.keepfight.qsmanager.model.CustomModel;
 import cn.keepfight.qsmanager.service.LoginService;
-import cn.keepfight.utils.ConfigUtil;
-import cn.keepfight.utils.FXWidgetUtil;
-import cn.keepfight.utils.WaitDialog;
-import cn.keepfight.utils.WarningBuilder;
+import cn.keepfight.utils.*;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.*;
@@ -43,15 +40,20 @@ public class LoginController implements ContentController {
         noacc.setTooltip(new Tooltip("如无账号，请联系邓维女士获得登录账号与密码（联系方式：****）"));
 
         // 图片加载测试
-//        noacc.setOnMouseClicked(e->{
+        noacc.setOnMouseClicked(e->{
 //            String url = "http://www.gdut.edu.cn/images/ztt/zttp170608.jpg";
 //            ObjectProperty<Image> resImage = new SimpleObjectProperty<>();
 //            Platform.runLater(()-> resImage.set(new Image(url)));
 ////            ImageLoadUtil.bindImage(xx, "android-book.png");
 //            xx.imageProperty().bind(resImage);
-//        });
-        // 测试
-//        FXWidgetUtil.defaultList(acc, Arrays.asList("acc", "dev", "dengwei"));
+            try {
+                CustomDialog.gen().build(ViewPathUtil.loadViewForController("print.fxml"));
+            } catch (IOException e1) {
+                e1.printStackTrace();
+            }
+
+//            FXWidgetUtil.printNode(root);
+        });
 
         // 登录按钮
         login.setOnMouseClicked((MouseEvent event) -> loginAction());

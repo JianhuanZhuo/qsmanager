@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox fx:id="root" styleClass="title-pane" stylesheets="@css/common.css" xmlns="http://javafx.com/javafx/8.0.111"
+      xmlns:fx="http://javafx.com/fxml/1" fx:controller="cn.keepfight.qsmanager.controller.OrderItemAddController">
+    <HBox alignment="CENTER_LEFT" styleClass="title-line">
+        <Label text="订单明细信息"/>
+        <Pane HBox.hgrow="ALWAYS"/>
+    </HBox>
+    <GridPane styleClass="infogp">
+        <Label text="产品编号：" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+        <Label text="产品名称：" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
+        <Label text="包装明细：" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
+        <Label text="产品单价：" GridPane.columnIndex="0" GridPane.rowIndex="3"/>
+        <Label text="产品装数：" GridPane.columnIndex="0" GridPane.rowIndex="4"/>
+        <Label text="订购数量：" GridPane.columnIndex="0" GridPane.rowIndex="5"/>
+        <Label text="合计金额：" GridPane.columnIndex="0" GridPane.rowIndex="6"/>
+        <Label text="税率：" GridPane.columnIndex="0" GridPane.rowIndex="7"/>
+        <Label text="税金：" GridPane.columnIndex="0" GridPane.rowIndex="8"/>
+        <Label text="税后金额：" GridPane.columnIndex="0" GridPane.rowIndex="9"/>
+        <Label text="返点数：" GridPane.columnIndex="0" GridPane.rowIndex="10"/>
+        <Label text="总共返点数：" GridPane.columnIndex="0" GridPane.rowIndex="11"/>
+        <Label text="运费：" GridPane.columnIndex="0" GridPane.rowIndex="12"/>
+        <Label text="实际支付：" GridPane.columnIndex="0" GridPane.rowIndex="13"/>
+        <HBox styleClass="hbox-spacing" GridPane.columnIndex="1" GridPane.rowIndex="0">
+            <TextField prefWidth="110" fx:id="tab_serial"/>
+            <ChoiceBox prefWidth="90" HBox.hgrow="ALWAYS" fx:id="serial_c"/>
+        </HBox>
+        <TextField  fx:id="tab_name"  GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+        <TextField fx:id="tab_detail" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
+        <TextField fx:id="tab_price"  GridPane.columnIndex="1" GridPane.rowIndex="3"/>
+        <HBox styleClass="hbox-spacing" GridPane.columnIndex="1" GridPane.rowIndex="4">
+            <TextField fx:id="tab_packNum"  prefWidth="110" disable="true"/>
+            <ChoiceBox fx:id="tab_pack" prefWidth="90"/>
+        </HBox>
+        <HBox styleClass="hbox-spacing" GridPane.columnIndex="1" GridPane.rowIndex="5">
+            <TextField prefWidth="110"  fx:id="tab_num"/>
+            <Label text="("/>
+            <Label fx:id="tab_unit"  text="箱"/>
+            <Label text=")"/>
+        </HBox>
+        <TextField fx:id="tab_total" disable="true" GridPane.columnIndex="1" GridPane.rowIndex="6"/>
+        <TextField fx:id="tab_rate" GridPane.columnIndex="1" GridPane.rowIndex="7"/>
+        <TextField fx:id="tab_ratetotal" disable="true" GridPane.columnIndex="1" GridPane.rowIndex="8"/>
+        <TextField fx:id="tab_totallWithRate" disable="true" GridPane.columnIndex="1" GridPane.rowIndex="9"/>
+        <TextField fx:id="tab_rebate" GridPane.columnIndex="1" GridPane.rowIndex="10"/>
+        <TextField fx:id="tab_allrebate" disable="true" GridPane.columnIndex="1" GridPane.rowIndex="11"/>
+        <TextField fx:id="tab_delifee" GridPane.columnIndex="1" GridPane.rowIndex="12"/>
+        <TextField fx:id="tab_actPay" disable="true" GridPane.columnIndex="1" GridPane.rowIndex="13"/>
+        <columnConstraints>
+            <ColumnConstraints halignment="RIGHT"/>
+            <ColumnConstraints hgrow="ALWAYS" maxWidth="200.0"/>
+        </columnConstraints>
+    </GridPane>
+</VBox>

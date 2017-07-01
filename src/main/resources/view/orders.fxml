@@ -17,7 +17,7 @@
       fx:id="root"
       xmlns="http://javafx.com/javafx/8.0.111"
       xmlns:fx="http://javafx.com/fxml/1">
-    <HBox alignment="CENTER_LEFT" styleClass="title-line">
+    <HBox styleClass="title-line">
         <Label text="订单管理"/>
         <Pane HBox.hgrow="ALWAYS"/>
         <Button fx:id="refresh" text="刷新" styleClass="btnable">
@@ -29,7 +29,7 @@
         </Button>
     </HBox>
     <HBox styleClass="hbox-common">
-        <ChoiceBox fx:id="cust_sel" prefWidth="150.0"/>
+        <ChoiceBox fx:id="cust_sel" prefWidth="130.0"/>
         <ChoiceBox fx:id="year_sel" prefWidth="80.0"/>
         <ChoiceBox fx:id="month_sel" prefWidth="80.0"/>
         <ChoiceBox fx:id="state_sel" prefWidth="80.0"/>

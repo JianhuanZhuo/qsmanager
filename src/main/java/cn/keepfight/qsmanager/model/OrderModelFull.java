@@ -8,12 +8,12 @@ import java.util.List;
  * Created by tom on 2017/6/19.
  */
 public class OrderModelFull implements ModelFull<OrderModel>{
+
     private Long id;
     private Long cid;
     private String serial;
     private Long orderdate;
     private String note;
-    private Long ct;
 
     private String cust;
 
@@ -26,7 +26,6 @@ public class OrderModelFull implements ModelFull<OrderModel>{
         setSerial(orderModel.getSerial());
         setOrderdate(orderModel.getOrderdate());
         setNote(orderModel.getNote());
-        setCt(orderModel.getCt());
     }
 
     @Override
@@ -37,7 +36,6 @@ public class OrderModelFull implements ModelFull<OrderModel>{
         model.setSerial(getSerial());
         model.setOrderdate(getOrderdate());
         model.setNote(getNote());
-        model.setCt(getCt());
         return model;
     }
 
@@ -100,13 +98,5 @@ public class OrderModelFull implements ModelFull<OrderModel>{
 
     public void setCust(String cust) {
         this.cust = cust;
-    }
-
-    public Long getCt() {
-        return ct;
-    }
-
-    public void setCt(Long ct) {
-        this.ct = ct;
     }
 }

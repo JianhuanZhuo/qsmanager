@@ -31,46 +31,42 @@
     </HBox>
     <TabPane styleClass="tab-pane-common" tabClosingPolicy="UNAVAILABLE" VBox.vgrow="ALWAYS">
         <Tab styleClass="tab-common" text="送货列表">
-            <BorderPane styleClass="tab-content-common">
-                <top>
-                    <HBox styleClass="hbox-common">
-                        <ChoiceBox fx:id="rec_sup_sel"/>
-                        <ChoiceBox fx:id="rec_year_sel"/>
-                        <ChoiceBox fx:id="rec_mon_sel"/>
-                        <Pane HBox.hgrow="ALWAYS"/>
-                        <Button fx:id="rec_add" text="添加送货单">
-                            <graphic>
-                                <ImageView fitWidth="16" fitHeight="16" >
-                                    <Image url="@img/item-add.png"/>
-                                </ImageView>
-                            </graphic>
-                        </Button>
-                        <Button fx:id="rec_print_mon" text="打印月明细表">
-                            <graphic>
-                                <ImageView fitWidth="16" fitHeight="16" >
-                                    <Image url="@img/print.png"/>
-                                </ImageView>
-                            </graphic>
-                        </Button>
-                    </HBox>
-                </top>
-                <center>
-                    <ScrollPane fitToHeight="true" fitToWidth="true">
-                        <ListView fx:id="receiptFullList" styleClass="itemlist"/>
-                    </ScrollPane>
-                </center>
-            </BorderPane>
+            <VBox styleClass="vbox-common">
+                <HBox styleClass="hbox-common">
+                    <ChoiceBox fx:id="rec_sup_sel" prefWidth="130"/>
+                    <ChoiceBox fx:id="rec_year_sel" prefWidth="80"/>
+                    <ChoiceBox fx:id="rec_mon_sel" prefWidth="80"/>
+                    <Pane HBox.hgrow="ALWAYS"/>
+                    <Button fx:id="rec_add" text="添加送货单">
+                        <graphic>
+                            <ImageView fitWidth="16" fitHeight="16">
+                                <Image url="@img/item-add.png"/>
+                            </ImageView>
+                        </graphic>
+                    </Button>
+                    <Button fx:id="rec_print_mon" text="打印月明细表">
+                        <graphic>
+                            <ImageView fitWidth="16" fitHeight="16">
+                                <Image url="@img/print.png"/>
+                            </ImageView>
+                        </graphic>
+                    </Button>
+                </HBox>
+                <ScrollPane fitToHeight="true" fitToWidth="true" VBox.vgrow="ALWAYS">
+                    <ListView fx:id="receiptFullList" styleClass="itemlist"/>
+                </ScrollPane>
+            </VBox>
         </Tab>
         <Tab styleClass="tab-common" text="年度对账表">
             <BorderPane styleClass="tab-content-common">
                 <top>
                     <HBox styleClass="hbox-common" stylesheets="@css/common.css">
-                        <ChoiceBox fx:id="an_sup_sel"/>
-                        <ChoiceBox fx:id="an_year_sel"/>
+                        <ChoiceBox fx:id="an_sup_sel" prefWidth="130"/>
+                        <ChoiceBox fx:id="an_year_sel" prefWidth="80"/>
                         <Pane HBox.hgrow="ALWAYS"/>
                         <Button fx:id="an_print" text="打印年度对账表">
                             <graphic>
-                                <ImageView  fitWidth="16" fitHeight="16" styleClass="image-button">
+                                <ImageView fitWidth="16" fitHeight="16" styleClass="image-button">
                                     <Image url="@img/print.png"/>
                                 </ImageView>
                             </graphic>

@@ -82,6 +82,16 @@ public class WaitDialog<V> extends Dialog<Boolean> implements EventHandler<Worke
         return this;
     }
 
+    /**
+     * 设置头部图标
+     */
+    public WaitDialog<V> setIcon(String icon) {
+        try {
+            ImageLoadUtil.bindImageDirectly((ImageView) getGraphic(), icon);
+        }catch (Exception e){}
+        return this;
+    }
+
     @Override
     public void handle(WorkerStateEvent event) {
         setResult(Boolean.TRUE);

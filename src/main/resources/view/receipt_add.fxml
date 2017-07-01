@@ -12,11 +12,9 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
-<?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
 <VBox fx:id="root"
@@ -25,7 +23,7 @@
       xmlns:fx="http://javafx.com/fxml/1"
       fx:controller="cn.keepfight.qsmanager.controller.ReceiptAddController">
     <HBox styleClass="title-line">
-        <Label text="新增产品信息"/>
+        <Label text="编辑供应送货信息"/>
         <Pane HBox.hgrow="ALWAYS"/>
     </HBox>
     <GridPane styleClass="infogp">

@@ -16,6 +16,12 @@ public interface CustomMapper extends Mapper {
      */
     List<CustomModel> selectAll() throws Exception;
 
+
+    /**
+     * 根据客户ID 选择客户
+     */
+    CustomModel selectAllByID(Long cid) throws Exception;
+
     /**
      * 更新指定用户，以ID为准
      */
@@ -39,4 +45,5 @@ public interface CustomMapper extends Mapper {
      * @return 若账号密码合法，则返回 null
      */
     CustomModel checkLegality(CustomModel user) throws Exception;
+
 }

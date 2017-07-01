@@ -296,8 +296,6 @@ public class OutComeController implements ContentController {
                         rowData.setRemitdate(model.getRemitdate());
                         rowData.setPaytotal(model.getPaytotal());
                         rowData.setNote(model.getNote());
-                        rowData.setNote(model.getNote());
-
                         try {
                             QSApp.service.getSupAnnualService().updateMon(rowData);
                             loadAnnu();

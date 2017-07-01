@@ -32,5 +32,6 @@
     <HBox styleClass="hbox-common">
         <Label text="总付款：￥"/>
         <Label fx:id="ap_total" text="0"/>
+        <Pane HBox.hgrow="ALWAYS"/>
     </HBox>
 </VBox>

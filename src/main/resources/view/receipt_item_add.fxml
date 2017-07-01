@@ -25,7 +25,7 @@
         <Label text="计量单位：" GridPane.columnIndex="0" GridPane.rowIndex="5" />
         <Label text="产品数量：" GridPane.columnIndex="0" GridPane.rowIndex="6" />
         <HBox GridPane.columnIndex="1" GridPane.rowIndex="0">
-            <TextField fx:id="serial" />
+            <TextField fx:id="item" />
             <ChoiceBox fx:id="serial_c" />
         </HBox>
         <TextField fx:id="name" GridPane.columnIndex="1" GridPane.rowIndex="1" />

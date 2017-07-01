@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox fx:id="root" styleClass="layout_holder, preview" stylesheets="@css/print.css"
+      xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="cn.keepfight.qsmanager.controller.PrintMonCustRateController">
+    <VBox styleClass="print_layout,layout_A4H">
+        <VBox style="-fx-spacing: 2px">
+            <HBox styleClass="print_title">
+                <Label text="佛山市南海区丹灶晴旭金属制品厂"/>
+                <Pane HBox.hgrow="ALWAYS"/>
+                <Label text="【客户每月对账单】"/>
+            </HBox>
+            <Pane style="-fx-pref-height: 20px"/>
+            <HBox styleClass="print_font">
+                <Label text="地址：佛山市南海区丹灶镇新农洲中村大山杏"/>
+                <Pane HBox.hgrow="ALWAYS"/>
+                <Label text="NO:"/>
+                <Label text="170320006"/>
+                <!--下面这个标签仅为对齐作用-->
+                <Label text="   "/>
+            </HBox>
+            <HBox styleClass="print_font">
+                <Label text="电话：0757-63302363 13929986149  13925977136"/>
+            </HBox>
+            <GridPane styleClass="print_font,fitpack">
+                <Label text="客户名称：" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+                <Label text="客户地址：" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
+                <TextField fx:id="cust" text="中山嘉荣泡棉有限公司" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
+                <TextField fx:id="addr" text="中山市升辉南工业区腾业路6号" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+                <Label text="联系电话：" GridPane.columnIndex="2" GridPane.rowIndex="0"/>
+                <Label text="合同号码：" GridPane.columnIndex="2" GridPane.rowIndex="1"/>
+                <TextField fx:id="phone" text="0760-23139689" GridPane.columnIndex="3" GridPane.rowIndex="0"/>
+                <TextField fx:id="contract" GridPane.columnIndex="3" GridPane.rowIndex="1"/>
+                <Label text="制单人员：" GridPane.columnIndex="4" GridPane.rowIndex="0"/>
+                <Label text="发货日期：" GridPane.columnIndex="4" GridPane.rowIndex="1"/>
+                <TextField fx:id="maker" text="张制单员" GridPane.columnIndex="5" GridPane.rowIndex="0"/>
+                <TextField fx:id="d" text="2017-01-12" GridPane.columnIndex="5" GridPane.rowIndex="1"/>
+                <columnConstraints>
+                    <ColumnConstraints/>
+                    <ColumnConstraints hgrow="ALWAYS"/>
+                    <ColumnConstraints/>
+                    <ColumnConstraints prefWidth="130.0"/>
+                    <ColumnConstraints/>
+                    <ColumnConstraints prefWidth="130.0"/>
+                </columnConstraints>
+            </GridPane>
+            <Pane style="-fx-pref-height: 20px"/>
+            <HBox>
+                <VBox HBox.hgrow="ALWAYS">
+                    <TableView fx:id="table" styleClass="tab" HBox.hgrow="ALWAYS">
+                        <columns>
+                            <TableColumn fx:id="id" prefWidth="30" text="序号"/>
+                            <TableColumn fx:id="tab_date" prefWidth="50.0" text="日期"/>
+                            <TableColumn fx:id="tab_name" prefWidth="67.0" text="产品名称"/>
+                            <TableColumn fx:id="tab_color" prefWidth="55.0" text="产品编号"/>
+                            <TableColumn fx:id="tab_detail" prefWidth="55.0" text="包装明细"/>
+                            <TableColumn fx:id="tab_price" prefWidth="70.0" text="单价(元/包)"/>
+                            <TableColumn fx:id="tab_unit" prefWidth="30.0" text="单位"/>
+                            <TableColumn fx:id="tab_pack" prefWidth="40.0" text="装数"/>
+                            <TableColumn fx:id="tab_num" prefWidth="40.0" text="箱数"/>
+                            <TableColumn fx:id="tab_total" prefWidth="60.0" text="金额"/>
+                            <TableColumn fx:id="tab_rate" prefWidth="30.0" text="税率"/>
+                            <TableColumn fx:id="tab_total_rate" prefWidth="50.0" text="税金"/>
+                            <TableColumn fx:id="tab_total_with_rate" prefWidth="55.0" text="税后金额"/>
+                            <TableColumn text="备注">
+                                <columns>
+                                    <TableColumn prefWidth="30.0" text="返点"/>
+                                    <TableColumn prefWidth="55.0" text="返点总计"/>
+                                    <TableColumn prefWidth="45.0" text="运费"/>
+                                </columns>
+                            </TableColumn>
+                        </columns>
+                    </TableView>
+                    <HBox alignment="CENTER_RIGHT" styleClass="additional_cell">
+                        <Label text="本月合计："/>
+                        <TextField style="-fx-pref-width: 120px"/>
+                    </HBox>
+                    <GridPane vgap="2" styleClass="btm-tip">
+                        <Label text="注：" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+                        <Label text="1.收货单位请在货物送到指定地点后及时验收，并在2天内提出，否则一切责任由收货方负责。" GridPane.columnIndex="1"
+                               GridPane.rowIndex="0"/>
+                        <Label text="2.收货方按照合同付清发货单上货款，收货方如不覆行付款责任，本送货单凭证可作诉讼依据。" GridPane.columnIndex="1"
+                               GridPane.rowIndex="1"/>
+                    </GridPane>
+                    <HBox styleClass="stamp">
+                        <Label text="送货单位及经人手人（盖章）："/>
+                        <Pane HBox.hgrow="ALWAYS"/>
+                        <Label text="收货单位及经人手人（盖章）："/>
+                        <Pane HBox.hgrow="ALWAYS"/>
+                    </HBox>
+                </VBox>
+                <VBox styleClass="rightp">
+                    <Label text="①存根②客户③回单④记帐⑤仓库" VBox.vgrow="ALWAYS"/>
+                </VBox>
+            </HBox>
+        </VBox>
+    </VBox>
+</VBox>

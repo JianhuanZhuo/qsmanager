@@ -7,7 +7,7 @@
     <!--选择指定条件的全部订单，其中客户、年份、月份、选择状态可以为空，表示忽视该条件-->
     <!--List<OrderModelFull> selectAll(OrderSelection selection) throws Exception;-->
     <select id="selectAll" parameterType="OrderSelection" resultType="OrderModelFull">
-        SELECT o.id AS id, cid, o.serial AS serial, strftime('%s',orderdate)||'000' AS orderdate, o.note AS note,
+        SELECT o.id AS id, cid, o.serial AS serial, strftime('%s',orderdate, 'utc')||'000' AS orderdate, o.note AS note,
         c.serial || '-' || c.name AS cust
         FROM orders o, custom c
         WHERE o.cid=c.id
@@ -30,8 +30,8 @@
     <!--void insert(OrderModel order) throws Exception;-->
     <insert id="insert" parameterType="OrderModel">
         INSERT INTO
-        orders (serial, cid, orderdate, note, ct)
-        VALUES (#{serial}, #{cid}, DATEtime(#{orderdate}/1000, 'unixepoch', 'localtime'), #{note}, #{ct})
+        orders (serial, cid, orderdate, note)
+        VALUES (#{serial}, #{cid}, DATEtime(#{orderdate}/1000, 'unixepoch', 'localtime'), #{note})
         <selectKey keyProperty="id" order="AFTER" resultType="long">
             SELECT last_insert_rowid();
         </selectKey>
@@ -53,15 +53,15 @@
         ORDER BY year
     </select>
 
-    <!--获得下一个插入的 Ct 数-->
-    <!--Long getCt(Long orderdate) throws Exception;-->
-    <select id="getCt" resultType="long" parameterType="long">
-        SELECT
-            CASE
-            WHEN max(ct) ISNULL
-                THEN 1
-            ELSE max(ct) + 1 END AS ct
-        FROM orders
-        WHERE DATE(orderdate) == DATE(#{orderdate}/1000, 'unixepoch', 'localtime')
-    </select>
+    <!--修改一条订单记录-->
+    <!--void update(OrderModel model) throws Exception;-->
+    <update id="update" parameterType="OrderModel">
+        UPDATE orders
+        SET
+            serial    = #{serial},
+            cid       = #{cid},
+            orderdate = #{orderdate},
+            note      = #{note}
+        WHERE id == #{id}
+    </update>
 </mapper>

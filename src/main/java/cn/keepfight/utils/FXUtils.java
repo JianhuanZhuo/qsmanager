@@ -1,11 +1,11 @@
 package cn.keepfight.utils;
 
+import javafx.beans.Observable;
 import javafx.beans.binding.ObjectBinding;
 import javafx.beans.property.ObjectProperty;
-import javafx.beans.property.StringProperty;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.scene.Node;
-import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.TextField;
 import javafx.scene.control.TextInputControl;
 import javafx.scene.image.WritableImage;
 import javafx.util.StringConverter;
@@ -16,17 +16,21 @@ import javax.imageio.ImageIO;
 import java.io.File;
 import java.io.IOException;
 import java.math.BigDecimal;
-import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
+import java.time.Instant;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.Objects;
 import java.util.function.Function;
+import java.util.function.Supplier;
 
 /**
  * FX 工具集合类
@@ -116,7 +120,7 @@ public class FXUtils {
     public static void limitPattern(TextInputControl textInputControl, String pattern, String defaultStr) {
         textInputControl.setText(defaultStr);
         textInputControl.focusedProperty().addListener((arg0, oldValue, newValue) -> {
-            if (!newValue) { //when focus lost
+            if (!newValue && textInputControl.getText()!=null) { //when focus lost
                 if (!textInputControl.getText().trim().matches(pattern)) {
                     //when it not matches the pattern (1.0 - 6.0) set the textField empty
                     textInputControl.setText(defaultStr);
@@ -134,29 +138,56 @@ public class FXUtils {
      * @param allowNega        是否允许负数输入
      */
     public static void limitNum(TextInputControl textInputControl, int inte, int deci, boolean allowNega) {
+        limitNum(textInputControl, inte, deci, allowNega, "0");
+    }
+
+    /**
+     * 纯数字限制
+     * @param inte             最大整数限制
+     * @param deci             最大小数限制
+     * @param allowNega        是否允许负数输入
+     */
+    public static void limitNum(TextInputControl textInputControl, int inte, int deci, boolean allowNega, String defaultValue) {
         if (inte < 1) {
             return;
         }
-        String pattern = "\\d{0," + inte + "}";
+        String pattern = "\\d{1," + inte + "}";
         if (allowNega) {
             pattern = "-?" + pattern;
         }
         if (deci > 0) {
             pattern += "(\\.\\d{0," + deci + "})?";
         }
-        limitPattern(textInputControl, pattern, "0");
+        limitPattern(textInputControl, pattern, defaultValue);
     }
 
+//    private static SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd");
+//    private static SimpleDateFormat dateTimeFormatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+    /**
+     * 转换时间戳为时期字符串
+     */
+    public static String stampToDate(Long stamp, String pattern){
+        if (stamp==null){
+            return "";
+        }
+        return stampToLocalDate(stamp).format(DateTimeFormatter.ofPattern(pattern));
+    }
 
-    private static SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
     /**
      * 转换时间戳为时期字符串
      */
     public static String stampToDate(Long stamp){
+        return stampToDate(stamp, "yyyy-MM-dd");
+    }
+
+    /**
+     * 转换时间戳为日期时间字符串
+     */
+    public static String stampToDateTime(Long stamp){
         if (stamp==null){
             return "";
         }
-        return formatter.format(new Date(stamp));
+        return stampToLocalDateTime(stamp).format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
     }
 
     /**
@@ -170,6 +201,16 @@ public class FXUtils {
     }
 
     /**
+     * 转时间戳为本地时间对象
+     */
+    public static LocalDateTime stampToLocalDateTime(Long stamp){
+        if (stamp==null){
+            stamp = System.currentTimeMillis();
+        }
+        return new Timestamp(stamp).toLocalDateTime();
+    }
+
+    /**
      * 带默认值的分数字符串转换，若转换错误则返回默认值
      * @param str 需要转换的分数
      * @param defaultValue 默认值
@@ -180,6 +221,47 @@ public class FXUtils {
         }catch (Exception e){
             return defaultValue;
         }
+    }
+
+    /**
+     * 带默认值的分数字符串转换，若转换错误则返回默认值
+     * 重载方法默认值为0
+     * @param str 需要转换的分数
+     */
+    public static BigDecimal getDecimal(String str){
+        return getDecimal(str, new BigDecimal(0));
+    }
+
+    /**
+     * 带默认值的分数字符串转换，若转换错误则返回默认值
+     * 重载方法默认值为0
+     * @param text 包含需要转换的分数的文本控件
+     */
+    public static BigDecimal getDecimal(TextField text){
+        return getDecimal(text.getText(), new BigDecimal(0));
+    }
+
+
+    /**
+     * 带默认值的长整形数字符串转换，若转换错误则返回默认值
+     * @param str 需要转换的长整形字符串
+     * @param defaultValue 默认值
+     */
+    public static long getLong(String str, long defaultValue){
+        try {
+            return Long.valueOf(str);
+        }catch (Exception e){
+            return defaultValue;
+        }
+    }
+
+    /**
+     * 带默认值的长整形数字符串转换，若转换错误则返回默认值
+     * 重载方法，默认为0
+     * @param str 需要转换的长整形字符串
+     */
+    public static long getLong(String str){
+        return getLong(str, 0);
     }
 
     public static String decimalStr(BigDecimal d){
@@ -257,5 +339,138 @@ public class FXUtils {
                 return null;
             }
         };
+    }
+
+    public static<T> void bindProperties(ObjectProperty<T> p, Supplier<T> s, Observable... os){
+        p.bind(new ObjectBinding<T>() {
+            {
+                bind(os);
+            }
+            @Override
+            protected T computeValue() {
+                return s.get();
+            }
+        });
+    }
+
+
+    /**
+     * 分数转换器
+     * @param nullValue 当输入为 NULL 时，使用的默认输出
+     */
+    public static StringConverter<BigDecimal> decimalConverter(String nullValue){
+        return new StringConverter<BigDecimal>() {
+            @Override
+            public String toString(BigDecimal o) {
+                return Objects.isNull(o) ? nullValue : ("" + o);
+            }
+            @Override
+            public BigDecimal fromString(String s) {
+                try {
+                    return new BigDecimal(s);
+                } catch (Exception e) {
+                    return null;
+                }
+            }
+        };
+    }
+
+    /**
+     * 整数转换器
+     * @param nullValue 当输入为 NULL 时，使用的默认输出
+     */
+    public static StringConverter<Integer> integerConverter(String nullValue){
+        return new StringConverter<Integer>() {
+            @Override
+            public String toString(Integer o) {
+                return Objects.isNull(o) ? nullValue : o.toString();
+            }
+            @Override
+            public Integer fromString(String s) {
+                try {
+                    return Integer.valueOf(s);
+                } catch (Exception e) {
+                    return null;
+                }
+            }
+        };
+    }
+
+
+    /**
+     * 税率转换器
+     * @param nullValue 当输入为 NULL 时，使用的默认输出
+     */
+    public static StringConverter<BigDecimal> rateConverter(){
+        return new StringConverter<BigDecimal>() {
+            @Override
+            public String toString(BigDecimal o) {
+                return Objects.isNull(o) ? "0%" : ("" + o.movePointRight(2)+"%");
+            }
+            @Override
+            public BigDecimal fromString(String s) {
+                try {
+                    return new BigDecimal(s.replace("%", "")).movePointLeft(2);
+                } catch (Exception e) {
+                    return null;
+                }
+            }
+        };
+    }
+
+    /**
+     * 整数转换器
+     * @param nullValue 当输入为 NULL 时，使用的默认输出
+     */
+    public static StringConverter<Long> longConverter(String nullValue){
+        return new StringConverter<Long>() {
+            @Override
+            public String toString(Long o) {
+                return Objects.isNull(o) ? nullValue : o.toString();
+            }
+            @Override
+            public Long fromString(String s) {
+                try {
+                    return Long.valueOf(s);
+                } catch (Exception e) {
+                    return null;
+                }
+            }
+        };
+    }
+
+
+    /**
+     * 时间搓转换器
+     */
+    public static StringConverter<Long> timestampConverter(){
+        return new StringConverter<Long>() {
+            @Override
+            public String toString(Long o) {
+                return Objects.isNull(o) ? "" : FXUtils.stampToDate(o);
+            }
+            @Override
+            public Long fromString(String s) {
+                try {
+                    return Timestamp.valueOf(s).getTime();
+                } catch (Exception e) {
+                    return null;
+                }
+            }
+        };
+    }
+
+    public static int getNumAt(BigDecimal decimal, int place, boolean left){
+        if (decimal==null){
+            throw new RuntimeException("decimal is null!");
+        }
+        String ds = decimal.toString();
+        int p = ds.indexOf(".");
+        int kp = left?p-place:p+place;
+        try {
+            return Integer.valueOf(""+ds.charAt(kp));
+        }catch (Exception e){
+            return 0;
+        }
     }
 }

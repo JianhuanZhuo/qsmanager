@@ -74,6 +74,7 @@
 
 .hbox-spacing {
     -fx-spacing: 5px;
+    -fx-alignment: center-left;
 }
 
 .hbox-common .right-spacing{
@@ -145,6 +146,8 @@ GridPane.infogp {
     -fx-border-color: #666666;
     -fx-border-insets: 10px;
     -fx-padding: 10px;
+
+    -fx-pref-width: 600px;
 }
 
 /*自定义列表取消高亮*/

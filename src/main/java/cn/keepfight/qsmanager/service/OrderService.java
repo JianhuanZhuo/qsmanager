@@ -16,6 +16,12 @@ public interface OrderService {
      */
     List<OrderModelFull> selectAll(OrderSelection selection) throws Exception;
 
+
+    /**
+     * 选择指定客户的全部订单
+     */
+    List<OrderModel> selectByCid(Long cid) throws Exception;
+
     /**
      * 查询指定客户和年份的全部月份的订购总额
      * @param cid 指定客户
@@ -42,4 +48,9 @@ public interface OrderService {
      * 获取订单全部可用的年份
      */
     List<Long> selectYear() throws Exception;
+
+    /**
+     * 获得指定订单 ID 的全部明细
+     */
+    List<OrderItemModel> selectAllByOid(Long oid) throws Exception;
 }

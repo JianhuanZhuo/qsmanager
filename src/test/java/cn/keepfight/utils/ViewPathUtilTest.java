@@ -2,12 +2,21 @@ package cn.keepfight.utils;
 
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
+import javafx.print.PageLayout;
+import javafx.print.PageOrientation;
+import javafx.print.Paper;
+import javafx.print.Printer;
 import org.junit.Test;
 
+import javax.print.attribute.standard.OrientationRequested;
 import java.io.File;
 import java.io.IOException;
 import java.net.URI;
 import java.nio.file.*;
+import java.sql.Timestamp;
+import java.time.Instant;
+import java.time.ZoneId;
+import java.util.Scanner;
 
 import static org.junit.Assert.*;
 
@@ -22,6 +31,10 @@ public class ViewPathUtilTest {
 
     @Test
     public void loadView() throws Exception {
+
+            if ("70盒/箱×28箱/板×13板".matches("\\d+盒/箱×\\d+箱/板×\\d+板(\\+\\d+)?")){
+                System.out.println("ok");
+            }
     }
 
     @Test
@@ -33,16 +46,17 @@ public class ViewPathUtilTest {
     }
 
     @Test
-    public void testTime() {
-        StringProperty x = new SimpleStringProperty("xx");
-        StringProperty y = new SimpleStringProperty("yy");
+    public void testTime() throws IOException {
+//        System.out.println(FXUtils.stampToLocalDateTime(1497996816000L));
+//        System.out.println(Instant.ofEpochMilli(1497996816000L).atZone(ZoneId.systemDefault()));
 
-        x.bind(y);
+        PageLayout p = Printer.getDefaultPrinter().createPageLayout(Paper.A4, PageOrientation.LANDSCAPE, 25, 25, 25, 25);
+        System.out.println(p.getTopMargin());
+        System.out.println(p.getBottomMargin());
+        System.out.println(p.getLeftMargin());
+        System.out.println("p.getRightMargin()"+p.getRightMargin());
 
-        y.set("yy2");
-        System.out.println(x.get());
-        y.unbind();
-        y.set("yy3");
-        System.out.println(x.get());
+        System.out.println(p.getPrintableHeight());
+        System.out.println("p.getPrintableWidth()"+p.getPrintableWidth());
     }
 }

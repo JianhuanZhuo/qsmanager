@@ -50,4 +50,14 @@ public interface ServerService {
      * 获得订单服务实现实例
      */
     OrderService getOrderService();
+
+    /**
+     * 获得送货单服务实现实例
+     */
+    DeliveryService getDeliveryService();
+
+    /**
+     * 获得客户年度对账表操作服务实现实例
+     */
+    CustAnnualService getCustAnnualService();
 }

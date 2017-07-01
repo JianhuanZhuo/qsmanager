@@ -6,8 +6,6 @@ package cn.keepfight.qsmanager.model;
  */
 public class ReceiptSelection {
     private Long sid; // 供应商ID
-//    private String year;
-//    private String month;
     private String year;
     private String month;
 

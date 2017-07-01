@@ -1,59 +1,58 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.ChoiceBox?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.RadioButton?>
-<?import javafx.scene.control.ScrollPane?>
-<?import javafx.scene.control.Separator?>
-<?import javafx.scene.control.ToggleGroup?>
-<?import javafx.scene.layout.BorderPane?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.Pane?>
-<?import javafx.scene.layout.VBox?>
-
-<VBox prefHeight="600.0" prefWidth="800.0" stylesheets="@css/common.css" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1">
-    <padding>
-        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-    </padding>
-    <HBox styleClass="hbox-common">
-        <Label text="选择打印机：" />
-        <ChoiceBox />
-        <Button text="页面设置" />
-        <Button text="打印设置" />
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<VBox styleClass="title-pane, vbox-common"
+      prefHeight="600.0" prefWidth="800.0"
+      fx:id="root"
+      stylesheets="@css/print.css,@css/common.css"
+      xmlns="http://javafx.com/javafx/8.0.111"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="cn.keepfight.qsmanager.controller.PrintController">
+    <HBox styleClass="title-line">
+        <Label text="打印"/>
+        <Pane HBox.hgrow="ALWAYS"/>
     </HBox>
-    <Separator />
     <HBox styleClass="hbox-common">
-        <Label text="打印类型：" BorderPane.alignment="CENTER" />
-        <ChoiceBox/>
-    </HBox>
-    <HBox spacing="5.0" styleClass="hbox-common">
-       <Label text="数据源：" />
-        <ChoiceBox/>
-        <ChoiceBox/>
-        <ChoiceBox/>
+        <Label text="选择打印机："/>
+        <ChoiceBox fx:id="print_sel" prefWidth="180" />
+        <Button disable="true" fx:id="set_layout" text="页面设置"/>
+        <Button disable="true" fx:id="set_print" text="打印设置"/>
+        <Label fx:id="printHit" styleClass="print_hit" HBox.hgrow="ALWAYS" text="打印不兼容！"/>
+        <Pane HBox.hgrow="ALWAYS"/>
     </HBox>
     <Separator/>
-     <HBox alignment="CENTER_LEFT" spacing="5.0" styleClass="hbox-common">
-         <RadioButton selected="true" text="编辑">
-             <toggleGroup>
-                 <ToggleGroup fx:id="action" />
-             </toggleGroup>
-         </RadioButton>
-         <RadioButton text="预览" toggleGroup="$action" />
-      <Pane HBox.hgrow="ALWAYS" />
-         <Button text="导出Excel" />
-         <Button text="导出图片" />
-     </HBox>
-    <ScrollPane fitToHeight="true" fitToWidth="true" hbarPolicy="ALWAYS" vbarPolicy="ALWAYS" VBox.vgrow="ALWAYS">
-        <BorderPane style="-fx-background-color: white;"/>
+    <HBox styleClass="hbox-common">
+        <Label text="打印件类型："/>
+        <ChoiceBox fx:id="type_sel" prefWidth="180"/>
+        <Pane HBox.hgrow="ALWAYS"/>
+        <Label text="数据填充："/>
+        <ChoiceBox fx:id="obj" prefWidth="100"/>
+        <ChoiceBox fx:id="year" prefWidth="100"/>
+        <ChoiceBox fx:id="month" prefWidth="100"/>
+        <ChoiceBox fx:id="serial" prefWidth="100"/>
+    </HBox>
+    <Separator/>
+    <!--<HBox styleClass="hbox-common">-->
+        <!--<RadioButton fx:id="edit" selected="true" text="编辑">-->
+            <!--<toggleGroup>-->
+                <!--<ToggleGroup fx:id="trigger"/>-->
+            <!--</toggleGroup>-->
+        <!--</RadioButton>-->
+        <!--<RadioButton fx:id="preview" text="预览" toggleGroup="$trigger"/>-->
+        <!--<Pane HBox.hgrow="ALWAYS"/>-->
+        <!--<Button fx:id="export_excel" text="导出Excel"/>-->
+        <!--<Button fx:id="export_pic" text="导出图片"/>-->
+    <!--</HBox>-->
+    <ScrollPane fx:id="printScrollPane" hbarPolicy="ALWAYS" vbarPolicy="ALWAYS" VBox.vgrow="ALWAYS">
+        <!--<fx:include fx:id="print_pane" source="print_delivery.fxml"/>-->
     </ScrollPane>
-     <HBox alignment="CENTER_LEFT" spacing="5.0" styleClass="hbox-common">
-         <Button text="上一页" />
-         <Button text="下一页" />
-      <Pane HBox.hgrow="ALWAYS" />
-        <Button text="打印" />
-         <Button text="重置修改" />
-     </HBox>
+    <HBox styleClass="hbox-common">
+        <Button fx:id="prev" text="上一页"/>
+        <Button fx:id="next" text="下一页"/>
+        <Pane HBox.hgrow="ALWAYS"/>
+        <Button fx:id="action" text="执行打印"/>
+        <Button fx:id="compute" text="自动计算"/>
+        <!--<Button fx:id="reset" text="重置修改"/>-->
+    </HBox>
 </VBox>

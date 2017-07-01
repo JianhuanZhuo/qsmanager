@@ -128,7 +128,7 @@ public class ShopController implements ContentController, Initializable {
                 all_total.setText("0");
                 plist.setAll(QSApp.service.getProductService().selectAll().stream().map(OrderItemModel::new).collect(Collectors.toList()));
                 plist.forEach(e->{
-                    e.getNumProperty().addListener(x);
+                    e.numProperty().addListener(x);
                     e.packProperty().addListener(x);
                 });
             } catch (Exception e) {

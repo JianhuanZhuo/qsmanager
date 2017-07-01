@@ -1,30 +1,30 @@
 package cn.keepfight.utils;
 
 
-import cn.keepfight.qsmanager.model.ReceiptDetailModel;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.beans.*;
-import javafx.beans.property.ObjectProperty;
-import javafx.beans.value.ChangeListener;
+import javafx.beans.Observable;
+import javafx.beans.binding.IntegerBinding;
+import javafx.beans.binding.NumberExpressionBase;
+import javafx.beans.binding.ObjectExpression;
+import javafx.beans.binding.StringBinding;
 import javafx.beans.value.ObservableValue;
-import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
-import javafx.scene.control.ContextMenu;
-import javafx.scene.control.MenuItem;
-import javafx.scene.control.TextField;
-import javafx.scene.control.Tooltip;
+import javafx.print.PageLayout;
+import javafx.print.Printer;
+import javafx.print.PrinterJob;
+import javafx.scene.Node;
+import javafx.scene.control.*;
+import javafx.scene.transform.Scale;
 import javafx.util.Duration;
 import javafx.util.Pair;
 
 import java.lang.reflect.Field;
 import java.math.BigDecimal;
 import java.util.*;
-import java.util.function.BiConsumer;
-import java.util.function.BinaryOperator;
-import java.util.function.Consumer;
-import java.util.function.Function;
+import java.util.function.*;
 import java.util.stream.Collectors;
 
 /**
@@ -109,6 +109,30 @@ public class FXWidgetUtil {
         ConfigUtil.store(PROPERTIES_FILE, ps);
     }
 
+    public static <T> void compute(List<T> list, Function<T, BigDecimal> toDecimal,
+                                   Consumer<String> consumer){
+        compute(list, toDecimal, consumer, BigDecimal::add);
+    }
+
+    public static <T> void compute(List<T> list, Function<T, BigDecimal> toDecimal,
+                               Consumer<String> consumer, BinaryOperator<BigDecimal> accumulator){
+        Optional t = list.stream()
+                .map((item)->{
+                    try {
+                        return toDecimal.apply(item);
+                    }catch (Exception e){
+                        return null;
+                    }
+                })
+                .filter(Objects::nonNull)
+                .reduce(accumulator);
+        String text = "0";
+        if (t.isPresent()) {
+            text = t.get().toString();
+        }
+        consumer.accept(text);
+    }
+
     /**
      * 对可变数组进行统计监听
      * @param obserList 需要监听的可变数组
@@ -124,21 +148,22 @@ public class FXWidgetUtil {
 
         // 添加监听
         obserList.addListener((ListChangeListener<T>) c -> {
-                    Optional t = obserList.stream()
-                            .map((item)->{
-                                try {
-                                    return toDecimal.apply(item);
-                                }catch (Exception e){
-                                    return null;
-                                }
-                            })
-                            .filter(Objects::nonNull)
-                            .reduce(accumulator);
-                    String text = "0";
-                    if (t.isPresent()) {
-                        text = t.get().toString();
-                    }
-                    consumer.accept(text);
+//                    Optional t = obserList.stream()
+//                            .map((item)->{
+//                                try {
+//                                    return toDecimal.apply(item);
+//                                }catch (Exception e){
+//                                    return null;
+//                                }
+//                            })
+//                            .filter(Objects::nonNull)
+//                            .reduce(accumulator);
+//                    String text = "0";
+//                    if (t.isPresent()) {
+//                        text = t.get().toString();
+//                    }
+//                    consumer.accept(text);
+                    compute(obserList, toDecimal, consumer, accumulator);
                 }
         );
     }
@@ -175,5 +200,190 @@ public class FXWidgetUtil {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    /**
+     * 将 target=sa*sb 进行绑定
+     */
+    public static void simpleBiMultiply(TextField target, TextField sa, TextField sb){
+        simpleBiOper(target, BigDecimal::multiply, sa, sb);
+    }
+
+    /**
+     * 将 target=sa+sb 进行绑定
+     */
+    public static void simpleBiAdd(TextField target, TextField sa, TextField sb){
+        simpleBiOper(target, BigDecimal::add, sa, sb);
+    }
+
+
+    /**
+     * 将 target=sa oper sb 进行绑定
+     */
+    public static void simpleBiOper(TextField target, BiFunction<BigDecimal, BigDecimal, BigDecimal> oper, TextField sa, TextField sb){
+        target.textProperty().bind(new StringBinding() {
+            {
+                bind(sa.textProperty(), sb.textProperty());
+            }
+            @Override
+            protected String computeValue() {
+                try {
+                    return oper.apply(new BigDecimal(sa.getText()), new BigDecimal(sb.getText())).toString();
+                } catch (Exception e) {
+                    return "0";
+                }
+            }
+        });
+    }
+
+
+    /**
+     * 将 target=sa oper1 sb oper2 sc 进行绑定
+     */
+    public static void simpleTriOper(TextField target,
+                                     BiFunction<BigDecimal, BigDecimal, BigDecimal> oper1,
+                                     BiFunction<BigDecimal, BigDecimal, BigDecimal> oper2,
+                                     TextField sa, TextField sb, TextField sc){
+        target.textProperty().bind(new StringBinding() {
+            {
+                bind(sa.textProperty(), sb.textProperty(), sc.textProperty());
+            }
+            @Override
+            protected String computeValue() {
+                try {
+                    return oper2.apply(
+                            oper1.apply(
+                                    new BigDecimal(sa.getText()),
+                                    new BigDecimal(sb.getText())),
+                           new BigDecimal(sc.getText())
+                    ).toString();
+                } catch (Exception e) {
+                    return "0";
+                }
+            }
+        });
+    }
+
+    /**
+     * 以指定的转换方式连接表格列
+     */
+    public static<T> void connect(TableColumn<T, String> tab_col, Function<T, ObservableValue<String>> x){
+        tab_col.setCellValueFactory(param -> x.apply(param.getValue()));
+    }
+
+    /**
+     * 以指定的转换方式连接表格列
+     */
+    public static<T> void connectNum(TableColumn<T, String> tab_col, Function<T, NumberExpressionBase> x){
+        tab_col.setCellValueFactory(param -> x.apply(param.getValue()).asString());
+    }
+
+    /**
+     * 以指定的转换方式连接表格列
+     */
+    public static<T> void connectObj(TableColumn<T, String> tab_col, Function<T, ObjectExpression> x){
+        tab_col.setCellValueFactory(param ->x.apply(param.getValue()).asString());
+    }
+
+
+    /**
+     * 双击编辑
+     * @param tab 指定表格视图
+     * @param getController 编辑时所需要用的视图控制器
+     * @param resHandler 编辑完成返回后使用的消费器，一般为更新状态
+     * @param runBefore 在进行编辑界面前需要运行的操作，一般为设置属性等
+     * @param <T> 运行过程中所使用的核心数据结构类型
+     */
+    public static<T> void doubleToEdit(TableView<T> tab,
+                                       Supplier<DialogContent<T>> getController,
+                                       BiConsumer<T, T> resHandler,
+                                       Runnable runBefore){
+        tab.setRowFactory(tv -> {
+            TableRow<T> row = new TableRow<>();
+            row.setOnMouseClicked(event -> {
+                if (event.getClickCount() == 2 && (!row.isEmpty())) {
+                    T rowData = row.getItem();
+                    runBefore.run();
+                    Optional<T> op = CustomDialog.gen().build(getController.get(), rowData);
+                    op.ifPresent(model->resHandler.accept(rowData, model));
+                }
+            });
+            return row;
+        });
+    }
+
+
+    /**
+     * 双击编辑，重载方法，编辑前使用默认行为
+     * @param tab 指定表格视图
+     * @param getcontroller 编辑时所需要用的视图控制器
+     * @param resHandler 编辑完成返回后使用的消费器，一般为更新状态
+     * @param <T> 运行过程中所使用的核心数据结构类型
+     */
+    public static<T> void doubleToEdit(TableView<T> tab,
+                                       Supplier<DialogContent<T>> getcontroller,
+                                       BiConsumer<T, T> resHandler){
+        doubleToEdit(tab, getcontroller, resHandler, ()->{});
+    }
+
+
+    public static boolean printNode(Node node, Printer printer, PageLayout pageLayout) throws Exception{
+        PrinterJob job = PrinterJob.createPrinterJob(printer);
+        System.out.println("node.getBoundsInParent().getHeight():"+node.getBoundsInParent().getHeight());
+        System.out.println("node.getBoundsInParent().getWidth():"+node.getBoundsInParent().getWidth());
+
+        Thread.sleep(100);
+
+        double scaleX
+                = pageLayout.getPrintableWidth() / node.getBoundsInParent().getWidth();
+        double scaleY
+                = pageLayout.getPrintableHeight() / node.getBoundsInParent().getHeight();
+
+        int loop = 0;
+        while (loop++ <10 && (Math.abs(scaleX-1.0)>0.2 || Math.abs(scaleY-1.0)>0.2)){
+            System.err.println("need to sleep 1s to wait style rerencering!");
+            Thread.sleep(1000);
+            scaleX = pageLayout.getPrintableWidth() / node.getBoundsInParent().getWidth();
+            scaleY = pageLayout.getPrintableHeight() / node.getBoundsInParent().getHeight();
+            System.out.println("scaleX:"+scaleX);
+            System.out.println("scaleY:"+scaleY);
+        }
+
+        System.out.println("pageLayout.getPrintableWidth():"+pageLayout.getPrintableWidth());
+        System.out.println("pageLayout.getPrintableWidth():"+pageLayout.getPrintableWidth());
+
+        Scale scale = new Scale(scaleX, scaleY);
+        node.getTransforms().add(scale);
+
+        try {
+            if (job.printPage(pageLayout, node)){
+                return job.endJob();
+            }
+        }finally {
+            node.getTransforms().remove(scale);
+        }
+        return false;
+    }
+
+
+    /**
+     * 分页数绑定
+     * @param list 表格所表示的内容数据列表
+     * @param getSize 从列表中获取尺寸大小的回调
+     * @param perNum 每个分页所表示的数据大小，如每页为20个
+     * @param obs 需要监听的可监听值列表
+     */
+    public static<T> IntegerBinding pageNumBind(Supplier<T> list, Function<T, Integer> getSize, int perNum, Observable... obs){
+        return new IntegerBinding() {
+            {bind(obs);}
+            @Override
+            protected int computeValue() {
+                if (list.get() == null) {
+                    return 0;
+                } else {
+                    return (int) Math.ceil( getSize.apply(list.get()) / (double)perNum);
+                }
+            }
+        };
     }
 }

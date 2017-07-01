@@ -2,6 +2,7 @@ package cn.keepfight.qsmanager.controller;
 
 import cn.keepfight.qsmanager.MenuList;
 import cn.keepfight.qsmanager.model.CustomModel;
+import cn.keepfight.utils.FXReflectUtils;
 import cn.keepfight.utils.FXUtils;
 import cn.keepfight.utils.ViewPathUtil;
 import javafx.application.Platform;
@@ -19,6 +20,7 @@ import java.util.*;
  */
 public class MainPane {
 
+    Long x;
     @FXML
     private ScrollPane menuScrollPane;
     @FXML
@@ -40,6 +42,7 @@ public class MainPane {
 
     @FXML
     public void initialize() throws IOException {
+
         // 加载子界面
         listController = ViewPathUtil.loadViewForController("menu.fxml");
         loginController = ViewPathUtil.loadViewForController("login.fxml");
@@ -78,7 +81,7 @@ public class MainPane {
 
         // 考虑到一次切换界面的刷新意义不大
         if (!isLoaded.getOrDefault(controller, false)){
-            controller.loaded();
+            Platform.runLater(controller::loaded);
             isLoaded.put(controller, true);
         }
         controller.showed();

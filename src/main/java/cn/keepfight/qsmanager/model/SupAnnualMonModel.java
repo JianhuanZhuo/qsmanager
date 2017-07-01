@@ -26,6 +26,26 @@ public class SupAnnualMonModel {
     private BigDecimal paytotal;
     private String note;
 
+
+    public SupAnnualMonModel(){}
+
+    public SupAnnualMonModel(SupAnnualMonModel m){
+//        setId(m.getId());
+        setSaid(m.getSaid());
+        setMon(m.getMon());
+        setTotal(m.getTotal());
+        setBillunit(m.getBillunit());
+        setBilldate(m.getBilldate());
+        setBilltotal(m.getBilltotal());
+        setRate(m.getRate());
+        setRemitunit(m.getRemitunit());
+        setPattern(m.getPattern());
+        setRemitdate(m.getRemitdate());
+        setPaytotal(m.getPaytotal());
+        setNote(m.getNote());
+    }
+
+
     public Long getSaid() {
         return said;
     }

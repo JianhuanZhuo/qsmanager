@@ -11,6 +11,7 @@ import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 import java.io.File;
 import java.io.IOException;
 import java.io.Reader;
+import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.LongStream;
@@ -72,6 +73,11 @@ public class LocalServiceImpl implements ServerService {
             @Override
             public List<CustomModel> selectAll() throws Exception {
                 return FXUtils.getMapper(factory, CustomMapper.class, CustomMapper::selectAll);
+            }
+
+            @Override
+            public CustomModel selectAllByID(Long id) throws Exception {
+                return FXUtils.getMapper(factory, CustomMapper.class, CustomMapper::selectAllByID, id);
             }
 
             @Override
@@ -195,7 +201,7 @@ public class LocalServiceImpl implements ServerService {
             }
 
             @Override
-            public List<MonStatModel> takeStat(Long year) throws Exception  {
+            public List<MonStatModel> takeStat(Long year) throws Exception {
                 return FXUtils.getMapper(factory, ReceiptMapper.class, ReceiptMapper::takeStat, year.toString());
             }
 
@@ -232,7 +238,7 @@ public class LocalServiceImpl implements ServerService {
 
     @Override
     public SupAnnualService getSupAnnualService() {
-        return new SupAnnualService(){
+        return new SupAnnualService() {
             @Override
             public SupAnnualModelFull selectAnnual(Long sid, Long year) throws Exception {
                 SupAnnualModelFull modelFull = new SupAnnualModelFull();
@@ -240,7 +246,7 @@ public class LocalServiceImpl implements ServerService {
 
                 // 查询对账表记录
                 SupAnnualModel annualModel = FXUtils.getMapper(factory, SupAnnuMapper.class, SupAnnuMapper::selectAnnual, selection);
-                if (annualModel==null){
+                if (annualModel == null) {
                     // 若查无此信息则插入
                     annualModel = new SupAnnualModel();
                     annualModel.setSid(sid);
@@ -253,16 +259,16 @@ public class LocalServiceImpl implements ServerService {
                 // 查询月份的原有记录，并使用 Map 作为存储
                 List<SupAnnualMonModel> mons = FXUtils.getMapper(factory, SupAnnuMapper.class, SupAnnuMapper::selectMon, selection);
                 Map<Long, SupAnnualMonModel> monMap = mons.stream()
-                        .peek(s->s.setValid(true))
-                        .collect(Collectors.toMap(SupAnnualMonModel::getMon, e->e));
+                        .peek(s -> s.setValid(true))
+                        .collect(Collectors.toMap(SupAnnualMonModel::getMon, e -> e));
 
                 // 查询月份的采购总额
                 ReceiptSelection receiptSelection = new ReceiptSelection();
                 receiptSelection.setSid(sid);
                 receiptSelection.setYear(year);
                 List<AnnualTotalModel> monTotals = FXUtils.getMapper(factory, ReceiptMapper.class, ReceiptMapper::supAnnualTotal, receiptSelection);
-                monTotals.forEach(m-> monMap.compute(m.getMon(), (k, v)->{
-                    if (v==null){
+                monTotals.forEach(m -> monMap.compute(m.getMon(), (k, v) -> {
+                    if (v == null) {
                         v = new SupAnnualMonModel();
                     }
                     v.setTotal(m.getTotal());
@@ -270,8 +276,8 @@ public class LocalServiceImpl implements ServerService {
                     return v;
                 }));
 
-                LongStream.range(1,13).forEach(m-> monMap.compute(m, (k, v)->{
-                    if (v==null){
+                LongStream.range(1, 13).forEach(m -> monMap.compute(m, (k, v) -> {
+                    if (v == null) {
                         v = new SupAnnualMonModel();
                         v.setMon(k);
                     }
@@ -301,7 +307,7 @@ public class LocalServiceImpl implements ServerService {
             public void updateMon(SupAnnualMonModel model) throws Exception {
                 if (model.isValid()) {
                     FXUtils.getMapper(factory, SupAnnuMapper.class, SupAnnuMapper::updateMon, model);
-                }else {
+                } else {
                     FXUtils.getMapper(factory, SupAnnuMapper.class, SupAnnuMapper::insertMon, model);
                 }
             }
@@ -310,7 +316,7 @@ public class LocalServiceImpl implements ServerService {
 
     @Override
     public OrderService getOrderService() {
-        return new OrderService(){
+        return new OrderService() {
 
             @Override
             public List<OrderModelFull> selectAll(OrderSelection selection) throws Exception {
@@ -319,6 +325,15 @@ public class LocalServiceImpl implements ServerService {
                     modelFull.setOrderItemModels(FXUtils.getMapper(factory, OrderItemMapper.class, OrderItemMapper::selectAllByOid, modelFull.getId()));
                 }
                 return res;
+            }
+
+            @Override
+            public List<OrderModel> selectByCid(Long cid) throws Exception {
+                return FXUtils.getMapper(factory,
+                        OrderMapper.class,
+                        OrderMapper::selectAll,
+                        new OrderSelection(cid, null, null, null)
+                ).stream().map(OrderModelFull::get).collect(Collectors.toList());
             }
 
             @Override
@@ -331,9 +346,15 @@ public class LocalServiceImpl implements ServerService {
 
             @Override
             public void insert(OrderModelFull model) throws Exception {
-                Long ct = FXUtils.getMapper(factory, OrderMapper.class, OrderMapper::getCt, model.getOrderdate());
-                model.setCt(ct);
-                model.setSerial(QSUtil.orderSerial(model.getOrderdate(), ct));
+                LocalDate d = FXUtils.stampToLocalDate(model.getOrderdate());
+                List<OrderModelFull> res = FXUtils.getMapper(factory, OrderMapper.class, OrderMapper::selectAll,
+                        new OrderSelection(null, (long) d.getYear(), (long) d.getMonthValue(), null));
+                OptionalLong m = res.stream().mapToLong(x -> Long.valueOf(x.getSerial())).max();
+                if (m.isPresent()) {
+                    model.setSerial("" + (m.getAsLong() + 1));
+                } else {
+                    model.setSerial(QSUtil.orderSerial(model.getOrderdate(), 1L));
+                }
                 OrderModel orderModel = model.get();
                 FXUtils.getMapper(factory, OrderMapper.class, OrderMapper::insert, orderModel);
 
@@ -347,6 +368,11 @@ public class LocalServiceImpl implements ServerService {
 
             @Override
             public void update(OrderModelFull model) throws Exception {
+                FXUtils.getMapper(factory, OrderMapper.class, OrderMapper::update, model.get());
+                FXUtils.getMapper(factory, OrderItemMapper.class, OrderItemMapper::deleteByOid, model.getId());
+                for (OrderItemModel item : model.getOrderItemModels()) {
+                    FXUtils.getMapper(factory, OrderItemMapper.class, OrderItemMapper::insert, item);
+                }
             }
 
             @Override
@@ -358,6 +384,135 @@ public class LocalServiceImpl implements ServerService {
             @Override
             public List<Long> selectYear() throws Exception {
                 return FXUtils.getMapper(factory, OrderMapper.class, OrderMapper::selectYear);
+            }
+
+            @Override
+            public List<OrderItemModel> selectAllByOid(Long oid) throws Exception {
+                return FXUtils.getMapper(factory, OrderItemMapper.class, OrderItemMapper::selectAllByOid, oid);
+            }
+        };
+    }
+
+    @Override
+    public DeliveryService getDeliveryService() {
+        return new DeliveryService() {
+            @Override
+            public List<DeliveryModelFull> selectAll(DeliverySelection selection) throws Exception {
+                List<DeliveryModelFull> res = FXUtils.getMapper(factory, DeliveryMapper.class, DeliveryMapper::selectAll, selection);
+                for (DeliveryModelFull modelFull : res) {
+                    modelFull.setDeliveryItemModels(FXUtils.getMapper(factory, DeliveryItemMapper.class, DeliveryItemMapper::selectByDid, modelFull.getId()));
+                }
+                return res;
+            }
+
+            @Override
+            public DeliveryModelFull selectByID(Long id) throws Exception {
+                DeliveryModelFull res = FXUtils.getMapper(factory, DeliveryMapper.class, DeliveryMapper::selectByID, id);
+                res.setDeliveryItemModels(FXUtils.getMapper(factory, DeliveryItemMapper.class, DeliveryItemMapper::selectByDid, res.getId()));
+                return res;
+            }
+
+            @Override
+            public void insert(DeliveryModelFull model) throws Exception {
+                System.out.println("public void insert(DeliveryModelFull model) throws Exception : " + model.getCid());
+                LocalDate d = FXUtils.stampToLocalDate(model.getDdate());
+                List<DeliveryModelFull> res = FXUtils.getMapper(factory, DeliveryMapper.class, DeliveryMapper::selectAll, new DeliverySelection(null, (long) d.getYear(), (long) d.getMonthValue(), null));
+                OptionalLong m = res.stream().mapToLong(x -> Long.valueOf(x.getSerial())).max();
+                if (m.isPresent()) {
+                    model.setSerial("" + (m.getAsLong() + 1));
+                } else {
+                    model.setSerial(QSUtil.orderSerial(model.getDdate(), 1L));
+                }
+                DeliveryModel x = model.get();
+                FXUtils.getMapper(factory, DeliveryMapper.class, DeliveryMapper::insert, x);
+                // 回设 RID
+                model.setId(x.getId());
+                for (DeliveryItemModel item : model.getDeliveryItemModels()) {
+                    FXUtils.getMapper(factory, DeliveryItemMapper.class, DeliveryItemMapper::insert, item);
+                }
+            }
+
+            @Override
+            public void update(DeliveryModelFull model) throws Exception {
+                FXUtils.getMapper(factory, DeliveryMapper.class, DeliveryMapper::update, model.get());
+                FXUtils.getMapper(factory, DeliveryItemMapper.class, DeliveryItemMapper::deleteByDid, model.getId());
+                for (DeliveryItemModel item : model.getDeliveryItemModels()) {
+                    FXUtils.getMapper(factory, DeliveryItemMapper.class, DeliveryItemMapper::insert, item);
+                }
+            }
+
+            @Override
+            public void delete(DeliveryModel model) throws Exception {
+                FXUtils.getMapper(factory, DeliveryItemMapper.class, DeliveryItemMapper::deleteByDid, model.getId());
+                FXUtils.getMapper(factory, DeliveryMapper.class, DeliveryMapper::delete, model);
+            }
+        };
+    }
+
+    @Override
+    public CustAnnualService getCustAnnualService() {
+        return new CustAnnualService() {
+            @Override
+            public CustAnnualModelFull selectAnnual(Long cid, Long year) throws Exception {
+                CustAnnualModelFull modelFull = new CustAnnualModelFull();
+                AnnualSelection selection = new AnnualSelection(cid, year);
+
+                // 查询对账表记录
+                CustAnnualModel annualModel = FXUtils.getMapper(factory, CustAnnuMapper.class, CustAnnuMapper::selectAnnual, selection);
+                if (annualModel == null) {
+                    // 若查无此信息则插入
+                    annualModel = new CustAnnualModel();
+                    annualModel.setCid(cid);
+                    annualModel.setYear(year);
+                    FXUtils.getMapper(factory, CustAnnuMapper.class, CustAnnuMapper::insertAnnual, annualModel);
+                }
+                modelFull.set(annualModel);
+
+
+                // 查询月份的原有记录，并使用 Map 作为存储
+                List<CustAnnualMonModel> mons = FXUtils.getMapper(factory, CustAnnuMapper.class, CustAnnuMapper::selectMon, selection);
+                Map<Long, CustAnnualMonModel> monMap = mons.stream()
+                        .peek(s -> s.setValid(true))
+                        .collect(Collectors.toMap(CustAnnualMonModel::getMon, e -> e));
+
+                // 查询月份的采购总额
+                DeliverySelection cy = new DeliverySelection();
+                cy.setCid(cid);
+                cy.setYear(year);
+                List<AnnualTotalModel> monTotals = FXUtils.getMapper(factory, DeliveryMapper.class, DeliveryMapper::supAnnualTotal, cy);
+                monTotals.forEach(m -> monMap.compute(m.getMon(), (k, v) -> {
+                    if (v == null) {
+                        v = new CustAnnualMonModel();
+                    }
+                    v.setTotal(m.getTotal());
+                    v.setMon(m.getMon());
+                    return v;
+                }));
+
+                LongStream.range(1, 13).forEach(m -> monMap.compute(m, (k, v) -> {
+                    if (v == null) {
+                        v = new CustAnnualMonModel();
+                        v.setMon(k);
+                    }
+                    return v;
+                }));
+
+                modelFull.addMon(monMap.values());
+                return modelFull;
+            }
+
+            @Override
+            public void updateAnnual(CustAnnualModel model) throws Exception {
+
+            }
+
+            @Override
+            public void updateMon(CustAnnualMonModel model) throws Exception {
+                if (model.isValid()) {
+                    FXUtils.getMapper(factory, CustAnnuMapper.class, CustAnnuMapper::updateMon, model);
+                } else {
+                    FXUtils.getMapper(factory, CustAnnuMapper.class, CustAnnuMapper::insertMon, model);
+                }
             }
         };
     }

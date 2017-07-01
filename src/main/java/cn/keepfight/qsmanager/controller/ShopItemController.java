@@ -101,7 +101,7 @@ public class ShopItemController implements ContentController, Initializable {
 
         itemProperty.addListener(((observable, oldValue, newValue) -> {
             if (oldValue!=null){
-                oldValue.getNumProperty().unbind();
+                oldValue.numProperty().unbind();
                 oldValue.packProperty().unbind();
             }
 
@@ -117,7 +117,7 @@ public class ShopItemController implements ContentController, Initializable {
 
             // 装数填充
             List<Long> ls = new ArrayList<>(2);
-            if (newValue.getPackDefault() != null) ls.add(newValue.getPackDefault());
+            if (newValue.getPackDefault() != -1L) ls.add(newValue.getPackDefault());
             ls.add(1L);
             pack.getItems().setAll(ls);
                 if (newValue.packProperty().getValue()==-1L){
@@ -131,7 +131,7 @@ public class ShopItemController implements ContentController, Initializable {
 
             // 订购数填充
             num.setText("" + newValue.getNum());
-            newValue.getNumProperty().bind(new ObjectBinding<BigDecimal>() {
+            newValue.numProperty().bind(new ObjectBinding<BigDecimal>() {
                 {
                     bind(num.textProperty());
                 }

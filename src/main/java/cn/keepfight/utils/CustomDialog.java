@@ -9,6 +9,7 @@ import javafx.scene.image.ImageView;
 import java.util.Optional;
 
 /**
+ * 自定义面板
  * Created by tom on 2017/6/7.
  */
 public class CustomDialog {
@@ -52,23 +53,31 @@ public class CustomDialog {
     }
 
     public <T> Optional<T> build(DialogContent<T> content, T initData) {
-        if (content==null) return Optional.empty();
+        if (content==null) {
+            new RuntimeException("empty DialogContent to build!").printStackTrace();
+            return Optional.empty();
+        }
         //初始化内容
+        Dialog<T> dialog = new Dialog<>();
+        content.passDialog(dialog);
         content.init();
         content.fill(initData);
-        return construct(content);
+        return construct(content, dialog);
     }
 
     public <T> Optional<T> build(DialogContent<T> content) {
-        if (content==null) return Optional.empty();
+        if (content==null) {
+            new RuntimeException("empty DialogContent to build!").printStackTrace();
+            return Optional.empty();
+        }
         //初始化内容
+        Dialog<T> dialog = new Dialog<>();
+        content.passDialog(dialog);
         content.init();
-        return construct(content);
+        return construct(content, dialog);
     }
 
-    private <T> Optional<T> construct(DialogContent<T> content) {
-
-        Dialog<T> dialog = new Dialog<>();
+    private <T> Optional<T> construct(DialogContent<T> content,  Dialog<T> dialog) {
         dialog.setTitle(title);
         dialog.setHeaderText(head);
         if (graph != null)
@@ -88,6 +97,8 @@ public class CustomDialog {
         // 设置转换器
         dialog.setResultConverter(content::resultConverter);
 
+        // 自适配尺寸调用
+        
         return dialog.showAndWait();
     }
 }

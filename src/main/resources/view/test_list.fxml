@@ -9,6 +9,7 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
 
+<?import javafx.scene.control.ScrollPane?>
 <VBox fx:id="root" styleClass="title-pane,content-pane" stylesheets="@css/common.css" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cn.keepfight.qsmanager.controller.TestListController">
     <HBox alignment="CENTER_LEFT" styleClass="title-line">
         <Label text="产品列表" />
@@ -28,5 +29,7 @@
             </graphic>
         </Button>
     </HBox>
-    <ChoiceBox accessibleText="sss" />
+    <ScrollPane style="-fx-background-color: #57b757"  hbarPolicy="ALWAYS" vbarPolicy="ALWAYS"  fitToWidth="true" fitToHeight="true" prefWidth="500" prefHeight="500">
+        <fx:include source="test_list2.fxml"/>
+    </ScrollPane>
 </VBox>

@@ -1,11 +1,11 @@
 package cn.keepfight.qsmanager.controller;
 
 import cn.keepfight.qsmanager.QSApp;
-import cn.keepfight.qsmanager.model.CustomModel;
-import cn.keepfight.qsmanager.model.OrderModelFull;
-import cn.keepfight.qsmanager.model.OrderSelection;
+import cn.keepfight.qsmanager.model.*;
+import cn.keepfight.utils.CustomDialog;
 import cn.keepfight.utils.FXUtils;
 import cn.keepfight.utils.ViewPathUtil;
+import cn.keepfight.utils.WarningBuilder;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
@@ -19,10 +19,7 @@ import javafx.scene.layout.VBox;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.ResourceBundle;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.LongStream;
 
@@ -51,6 +48,9 @@ public class OrdersController implements ContentController,Initializable {
     @FXML
     private VBox root;
 
+    private OrderAddController orderAddController;
+    private DeliveryAddController deliveryAddController;
+
     @Override
     public Node getRoot() {
         return root;
@@ -59,6 +59,14 @@ public class OrdersController implements ContentController,Initializable {
     @Override
     public void loaded() {
         loadSelection();
+        Platform.runLater(() -> {
+            try {
+                orderAddController = ViewPathUtil.loadViewForController("order_add.fxml");
+                deliveryAddController = ViewPathUtil.loadViewForController("delivery_add.fxml");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
     }
     @Override
     public void showed() {
@@ -86,8 +94,69 @@ public class OrdersController implements ContentController,Initializable {
             orderList.getItems().clear();
             loadSelection();
         });
+
+        add_order.setOnAction(event -> {
+            Optional<OrderModelFull> op = CustomDialog.gen().build(orderAddController);
+            op.ifPresent(model -> {
+                try {
+                    QSApp.service.getOrderService().insert(model);
+                    loadOrders();
+                } catch (Exception e1) {
+                    e1.printStackTrace();
+                    WarningBuilder.build("新增订单失败", "新增订单失败，请检查网络是否通畅");
+                }
+            });
+        });
     }
 
+    void updateOrder(OrderModelFull modelFull) {
+        Optional<OrderModelFull> op = CustomDialog.gen().build(orderAddController, modelFull);
+        op.ifPresent(model -> {
+            try {
+                model.setId(modelFull.getId());
+                QSApp.service.getOrderService().update(model);
+                loadOrders();
+            } catch (Exception e1) {
+                e1.printStackTrace();
+                WarningBuilder.build("新增供应送货失败", "新增供应送货失败，请检查网络是否通畅");
+            }
+        });
+    }
+
+    /**
+     * 对指定订单进行发货动作
+     */
+    void deliveryAction(OrderModelFull order){
+//        deliveryAddController.
+        DeliveryModelFull newOne = new DeliveryModelFull();
+        newOne.setCid(order.getCid());
+        newOne.setOrder_serial(order.getSerial());
+        Optional<DeliveryModelFull> op = CustomDialog.gen().build(deliveryAddController, newOne);
+        op.ifPresent(model -> {
+            try {
+                QSApp.service.getDeliveryService().insert(model);
+                loadOrders();
+            } catch (Exception e1) {
+                e1.printStackTrace();
+                WarningBuilder.build("新增发货失败", "新增发货失败，请检查网络是否通畅");
+            }
+        });
+    }
+
+
+    /**
+     * 从供应送货列表中删除指定的对象
+     */
+    void deleteSelected(OrderModelFull modelFull) {
+        Platform.runLater(() -> {
+            try {
+                QSApp.service.getOrderService().delete(modelFull.get());
+                orderList.getItems().remove(modelFull);
+            } catch (Exception e) {
+                WarningBuilder.build("删除失败，请检查网络是否通畅！");
+            }
+        });
+    }
     /**
      * 所谓事件处理器，加载对账表
      */
@@ -106,8 +175,6 @@ public class OrdersController implements ContentController,Initializable {
             }
         });
     }
-
-
 
     // 加载下拉列表
     private void loadSelection() {
@@ -153,4 +220,6 @@ public class OrdersController implements ContentController,Initializable {
             }
         }
     }
+
+
 }

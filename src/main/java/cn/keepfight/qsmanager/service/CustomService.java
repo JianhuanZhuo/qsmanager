@@ -16,6 +16,11 @@ public interface CustomService {
     List<CustomModel> selectAll() throws Exception;
 
     /**
+     * 选择指定ID客户
+     */
+    CustomModel selectAllByID(Long id) throws Exception;
+
+    /**
      * 更新指定客户，以ID为准
      */
     void update(CustomModel model) throws Exception;
