@@ -7,7 +7,6 @@ import javafx.application.Application;
  * Created by tom on 2017/5/30.
  */
 public class AppLoader {
-
     public static void main(String[] args) {
         Application.launch(cn.keepfight.qsmanager.QSApp.class, args);
     }

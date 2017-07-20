@@ -1,5 +1,6 @@
 package cn.keepfight.qsmanager.model;
 
+import cn.keepfight.utils.FXUtils;
 import javafx.beans.binding.ObjectBinding;
 import javafx.beans.property.*;
 
@@ -21,7 +22,25 @@ public class ReceiptDetailModel {
     private ObjectProperty<BigDecimal> num = new SimpleObjectProperty<>();
 
     // 辅助属性
-    private ObjectProperty<BigDecimal> totalProperty;
+    private ObjectProperty<BigDecimal> totalProperty= new SimpleObjectProperty<>();
+
+    {
+        FXUtils.bindProperties(totalProperty, this::getTotal, price, num);
+    }
+
+    public ReceiptDetailModel(){}
+
+    public ReceiptDetailModel(ReceiptDetailModel m){
+        setId(m.getId());
+        setRid(m.getRid());
+        setSerial(m.getSerial());
+        setName(m.getName());
+        setColor(m.getColor());
+        setSpec(m.getSpec());
+        setPrice(m.getPrice());
+        setUnit(m.getUnit());
+        setNum(m.getNum());
+    }
 
     public long getId() {
         return id.get();
@@ -133,7 +152,12 @@ public class ReceiptDetailModel {
 
 
     public BigDecimal getTotal(){
-        return getPrice().multiply(getNum());
+        try {
+            return getPrice().multiply(getNum());
+        }catch (Exception e){
+            return new BigDecimal(0);
+        }
+
     }
 
     public ObjectProperty<BigDecimal> totalProperty(){

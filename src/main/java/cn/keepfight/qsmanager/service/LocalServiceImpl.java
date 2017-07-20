@@ -131,6 +131,11 @@ public class LocalServiceImpl implements ServerService {
             }
 
             @Override
+            public SupplyModel selectByID(Long ID) throws Exception {
+                return FXUtils.getMapper(factory, SupplyMapper.class, SupplyMapper::selectByID, ID);
+            }
+
+            @Override
             public void update(SupplyModel model) throws Exception {
                 FXUtils.getMapper(factory, SupplyMapper.class, SupplyMapper::update, model);
             }
@@ -168,6 +173,33 @@ public class LocalServiceImpl implements ServerService {
             @Override
             public void delete(MaterialModel model) throws Exception {
                 FXUtils.getMapper(factory, MaterialMapper.class, MaterialMapper::delete, model);
+            }
+        };
+    }
+
+    @Override
+    public OrderFavorService getOrderFavorService() {
+        return new OrderFavorService(){
+
+            @Override
+            public List<ProductModel> selectAll(Long cid) throws Exception {
+                return FXUtils.getMapper(factory, OrderFavorMapper.class, OrderFavorMapper::selectAll, cid);
+            }
+
+            @Override
+            public void insert(long cid, long pid) throws Exception {
+                OrderFavorModel model = new OrderFavorModel();
+                model.setCid(cid);
+                model.setPid(pid);
+                FXUtils.getMapper(factory, OrderFavorMapper.class, OrderFavorMapper::insert, model);
+            }
+
+            @Override
+            public void delete(long cid, long pid) throws Exception {
+                OrderFavorModel model = new OrderFavorModel();
+                model.setCid(cid);
+                model.setPid(pid);
+                FXUtils.getMapper(factory, OrderFavorMapper.class, OrderFavorMapper::delete, model);
             }
         };
     }

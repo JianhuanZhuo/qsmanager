@@ -1,9 +1,8 @@
 package cn.keepfight.qsmanager.controller;
 
+import cn.keepfight.qsmanager.QSApp;
+import cn.keepfight.qsmanager.model.*;
 import cn.keepfight.qsmanager.model.DeliveryItemModel;
-import cn.keepfight.qsmanager.model.DeliveryItemModel;
-import cn.keepfight.qsmanager.model.DeliveryModelFull;
-import cn.keepfight.qsmanager.model.OrderModelFull;
 import cn.keepfight.utils.FXUtils;
 import cn.keepfight.utils.FXWidgetUtil;
 import cn.keepfight.utils.ViewPathUtil;
@@ -19,6 +18,7 @@ import javafx.scene.layout.VBox;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.net.URL;
+import java.time.LocalDate;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.ResourceBundle;
@@ -112,6 +112,17 @@ public class DeliveryItemController implements ContentController, Initializable 
 
         FXWidgetUtil.calculate(table.getItems(), DeliveryItemModel::getNum, s_num::setText);
         FXWidgetUtil.calculate(table.getItems(), DeliveryItemModel::getTotal, s_total::setText);
+
+
+        a_print.setOnAction(event->{
+            PrintSource source = new PrintSource();
+            source.setCust(modelFull.getCid());
+            LocalDate localDate = FXUtils.stampToLocalDate(modelFull.getDdate());
+            source.setYear((long) localDate.getYear());
+            source.setMonth((long) localDate.getMonthValue());
+            source.setItem(modelFull.getId());
+            QSApp.service.getPrintService().build(new PrintSelection(QSPrintType.DELIVERY, source));
+        });
     }
 
     public void fill(DeliveryModelFull modelFull, IncomeController controller) {

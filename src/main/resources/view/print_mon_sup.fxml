@@ -27,7 +27,7 @@
                 <TextField fx:id="addr" text="中山市南头镇升辉南工业区腾业路6号" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                 <Label text="供应商编号：" GridPane.columnIndex="2" GridPane.rowIndex="0" />
                 <Label text="供应商电话：" GridPane.columnIndex="2" GridPane.rowIndex="1" />
-                <TextField fx:id="item" text="Sp001" GridPane.columnIndex="3" GridPane.rowIndex="0" />
+                <TextField fx:id="serial" text="Sp001" GridPane.columnIndex="3" GridPane.rowIndex="0" />
                 <TextField fx:id="phone" text="0760-23139689/23131998" GridPane.columnIndex="3" GridPane.rowIndex="1" />
                 <Label text="供应商名称：" GridPane.columnIndex="4" GridPane.rowIndex="0" />
                 <Label text="供应商传真：" GridPane.columnIndex="4" GridPane.rowIndex="1" />
@@ -65,18 +65,18 @@
                     </TableView>
                     <HBox alignment="CENTER_RIGHT" styleClass="additional_cell">
                         <Label text="本月合计：" />
-                        <TextField style="-fx-pref-width: 120px" />
+                        <TextField fx:id="total_mon" style="-fx-pref-width: 120px" />
                     </HBox>
                     <HBox styleClass="stamp">
-                        <Label text="尊敬" />
-                        <Label text="**" />
-                        <Label text="的供货商您好！以上是" />
-                        <Label text="****年**月" />
+                        <Label text="尊敬的"/>
+                        <Label fx:id="resp_name" text="**"/>
+                        <Label text="您好！以上是"/>
+                        <Label fx:id="resp_year" text="****年"/>
                         <Label text="的对账单明细，请于当月15号对账无误后签名确认，谢谢！" />
                     </HBox>
                     <HBox styleClass="stamp">
                         <Label text="佛山市南海区丹灶晴旭金属制品厂财务 " />
-                        <Label text="****年*月" />
+                        <Label fx:id="resp_date" text="****年*月"/>
                     </HBox>
                 </VBox>
                 <VBox styleClass="rightp">

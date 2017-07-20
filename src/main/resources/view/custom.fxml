@@ -16,6 +16,9 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TableColumn?>
 <HBox fx:id="root" styleClass="content-pane,hbox-spacing" stylesheets="@css/common.css"
       xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1"
       fx:controller="cn.keepfight.qsmanager.controller.CustomController">
@@ -87,26 +90,59 @@
                 </Label>
             </GridPane>
         </VBox>
-        <VBox styleClass="title-pane">
-            <HBox styleClass="title-line">
-                <Label text="客户账号信息"/>
-                <Pane HBox.hgrow="ALWAYS"/>
-            </HBox>
-            <GridPane styleClass="infogp">
-                <Label text="客户账号："/>
-                <Label text="客户密码：" GridPane.rowIndex="1"/>
-                <TextField fx:id="info_acc" GridPane.columnIndex="1"/>
-                <!--<Button fx:id="reset_psw" text="重置密码" GridPane.columnIndex="2" GridPane.rowIndex="1"/>-->
-                <PasswordField fx:id="info_psw" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
-                <columnConstraints>
-                    <ColumnConstraints/>
-                    <ColumnConstraints/>
-                </columnConstraints>
-                <rowConstraints>
-                    <RowConstraints/>
-                    <RowConstraints/>
-                </rowConstraints>
-            </GridPane>
-        </VBox>
+        <HBox styleClass="hbox-spacing">
+            <VBox styleClass="title-pane">
+                <HBox styleClass="title-line">
+                    <Label text="客户账号信息"/>
+                    <Pane HBox.hgrow="ALWAYS"/>
+                </HBox>
+                <GridPane styleClass="infogp">
+                    <Label text="客户账号："/>
+                    <Label text="客户密码：" GridPane.rowIndex="1"/>
+                    <TextField fx:id="info_acc" GridPane.columnIndex="1"/>
+                    <!--<Button fx:id="reset_psw" text="重置密码" GridPane.columnIndex="2" GridPane.rowIndex="1"/>-->
+                    <PasswordField fx:id="info_psw" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+                    <columnConstraints>
+                        <ColumnConstraints/>
+                        <ColumnConstraints/>
+                    </columnConstraints>
+                    <rowConstraints>
+                        <RowConstraints/>
+                        <RowConstraints/>
+                    </rowConstraints>
+                </GridPane>
+            </VBox>
+            <VBox styleClass="title-pane" HBox.hgrow="ALWAYS">
+                <HBox styleClass="title-line">
+                    <Label text="采购列表信息"/>
+                    <Pane HBox.hgrow="ALWAYS"/>
+                    <Button fx:id="addMat" styleClass="btnable" text="添加">
+                        <graphic>
+                            <ImageView>
+                                <Image url="@img/item-add.png"/>
+                            </ImageView>
+                        </graphic>
+                    </Button>
+                    <Button fx:id="delMat" styleClass="btnable" text="删除">
+                        <graphic>
+                            <ImageView>
+                                <Image url="@img/item-del.png"/>
+                            </ImageView>
+                        </graphic>
+                    </Button>
+                </HBox>
+                <ScrollPane fitToHeight="true" fitToWidth="true">
+                    <TableView fx:id="matTable" prefHeight="266.0">
+                        <columns>
+                            <TableColumn fx:id="mat_name" text="产品名称"/>
+                            <TableColumn fx:id="mat_spec" text="产品规格"/>
+                        </columns>
+                        <columnResizePolicy>
+                            <TableView fx:constant="CONSTRAINED_RESIZE_POLICY"/>
+                        </columnResizePolicy>
+                    </TableView>
+                </ScrollPane>
+            </VBox>
+        </HBox>
     </VBox>
 </HBox>

@@ -6,11 +6,12 @@ import javafx.beans.property.SimpleObjectProperty;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
+import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
 /**
- *
+ * 图片加载工具类
  * Created by tom on 2017/6/7.
  */
 public class ImageLoadUtil {
@@ -23,6 +24,9 @@ public class ImageLoadUtil {
 
     private static final Image preloadImage = new Image(VIEW_IMAGE_URL + "picture_preload.png");
     private static final Image loadfailImage = new Image(VIEW_IMAGE_URL + "picture_loadfail.png");
+
+    public static final String LOCAL_PROTOCOL_PREFIX="sqlocal";
+
     /**
      * 图像缓存
      */
@@ -53,7 +57,7 @@ public class ImageLoadUtil {
                 Platform.runLater(() -> {
                     try {
                         resImage.set(new Image(imageUrl));
-                    }catch (Exception e){
+                    } catch (Exception e) {
                         e.printStackTrace();
                         resImage.set(loadfailImage);
                     }
@@ -82,9 +86,17 @@ public class ImageLoadUtil {
             ObjectProperty<Image> resImage = new SimpleObjectProperty<>(preloadImage);
             Platform.runLater(() -> {
                 try {
-                    resImage.set(new Image(imageUrl));
-                }catch (Exception e){
-//                    e.printStackTrace();
+                    String prefix = LOCAL_PROTOCOL_PREFIX+":";
+                    if (imageUrl.startsWith(prefix)) {
+                        File targetFile = new File(imageUrl.substring(prefix.length())).getCanonicalFile();
+                        System.out.println("+_targetFile.toURI().toString()"+targetFile.toURI().toString());
+
+                        resImage.set(new Image(targetFile.toURI().toString()));
+                    } else {
+                        resImage.set(new Image(imageUrl));
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
                     resImage.set(loadfailImage);
                 }
             });
@@ -92,8 +104,8 @@ public class ImageLoadUtil {
         }
     }
 
-    public static void bindDefault(ImageView view){
-        if (view!=null){
+    public static void bindDefault(ImageView view) {
+        if (view != null) {
             view.imageProperty().bind(new SimpleObjectProperty<>(preloadImage));
         }
     }

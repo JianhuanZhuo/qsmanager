@@ -116,10 +116,22 @@ GridPane.fitpack TextField {
     -fx-font: normal normal 12px "微软雅黑";
 }
 
+/*用于带税的月对账表*/
+.tab.smallfont .table-cell{
+    -fx-font: normal normal 10px "微软雅黑";
+}
+.tab.smallfont Label {
+    -fx-font: normal normal 11px "微软雅黑";
+}
+
 .additional_cell{
     -fx-border-width: 0 1 1 1;
     -fx-border-insets: 0 0 0 0;
     -fx-border-color: black;
+}
+
+.additional_cell.lessfont{
+    -fx-font: normal normal 11px "微软雅黑";
 }
 
 /*表格头部*/

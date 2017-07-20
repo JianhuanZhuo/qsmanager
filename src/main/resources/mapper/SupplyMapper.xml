@@ -11,6 +11,13 @@
         ORDER BY serial
     </select>
 
+    <!--根据ID 选择供应商-->
+    <!--SupplyModel selectAllByID(Long cid) throws Exception;-->
+    <select id="selectByID" parameterType="long" resultType="SupplyModel">
+        SELECT *
+        FROM supply
+        WHERE id = #{id}
+    </select>
 
     <!--void insert(SupplyModel supply) throws Exception;-->
     <insert id="insert" parameterType="SupplyModel">

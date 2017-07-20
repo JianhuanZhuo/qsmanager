@@ -117,7 +117,7 @@ public class PicMakerController implements DialogContent<String>, Initializable 
     public String pack() {
         try {
             WritableImage image = preview.snapshot(null, null);
-            return "file:" + FXUtils.writeImage(image);
+            return ImageLoadUtil.LOCAL_PROTOCOL_PREFIX+":" + FXUtils.writeImageCanonical(image);
         } catch (IOException e) {
             e.printStackTrace();
             return "";

@@ -17,6 +17,11 @@ public interface SupplyMapper extends Mapper {
     List<SupplyModel> selectAll() throws Exception;
 
     /**
+     * 根据ID选择供应商
+     */
+    SupplyModel selectByID(Long ID) throws Exception;
+
+    /**
      * 更新指定供应商，以ID为准
      */
     void update(SupplyModel model) throws Exception;

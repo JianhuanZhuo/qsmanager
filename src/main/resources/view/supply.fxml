@@ -11,11 +11,9 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
-<?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
 <HBox fx:id="root" styleClass="content-pane,hbox-common" stylesheets="@css/common.css"
@@ -31,7 +29,7 @@
                     </ImageView>
                 </graphic>
             </Button>
-            <Button fx:id="delSup" styleClass="btnable" text="添加">
+            <Button fx:id="delSup" styleClass="btnable" text="删除">
                 <graphic>
                     <ImageView>
                         <Image url="@img/custom-del.png"/>

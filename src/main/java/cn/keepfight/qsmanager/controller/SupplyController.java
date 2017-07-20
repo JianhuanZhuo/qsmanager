@@ -3,9 +3,7 @@ package cn.keepfight.qsmanager.controller;
 import cn.keepfight.qsmanager.QSApp;
 import cn.keepfight.qsmanager.model.MaterialModel;
 import cn.keepfight.qsmanager.model.SupplyModel;
-import cn.keepfight.utils.CustomDialog;
-import cn.keepfight.utils.ViewPathUtil;
-import cn.keepfight.utils.WarningBuilder;
+import cn.keepfight.utils.*;
 import javafx.application.Platform;
 import javafx.beans.property.ListProperty;
 import javafx.beans.property.SimpleListProperty;
@@ -222,39 +220,21 @@ public class SupplyController implements ContentController {
             }
         });
 
-        addMat.setOnAction(event -> {
-            if (currentModel == null) {
-                return;
-            }
-            Optional<MaterialModel> op = CustomDialog.gen().build(addMaterialController);
-            op.ifPresent(model -> {
-                try {
+        addMat.setOnAction(event -> QSUtil.add(
+                () -> addMaterialController,
+                (model) -> {
                     model.setSid(currentModel.getId());
                     QSApp.service.getMaterialService().insert(model);
                     loadMaterial();
-                } catch (Exception e1) {
-                    e1.printStackTrace();
-                    WarningBuilder.build("新增供应商失败", "新增供应商失败，请检查网络是否通畅，供应商的账号是否已存在！");
-                }
-            });
-        });
+                },
+                () -> currentModel != null
+                ));
 
-        delMat.setOnAction(event -> {
-            MaterialModel model = matTable.getSelectionModel().getSelectedItem();
-            if (model != null) {
-                Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-                alert.setHeaderText("是否要删除这个原料？");
-                Optional<ButtonType> result = alert.showAndWait();
-                if (result.isPresent() && result.get() == ButtonType.OK) {
-                    try {
-                        QSApp.service.getMaterialService().delete(model);
-                        loadMaterial();
-                    } catch (Exception e) {
-                        WarningBuilder.build("删除原料失败");
-                    }
-                }
-            }
-        });
+        delMat.setOnAction(event ->
+                QSUtil.del(() -> matTable.getSelectionModel(), (model) -> {
+                    QSApp.service.getMaterialService().delete(model);
+                    loadMaterial();
+                }));
 
         // 双击原料表进行编辑
         matTable.setRowFactory(tv -> {

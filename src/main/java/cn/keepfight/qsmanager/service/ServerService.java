@@ -37,6 +37,11 @@ public interface ServerService {
     MaterialService getMaterialService();
 
     /**
+     * 获得常见订购列表服务实现实例
+     */
+    OrderFavorService getOrderFavorService();
+
+    /**
      * 获得供应送货记录服务实现实例
      */
     ReceiptService getReceiptService();
@@ -60,4 +65,12 @@ public interface ServerService {
      * 获得客户年度对账表操作服务实现实例
      */
     CustAnnualService getCustAnnualService();
+
+
+    /**
+     * 获得打印服务实现实例
+     */
+    default PrintService getPrintService(){
+        return PrintService.getInstance();
+    }
 }

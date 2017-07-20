@@ -5,12 +5,14 @@ import cn.keepfight.qsmanager.model.*;
 import cn.keepfight.utils.*;
 import javafx.application.Platform;
 import javafx.beans.binding.ObjectBinding;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.*;
+import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.layout.VBox;
 
 import java.io.IOException;
@@ -28,6 +30,7 @@ import java.util.stream.LongStream;
  * Created by tom on 2017/6/6.
  */
 public class IncomeController implements ContentController, Initializable {
+    public TabPane tab_pane;
     @FXML
     private VBox root;
 
@@ -65,7 +68,7 @@ public class IncomeController implements ContentController, Initializable {
     @FXML
     private TableColumn<CustAnnualMonModel, String> billtotal;
     @FXML
-    private TableColumn<CustAnnualMonModel, String> rate;
+    private TableColumn<CustAnnualMonModel, BigDecimal> rate;
     @FXML
     private TableColumn<CustAnnualMonModel, String> ratetotal;
     @FXML
@@ -122,7 +125,7 @@ public class IncomeController implements ContentController, Initializable {
         billtotal.setCellValueFactory(cellFeature ->
                 new SimpleStringProperty(FXUtils.decimalStr(cellFeature.getValue().getBilltotal())));
         rate.setCellValueFactory(cellFeature ->
-                new SimpleStringProperty(FXUtils.decimalStr(cellFeature.getValue().getRate())));
+                new SimpleObjectProperty<>(cellFeature.getValue().getRate()));
         remitunit.setCellValueFactory(cellFeature ->
                 new SimpleStringProperty(cellFeature.getValue().getRemitunit()));
         pattern.setCellValueFactory(cellFeature ->
@@ -136,6 +139,7 @@ public class IncomeController implements ContentController, Initializable {
         ratetotal.setCellValueFactory(param ->
                 new SimpleStringProperty(FXUtils.decimalStr(param.getValue().getRateTotal())));
 
+        rate.setCellFactory(TextFieldTableCell.forTableColumn(FXUtils.rateConverter()));
 
         FXUtils.limitNum(order_sel, 10, 0, false, null);
 
@@ -214,6 +218,32 @@ public class IncomeController implements ContentController, Initializable {
                 }
             });
             return row;
+        });
+
+        // 打印支持
+        print.setOnAction(event -> {
+            PrintSource source = new PrintSource();
+            CustomModel selCust = cust_sel.getSelectionModel().getSelectedItem();
+            Long cid = selCust == null ? null : selCust.getId();
+            Long year = year_sel.getSelectionModel().getSelectedItem();
+            Long month = mon_sel.getSelectionModel().getSelectedItem();
+            source.setCust(cid);
+            source.setYear(year);
+            source.setMonth(month);
+            QSApp.service.getPrintService().build(new PrintSelection(QSPrintType.MON_CUST, source));
+        });
+
+
+        // 打印支持
+        an_print.setOnAction(event -> {
+            CustomModel selCust = an_cust_sel.getSelectionModel().getSelectedItem();
+            Long year = an_year_sel.getSelectionModel().getSelectedItem();
+
+            PrintSource source = new PrintSource();
+            Long cid = selCust == null ? null : selCust.getId();
+            source.setCust(cid);
+            source.setYear(year);
+            QSApp.service.getPrintService().build(new PrintSelection(QSPrintType.YEAR_CUST, source));
         });
     }
 
@@ -333,6 +363,23 @@ public class IncomeController implements ContentController, Initializable {
                 e.printStackTrace();
             }
         });
+    }
+
+    /**
+     * 搜索指定订单号的全部送货记录
+     */
+    public void listDelivery(String s){
+        tab_pane.getSelectionModel().selectFirst();
+
+        cust_sel.getSelectionModel().clearSelection();
+        year_sel.getSelectionModel().clearSelection();
+        mon_sel.getSelectionModel().clearSelection();
+
+        order_sel.setText(s);
+
+        loadDeliverys();
+
+
     }
 
     /**

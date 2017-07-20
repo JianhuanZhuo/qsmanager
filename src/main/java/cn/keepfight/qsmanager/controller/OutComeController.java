@@ -6,6 +6,8 @@ import cn.keepfight.utils.*;
 import javafx.application.Platform;
 import javafx.beans.*;
 import javafx.beans.binding.ObjectBinding;
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -13,6 +15,7 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.*;
+import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.util.Callback;
@@ -72,7 +75,7 @@ public class OutComeController implements ContentController {
     @FXML
     private TableColumn<SupAnnualMonModel, String> billtotal;
     @FXML
-    private TableColumn<SupAnnualMonModel, String> rate;
+    private TableColumn<SupAnnualMonModel, BigDecimal> rate;
     @FXML
     private TableColumn<SupAnnualMonModel, String> ratetotal;
     @FXML
@@ -202,7 +205,7 @@ public class OutComeController implements ContentController {
         billtotal.setCellValueFactory(cellFeature ->
                 new SimpleStringProperty(cellFeature.getValue().getBilltotalStr()));
         rate.setCellValueFactory(cellFeature ->
-                new SimpleStringProperty(cellFeature.getValue().getRateStr()));
+                new SimpleObjectProperty<>(cellFeature.getValue().getRate()));
         remitunit.setCellValueFactory(cellFeature ->
                 new SimpleStringProperty(cellFeature.getValue().getRemitunit()));
         pattern.setCellValueFactory(cellFeature ->
@@ -213,6 +216,8 @@ public class OutComeController implements ContentController {
                 new SimpleStringProperty(cellFeature.getValue().getPaytotalStr()));
         note.setCellValueFactory(cellFeature ->
                 new SimpleStringProperty(cellFeature.getValue().getNote()));
+
+        rate.setCellFactory(TextFieldTableCell.forTableColumn(FXUtils.rateConverter()));
 
         ratetotal.setCellValueFactory(param -> {
             String str;
@@ -307,6 +312,32 @@ public class OutComeController implements ContentController {
                 }
             });
             return row;
+        });
+
+        // 打印支持
+        rec_print_mon.setOnAction(event -> {
+            SupplyModel sup = rec_sup_sel.getSelectionModel().getSelectedItem();
+            Long sid = sup == null ? null : sup.getId();
+            Long year = rec_year_sel.getSelectionModel().getSelectedItem();
+            Long month = rec_mon_sel.getSelectionModel().getSelectedItem();
+
+            PrintSource source = new PrintSource();
+            source.setSup(sid);
+            source.setYear(year);
+            source.setMonth(month);
+            QSApp.service.getPrintService().build(new PrintSelection(QSPrintType.MON_SUP, source));
+        });
+
+        // 打印支持
+        an_print.setOnAction(event -> {
+            SupplyModel sup = an_sup_sel.getSelectionModel().getSelectedItem();
+            Long year = an_year_sel.getSelectionModel().getSelectedItem();
+
+            PrintSource source = new PrintSource();
+            Long sid = sup == null ? null : sup.getId();
+            source.setSup(sid);
+            source.setYear(year);
+            QSApp.service.getPrintService().build(new PrintSelection(QSPrintType.YEAR_SUP, source));
         });
     }
 

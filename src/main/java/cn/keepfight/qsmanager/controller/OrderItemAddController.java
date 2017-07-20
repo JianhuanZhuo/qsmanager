@@ -70,6 +70,8 @@ public class OrderItemAddController implements DialogContent<OrderItemModel> {
 
     private boolean serialChangeEnable = true;
 
+    private long cid;
+
     @FXML
     public void initialize() {
         // 设置切换恢复默认值
@@ -225,6 +227,10 @@ public class OrderItemAddController implements DialogContent<OrderItemModel> {
         return res;
     }
 
+    public void setCid(long cid){
+        this.cid = cid;
+    }
+
     /**
      * 加载产品列表
      */
@@ -232,7 +238,8 @@ public class OrderItemAddController implements DialogContent<OrderItemModel> {
         Platform.runLater(() -> {
             try {
                 serialChangeEnable = false;
-                serial_c.getItems().setAll(QSApp.service.getProductService().selectAll());
+//                serial_c.getItems().setAll(QSApp.service.getProductService().selectAll());
+                serial_c.getItems().setAll(QSApp.service.getOrderFavorService().selectAll(cid));
                 serial_c.getItems().add(null);
                 serialChangeEnable = true;
             } catch (Exception e) {

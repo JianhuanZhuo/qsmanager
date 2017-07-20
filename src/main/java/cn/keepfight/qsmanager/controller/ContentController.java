@@ -19,4 +19,7 @@ public interface ContentController {
      * 该接口在每次显示（即点击菜单切换到该面板时）调用
      */
     void showed();
+
+
+    default<T> void updateState(T s){}
 }

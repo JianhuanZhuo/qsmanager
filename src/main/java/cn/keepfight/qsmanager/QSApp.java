@@ -11,6 +11,9 @@ import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * 晴旭管理软件类
  * Created by tom on 2017/6/5.
@@ -29,6 +32,11 @@ public class QSApp extends Application {
 
     public static Stage primaryStage;
 
+    /**
+     * 系统退出时执行动作列表
+     */
+    private static List<Runnable> stopActionList = new ArrayList<>(4);
+
     @Override
     public void start(Stage primaryStage) throws Exception {
         QSApp.primaryStage = primaryStage;
@@ -41,5 +49,18 @@ public class QSApp extends Application {
         mainPane.logout();
 
         Platform.runLater(MenuList::loadMenuView);
+    }
+
+    @Override
+    public void stop() throws Exception {
+        stopActionList.forEach(Runnable::run);
+        stopActionList.clear();
+    }
+
+    /**
+     * 添加系统退出时的动作
+     */
+    public static synchronized void addStopAction(Runnable r){
+        stopActionList.add(r);
     }
 }

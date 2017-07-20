@@ -2,13 +2,16 @@ package cn.keepfight.qsmanager.controller;
 
 import cn.keepfight.qsmanager.QSApp;
 import cn.keepfight.qsmanager.model.CustomModel;
+import cn.keepfight.qsmanager.model.ProductModel;
 import cn.keepfight.qsmanager.model.SupplyModel;
 import cn.keepfight.utils.CustomDialog;
+import cn.keepfight.utils.QSUtil;
 import cn.keepfight.utils.ViewPathUtil;
 import cn.keepfight.utils.WarningBuilder;
 import javafx.application.Platform;
 import javafx.beans.property.ListProperty;
 import javafx.beans.property.SimpleListProperty;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
@@ -72,12 +75,23 @@ public class CustomController implements ContentController {
     private TextField info_acc;
     @FXML
     private PasswordField info_psw;
-//    @FXML private  Button reset_psw;
+
+    @FXML
+    private Button addMat;
+    @FXML
+    private Button delMat;
+    @FXML
+    private TableView<ProductModel> matTable;
+    @FXML
+    private TableColumn<ProductModel, String> mat_spec;
+    @FXML
+    private TableColumn<ProductModel, String> mat_name;
 
     private CustomModel currentModel;
 
     // 子界面
     private CustomAddController addController;
+    private OrderFavorAddController addOrderFavor;
 
 
     @Override
@@ -91,6 +105,7 @@ public class CustomController implements ContentController {
         Platform.runLater(() -> {
             try {
                 addController = ViewPathUtil.loadViewForController("custom_add.fxml");
+                addOrderFavor = ViewPathUtil.loadViewForController("order_favor_add.fxml");
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -134,6 +149,11 @@ public class CustomController implements ContentController {
         limitLength(info_addr, 120);
         limitLength(info_namefull, 120);
         limitLength(info_note, 250);
+
+        mat_name.setCellValueFactory(cell ->
+                new SimpleStringProperty(cell.getValue().getSerial() + "-" + cell.getValue().getName()));
+        mat_spec.setCellValueFactory(cell ->
+                new SimpleStringProperty(cell.getValue().getDetail()));
     }
 
     /**
@@ -141,18 +161,11 @@ public class CustomController implements ContentController {
      */
     private void initAction() throws Exception {
         // 新增客户按钮
-        addCust.setOnMouseClicked(e -> {
-            Optional<CustomModel> op = CustomDialog.gen().build(addController);
-            op.ifPresent(model -> {
-                try {
+        addCust.setOnMouseClicked(e -> QSUtil.add(() -> addController,
+                (model -> {
                     QSApp.service.getCustomService().insert(model);
                     loadCustom();
-                } catch (Exception e1) {
-                    e1.printStackTrace();
-                    WarningBuilder.build("新增客户失败", "新增客户失败，请检查网络是否通畅，客户的账号是否已存在！");
-                }
-            });
-        });
+                })));
 
         // 删除客户按钮
         delCust.setOnMouseClicked(event -> {
@@ -199,7 +212,10 @@ public class CustomController implements ContentController {
 
             info_acc.setText(custom.getAcc());
             info_psw.setText(custom.getPsw());
+
+            loadOrderFavor();
         });
+
         ListProperty<Integer> lp =
                 new SimpleListProperty(custList.getSelectionModel().getSelectedIndices());
         infoPane.disableProperty().bind(lp.emptyProperty());
@@ -237,6 +253,21 @@ public class CustomController implements ContentController {
                 WarningBuilder.build("更新错误，请保证网络通畅再重试！");
             }
         });
+
+        addMat.setOnAction(event -> QSUtil.add(
+                () -> addOrderFavor,
+                (model) -> {
+                    QSApp.service.getOrderFavorService().insert(currentModel.getId(), model.getId());
+                    loadOrderFavor();
+                },
+                () -> currentModel != null
+        ));
+
+        delMat.setOnAction(event ->
+                QSUtil.del(() -> matTable.getSelectionModel(), (model) -> {
+                    QSApp.service.getOrderFavorService().delete(currentModel.getId(), model.getId());
+                    loadOrderFavor();
+                }));
     }
 
 
@@ -245,6 +276,22 @@ public class CustomController implements ContentController {
         Platform.runLater(() -> {
             try {
                 custList.getItems().setAll(FXCollections.observableList(QSApp.service.getCustomService().selectAll()));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
+    }
+
+
+    // 加载原料列表
+    private void loadOrderFavor() {
+        if (currentModel == null) {
+            return;
+        }
+        Long id = currentModel.getId();
+        Platform.runLater(() -> {
+            try {
+                matTable.getItems().setAll(FXCollections.observableList(QSApp.service.getOrderFavorService().selectAll(id)));
             } catch (Exception e) {
                 e.printStackTrace();
             }

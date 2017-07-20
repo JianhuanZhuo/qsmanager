@@ -313,6 +313,20 @@ public class FXUtils {
     }
 
     /**
+     * 将指定图片写入到文件中，并返回这个文件名相对路径
+     */
+    public static String writeImageCanonical(WritableImage image) throws IOException {
+        String filePath = "./pic/snapshot"+System.currentTimeMillis()+".png";
+        File targetFile = new File(filePath).getCanonicalFile();
+        while (targetFile.exists()){
+            filePath = "./pic/" + generateName(filePath);
+            targetFile = new File(filePath).getCanonicalFile();
+        }
+        ImageIO.write(SwingFXUtils.fromFXImage(image, null), "png", targetFile);
+        return filePath;
+    }
+
+    /**
      * 构造转换器，在传入为 null 对象时使用空字符串作为转换返回值
      */
     public static <T> StringConverter<T> converter(Function<T, String> convert){
@@ -399,7 +413,6 @@ public class FXUtils {
 
     /**
      * 税率转换器
-     * @param nullValue 当输入为 NULL 时，使用的默认输出
      */
     public static StringConverter<BigDecimal> rateConverter(){
         return new StringConverter<BigDecimal>() {

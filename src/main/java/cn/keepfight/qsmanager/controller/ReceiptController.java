@@ -1,29 +1,23 @@
 package cn.keepfight.qsmanager.controller;
 
-import cn.keepfight.qsmanager.QSApp;
 import cn.keepfight.qsmanager.model.ReceiptDetailModel;
 import cn.keepfight.qsmanager.model.ReceiptModelFull;
-import cn.keepfight.utils.FXUtils;
 import cn.keepfight.utils.FXWidgetUtil;
-import cn.keepfight.utils.WarningBuilder;
 import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
-import javafx.util.Callback;
 
-import java.math.BigDecimal;
 import java.net.URL;
-import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
 /**
+ * 供应商供应送货单控制器
  * Created by tom on 2017/6/11.
  */
 public class ReceiptController implements ContentController, Initializable{
@@ -126,7 +120,7 @@ public class ReceiptController implements ContentController, Initializable{
         table.getItems().setAll(modelFull.getDetailList());
 
         // 计算总额
-        FXWidgetUtil.calculate(table.getItems(), i -> i.getPrice().multiply(i.getNum()), total::setText);
+        FXWidgetUtil.compute(table.getItems(), i -> i.getPrice().multiply(i.getNum()), total::setText);
     }
 
 }

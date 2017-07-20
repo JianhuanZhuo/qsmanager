@@ -20,7 +20,6 @@ import java.util.*;
  */
 public class MainPane {
 
-    Long x;
     @FXML
     private ScrollPane menuScrollPane;
     @FXML
@@ -91,6 +90,7 @@ public class MainPane {
     public void login(CustomModel userModel) throws IOException {
 
         //加载用户信息
+        user.setText(userModel.getName());
 
         //加载菜单
         loadMenu(userModel);

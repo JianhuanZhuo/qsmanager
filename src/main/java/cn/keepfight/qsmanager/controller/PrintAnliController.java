@@ -168,12 +168,14 @@ public class PrintAnliController extends PrintTemplate<DeliveryModelFull> implem
             item_name1.setText(x.getName());
             item_unit1.setText(x.getUnit());
             item_pack1.setText(x.getDetail());
+            item_detail1.setText("70盒/箱×28箱/板×13板");
         } else {
             item_serial1.setText("");
             item_name1.setText("");
             item_unit1.setText("");
             item_pack1.setText("");
             item_num1.setText("");
+            item_detail1.setText("");
         }
 
         if (x2 < deliveryItemModels.size()) {
@@ -182,12 +184,14 @@ public class PrintAnliController extends PrintTemplate<DeliveryModelFull> implem
             item_name2.setText(x.getName());
             item_unit2.setText(x.getUnit());
             item_pack2.setText(x.getDetail());
+            item_detail2.setText("70盒/箱×28箱/板×13板");
         } else {
             item_serial2.setText("");
             item_name2.setText("");
             item_unit2.setText("");
             item_pack2.setText("");
             item_num2.setText("");
+            item_detail2.setText("");
         }
 
         if (x3 < deliveryItemModels.size()) {
@@ -196,12 +200,14 @@ public class PrintAnliController extends PrintTemplate<DeliveryModelFull> implem
             item_name3.setText(x.getName());
             item_unit3.setText(x.getUnit());
             item_pack3.setText(x.getDetail());
+            item_detail3.setText("70盒/箱×28箱/板×13板");
         } else {
             item_serial3.setText("");
             item_name3.setText("");
             item_unit3.setText("");
             item_pack3.setText("");
             item_num3.setText("");
+            item_detail3.setText("");
         }
     }
 

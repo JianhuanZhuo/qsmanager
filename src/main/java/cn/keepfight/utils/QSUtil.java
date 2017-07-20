@@ -1,14 +1,18 @@
 package cn.keepfight.utils;
 
+import cn.keepfight.qsmanager.QSApp;
+import cn.keepfight.qsmanager.model.MaterialModel;
+import cn.keepfight.utils.function.ConsumerCheck;
+import com.sun.org.apache.xpath.internal.operations.Bool;
 import javafx.beans.property.ObjectProperty;
-import javafx.scene.control.TextField;
-import javafx.scene.control.TextFormatter;
+import javafx.scene.control.*;
 import javafx.util.StringConverter;
 
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
+import java.util.function.Consumer;
+import java.util.function.Predicate;
+import java.util.function.Supplier;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -31,6 +35,61 @@ public class QSUtil {
         int i = items.indexOf(item);
         items.remove(item);
         items.add(i, item);
+    }
+
+    /**
+     * 从列表中删除已选的项
+     * @param listSel 列表供应器
+     * @param delAction 删除动作
+     */
+    public static<T> void del(Supplier<MultipleSelectionModel<T>> listSel, ConsumerCheck<T> delAction){
+        T model = listSel.get().getSelectedItem();
+        if (model != null) {
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.setHeaderText("是否要删除这条记录？");
+            Optional<ButtonType> result = alert.showAndWait();
+            if (result.isPresent() && result.get() == ButtonType.OK) {
+                try {
+                    delAction.accept(model);
+                } catch (Exception e) {
+                    WarningBuilder.build("删除记录失败");
+                }
+            }
+        }
+    }
+
+    public static<T> void add(Supplier<DialogContent<T>> content, ConsumerCheck<T> action, Supplier<Boolean> test){
+        add(content, action, test, "新增条目失败，请检查网络是否通畅！");
+    }
+
+    public static<T> void add(Supplier<DialogContent<T>> content, ConsumerCheck<T> action){
+        add(content, action, ()->true, "新增条目失败，请检查网络是否通畅！");
+    }
+
+    /**
+     * 新增条目一般抽象框架
+     * @param content 新增所需的界面控制器
+     * @param action 获得新增条目后的动作
+     * @param test 测试是否进行的前置判定
+     * @param warning 警告字符串
+     */
+    public static<T> void add(Supplier<DialogContent<T>> content, ConsumerCheck<T> action, Supplier<Boolean> test, String warning){
+        // 前置判定
+        if (!test.get()){
+            return;
+        }
+        // 界面构建添加
+        Optional<T> op = CustomDialog.gen().build(content.get());
+
+        // 实际动作
+        op.ifPresent(model -> {
+            try {
+                action.accept(model);
+            } catch (Exception e1) {
+                e1.printStackTrace();
+                WarningBuilder.build("新增失败", warning);
+            }
+        });
     }
 
     /**

@@ -29,6 +29,7 @@
         <mapper resource="mapper/ReceiptDetailMapper.xml"/>
         <mapper resource="mapper/SupAnnuMapper.xml"/>
         <mapper resource="mapper/CustAnnuMapper.xml"/>
+        <mapper resource="mapper/OrderFavorMapper.xml"/>
         <mapper resource="mapper/OrderMapper.xml"/>
         <mapper resource="mapper/OrderItemMapper.xml"/>
         <mapper resource="mapper/DeliveryItemMapper.xml"/>

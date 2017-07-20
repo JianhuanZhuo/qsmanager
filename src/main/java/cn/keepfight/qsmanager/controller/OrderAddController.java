@@ -123,7 +123,10 @@ public class OrderAddController implements DialogContent<OrderModelFull> {
         FXWidgetUtil.calculate(table.getItems(), OrderItemModel::getActualPayTotal, s_total::setText);
 
         // 新增明细按钮
-        item_add.setOnMouseClicked(e -> CustomDialog.gen().build(addController).ifPresent(table.getItems()::add));
+        item_add.setOnMouseClicked(e -> {
+            addController.setCid(cid.getSelectionModel().getSelectedItem().getId());
+            CustomDialog.gen().build(addController).ifPresent(table.getItems()::add);
+        });
 
         // 删除明细按钮
         item_del.setOnMouseClicked(event -> table.getItems().remove(table.getSelectionModel().getSelectedIndex()));
@@ -167,8 +170,6 @@ public class OrderAddController implements DialogContent<OrderModelFull> {
         serial.setText(receiptModelFull.getSerial());
         Platform.runLater(()->{
             for (CustomModel cust : cid.getItems()) {
-                System.out.println("rfullid:"+receiptModelFull.getCid());
-                System.out.println("sid:"+cust.getId());
                 if (cust.getId().equals(receiptModelFull.getCid())){
                     cid.getSelectionModel().select(cust);
                     break;

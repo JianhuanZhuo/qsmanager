@@ -18,7 +18,7 @@
         <Label text="客户账号：" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
         <Label text="客户密码：" GridPane.columnIndex="0" GridPane.rowIndex="3"/>
         <TextField fx:id="name" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
-        <TextField fx:id="item" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+        <TextField fx:id="serial" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
         <TextField fx:id="acc" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
         <TextField fx:id="psw" GridPane.columnIndex="1" GridPane.rowIndex="3"/>
     </GridPane>

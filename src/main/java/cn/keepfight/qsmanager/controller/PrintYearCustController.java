@@ -272,17 +272,5 @@ public class PrintYearCustController extends PrintTemplate<CustAnnualModelFull> 
                 return new BigDecimal(0);
             }
         }
-
-        /**
-         * 获得实际需要支付的金额
-         */
-        public BigDecimal getNeedPayTotalValue() {
-            // 金额 + 税金 - 付款
-            try {
-                return getTotalPropert().add(getRateTotalProperty()).subtract(getPaytotalPropert());
-            } catch (Exception e) {
-                return new BigDecimal(0);
-            }
-        }
     }
 }

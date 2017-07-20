@@ -44,7 +44,7 @@
                 <Label text="制单人员：" GridPane.columnIndex="4" GridPane.rowIndex="0"/>
                 <Label text="发货日期：" GridPane.columnIndex="4" GridPane.rowIndex="1"/>
                 <TextField fx:id="maker" text="张制单员" GridPane.columnIndex="5" GridPane.rowIndex="0"/>
-                <TextField fx:id="d" text="2017-01-12" GridPane.columnIndex="5" GridPane.rowIndex="1"/>
+                <TextField fx:id="mdate" text="2017-01-12" GridPane.columnIndex="5" GridPane.rowIndex="1"/>
                 <columnConstraints>
                     <ColumnConstraints/>
                     <ColumnConstraints hgrow="ALWAYS"/>
@@ -57,33 +57,48 @@
             <Pane style="-fx-pref-height: 20px"/>
             <HBox>
                 <VBox HBox.hgrow="ALWAYS">
-                    <TableView fx:id="table" styleClass="tab" HBox.hgrow="ALWAYS">
+                    <TableView fx:id="table" styleClass="tab,smallfont" HBox.hgrow="ALWAYS">
                         <columns>
                             <TableColumn fx:id="id" prefWidth="30" text="序号"/>
-                            <TableColumn fx:id="tab_date" prefWidth="50.0" text="日期"/>
-                            <TableColumn fx:id="tab_name" prefWidth="67.0" text="产品名称"/>
-                            <TableColumn fx:id="tab_color" prefWidth="55.0" text="产品编号"/>
+                            <TableColumn fx:id="tab_date" prefWidth="70.0" text="日期"/>
+                            <TableColumn fx:id="tab_name" prefWidth="72.0" text="产品名称"/>
+                            <TableColumn fx:id="tab_serial" prefWidth="55.0" text="产品编号"/>
                             <TableColumn fx:id="tab_detail" prefWidth="55.0" text="包装明细"/>
-                            <TableColumn fx:id="tab_price" prefWidth="70.0" text="单价(元/包)"/>
+                            <TableColumn fx:id="tab_price" prefWidth="65.0" text="单价(元/包)"/>
                             <TableColumn fx:id="tab_unit" prefWidth="30.0" text="单位"/>
                             <TableColumn fx:id="tab_pack" prefWidth="40.0" text="装数"/>
-                            <TableColumn fx:id="tab_num" prefWidth="40.0" text="箱数"/>
+                            <TableColumn fx:id="tab_num" prefWidth="30.0" text="箱数"/>
                             <TableColumn fx:id="tab_total" prefWidth="60.0" text="金额"/>
                             <TableColumn fx:id="tab_rate" prefWidth="30.0" text="税率"/>
                             <TableColumn fx:id="tab_total_rate" prefWidth="50.0" text="税金"/>
                             <TableColumn fx:id="tab_total_with_rate" prefWidth="55.0" text="税后金额"/>
                             <TableColumn text="备注">
                                 <columns>
-                                    <TableColumn prefWidth="30.0" text="返点"/>
-                                    <TableColumn prefWidth="55.0" text="返点总计"/>
-                                    <TableColumn prefWidth="45.0" text="运费"/>
+                                    <TableColumn fx:id="tab_rebate" prefWidth="30.0" text="返点"/>
+                                    <TableColumn fx:id="tab_total_rebate" prefWidth="55.0" text="返点总计"/>
+                                    <TableColumn fx:id="tab_delifee" prefWidth="40.0" text="运费"/>
                                 </columns>
                             </TableColumn>
                         </columns>
                     </TableView>
-                    <HBox alignment="CENTER_RIGHT" styleClass="additional_cell">
-                        <Label text="本月合计："/>
-                        <TextField style="-fx-pref-width: 120px"/>
+                    <HBox alignment="CENTER_RIGHT" styleClass="additional_cell,lessfont">
+                        <Label text="金额合计："/>
+                        <TextField fx:id="total_mon" style="-fx-pref-width: 80px"/>
+                        <Pane HBox.hgrow="ALWAYS" />
+                        <Label text="税后总额："/>
+                        <TextField fx:id="total_mon_with_rate" style="-fx-pref-width: 80px"/>
+                        <Pane HBox.hgrow="ALWAYS" />
+                        <Label text="箱数合计："/>
+                        <TextField fx:id="total_num" style="-fx-pref-width: 40px"/>
+                        <Pane HBox.hgrow="ALWAYS" />
+                        <Label text="返点合计："/>
+                        <TextField fx:id="total_rebate" style="-fx-pref-width: 50px"/>
+                        <Pane HBox.hgrow="ALWAYS" />
+                        <Label text="运费合计："/>
+                        <TextField fx:id="total_delifee" style="-fx-pref-width: 50px"/>
+                        <Pane HBox.hgrow="ALWAYS" />
+                        <Label text="实际应收金额："/>
+                        <TextField fx:id="total_act" style="-fx-pref-width: 80px"/>
                     </HBox>
                     <GridPane vgap="2" styleClass="btm-tip">
                         <Label text="注：" GridPane.columnIndex="0" GridPane.rowIndex="0"/>

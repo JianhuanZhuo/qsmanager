@@ -45,7 +45,7 @@ import java.util.stream.LongStream;
  * <p>
  * Created by tom on 2017/6/23.
  */
-public class PrintController implements DialogContent<Boolean>, Initializable {
+public class PrintController implements DialogContent<PrintSelection>, Initializable {
     @FXML
     private VBox root;
 
@@ -68,7 +68,7 @@ public class PrintController implements DialogContent<Boolean>, Initializable {
     private ChoiceBox<Long> month;
     @FXML
     private ChoiceBox<Pair<Long, String>> serial;
-//    @FXML private RadioButton edit;
+    //    @FXML private RadioButton edit;
 //    @FXML private RadioButton preview;
 //    @FXML private Button export_excel;
 //    @FXML private Button export_pic;
@@ -90,6 +90,7 @@ public class PrintController implements DialogContent<Boolean>, Initializable {
      * 打印中标志位
      */
     private static AtomicBoolean busy = new AtomicBoolean(false);
+    private static BooleanProperty printing = new SimpleBooleanProperty(false);
     private List<Pair<Long, String>> custList;
     private List<Pair<Long, String>> supList;
 
@@ -101,12 +102,15 @@ public class PrintController implements DialogContent<Boolean>, Initializable {
         // 初始化打印类型下拉列表
         initPrintTypeList();
 
+        initPrinterList();
+
         initLocate();
         // 打印按钮使能绑定
         action.disableProperty().bind(printScrollPane.contentProperty().isNull()
                 .or(print_sel.getSelectionModel().selectedItemProperty().isNull())
                 .or(type_sel.getSelectionModel().selectedItemProperty().isNull())
-                .or(printHit.textProperty().isNotEqualTo("")));
+                .or(printHit.textProperty().isNotEqualTo(""))
+                .or(printing));
 
         // 打印动作
         action.setOnAction(event -> printAction());
@@ -115,9 +119,50 @@ public class PrintController implements DialogContent<Boolean>, Initializable {
     @Override
     public void init() {
         // 每次进来都初始化一次打印机列表，以更新
-        initPrinterList();
+        print_sel.getItems().setAll(Printer.getAllPrinters());
+        Printer defaultPrinter = Printer.getDefaultPrinter();
+        if (defaultPrinter != null) {
+            print_sel.getSelectionModel().select(defaultPrinter);
+        }
         // 默认检查一次打印支持机制
         checkSupport();
+    }
+
+    @Override
+    public void fill(PrintSelection s) {
+        type_sel.getSelectionModel().select(s.getType());
+        ////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        // 非空时设置模板
+        //
+        type_sel.getSelectionModel().getSelectedItem().getController(c -> {
+            printScrollPane.setContent(c.getRoot());
+            printController.set(c);
+            compute.disableProperty().bind(c.autoComputable().not());
+            compute.setOnAction(e -> c.autoCalculate());
+            prev.disableProperty().bind(c.hasPrev().not());
+            next.disableProperty().bind(c.hasNext().not());
+
+
+            prev.setOnAction(e -> c.prev());
+            next.setOnAction(e -> c.next());
+        });
+        locate.set(type_sel.getValue().getLocate());
+        //
+        //
+        ////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        Platform.runLater(() -> s.getType().getController(c -> {
+            try {
+                c.fill(s.getType().getLocate().query(s.getPrintSource()));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }));
+
+        // 清空选择，避免引起歧义
+        year.getSelectionModel().clearSelection();
+        month.getSelectionModel().clearSelection();
+        obj.getSelectionModel().clearSelection();
+        serial.getSelectionModel().clearSelection();
     }
 
     @Override
@@ -134,6 +179,7 @@ public class PrintController implements DialogContent<Boolean>, Initializable {
      * 初始化打印机选择列表
      */
     private void initPrinterList() {
+        print_sel.disableProperty().bind(printing);
         print_sel.setConverter(FXUtils.converter(Printer::getName));
         print_sel.getItems().setAll(Printer.getAllPrinters());
         Printer defaultPrinter = Printer.getDefaultPrinter();
@@ -216,7 +262,8 @@ public class PrintController implements DialogContent<Boolean>, Initializable {
         // 必须是打印机已选才可以有打印类型选择
         type_sel.disableProperty().bind(
                 print_sel.getSelectionModel().selectedItemProperty().isNull()
-                        .or(print_sel.disabledProperty()));
+                        .or(print_sel.disabledProperty())
+                        .or(printing));
 
         type_sel.setConverter(FXUtils.converter(QSPrintType::getDesc));
         type_sel.getItems().setAll(QSPrintType.values());
@@ -263,8 +310,8 @@ public class PrintController implements DialogContent<Boolean>, Initializable {
         if (busy.getAndSet(true)) {
             return;
         }
-
-        print_sel.setDisable(true);
+        printing.set(true);
+        action.setText("打印中");
 
         // 获得打印数据与参数
         QSPrintType type = type_sel.getValue();
@@ -293,11 +340,13 @@ public class PrintController implements DialogContent<Boolean>, Initializable {
                         e.printStackTrace();
                     } finally {
                         Platform.runLater(() -> FXUtils.delStyle("snap", rootNode));
+                        printing.set(false);
                         busy.set(false);
-                        print_sel.setDisable(false);
+                        action.setText("执行打印");
 
                         // 打印后调用
                         type.getController(PrintTemplate::printAfter);
+
                     }
                 });
             } catch (Exception e) {
@@ -372,7 +421,7 @@ public class PrintController implements DialogContent<Boolean>, Initializable {
             ps.setMonth(month.getSelectionModel().getSelectedItem());
         }
         if (locate.get().reqSerial()) {
-            if (serial.getSelectionModel().isEmpty()){
+            if (serial.getSelectionModel().isEmpty()) {
                 Long s_obj = obj.getSelectionModel().getSelectedItem().getKey();
                 Long s_year = year.getSelectionModel().getSelectedItem();
                 Long s_mon = month.getSelectionModel().getSelectedItem();

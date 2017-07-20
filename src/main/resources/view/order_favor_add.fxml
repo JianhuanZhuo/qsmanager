@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<VBox stylesheets="@css/common.css" styleClass="title-pane"
+      xmlns="http://javafx.com/javafx/8.0.111"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:id="root"
+      fx:controller="cn.keepfight.qsmanager.controller.OrderFavorAddController">
+
+    <HBox alignment="CENTER_LEFT" styleClass="title-line">
+        <Label text="新增常订购"/>
+        <Pane HBox.hgrow="ALWAYS"/>
+    </HBox>
+    <ChoiceBox fx:id="ps"/>
+</VBox>

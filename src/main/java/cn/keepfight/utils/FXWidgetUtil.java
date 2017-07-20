@@ -3,7 +3,6 @@ package cn.keepfight.utils;
 
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
-import javafx.beans.*;
 import javafx.beans.Observable;
 import javafx.beans.binding.IntegerBinding;
 import javafx.beans.binding.NumberExpressionBase;
@@ -356,6 +355,7 @@ public class FXWidgetUtil {
         node.getTransforms().add(scale);
 
         try {
+            job.getJobSettings().setJobName("丹灶晴旭管理软件打印任务");
             if (job.printPage(pageLayout, node)){
                 return job.endJob();
             }

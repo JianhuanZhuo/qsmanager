@@ -71,16 +71,28 @@
                             <TableColumn fx:id="tab_total" prefWidth="60.0" text="金额"/>
                             <TableColumn text="备注">
                                 <columns>
-                                    <TableColumn fx:id="rebate" prefWidth="40.0" text="返点"/>
-                                    <TableColumn fx:id="total_rebate" prefWidth="65.0" text="返点总计"/>
-                                    <TableColumn fx:id="delifee" prefWidth="62.0" text="运费"/>
+                                    <TableColumn fx:id="tab_rebate" prefWidth="40.0" text="返点"/>
+                                    <TableColumn fx:id="tab_total_rebate" prefWidth="65.0" text="返点总计"/>
+                                    <TableColumn fx:id="tab_delifee" prefWidth="62.0" text="运费"/>
                                 </columns>
                             </TableColumn>
                         </columns>
                     </TableView>
                     <HBox alignment="CENTER_RIGHT" styleClass="additional_cell">
-                        <Label text="本月合计："/>
-                        <TextField fx:id="total_mon" style="-fx-pref-width: 120px"/>
+                        <Label text="金额合计："/>
+                        <TextField fx:id="total_mon" style="-fx-pref-width: 80px"/>
+                        <Pane HBox.hgrow="ALWAYS" />
+                        <Label text="箱数合计："/>
+                        <TextField fx:id="total_num" style="-fx-pref-width: 80px"/>
+                        <Pane HBox.hgrow="ALWAYS" />
+                        <Label text="返点合计："/>
+                        <TextField fx:id="total_rebate" style="-fx-pref-width: 80px"/>
+                        <Pane HBox.hgrow="ALWAYS" />
+                        <Label text="运费合计："/>
+                        <TextField fx:id="total_delifee" style="-fx-pref-width: 80px"/>
+                        <Pane HBox.hgrow="ALWAYS" />
+                        <Label text="实际应收金额："/>
+                        <TextField fx:id="total_act" style="-fx-pref-width: 80px"/>
                     </HBox>
                     <GridPane vgap="2" styleClass="btm-tip">
                         <Label text="注：" GridPane.columnIndex="0" GridPane.rowIndex="0"/>

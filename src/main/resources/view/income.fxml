@@ -29,7 +29,7 @@
         <Label text="收入管理"/>
         <Pane HBox.hgrow="ALWAYS"/>
     </HBox>
-    <TabPane styleClass="tab-pane-common" tabClosingPolicy="UNAVAILABLE" VBox.vgrow="ALWAYS">
+    <TabPane fx:id="tab_pane" styleClass="tab-pane-common" tabClosingPolicy="UNAVAILABLE" VBox.vgrow="ALWAYS">
         <Tab styleClass="tab-common" text="账单列表">
             <VBox styleClass="vbox-common">
                 <HBox styleClass="hbox-common" BorderPane.alignment="CENTER">

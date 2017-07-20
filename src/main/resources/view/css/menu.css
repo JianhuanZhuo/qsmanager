@@ -1,7 +1,6 @@
 .menu-root{
     -fx-min-width: 230px;
     -fx-pref-width: 230px;
-    -fx-max-height: Infinity;
     -fx-min-height: 300px;
     -fx-pref-height: 200px;
     -fx-background-color: #2B3245;

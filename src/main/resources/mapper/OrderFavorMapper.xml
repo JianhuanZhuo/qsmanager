@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.keepfight.qsmanager.Mapper.OrderFavorMapper">
+
+    <!--指定客户选择全部常见订购列表-->
+    <!--List<ProductModel> selectAll(Long cid) throws Exception;-->
+    <select id="selectAll" parameterType="long" resultType="ProductModel">
+        SELECT p.*
+        FROM order_favor o, product p
+        WHERE o.cid=#{cid}
+        AND o.pid=p.id
+    </select>
+
+    <!--插入指定常见订购列表，插入后，该用户的ID将得到更新-->
+    <!--void insert(OrderFavorModel model) throws Exception;-->
+    <insert id="insert" parameterType="OrderFavorModel">
+        INSERT INTO order_favor (cid, pid)
+        VALUES (#{cid},#{pid})
+        <selectKey keyProperty="id" order="AFTER" resultType="long">
+            SELECT last_insert_rowid();
+        </selectKey>
+    </insert>
+
+    <!--删除指定常见订购列表，以ID为准。-->
+    <!--void delete(ProductModel model) throws Exception;-->
+    <delete id="delete" parameterType="OrderFavorModel">
+        DELETE FROM order_favor
+        WHERE cid = #{cid}
+        AND pid = #{pid}
+    </delete>
+
+</mapper>

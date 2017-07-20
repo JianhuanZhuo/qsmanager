@@ -46,11 +46,6 @@ public class LoginController implements ContentController {
 //            Platform.runLater(()-> resImage.set(new Image(url)));
 ////            ImageLoadUtil.bindImage(xx, "android-book.png");
 //            xx.imageProperty().bind(resImage);
-            try {
-                CustomDialog.gen().build(ViewPathUtil.loadViewForController("print.fxml"));
-            } catch (IOException e1) {
-                e1.printStackTrace();
-            }
 
 //            FXWidgetUtil.printNode(root);
         });

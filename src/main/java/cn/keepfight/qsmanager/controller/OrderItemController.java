@@ -1,5 +1,7 @@
 package cn.keepfight.qsmanager.controller;
 
+import cn.keepfight.qsmanager.MenuList;
+import cn.keepfight.qsmanager.QSApp;
 import cn.keepfight.qsmanager.model.OrderItemModel;
 import cn.keepfight.qsmanager.model.OrderModelFull;
 import cn.keepfight.utils.FXUtils;
@@ -156,6 +158,12 @@ public class OrderItemController implements ContentController, Initializable {
         FXWidgetUtil.calculate(table.getItems(), OrderItemModel::getRateTotal, s_rate::setText);
         FXWidgetUtil.calculate(table.getItems(), OrderItemModel::getRebateTotal, s_rebate::setText);
         FXWidgetUtil.calculate(table.getItems(), OrderItemModel::getActualPayTotal, s_total::setText);
+
+        a_history.setOnAction(event -> {
+            IncomeController c = (IncomeController) MenuList.INCOME.getController();
+            QSApp.mainPane.changeTo(MenuList.INCOME);
+            c.listDelivery(modelFull.getSerial());
+        });
     }
 
     public void fill(OrderModelFull modelFull, OrdersController controller) {
