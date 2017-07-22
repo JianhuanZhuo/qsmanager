@@ -3,14 +3,11 @@ package cn.keepfight.qsmanager.controller;
 import cn.keepfight.qsmanager.QSApp;
 import cn.keepfight.qsmanager.model.CustomModel;
 import cn.keepfight.qsmanager.model.ProductModel;
-import cn.keepfight.qsmanager.model.SupplyModel;
-import cn.keepfight.utils.CustomDialog;
 import cn.keepfight.utils.QSUtil;
 import cn.keepfight.utils.ViewPathUtil;
 import cn.keepfight.utils.WarningBuilder;
 import javafx.application.Platform;
-import javafx.beans.property.ListProperty;
-import javafx.beans.property.SimpleListProperty;
+import javafx.beans.binding.BooleanBinding;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
@@ -20,7 +17,6 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
 import java.io.IOException;
-import java.util.Comparator;
 import java.util.Optional;
 
 import static cn.keepfight.utils.FXUtils.limitLength;
@@ -216,10 +212,9 @@ public class CustomController implements ContentController {
             loadOrderFavor();
         });
 
-        ListProperty<Integer> lp =
-                new SimpleListProperty(custList.getSelectionModel().getSelectedIndices());
-        infoPane.disableProperty().bind(lp.emptyProperty());
-        delCust.disableProperty().bind(lp.emptyProperty());
+        BooleanBinding lp = custList.getSelectionModel().selectedItemProperty().isNull();
+        infoPane.disableProperty().bind(lp);
+        delCust.disableProperty().bind(lp);
 
         // 保存更新信息
         saveInfo.setOnMouseClicked(event -> {

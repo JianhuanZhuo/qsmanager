@@ -21,6 +21,11 @@ public interface ServerService {
     CustomService getCustomService();
 
     /**
+     * 获得员工服务实现实例
+     */
+    StuffService getStuffService();
+
+    /**
      * 获得产品服务实现实例
      */
     ProductService getProductService();
@@ -65,6 +70,7 @@ public interface ServerService {
      * 获得客户年度对账表操作服务实现实例
      */
     CustAnnualService getCustAnnualService();
+
 
 
     /**

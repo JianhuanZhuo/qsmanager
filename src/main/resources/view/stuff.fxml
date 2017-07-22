@@ -4,7 +4,7 @@
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.*?>
-<VBox fx:controller="cn.keepfight.qsmanager.controller.StuffController"
+<HBox fx:controller="cn.keepfight.qsmanager.controller.StuffController"
       styleClass="content-pane,hbox-common"
       stylesheets="@css/common.css"
       fx:id="root"
@@ -13,14 +13,14 @@
     <VBox styleClass="title-pane">
         <HBox styleClass="title-line">
             <Pane HBox.hgrow="ALWAYS"/>
-            <Button fx:id="addSup" styleClass="btnable" text="添加">
+            <Button fx:id="addStuff" styleClass="btnable" text="添加">
                 <graphic>
                     <ImageView>
                         <Image url="@img/custom-add.png"/>
                     </ImageView>
                 </graphic>
             </Button>
-            <Button fx:id="delSup" styleClass="btnable" text="添加">
+            <Button fx:id="delStuff" styleClass="btnable" text="删除">
                 <graphic>
                     <ImageView>
                         <Image url="@img/custom-del.png"/>
@@ -28,90 +28,34 @@
                 </graphic>
             </Button>
         </HBox>
-        <ListView fx:id="supList" VBox.vgrow="ALWAYS"/>
+        <ListView fx:id="stuffList" VBox.vgrow="ALWAYS"/>
     </VBox>
     <Separator orientation="VERTICAL"/>
-    <VBox fx:id="infoPane" styleClass="vbox-spacing" HBox.hgrow="ALWAYS">
-        <VBox styleClass="title-pane">
-            <HBox styleClass="title-line">
-                <Label text="供应商基本信息"/>
-                <Pane HBox.hgrow="ALWAYS"/>
-                <Button fx:id="saveInfo" styleClass="btnable" text="保存">
-                    <graphic>
-                        <ImageView>
-                            <Image url="@img/save.png"/>
-                        </ImageView>
-                    </graphic>
-                </Button>
-            </HBox>
-            <GridPane styleClass="infogp">
-                <Label text="供应商全称："/>
-                <TextField fx:id="info_namefull" GridPane.columnIndex="1" GridPane.columnSpan="3"/>
-                <Label text="供应商简称：" GridPane.rowIndex="1"/>
-                <TextField fx:id="info_name" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
-                <Label text="供应商编号：" GridPane.columnIndex="2" GridPane.rowIndex="1"/>
-                <TextField fx:id="info_serial" GridPane.columnIndex="3" GridPane.rowIndex="1"/>
-                <Label text="供应商电话：" GridPane.rowIndex="2"/>
-                <TextField fx:id="info_phone" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
-                <Label text="供应商传真：" GridPane.columnIndex="2" GridPane.rowIndex="2"/>
-                <TextField fx:id="info_fax" GridPane.columnIndex="3" GridPane.rowIndex="2"/>
-                <Label text="私帐收款户名：" GridPane.rowIndex="3"/>
-                <TextField fx:id="info_accpv" GridPane.columnIndex="1" GridPane.rowIndex="3"/>
-                <Label text="私账收款账号：" GridPane.rowIndex="4"/>
-                <TextField fx:id="info_bccpv" GridPane.columnIndex="1" GridPane.columnSpan="3" GridPane.rowIndex="4"/>
-                <Label text="公帐收款户名：" GridPane.rowIndex="5"/>
-                <TextField fx:id="info_accpb" GridPane.columnIndex="1" GridPane.rowIndex="5"/>
-                <Label text="公账收款账号：" GridPane.rowIndex="6"/>
-                <TextField fx:id="info_bccpb" GridPane.columnIndex="1" GridPane.columnSpan="3" GridPane.rowIndex="6"/>
-                <Label text="供应商地址：" GridPane.rowIndex="8"/>
-                <TextField fx:id="info_addr" GridPane.columnIndex="1" GridPane.columnSpan="3" GridPane.rowIndex="8"/>
-                <Label text="供应商备注：" GridPane.rowIndex="9"/>
-                <TextArea fx:id="info_note" GridPane.columnIndex="1" GridPane.columnSpan="3" GridPane.rowIndex="9"
-                          GridPane.rowSpan="2"/>
-                <Label fx:id="info_attach" styleClass="attach-icon" text="附件" GridPane.columnIndex="3"
-                       GridPane.rowIndex="11">
-                    <graphic>
-                        <ImageView>
-                            <Image url="@img/attachment.png"/>
-                        </ImageView>
-                    </graphic>
-                </Label>
-            </GridPane>
-        </VBox>
-        <VBox styleClass="title-pane">
-            <HBox styleClass="title-line">
-                <Label text="原料供应信息"/>
-                <Pane HBox.hgrow="ALWAYS"/>
-                <Button fx:id="addMat" styleClass="btnable" text="添加">
-                    <graphic>
-                        <ImageView>
-                            <Image url="@img/item-add.png"/>
-                        </ImageView>
-                    </graphic>
-                </Button>
-                <Button fx:id="delMat" styleClass="btnable" text="删除">
-                    <graphic>
-                        <ImageView>
-                            <Image url="@img/item-del.png"/>
-                        </ImageView>
-                    </graphic>
-                </Button>
-            </HBox>
-            <ScrollPane fitToHeight="true" fitToWidth="true">
-                <TableView fx:id="matTable" prefHeight="266.0">
-                    <columns>
-                        <TableColumn fx:id="mat_serial" text="产品编号"/>
-                        <TableColumn fx:id="mat_name" text="产品名称"/>
-                        <TableColumn fx:id="mat_color" text="产品颜色"/>
-                        <TableColumn fx:id="mat_spec" text="产品规格"/>
-                        <TableColumn fx:id="mat_price" text="产品单价"/>
-                        <TableColumn fx:id="mat_unit" text="计量单位"/>
-                    </columns>
-                    <columnResizePolicy>
-                        <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
-                    </columnResizePolicy>
-                </TableView>
-            </ScrollPane>
-        </VBox>
+    <VBox styleClass="title-pane, vbox-spacing" fx:id="infoPane" HBox.hgrow="ALWAYS">
+        <HBox styleClass="title-line">
+            <Label text="员工基本信息"/>
+            <Pane HBox.hgrow="ALWAYS"/>
+            <Button fx:id="saveInfo" styleClass="btnable" text="保存">
+                <graphic>
+                    <ImageView>
+                        <Image url="@img/save.png"/>
+                    </ImageView>
+                </graphic>
+            </Button>
+        </HBox>
+        <GridPane styleClass="infogp">
+            <Label text="员工编号：" GridPane.rowIndex="0"/>
+            <TextField fx:id="info_serial" GridPane.rowIndex="0" GridPane.columnIndex="1"/>
+            <Label text="员工名字：" GridPane.rowIndex="1"/>
+            <TextField fx:id="info_name" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
+
+            <Label text="员工账号：" GridPane.rowIndex="2"/>
+            <TextField fx:id="info_acc" GridPane.rowIndex="2" GridPane.columnIndex="1"/>
+            <Label text="员工密码：" GridPane.rowIndex="3"/>
+            <PasswordField fx:id="info_psw" GridPane.columnIndex="1" GridPane.rowIndex="3"/>
+        </GridPane>
+        <Separator/>
+        <Label text="可见菜单选项：" style="-fx-padding: 5px;"/>
+        <ListView fx:id="menuSelect" VBox.vgrow="ALWAYS"/>
     </VBox>
-</VBox>
+</HBox>

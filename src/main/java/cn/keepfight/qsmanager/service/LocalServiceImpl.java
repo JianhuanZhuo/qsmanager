@@ -98,6 +98,36 @@ public class LocalServiceImpl implements ServerService {
     }
 
     @Override
+    public StuffService getStuffService() {
+        return new StuffService(){
+            @Override
+            public List<CustomModel> selectAll() throws Exception {
+                return FXUtils.getMapper(factory, CustomMapper.class, CustomMapper::selectAllStuff);
+            }
+
+            @Override
+            public CustomModel selectAllByID(Long id) throws Exception {
+                return FXUtils.getMapper(factory, CustomMapper.class, CustomMapper::selectAllByID, id);
+            }
+
+            @Override
+            public void update(CustomModel custom) throws Exception {
+                FXUtils.getMapper(factory, CustomMapper.class, CustomMapper::update, custom);
+            }
+
+            @Override
+            public void insert(CustomModel custom) throws Exception {
+                FXUtils.getMapper(factory, CustomMapper.class, CustomMapper::insert, custom);
+            }
+
+            @Override
+            public void delete(CustomModel custom) throws Exception {
+                FXUtils.getMapper(factory, CustomMapper.class, CustomMapper::delete, custom);
+            }
+        };
+    }
+
+    @Override
     public ProductService getProductService() {
         return new ProductService() {
             @Override

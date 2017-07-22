@@ -128,6 +128,7 @@ public class MainPane {
                         MenuList.SHOP,
                         MenuList.CUSTOM,
                         MenuList.SUPPLY,
+                        MenuList.STUFF,
                         MenuList.PRODUCTS,
                         MenuList.INCOME,
                         MenuList.OUTCOME,
@@ -138,6 +139,7 @@ public class MainPane {
                 legalList = Arrays.asList(
                         MenuList.CUSTOM,
                         MenuList.SUPPLY,
+                        MenuList.STUFF,
                         MenuList.PRODUCTS,
                         MenuList.INCOME,
                         MenuList.OUTCOME,
@@ -147,6 +149,14 @@ public class MainPane {
             case 2:
                 legalList = Arrays.asList(
                         MenuList.SHOP,
+                        MenuList.SETTINGS);
+                break;
+            case 3:
+                legalList = Arrays.asList(
+                        MenuList.CUSTOM,
+                        MenuList.SUPPLY,
+                        MenuList.PRODUCTS,
+                        MenuList.ORDERS,
                         MenuList.SETTINGS);
                 break;
             default:

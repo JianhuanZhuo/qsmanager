@@ -12,6 +12,14 @@
         ORDER BY serial
     </select>
 
+    <!--List<CustomModel> selectAllStuff() throws Exception;-->
+    <select id="selectAllStuff" resultType="CustomModel">
+        SELECT *
+        FROM custom
+        WHERE utype=3
+        ORDER BY serial
+    </select>
+
     <!--根据客户ID 选择客户-->
     <!--CustomModel selectAllByID(Long cid) throws Exception;-->
     <select id="selectAllByID" parameterType="long" resultType="CustomModel">

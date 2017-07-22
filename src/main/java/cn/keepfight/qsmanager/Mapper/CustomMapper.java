@@ -16,6 +16,11 @@ public interface CustomMapper extends Mapper {
      */
     List<CustomModel> selectAll() throws Exception;
 
+    /**
+     * 选择全部客户即 <code>select * where utype=3</code>
+     * 这里不包含自己的哦
+     */
+    List<CustomModel> selectAllStuff() throws Exception;
 
     /**
      * 根据客户ID 选择客户

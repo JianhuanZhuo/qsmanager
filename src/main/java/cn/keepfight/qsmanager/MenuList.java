@@ -14,6 +14,7 @@ public enum MenuList {
     SHOP("浏览下单"),
     SUPPLY("供应商管理"),
     CUSTOM("客户管理"),
+    STUFF("员工管理"),
     PRODUCTS("产品管理"),
     INCOME("收入管理"),
     OUTCOME("支出管理"),
