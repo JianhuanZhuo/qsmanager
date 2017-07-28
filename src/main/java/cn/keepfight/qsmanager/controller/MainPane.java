@@ -2,7 +2,6 @@ package cn.keepfight.qsmanager.controller;
 
 import cn.keepfight.qsmanager.MenuList;
 import cn.keepfight.qsmanager.model.CustomModel;
-import cn.keepfight.utils.FXReflectUtils;
 import cn.keepfight.utils.FXUtils;
 import cn.keepfight.utils.ViewPathUtil;
 import javafx.application.Platform;
@@ -37,7 +36,7 @@ public class MainPane {
     private MenuListController listController;
 
     private List<MenuList> legalList;
-    private Map<ContentController, Boolean> isLoaded = new HashMap<>();
+    private Map<ContentCtrl, Boolean> isLoaded = new HashMap<>();
 
     @FXML
     public void initialize() throws IOException {
@@ -75,7 +74,7 @@ public class MainPane {
             return;
         }
         // 加载至主界面
-        ContentController controller = menu.getController();
+        ContentCtrl controller = menu.getController();
         centerScp.setContent(controller.getRoot());
 
         // 考虑到一次切换界面的刷新意义不大
@@ -152,12 +151,13 @@ public class MainPane {
                         MenuList.SETTINGS);
                 break;
             case 3:
-                legalList = Arrays.asList(
-                        MenuList.CUSTOM,
-                        MenuList.SUPPLY,
-                        MenuList.PRODUCTS,
-                        MenuList.ORDERS,
-                        MenuList.SETTINGS);
+//                legalList = Arrays.asList(
+//                        MenuList.CUSTOM,
+//                        MenuList.SUPPLY,
+//                        MenuList.PRODUCTS,
+//                        MenuList.ORDERS,
+//                        MenuList.SETTINGS);
+                legalList = FXUtils.split(userModel.getNamefull(), "~", MenuList::valueOf);
                 break;
             default:
                 legalList = new ArrayList<>();

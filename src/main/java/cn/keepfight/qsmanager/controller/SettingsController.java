@@ -17,7 +17,7 @@ import java.util.ResourceBundle;
  * 系统设置界面控制器
  * Created by tom on 2017/6/6.
  */
-public class SettingsController implements ContentController, Initializable {
+public class SettingsController implements ContentCtrl, Initializable {
     @FXML
     private VBox root;
     @FXML

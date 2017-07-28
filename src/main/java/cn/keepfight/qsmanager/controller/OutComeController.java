@@ -4,29 +4,20 @@ import cn.keepfight.qsmanager.QSApp;
 import cn.keepfight.qsmanager.model.*;
 import cn.keepfight.utils.*;
 import javafx.application.Platform;
-import javafx.beans.*;
 import javafx.beans.binding.ObjectBinding;
-import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.util.Callback;
-import javafx.util.StringConverter;
 
 import java.io.IOException;
 import java.math.BigDecimal;
-import java.sql.*;
-import java.text.SimpleDateFormat;
 import java.util.*;
-import java.util.Date;
 import java.util.stream.Collectors;
 import java.util.stream.LongStream;
 
@@ -34,7 +25,7 @@ import java.util.stream.LongStream;
  * 支出管理控制器
  * Created by tom on 2017/6/6.
  */
-public class OutComeController implements ContentController {
+public class OutComeController implements ContentCtrl {
 
     @FXML
     private VBox root;

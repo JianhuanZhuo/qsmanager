@@ -5,29 +5,23 @@ import cn.keepfight.qsmanager.model.*;
 import cn.keepfight.qsmanager.model.DeliveryItemModel;
 import cn.keepfight.utils.FXUtils;
 import cn.keepfight.utils.FXWidgetUtil;
-import cn.keepfight.utils.ViewPathUtil;
 import cn.keepfight.utils.WarningBuilder;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.*;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
 
-import java.io.IOException;
-import java.math.BigDecimal;
 import java.net.URL;
 import java.time.LocalDate;
-import java.util.Objects;
-import java.util.Optional;
 import java.util.ResourceBundle;
 
 /**
  * 订单记录控制器
  * Created by tom on 2017/6/11.
  */
-public class DeliveryItemController implements ContentController, Initializable {
+public class DeliveryItemController implements ContentCtrl, Initializable {
 
     @FXML
     private VBox root;
@@ -75,7 +69,7 @@ public class DeliveryItemController implements ContentController, Initializable 
 
     // 内部表现数据
     private DeliveryModelFull modelFull;
-    private IncomeController controller;
+    private DeliveryListPaneController controller;
 
     @Override
     public Node getRoot() {
@@ -125,7 +119,7 @@ public class DeliveryItemController implements ContentController, Initializable 
         });
     }
 
-    public void fill(DeliveryModelFull modelFull, IncomeController controller) {
+    public void fill(DeliveryModelFull modelFull, DeliveryListPaneController controller) {
         this.modelFull = modelFull;
         this.controller = controller;
 

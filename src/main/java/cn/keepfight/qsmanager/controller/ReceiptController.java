@@ -20,7 +20,7 @@ import java.util.ResourceBundle;
  * 供应商供应送货单控制器
  * Created by tom on 2017/6/11.
  */
-public class ReceiptController implements ContentController, Initializable{
+public class ReceiptController implements ContentCtrl, Initializable{
 
     @FXML
     private VBox root;

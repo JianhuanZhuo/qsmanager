@@ -56,6 +56,6 @@
         </GridPane>
         <Separator/>
         <Label text="可见菜单选项：" style="-fx-padding: 5px;"/>
-        <ListView fx:id="menuSelect" VBox.vgrow="ALWAYS"/>
+        <ListView fx:id="menuSelect" styleClass="select-list" VBox.vgrow="ALWAYS"/>
     </VBox>
 </HBox>

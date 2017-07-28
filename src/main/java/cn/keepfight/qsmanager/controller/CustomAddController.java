@@ -67,7 +67,6 @@ public class CustomAddController implements DialogContent<CustomModel> {
         //默认的值也要上
         custom.setUtype(2L);
 
-
         return custom;
     }
 }

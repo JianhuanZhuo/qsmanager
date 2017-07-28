@@ -2,6 +2,8 @@ package cn.keepfight.qsmanager.controller;
 
 import cn.keepfight.qsmanager.MenuList;
 import cn.keepfight.qsmanager.QSApp;
+import cn.keepfight.qsmanager.model.DeliveryItemModel;
+import cn.keepfight.qsmanager.model.DeliveryModelFull;
 import cn.keepfight.qsmanager.model.OrderItemModel;
 import cn.keepfight.qsmanager.model.OrderModelFull;
 import cn.keepfight.utils.FXUtils;
@@ -16,24 +18,22 @@ import javafx.scene.layout.VBox;
 
 import java.math.BigDecimal;
 import java.net.URL;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.ResourceBundle;
+import java.time.LocalDate;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * 订单记录控制器
  * Created by tom on 2017/6/11.
  */
-public class OrderItemController implements ContentController, Initializable {
+public class OrderItemController implements ContentCtrl, Initializable {
 
-    @FXML
-    private ToggleGroup goods;
-    @FXML
-    private RadioButton all;
-    @FXML
-    private RadioButton left;
+//    @FXML
+//    private ToggleGroup goods;
+//    @FXML
+//    private RadioButton all;
+//    @FXML
+//    private RadioButton left;
 
 
     @FXML
@@ -56,19 +56,19 @@ public class OrderItemController implements ContentController, Initializable {
     private TableColumn<OrderItemModel, String> tab_num;
     @FXML
     private TableColumn<OrderItemModel, String> tab_total;
-    @FXML
-    private TableColumn<OrderItemModel, String> tab_rate;
-    @FXML
-    private TableColumn<OrderItemModel, String> tab_ratetotal;
-    @FXML
-    private TableColumn<OrderItemModel, String> tab_totallWithRate;
-    @FXML
-    private TableColumn<OrderItemModel, String> tab_rebate;
-    @FXML
-    private TableColumn<OrderItemModel, String> tab_allrebate;
-    @FXML
-    private TableColumn<OrderItemModel, String> tab_delifee;
-    public TableColumn<OrderItemModel, String> tab_actPay;
+    //    @FXML
+//    private TableColumn<OrderItemModel, String> tab_rate;
+//    @FXML
+//    private TableColumn<OrderItemModel, String> tab_ratetotal;
+//    @FXML
+//    private TableColumn<OrderItemModel, String> tab_totallWithRate;
+//    @FXML
+//    private TableColumn<OrderItemModel, String> tab_rebate;
+//    @FXML
+//    private TableColumn<OrderItemModel, String> tab_allrebate;
+//    @FXML
+//    private TableColumn<OrderItemModel, String> tab_delifee;
+//    public TableColumn<OrderItemModel, String> tab_actPay;
     @FXML
     private Label o_serial;
     @FXML
@@ -79,8 +79,8 @@ public class OrderItemController implements ContentController, Initializable {
     private ImageView o_msg;
     @FXML
     private Label s_num;
-    @FXML
-    private Label s_rate;
+//    @FXML
+//    private Label s_rate;
     @FXML
     private Label s_rebate;
     @FXML
@@ -89,6 +89,8 @@ public class OrderItemController implements ContentController, Initializable {
     private Button a_del;
     @FXML
     private Button a_delivery;
+    @FXML
+    private Button a_delivery_all;
     @FXML
     private Button a_history;
     @FXML
@@ -114,7 +116,6 @@ public class OrderItemController implements ContentController, Initializable {
     public void showed() {
     }
 
-
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         tab_name.setCellValueFactory(param -> new SimpleStringProperty(param.getValue().getName()));
@@ -130,13 +131,13 @@ public class OrderItemController implements ContentController, Initializable {
                 new SimpleStringProperty(param.getValue().getPrice()
                         .multiply(param.getValue().getNum()
                                 .multiply(new BigDecimal(param.getValue().getPack()))).toString()));
-        tab_rate.setCellValueFactory(param ->new SimpleStringProperty(""+param.getValue().getRate()));
-        tab_ratetotal.setCellValueFactory(param ->new SimpleStringProperty(""+param.getValue().getRateTotal()));
-        tab_totallWithRate.setCellValueFactory(param ->new SimpleStringProperty(""+param.getValue().getTotalWithRate()));
-        tab_rebate.setCellValueFactory(param ->new SimpleStringProperty(""+param.getValue().getRebate()));
-        tab_allrebate.setCellValueFactory(param ->new SimpleStringProperty(""+param.getValue().getRebateTotal()));
-        tab_delifee.setCellValueFactory(param ->new SimpleStringProperty(""+param.getValue().getDelifee()));
-        tab_actPay.setCellValueFactory(param ->new SimpleStringProperty(""+param.getValue().getActualPayTotal()));
+//        tab_rate.setCellValueFactory(param ->new SimpleStringProperty(""+param.getValue().getRate()));
+//        tab_ratetotal.setCellValueFactory(param ->new SimpleStringProperty(""+param.getValue().getRateTotal()));
+//        tab_totallWithRate.setCellValueFactory(param ->new SimpleStringProperty(""+param.getValue().getTotalWithRate()));
+//        tab_rebate.setCellValueFactory(param ->new SimpleStringProperty(""+param.getValue().getRebate()));
+//        tab_allrebate.setCellValueFactory(param ->new SimpleStringProperty(""+param.getValue().getRebateTotal()));
+//        tab_delifee.setCellValueFactory(param ->new SimpleStringProperty(""+param.getValue().getDelifee()));
+//        tab_actPay.setCellValueFactory(param ->new SimpleStringProperty(""+param.getValue().getActualPayTotal()));
 
 
         a_del.setOnAction(event -> {
@@ -155,14 +156,52 @@ public class OrderItemController implements ContentController, Initializable {
         Tooltip.install(o_msg, msg);
 
         FXWidgetUtil.calculate(table.getItems(), OrderItemModel::getNum, s_num::setText);
-        FXWidgetUtil.calculate(table.getItems(), OrderItemModel::getRateTotal, s_rate::setText);
+//        FXWidgetUtil.calculate(table.getItems(), OrderItemModel::getRateTotal, s_rate::setText);
         FXWidgetUtil.calculate(table.getItems(), OrderItemModel::getRebateTotal, s_rebate::setText);
         FXWidgetUtil.calculate(table.getItems(), OrderItemModel::getActualPayTotal, s_total::setText);
 
         a_history.setOnAction(event -> {
-            IncomeController c = (IncomeController) MenuList.INCOME.getController();
-            QSApp.mainPane.changeTo(MenuList.INCOME);
+            OrdersController c = (OrdersController) MenuList.ORDERS.getController();
+            QSApp.mainPane.changeTo(MenuList.ORDERS);
             c.listDelivery(modelFull.getSerial());
+        });
+
+        a_delivery_all.setOnAction(event -> {
+            DeliveryModelFull deliveryModelFull = new DeliveryModelFull();
+
+            deliveryModelFull.setCid(modelFull.getCid());
+            deliveryModelFull.setOrder_serial(modelFull.getSerial());
+            deliveryModelFull.setDdate(System.currentTimeMillis());
+            deliveryModelFull.setDeliveryItemModels(
+                    modelFull.getOrderItemModels().stream()
+                            .map(x -> {
+                                DeliveryItemModel itemModel = new DeliveryItemModel();
+                                itemModel.setSerial(x.getSerial());
+                                itemModel.setName(x.getName());
+                                itemModel.setDetail(x.getDetail());
+                                itemModel.setNum(x.getNum());
+                                itemModel.setPrice(x.getPrice());
+                                itemModel.setPack(x.getPack());
+                                itemModel.setUnit(x.getUnit());
+                                itemModel.setNote("");
+                                return itemModel;
+                            })
+                            .collect(Collectors.toList())
+            );
+            try {
+                QSApp.service.getDeliveryService().insert(deliveryModelFull);
+
+                // 打印
+                PrintSource source = new PrintSource();
+                source.setCust(deliveryModelFull.getCid());
+                LocalDate localDate = FXUtils.stampToLocalDate(deliveryModelFull.getDdate());
+                source.setYear((long) localDate.getYear());
+                source.setMonth((long) localDate.getMonthValue());
+                source.setItem(deliveryModelFull.getId());
+                QSApp.service.getPrintService().build(new PrintSelection(QSPrintType.DELIVERY, source));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         });
     }
 
@@ -184,5 +223,4 @@ public class OrderItemController implements ContentController, Initializable {
 
         // 默认选择为全部货项
     }
-
 }

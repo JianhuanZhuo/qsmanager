@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.image.Image?>
+<VBox xmlns="http://javafx.com/javafx"
+      fx:id="root"
+      fx:controller="cn.keepfight.qsmanager.controller.DeliveryListPaneController"
+      stylesheets="@css/common.css"
+      xmlns:fx="http://javafx.com/fxml">
+    <HBox styleClass="hbox-common" BorderPane.alignment="CENTER">
+        <ChoiceBox fx:id="cust_sel" prefWidth="130.0"/>
+        <ChoiceBox fx:id="year_sel" prefWidth="80.0"/>
+        <ChoiceBox fx:id="mon_sel" prefWidth="80.0"/>
+        <TextField fx:id="order_sel" promptText="匹配订单号" prefWidth="100.0"/>
+        <Button fx:id="load" text="加载">
+            <graphic>
+                <ImageView styleClass="image-button">
+                    <Image url="@img/search.png"/>
+                </ImageView>
+            </graphic>
+        </Button>
+        <Pane HBox.hgrow="ALWAYS"/>
+        <Button  fx:id="print" text="打印月对账表">
+            <graphic>
+                <ImageView fitHeight="18" fitWidth="18">
+                    <Image url="@img/print.png"/>
+                </ImageView>
+            </graphic>
+        </Button>
+    </HBox>
+    <ScrollPane fitToHeight="true" fitToWidth="true" VBox.vgrow="ALWAYS">
+        <ListView styleClass="itemlist" fx:id="deliveryList"/>
+    </ScrollPane>
+</VBox>

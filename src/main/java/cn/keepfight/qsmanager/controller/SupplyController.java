@@ -16,7 +16,6 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
 import java.io.IOException;
-import java.util.Comparator;
 import java.util.Optional;
 
 import static cn.keepfight.utils.FXUtils.limitLength;
@@ -25,7 +24,7 @@ import static cn.keepfight.utils.FXUtils.limitLength;
  * 供应商界面控制器类
  * Created by tom on 2017/6/6.
  */
-public class SupplyController implements ContentController {
+public class SupplyController implements ContentCtrl {
 
     @FXML
     private VBox infoPane;

@@ -1,6 +1,6 @@
 package cn.keepfight.qsmanager;
 
-import cn.keepfight.qsmanager.controller.ContentController;
+import cn.keepfight.qsmanager.controller.ContentCtrl;
 import cn.keepfight.utils.ViewPathUtil;
 import javafx.application.Platform;
 
@@ -21,7 +21,7 @@ public enum MenuList {
     ORDERS("订单管理"),
     SETTINGS("系统设置");
 
-    ContentController controller;
+    ContentCtrl controller;
     String view;
     String image;
     String english;
@@ -53,7 +53,7 @@ public enum MenuList {
         });
     }
 
-    public ContentController getController() {
+    public ContentCtrl getController() {
         return controller;
     }
 
@@ -67,5 +67,9 @@ public enum MenuList {
 
     public String getTitle() {
         return title;
+    }
+
+    public String getName(){
+        return name();
     }
 }

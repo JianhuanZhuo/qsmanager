@@ -11,6 +11,9 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TextField?>
 <VBox styleClass="title-pane,content-pane"
       stylesheets="@css/common.css"
       fx:controller="cn.keepfight.qsmanager.controller.OrdersController"
@@ -28,28 +31,38 @@
             </graphic>
         </Button>
     </HBox>
-    <HBox styleClass="hbox-common">
-        <ChoiceBox fx:id="cust_sel" prefWidth="130.0"/>
-        <ChoiceBox fx:id="year_sel" prefWidth="80.0"/>
-        <ChoiceBox fx:id="month_sel" prefWidth="80.0"/>
-        <ChoiceBox fx:id="state_sel" prefWidth="80.0"/>
-        <Button fx:id="load" text="加载" >
-            <graphic>
-                <ImageView styleClass="image-button">
-                    <Image url="@img/search.png"/>
-                </ImageView>
-            </graphic>
-        </Button>
-        <Pane HBox.hgrow="ALWAYS"/>
-        <Button fx:id="add_order" text="添加订单">
-            <graphic>
-                <ImageView fitHeight="16" fitWidth="16" styleClass="image-button">
-                    <Image url="@img/item-add.png"/>
-                </ImageView>
-            </graphic>
-        </Button>
-    </HBox>
-    <ScrollPane fitToHeight="true" fitToWidth="true" VBox.vgrow="ALWAYS">
-        <ListView fx:id="orderList" styleClass="itemlist"/>
-    </ScrollPane>
+
+    <TabPane fx:id="tab_pane" styleClass="tab-pane-common" tabClosingPolicy="UNAVAILABLE" VBox.vgrow="ALWAYS">
+        <Tab styleClass="tab-common" text="订单列表">
+            <VBox>
+                <HBox styleClass="hbox-common">
+                    <ChoiceBox fx:id="cust_sel" prefWidth="130.0"/>
+                    <ChoiceBox fx:id="year_sel" prefWidth="80.0"/>
+                    <ChoiceBox fx:id="month_sel" prefWidth="80.0"/>
+                    <ChoiceBox fx:id="state_sel" prefWidth="80.0"/>
+                    <Button fx:id="load" text="加载">
+                        <graphic>
+                            <ImageView styleClass="image-button">
+                                <Image url="@img/search.png"/>
+                            </ImageView>
+                        </graphic>
+                    </Button>
+                    <Pane HBox.hgrow="ALWAYS"/>
+                    <Button fx:id="add_order" text="添加订单">
+                        <graphic>
+                            <ImageView fitHeight="16" fitWidth="16" styleClass="image-button">
+                                <Image url="@img/item-add.png"/>
+                            </ImageView>
+                        </graphic>
+                    </Button>
+                </HBox>
+                <ScrollPane fitToHeight="true" fitToWidth="true" VBox.vgrow="ALWAYS">
+                    <ListView fx:id="orderList" styleClass="itemlist"/>
+                </ScrollPane>
+            </VBox>
+        </Tab>
+        <Tab styleClass="tab-common" text="送货列表">
+            <fx:include fx:id="deliveryListPane" source="delivery_list.fxml"/>
+        </Tab>
+    </TabPane>
 </VBox>

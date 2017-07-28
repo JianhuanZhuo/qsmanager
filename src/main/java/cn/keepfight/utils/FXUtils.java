@@ -1,5 +1,6 @@
 package cn.keepfight.utils;
 
+import cn.keepfight.qsmanager.MenuList;
 import javafx.beans.Observable;
 import javafx.beans.binding.ObjectBinding;
 import javafx.beans.property.ObjectProperty;
@@ -26,11 +27,10 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.Objects;
+import java.util.*;
 import java.util.function.Function;
 import java.util.function.Supplier;
+import java.util.stream.Collectors;
 
 /**
  * FX 工具集合类
@@ -484,6 +484,34 @@ public class FXUtils {
             return Integer.valueOf(""+ds.charAt(kp));
         }catch (Exception e){
             return 0;
+        }
+    }
+
+    /**
+     * 对字符串进行包含了对 s 字符串的空处理，转化的异常处理，去除无效切分值
+     * @param s 需要被切分的字符串
+     * @param regex 切分的正则式
+     * @param convert 转换函数
+     * @return 切分后的列表
+     */
+    public static<T> List<T> split(String s, String regex, Function<String, T> convert){
+//        if (s==null || s.trim().equals("")){
+//            return new ArrayList<>(0);
+//        }
+
+        try {
+            return Arrays.stream(s.split(regex))
+                    .map(x->{
+                        try {
+                            return convert.apply(x);
+                        }catch (Exception e){
+                            return null;
+                        }
+                    })
+                    .filter(Objects::nonNull)
+                    .collect(Collectors.toList());
+        }catch (Exception e){
+            return new ArrayList<>(0);
         }
     }
 }

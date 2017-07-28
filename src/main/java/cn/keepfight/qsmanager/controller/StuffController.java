@@ -3,18 +3,16 @@ package cn.keepfight.qsmanager.controller;
 import cn.keepfight.qsmanager.MenuList;
 import cn.keepfight.qsmanager.QSApp;
 import cn.keepfight.qsmanager.model.CustomModel;
-import cn.keepfight.utils.QSUtil;
-import cn.keepfight.utils.ViewPathUtil;
-import cn.keepfight.utils.WarningBuilder;
+import cn.keepfight.utils.*;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.*;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.util.Pair;
 
 import java.io.IOException;
 import java.net.URL;
@@ -27,7 +25,7 @@ import static cn.keepfight.utils.FXUtils.limitLength;
  * 员工菜单模块控制器
  * Created by tom on 2017/7/19.
  */
-public class StuffController implements ContentController, Initializable{
+public class StuffController implements ContentCtrl, Initializable{
     @FXML
     private HBox root;
     @FXML
@@ -51,7 +49,8 @@ public class StuffController implements ContentController, Initializable{
     private PasswordField info_psw;
 
     @FXML
-    private ListView<Pair<MenuList, Boolean>> menuSelect;
+//    private ListView<Pair<MenuList, Boolean>> menuSelect;
+    private ListView<MenuList> menuSelect;
 
     private StuffAddController addController;
 
@@ -82,20 +81,39 @@ public class StuffController implements ContentController, Initializable{
         limitLength(info_acc, 60);
         limitLength(info_psw, 60);
 
-        menuSelect.setCellFactory(list->new ListCell<Pair<MenuList, Boolean>>() {
+//        menuSelect.setCellFactory(list->new ListCell<Pair<MenuList, Boolean>>() {
+//            @Override
+//            protected void updateItem(Pair<MenuList, Boolean> item, boolean empty) {
+//                super.updateItem(item, empty);
+//                if (item != null && !empty) {
+//                    CheckBox c = new CheckBox(item.getKey().getTitle());
+//                    c.setSelected(item.getValue());
+//                    setGraphic(c);
+//                } else {
+//                    setGraphic(null);
+//                }
+//                setText(null);
+//            }
+//        });
+        menuSelect.setCellFactory(list->new ListCell<MenuList>() {
             @Override
-            protected void updateItem(Pair<MenuList, Boolean> item, boolean empty) {
+            protected void updateItem(MenuList item, boolean empty) {
                 super.updateItem(item, empty);
                 if (item != null && !empty) {
-                    CheckBox c = new CheckBox(item.getKey().getTitle());
-                    c.setSelected(item.getValue());
-                    setGraphic(c);
-                } else {
+                    setText(item.getTitle());
+                    setGraphic(ImageLoadUtil.bindImage(new ImageView(), "no.png", ImageLoadUtil.IMG_SIZE_16));
+                    this.selectedProperty().addListener((x,o,n)->{
+                        String p = n?"yes.png":"no.png";
+                        setGraphic(ImageLoadUtil.bindImage(new ImageView(), p, ImageLoadUtil.IMG_SIZE_16));
+                    });
+                }else{
                     setGraphic(null);
+                    setText(null);
                 }
-                setText(null);
             }
         });
+        menuSelect.getItems().setAll(MenuList.values());
+        menuSelect.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
     }
 
     private void initAction() {
@@ -128,7 +146,7 @@ public class StuffController implements ContentController, Initializable{
             info_acc.setText(custom.getAcc());
             info_psw.setText(custom.getPsw());
 
-            menuSelect.getItems().setAll(getMenuList(custom));
+            selectMenu(custom);
         });
 
         infoPane.disableProperty().bind(stuffList.getSelectionModel().selectedItemProperty().isNull());
@@ -149,6 +167,8 @@ public class StuffController implements ContentController, Initializable{
 
             custom.setAcc(info_acc.getText());
             custom.setPsw(info_psw.getText());
+
+            custom.setNamefull(getMenuSelectList());
 
             try {
                 QSApp.service.getStuffService().update(custom);
@@ -194,22 +214,14 @@ public class StuffController implements ContentController, Initializable{
         });
     }
 
-    private List<Pair<MenuList, Boolean>> getMenuList(CustomModel c){
-        String nameFull = c.getNamefull();
-        if (nameFull==null){
-            nameFull="";
-        }
-        List<MenuList> mlist = Arrays.stream(nameFull.split("~"))
-                .map(x->{
-                    try {
-                        return MenuList.valueOf(x);
-                    }catch (Excep6tion e){
-                        return null;
-                    }
-                })
-                .filter(Objects::nonNull)
-                .collect(Collectors.toList());
+    private void selectMenu(CustomModel c){
+        List<MenuList> mlist = FXUtils.split(c.getNamefull(), "~", MenuList::valueOf);
+        menuSelect.getSelectionModel().clearSelection();
+        mlist.forEach(m-> menuSelect.getSelectionModel().select(m));
+    }
 
-        return Arrays.stream(MenuList.values()).map(m->new Pair<>(m, mlist.contains(m))).collect(Collectors.toList());
+
+    private String getMenuSelectList(){
+        return menuSelect.getSelectionModel().getSelectedItems().stream().map(MenuList::getName).collect(Collectors.joining("~"));
     }
 }

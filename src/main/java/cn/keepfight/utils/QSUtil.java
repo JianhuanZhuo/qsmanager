@@ -1,17 +1,15 @@
 package cn.keepfight.utils;
 
-import cn.keepfight.qsmanager.QSApp;
-import cn.keepfight.qsmanager.model.MaterialModel;
 import cn.keepfight.utils.function.ConsumerCheck;
-import com.sun.org.apache.xpath.internal.operations.Bool;
 import javafx.beans.property.ObjectProperty;
 import javafx.scene.control.*;
 import javafx.util.StringConverter;
 
 import java.text.SimpleDateFormat;
-import java.util.*;
-import java.util.function.Consumer;
-import java.util.function.Predicate;
+import java.util.Date;
+import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 import java.util.function.Supplier;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;

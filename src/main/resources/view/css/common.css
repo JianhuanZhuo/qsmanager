@@ -171,3 +171,7 @@ GridPane.infogp {
 .xxtable .table-row-cell {
     -fx-border-width: 1;
 }
+
+.select-list .list-cell :selected{
+
+}

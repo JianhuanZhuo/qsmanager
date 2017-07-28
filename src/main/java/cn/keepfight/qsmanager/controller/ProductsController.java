@@ -1,7 +1,6 @@
 package cn.keepfight.qsmanager.controller;
 
 import cn.keepfight.qsmanager.QSApp;
-import cn.keepfight.qsmanager.model.CustomModel;
 import cn.keepfight.qsmanager.model.ProductModel;
 import cn.keepfight.utils.CustomDialog;
 import cn.keepfight.utils.ViewPathUtil;
@@ -24,7 +23,7 @@ import java.util.Optional;
  * 产品管理界面控制器
  * Created by tom on 2017/6/6.
  */
-public class ProductsController implements ContentController {
+public class ProductsController implements ContentCtrl {
     @FXML
     private VBox root;
     @FXML

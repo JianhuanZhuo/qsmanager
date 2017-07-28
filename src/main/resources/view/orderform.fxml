@@ -40,13 +40,13 @@
                 <TableColumn fx:id="tab_pack" text="产品装数"/>
                 <TableColumn fx:id="tab_num" text="订购数量"/>
                 <TableColumn fx:id="tab_total" text="合计金额"/>
-                <TableColumn fx:id="tab_rate" text="税率"/>
-                <TableColumn fx:id="tab_ratetotal" text="税金"/>
-                <TableColumn fx:id="tab_totallWithRate" text="税后金额"/>
-                <TableColumn fx:id="tab_rebate" text="返点数"/>
-                <TableColumn fx:id="tab_allrebate" text="总共返点数"/>
-                <TableColumn fx:id="tab_delifee" text="运费"/>
-                <TableColumn fx:id="tab_actPay" text="实际支付"/>
+                <!--<TableColumn fx:id="tab_rate" text="税率"/>-->
+                <!--<TableColumn fx:id="tab_ratetotal" text="税金"/>-->
+                <!--<TableColumn fx:id="tab_totallWithRate" text="税后金额"/>-->
+                <!--<TableColumn fx:id="tab_rebate" text="返点数"/>-->
+                <!--<TableColumn fx:id="tab_allrebate" text="总共返点数"/>-->
+                <!--<TableColumn fx:id="tab_delifee" text="运费"/>-->
+                <!--<TableColumn fx:id="tab_actPay" text="实际支付"/>-->
             </columns>
         </TableView>
     </ScrollPane>
@@ -57,8 +57,8 @@
         </styleClass>
         <Label text="箱数统计："/>
         <Label fx:id="s_num" text="180"/>
-        <Label text="税金统计："/>
-        <Label fx:id="s_rate" text="180"/>
+        <!--<Label text="税金统计："/>-->
+        <!--<Label fx:id="s_rate" text="180"/>-->
         <Label text="返点统计："/>
         <Label fx:id="s_rebate" text="1080.00"/>
         <Pane HBox.hgrow="ALWAYS"/>
@@ -68,7 +68,8 @@
     <HBox layoutX="10.0" layoutY="310.0" styleClass="hbox-common">
         <Button fx:id="a_del" text="删除订单"/>
         <Pane HBox.hgrow="ALWAYS"/>
-        <Button fx:id="a_delivery" text="添加发货"/>
+        <Button fx:id="a_delivery_all" text="全部发货并打印"/>
+        <Button fx:id="a_delivery" text="分批发货"/>
         <Button fx:id="a_history" text="送货记录"/>
         <Button fx:id="a_alter" text="修改订单"/>
     </HBox>

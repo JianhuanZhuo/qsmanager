@@ -27,7 +27,7 @@ import java.util.ResourceBundle;
  * 购物单条
  * Created by tom on 2017/6/18.
  */
-public class ShopItemController implements ContentController, Initializable {
+public class ShopItemController implements ContentCtrl, Initializable {
     @FXML
     private HBox root;
     @FXML

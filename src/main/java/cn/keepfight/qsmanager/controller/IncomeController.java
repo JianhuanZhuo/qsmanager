@@ -22,32 +22,20 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
-import java.util.stream.Collectors;
-import java.util.stream.LongStream;
 
 /**
  * 收入管理控制器类
  * Created by tom on 2017/6/6.
  */
-public class IncomeController implements ContentController, Initializable {
+public class IncomeController implements ContentCtrl, Initializable {
     public TabPane tab_pane;
     @FXML
     private VBox root;
 
     @FXML
-    private ChoiceBox<CustomModel> cust_sel;
+    private VBox deliveryListPane;
     @FXML
-    private ChoiceBox<Long> year_sel;
-    @FXML
-    private ChoiceBox<Long> mon_sel;
-    @FXML
-    private TextField order_sel;
-    @FXML
-    private Button load;
-    @FXML
-    private Button print;
-    @FXML
-    private ListView<DeliveryModelFull> deliveryList;
+    private DeliveryListPaneController deliveryListPaneController;
 
     @FXML
     private ChoiceBox<CustomModel> an_cust_sel;
@@ -96,22 +84,13 @@ public class IncomeController implements ContentController, Initializable {
     @FXML
     private Label attach;
 
-    private DeliveryAddController deliveryAddController;
     private CustAnnualAddController custAnnualAddController;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         // 设置客户下拉转换器、年转换器
-        cust_sel.setConverter(FXUtils.converter(x -> x.getSerial() + "-" + x.getName(), "全部客户"));
-        year_sel.setConverter(FXUtils.converter(x -> x + "年", "全部年份"));
-
         an_cust_sel.setConverter(FXUtils.converter(x -> x.getSerial() + "-" + x.getName(), "选择客户"));
         an_year_sel.setConverter(FXUtils.converter(x -> x + "年", "选择年份"));
-
-        mon_sel.setConverter(FXUtils.converter(x -> x + "月", "全部月份"));
-        mon_sel.setItems(FXCollections.observableList(LongStream.range(1, 13).boxed().collect(Collectors.toList())));
-        mon_sel.getItems().add(null);
-
 
         // 添加表格转换器
         mon.setCellValueFactory(cellFeature ->
@@ -141,21 +120,9 @@ public class IncomeController implements ContentController, Initializable {
 
         rate.setCellFactory(TextFieldTableCell.forTableColumn(FXUtils.rateConverter()));
 
-        FXUtils.limitNum(order_sel, 10, 0, false, null);
 
-        load.setOnAction(e -> loadDeliverys());
         an_cust_sel.setOnAction(event -> loadAnnu());
         an_year_sel.setOnAction(event -> loadAnnu());
-
-        // 设置列表单元构造器
-        deliveryList.setCellFactory(x -> new DeliveryListCell(IncomeController.this));
-
-        print.disableProperty().bind(
-                cust_sel.getSelectionModel().selectedItemProperty().isNotNull()
-                        .and(year_sel.getSelectionModel().selectedItemProperty().isNotNull())
-                        .and(mon_sel.getSelectionModel().selectedItemProperty().isNotNull())
-                        .not()
-        );
         an_print.disableProperty().bind(an_cust_sel.getSelectionModel().selectedItemProperty().isNotNull()
                 .and(an_year_sel.getSelectionModel().selectedItemProperty().isNotNull())
                 .not()
@@ -220,19 +187,6 @@ public class IncomeController implements ContentController, Initializable {
             return row;
         });
 
-        // 打印支持
-        print.setOnAction(event -> {
-            PrintSource source = new PrintSource();
-            CustomModel selCust = cust_sel.getSelectionModel().getSelectedItem();
-            Long cid = selCust == null ? null : selCust.getId();
-            Long year = year_sel.getSelectionModel().getSelectedItem();
-            Long month = mon_sel.getSelectionModel().getSelectedItem();
-            source.setCust(cid);
-            source.setYear(year);
-            source.setMonth(month);
-            QSApp.service.getPrintService().build(new PrintSelection(QSPrintType.MON_CUST, source));
-        });
-
 
         // 打印支持
         an_print.setOnAction(event -> {
@@ -258,68 +212,17 @@ public class IncomeController implements ContentController, Initializable {
         // 加载选择列表
         loadSelection();
         try {
-            deliveryAddController = ViewPathUtil.loadViewForController("delivery_add.fxml");
             custAnnualAddController = ViewPathUtil.loadViewForController("cust_annual_add.fxml");
         } catch (IOException e) {
             e.printStackTrace();
         }
+        deliveryListPaneController.loaded();
     }
 
     @Override
     public void showed() {
-
+        deliveryListPaneController.showed();
     }
-
-    void updateDelivery(DeliveryModelFull modelFull) {
-        Optional<DeliveryModelFull> op = CustomDialog.gen().build(deliveryAddController, modelFull);
-        op.ifPresent(model -> {
-            try {
-                model.setId(modelFull.getId());
-                QSApp.service.getDeliveryService().update(model);
-                loadDeliverys();
-            } catch (Exception e1) {
-                e1.printStackTrace();
-                WarningBuilder.build("修改送货单失败", "修改送货单失败，请检查网络是否通畅");
-            }
-        });
-    }
-
-    /**
-     * 从送货列表中删除指定的对象
-     */
-    void deleteSelected(DeliveryModelFull modelFull) {
-        Platform.runLater(() -> {
-            try {
-                QSApp.service.getDeliveryService().delete(modelFull.get());
-                deliveryList.getItems().remove(modelFull);
-            } catch (Exception e) {
-                WarningBuilder.build("删除失败，请检查网络是否通畅！");
-            }
-        });
-    }
-
-    /**
-     * 所谓事件处理器，加载对账表
-     */
-    private void loadDeliverys() {
-        CustomModel selCust = cust_sel.getSelectionModel().getSelectedItem();
-        Long cid = selCust == null ? null : selCust.getId();
-        Long year = year_sel.getSelectionModel().getSelectedItem();
-        Long month = mon_sel.getSelectionModel().getSelectedItem();
-        String orderSerial = (order_sel.getText() == null) || order_sel.getText().trim().equals("") ?
-                null : order_sel.getText();
-
-        Platform.runLater(() -> {
-            try {
-                DeliverySelection s = new DeliverySelection(cid, year, month, orderSerial);
-                List<DeliveryModelFull> ls = QSApp.service.getDeliveryService().selectAll(s);
-                deliveryList.getItems().setAll(ls);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        });
-    }
-
 
     /**
      * 所谓事件处理器，加载对账表
@@ -355,58 +258,13 @@ public class IncomeController implements ContentController, Initializable {
                 an_cust_sel.getItems().setAll(custs);
                 an_year_sel.getItems().setAll(new ArrayList<>(years));
 
-                custs.add(null);
-                cust_sel.getItems().setAll(FXCollections.observableList(custs));
-                years.add(null);
-                year_sel.getItems().setAll(years);
             } catch (Exception e) {
                 e.printStackTrace();
             }
         });
     }
 
-    /**
-     * 搜索指定订单号的全部送货记录
-     */
-    public void listDelivery(String s){
-        tab_pane.getSelectionModel().selectFirst();
-
-        cust_sel.getSelectionModel().clearSelection();
-        year_sel.getSelectionModel().clearSelection();
-        mon_sel.getSelectionModel().clearSelection();
-
-        order_sel.setText(s);
-
-        loadDeliverys();
-
-
-    }
-
-    /**
-     * 发货列表条目
-     */
-    private static class DeliveryListCell extends ListCell<DeliveryModelFull> {
-        DeliveryItemController controller;
-        IncomeController incomeController;
-
-        DeliveryListCell(IncomeController incomeController) {
-            this.incomeController = incomeController;
-            try {
-                controller = ViewPathUtil.loadViewForController("delivery.fxml");
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-
-        @Override
-        public void updateItem(DeliveryModelFull item, boolean empty) {
-            super.updateItem(item, empty);
-            if (empty || item == null) {
-                setGraphic(null);
-            } else {
-                setGraphic(controller.getRoot());
-                controller.fill(item, incomeController);
-            }
-        }
+    public void listDelivery(String serial) {
+        deliveryListPaneController.listDelivery(serial);
     }
 }

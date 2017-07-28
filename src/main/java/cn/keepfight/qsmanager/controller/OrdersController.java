@@ -11,10 +11,7 @@ import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
-import javafx.scene.control.Button;
-import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.ListCell;
-import javafx.scene.control.ListView;
+import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
 
 import java.io.IOException;
@@ -27,7 +24,7 @@ import java.util.stream.LongStream;
  * 订单界面控制器
  * Created by tom on 2017/6/6.
  */
-public class OrdersController implements ContentController,Initializable {
+public class OrdersController implements ContentCtrl,Initializable {
     @FXML
     private ChoiceBox<CustomModel> cust_sel;
     @FXML
@@ -48,6 +45,14 @@ public class OrdersController implements ContentController,Initializable {
     @FXML
     private VBox root;
 
+    @FXML
+    private TabPane tab_pane;
+
+    @FXML
+    private VBox deliveryListPane;
+    @FXML
+    private DeliveryListPaneController deliveryListPaneController;
+
     private OrderAddController orderAddController;
     private DeliveryAddController deliveryAddController;
 
@@ -67,10 +72,12 @@ public class OrdersController implements ContentController,Initializable {
                 e.printStackTrace();
             }
         });
+        deliveryListPaneController.loaded();
+        deliveryListPaneController.noPrintMon();
     }
     @Override
     public void showed() {
-
+        deliveryListPaneController.showed();
     }
 
     @Override
@@ -221,5 +228,9 @@ public class OrdersController implements ContentController,Initializable {
         }
     }
 
+    public void listDelivery(String serial) {
+        tab_pane.getSelectionModel().select(1);
+        deliveryListPaneController.listDelivery(serial);
+    }
 
 }

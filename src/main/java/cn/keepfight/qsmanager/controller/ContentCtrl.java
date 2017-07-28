@@ -6,7 +6,7 @@ import javafx.scene.Node;
  * 中间子面板的控制器的共性接口
  * Created by tom on 2017/6/5.
  */
-public interface ContentController {
+public interface ContentCtrl {
 
     Node getRoot();
 

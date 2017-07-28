@@ -25,7 +25,7 @@ import static cn.keepfight.utils.FXUtils.limitLength;
  * 客户信息管理界面控制器类
  * Created by tom on 2017/6/5.
  */
-public class CustomController implements ContentController {
+public class CustomController implements ContentCtrl {
 
     @FXML
     private VBox infoPane;

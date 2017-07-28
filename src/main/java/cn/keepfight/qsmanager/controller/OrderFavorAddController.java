@@ -31,11 +31,6 @@ public class OrderFavorAddController implements DialogContent<ProductModel>, Ini
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         ps.setConverter(FXUtils.converter(x->x.getSerial()+"-"+x.getName()));
-        try {
-            ps.getItems().setAll(FXCollections.observableList(QSApp.service.getProductService().selectAll()));
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
     }
 
     @Override
@@ -46,6 +41,11 @@ public class OrderFavorAddController implements DialogContent<ProductModel>, Ini
     @Override
     public void init() {
         ps.getSelectionModel().clearSelection();
+        try {
+            ps.getItems().setAll(FXCollections.observableList(QSApp.service.getProductService().selectAll()));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override

@@ -29,7 +29,7 @@ import java.util.stream.Collectors;
  * 浏览下单菜单项内容控制器
  * Created by tom on 2017/6/18.
  */
-public class ShopController implements ContentController, Initializable {
+public class ShopController implements ContentCtrl, Initializable {
 
     @FXML
     private VBox root;

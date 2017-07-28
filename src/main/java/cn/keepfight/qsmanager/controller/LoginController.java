@@ -12,14 +12,13 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.Optional;
 
 /**
  * 系统登录面板
  * Created by tom on 2017/6/5.
  */
-public class LoginController implements ContentController {
+public class LoginController implements ContentCtrl {
 
     @FXML
     private ImageView xx;
