@@ -1,6 +1,5 @@
-package cn.keepfight.qsmanager.controller;
+package cn.keepfight.qsmanager.print;
 
-import cn.keepfight.qsmanager.QSApp;
 import cn.keepfight.utils.DialogContent;
 import cn.keepfight.utils.FXUtils;
 import cn.keepfight.utils.FXWidgetUtil;
@@ -9,7 +8,6 @@ import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleObjectProperty;
-import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.print.PageLayout;
@@ -21,13 +19,10 @@ import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.VBox;
-import javafx.util.Pair;
 
 import java.net.URL;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.stream.Collectors;
-import java.util.stream.LongStream;
 
 /**
  * 打印界面控制器
@@ -51,38 +46,15 @@ public class PrintController implements DialogContent<PrintSelection>, Initializ
 
     @FXML
     private ChoiceBox<Printer> print_sel;
-    //    @FXML
-//    private Button set_layout;
-//    @FXML
-//    private Button set_print;
     @FXML
     private Label printHit;
 
     @FXML
     private ChoiceBox<QSPrintType> type_sel;
     @FXML
-    private ChoiceBox<Pair<Long, String>> obj; // Long 为ID，String 为显示的名字
-    @FXML
-    private ChoiceBox<Long> year;
-    @FXML
-    private ChoiceBox<Long> month;
-    @FXML
-    private ChoiceBox<Pair<Long, String>> serial;
-    //    @FXML private RadioButton edit;
-//    @FXML private RadioButton preview;
-//    @FXML private Button export_excel;
-//    @FXML private Button export_pic;
-    @FXML
-    private Button prev;
-    @FXML
-    private Button next;
-    @FXML
     private Button action;
     @FXML
     private Button compute;
-//    @FXML
-//    private Button reset;
-
     @FXML
     private ScrollPane printScrollPane;
 
@@ -91,20 +63,17 @@ public class PrintController implements DialogContent<PrintSelection>, Initializ
      */
     private static AtomicBoolean busy = new AtomicBoolean(false);
     private static BooleanProperty printing = new SimpleBooleanProperty(false);
-    private List<Pair<Long, String>> custList;
-    private List<Pair<Long, String>> supList;
 
     private ObjectProperty<PrintTemplate> printController = new SimpleObjectProperty<>();
-    private ObjectProperty<PrintSourceLocate> locate = new SimpleObjectProperty<>();
+
+    private PrintSelection selection;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         // 初始化打印类型下拉列表
         initPrintTypeList();
-
         initPrinterList();
 
-        initLocate();
         // 打印按钮使能绑定
         action.disableProperty().bind(printScrollPane.contentProperty().isNull()
                 .or(print_sel.getSelectionModel().selectedItemProperty().isNull())
@@ -130,39 +99,29 @@ public class PrintController implements DialogContent<PrintSelection>, Initializ
 
     @Override
     public void fill(PrintSelection s) {
+        this.selection = s;
+        switch (s.getType()) {
+            case DELIVERY:
+            case RECEIPT:
+            case DELIVERY_ANLI:
+                type_sel.getItems().setAll(Arrays.asList(QSPrintType.DELIVERY, QSPrintType.RECEIPT, QSPrintType.DELIVERY_ANLI));
+                break;
+            case MON_CUST_RATE:
+            case MON_CUST:
+                type_sel.getItems().setAll(Arrays.asList(QSPrintType.MON_CUST_RATE, QSPrintType.MON_CUST));
+                break;
+            case MON_SUP:
+                type_sel.getItems().setAll(Collections.singletonList(QSPrintType.MON_SUP));
+                break;
+            case YEAR_SUP:
+                type_sel.getItems().setAll(Collections.singletonList(QSPrintType.YEAR_SUP));
+                break;
+            case YEAR_CUST:
+                type_sel.getItems().setAll(Collections.singletonList(QSPrintType.YEAR_CUST));
+                break;
+        }
         type_sel.getSelectionModel().select(s.getType());
-        ////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        // 非空时设置模板
-        //
-        type_sel.getSelectionModel().getSelectedItem().getController(c -> {
-            printScrollPane.setContent(c.getRoot());
-            printController.set(c);
-            compute.disableProperty().bind(c.autoComputable().not());
-            compute.setOnAction(e -> c.autoCalculate());
-            prev.disableProperty().bind(c.hasPrev().not());
-            next.disableProperty().bind(c.hasNext().not());
-
-
-            prev.setOnAction(e -> c.prev());
-            next.setOnAction(e -> c.next());
-        });
-        locate.set(type_sel.getValue().getLocate());
-        //
-        //
-        ////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        Platform.runLater(() -> s.getType().getController(c -> {
-            try {
-                c.fill(s.getType().getLocate().query(s.getPrintSource()));
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }));
-
-        // 清空选择，避免引起歧义
-        year.getSelectionModel().clearSelection();
-        month.getSelectionModel().clearSelection();
-        obj.getSelectionModel().clearSelection();
-        serial.getSelectionModel().clearSelection();
+        loadPrintPane();
     }
 
     @Override
@@ -173,6 +132,15 @@ public class PrintController implements DialogContent<PrintSelection>, Initializ
     @Override
     public BooleanProperty allValid() {
         return new SimpleBooleanProperty(false);
+    }
+
+    @Override
+    public void cancel() {
+        try {
+            printController.get().cancel();
+        } catch (Exception e) {
+            // to do nothing
+        }
     }
 
     /**
@@ -187,72 +155,6 @@ public class PrintController implements DialogContent<PrintSelection>, Initializ
             print_sel.getSelectionModel().select(defaultPrinter);
         }
         print_sel.setOnAction(event -> checkSupport());
-    }
-
-    private void initLocate() {
-        try {
-            //@TODO 动态加载
-            custList = QSApp.service.getCustomService().selectAll()
-                    .stream()
-                    .map(x -> new Pair<>(x.getId(), x.getSerial() + "-" + x.getName()))
-                    .collect(Collectors.toList());
-            supList = QSApp.service.getSupplyService().selectAll()
-                    .stream()
-                    .map(x -> new Pair<>(x.getId(), x.getSerial() + "-" + x.getName()))
-                    .collect(Collectors.toList());
-            Set<Long> years = new HashSet<>();
-            years.addAll(QSApp.service.getOrderService().selectYear());
-            years.addAll(QSApp.service.getReceiptService().selectYear());
-            year.getItems().setAll(years);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        locate.addListener((ob, ov, nv) -> {
-            if (nv == null) {
-                obj.setDisable(true);
-                year.setDisable(true);
-                month.setDisable(true);
-                serial.setDisable(true);
-            } else {
-                obj.setDisable(false);
-                year.setDisable(false);
-                month.setDisable(!nv.reqMon());
-                serial.setDisable(!nv.reqSerial());
-                if (ov == null || (nv.reqCust() != ov.reqCust())) {
-                    // 相同则不设置
-                    if (nv.reqCust()) {
-                        obj.getItems().setAll(custList);
-                    } else {
-                        obj.getItems().setAll(supList);
-                    }
-                }
-                serial.getItems().clear();
-            }
-        });
-        obj.setDisable(true);
-        year.setDisable(true);
-        month.setDisable(true);
-        serial.setDisable(true);
-
-        obj.setConverter(FXUtils.converter(Pair::getValue, "选择客户"));
-        year.setConverter(FXUtils.converter(x -> x + "年", "选择年份"));
-        month.setItems(FXCollections.observableList(LongStream.range(1, 13).boxed().collect(Collectors.toList())));
-        month.setConverter(FXUtils.converter(x -> x + "月", "全部月份"));
-        serial.setConverter(FXUtils.converter(Pair::getValue, "选择编号"));
-
-        obj.setOnAction(e -> {
-            serial.getItems().clear();
-            checkForDataLoad();
-        });
-        year.setOnAction(e -> {
-            serial.getItems().clear();
-            checkForDataLoad();
-        });
-        month.setOnAction(e -> {
-            serial.getItems().clear();
-            checkForDataLoad();
-        });
-        serial.setOnAction(e -> checkForDataLoad());
     }
 
     /**
@@ -270,39 +172,15 @@ public class PrintController implements DialogContent<PrintSelection>, Initializ
         type_sel.setOnAction(event -> {
             if (checkSupport()) {
                 // 非空时设置模板
-                type_sel.getSelectionModel().getSelectedItem().getController(c -> {
-                    printScrollPane.setContent(c.getRoot());
-                    printController.set(c);
-                    compute.disableProperty().bind(c.autoComputable().not());
-                    compute.setOnAction(e -> c.autoCalculate());
-                    prev.disableProperty().bind(c.hasPrev().not());
-                    next.disableProperty().bind(c.hasNext().not());
-
-
-                    prev.setOnAction(e -> c.prev());
-                    next.setOnAction(e -> c.next());
-                });
-                locate.set(type_sel.getValue().getLocate());
+                loadPrintPane();
             } else {
                 printController.set(null);
-                locate.set(null);
                 // 上下页使能
                 compute.disableProperty().unbind();
                 compute.setOnAction(null);
-                prev.disableProperty().unbind();
-                next.disableProperty().unbind();
-                prev.setDisable(true);
-                next.setDisable(true);
-                serial.getItems().clear();
-                checkForDataLoad();
             }
         });
         compute.disableProperty().unbind();
-        prev.disableProperty().unbind();
-        next.disableProperty().unbind();
-        // 上下页使能
-        prev.setDisable(true);
-        next.setDisable(true);
     }
 
     private void printAction() {
@@ -397,49 +275,24 @@ public class PrintController implements DialogContent<PrintSelection>, Initializ
         return true;
     }
 
-
-    private void checkForDataLoad() {
-        PrintSource ps = new PrintSource();
-        if (locate.get() == null) {
-            return;
-        }
-        if ((locate.get().reqCust() || locate.get().reqSup())) {
-            if (obj.getSelectionModel().isEmpty()) {
-                return;
-            }
-            ps.setSup(obj.getSelectionModel().getSelectedItem().getKey());
-            ps.setCust(obj.getSelectionModel().getSelectedItem().getKey());
-        }
-        if (locate.get().reqYear()) {
-            if (year.getSelectionModel().isEmpty())
-                return;
-            ps.setYear(year.getSelectionModel().getSelectedItem());
-        }
-        if (locate.get().reqMon()) {
-            if (month.getSelectionModel().isEmpty())
-                return;
-            ps.setMonth(month.getSelectionModel().getSelectedItem());
-        }
-        if (locate.get().reqSerial()) {
-            if (serial.getSelectionModel().isEmpty()) {
-                Long s_obj = obj.getSelectionModel().getSelectedItem().getKey();
-                Long s_year = year.getSelectionModel().getSelectedItem();
-                Long s_mon = month.getSelectionModel().getSelectedItem();
-                try {
-                    serial.getItems().setAll(locate.get().getSerialPair(s_obj, s_year, s_mon));
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-                return;
-            }
-            ps.setItem(serial.getSelectionModel().getSelectedItem().getKey());
-        }
+    private void loadPrintPane(){
+        // 非空时设置模板
         type_sel.getSelectionModel().getSelectedItem().getController(c -> {
+            printScrollPane.setContent(c.getRoot());
+            printController.set(c);
+            compute.disableProperty().bind(c.autoComputable().not());
+            compute.setOnAction(e -> c.autoCalculate());
+        });
+        Platform.runLater(() -> type_sel.getSelectionModel().getSelectedItem().getController(c -> {
             try {
-                c.fill(locate.get().query(ps));
+                c.fill(selection.getType().getLocate().query(selection.getPrintSource()));
+                // 自动计算
+                if (c.autoComputable().get()){
+                    c.autoCalculate();
+                }
             } catch (Exception e) {
                 e.printStackTrace();
             }
-        });
+        }));
     }
 }

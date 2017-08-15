@@ -138,7 +138,7 @@ public class ProductsController implements ContentCtrl {
         table_name.setCellValueFactory(cellFeature ->
                 new SimpleStringProperty(cellFeature.getValue().getName()));
         table_price.setCellValueFactory(cellFeature ->
-                new SimpleStringProperty(cellFeature.getValue().getPrice().toString()));
+                new SimpleStringProperty(cellFeature.getValue().getPrice().stripTrailingZeros().toString()));
         table_detail.setCellValueFactory(cellFeature ->
                 new SimpleStringProperty(cellFeature.getValue().getDetail()));
         table_unit.setCellValueFactory(cellFeature ->

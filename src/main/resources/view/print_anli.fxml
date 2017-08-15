@@ -9,176 +9,171 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox fx:id="root" styleClass="layout_holder, preview" stylesheets="@css/print.css"
-      xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1"
-      fx:controller="cn.keepfight.qsmanager.controller.PrintAnliController">
+<?import javafx.scene.control.ChoiceBox?>
+<VBox fx:id="root" styleClass="layout_holder" stylesheets="@css/print.css" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cn.keepfight.qsmanager.print.PrintAnliController">
     <VBox styleClass="print_layout,layout_A5H">
         <HBox VBox.vgrow="ALWAYS">
             <VBox HBox.hgrow="ALWAYS">
                 <HBox styleClass="print_title">
-                    <Pane HBox.hgrow="ALWAYS"/>
-                    <Label text="佛山市南海区丹灶晴旭金属制品厂"/>
-                    <Pane HBox.hgrow="ALWAYS"/>
+                    <Pane HBox.hgrow="ALWAYS" />
+                    <Label text="佛山市南海区丹灶晴旭金属制品厂" />
+                    <Pane HBox.hgrow="ALWAYS" />
                 </HBox>
                 <HBox styleClass="print_font">
-                    <Label text="地址：佛山市南海区丹灶镇新农洲中村大山杏"/>
-                    <Pane HBox.hgrow="ALWAYS"/>
+                    <Label text="地址：佛山市南海区丹灶镇新农洲中村大山杏" />
+                    <Pane HBox.hgrow="ALWAYS" />
                     <!--下面这个标签仅为对齐作用-->
-                    <Label text="   "/>
+                    <Label text="   " />
                 </HBox>
                 <HBox styleClass="print_font">
-                    <Label text="联系人：周生/邓维 电话：13925977136/13929986149"/>
+                    <Label text="联系人：周生/邓维 电话：13925977136/13929986149" />
                 </HBox>
                 <HBox styleClass="print_font">
-                    <Label text="传真：0757－63302363      邮箱：xingda757@yeah.net"/>
+                    <Label text="传真：0757－63302363      邮箱：xingda757@yeah.net" />
                 </HBox>
-                <Pane style="-fx-pref-height: 10px;"/>
+                <Pane style="-fx-pref-height: 10px;" />
                 <GridPane styleClass="print_font, my_grid, fitpack" VBox.vgrow="ALWAYS">
                     <columnConstraints>
-                        <ColumnConstraints prefWidth="120.0"/>
-                        <ColumnConstraints prefWidth="110.0"/>
-                        <ColumnConstraints prefWidth="50.0"/>
-                        <ColumnConstraints prefWidth="30.0"/>
-                        <ColumnConstraints prefWidth="60.0"/>
-                        <ColumnConstraints prefWidth="170.0"/>
+                        <ColumnConstraints prefWidth="120.0" />
+                        <ColumnConstraints prefWidth="110.0" />
+                        <ColumnConstraints prefWidth="50.0" />
+                        <ColumnConstraints prefWidth="30.0" />
+                        <ColumnConstraints prefWidth="60.0" />
+                        <ColumnConstraints prefWidth="170.0" />
                     </columnConstraints>
                     <rowConstraints>
-                        <RowConstraints prefHeight="30.0"/>
-                        <RowConstraints prefHeight="25.0"/>
-                        <RowConstraints prefHeight="55.0"/>
-                        <RowConstraints prefHeight="25.0"/>
-                        <RowConstraints prefHeight="25.0"/>
-                        <RowConstraints prefHeight="25.0"/>
-                        <RowConstraints prefHeight="25.0"/>
-                        <RowConstraints prefHeight="25.0"/>
+                        <RowConstraints prefHeight="30.0" />
+                        <RowConstraints prefHeight="25.0" />
+                        <RowConstraints prefHeight="55.0" />
+                        <RowConstraints prefHeight="25.0" />
+                        <RowConstraints prefHeight="25.0" />
+                        <RowConstraints prefHeight="25.0" />
+                        <RowConstraints prefHeight="25.0" />
+                        <RowConstraints prefHeight="25.0" />
                     </rowConstraints>
                     <HBox styleClass="gp-center,bolder" GridPane.columnIndex="0" GridPane.rowIndex="0">
-                        <Label text="客户姓名"/>
+                        <Label text="客户姓名" />
                     </HBox>
                     <HBox styleClass="gp-centerleft" GridPane.columnIndex="1" GridPane.rowIndex="0">
-                        <Label styleClass="smallfont" text="安利（中国）日用品有限公司" wrapText="true"/>
+                        <Label styleClass="smallfont" text="安利（中国）日用品有限公司" wrapText="true" />
                     </HBox>
-                    <HBox styleClass="gp-centerleft,bolder" GridPane.columnIndex="2" GridPane.columnSpan="4"
-                          GridPane.rowIndex="0">
-                        <Label text=" 送货编号："/>
-                        <TextField fx:id="serial" text="（要自动生成）"/>
+                    <HBox styleClass="gp-centerleft,bolder" GridPane.columnIndex="2" GridPane.columnSpan="4" GridPane.rowIndex="0">
+                        <Label text=" 送货编号：" />
+                        <TextField fx:id="serial" text="（要自动生成）" />
                     </HBox>
                     <HBox styleClass="gp-center,bolder" GridPane.columnIndex="0" GridPane.rowIndex="1">
-                        <Label text="电话"/>
+                        <Label text="电话" />
                     </HBox>
                     <HBox styleClass="gp-centerleft" GridPane.columnIndex="1" GridPane.rowIndex="1">
-                        <TextField text="020－85198136"/>
+                        <TextField text="020－85198136" />
                     </HBox>
-                    <HBox styleClass="gp-centerleft,bolder" GridPane.columnIndex="2" GridPane.columnSpan="4"
-                          GridPane.rowIndex="1">
-                        <Label text=" 日期: "/>
-                        <TextField fx:id="mdate" text="（打印日期）"/>
+                    <HBox styleClass="gp-centerleft,bolder" GridPane.columnIndex="2" GridPane.columnSpan="4" GridPane.rowIndex="1">
+                        <Label text=" 日期: " />
+                        <TextField fx:id="mdate" text="（打印日期）" />
                     </HBox>
                     <HBox styleClass="gp-center,bolder" GridPane.columnIndex="0" GridPane.rowIndex="2">
-                        <Label text="送货地址"/>
+                        <Label text="送货地址" />
                     </HBox>
                     <VBox styleClass="gp-centerleft" GridPane.columnIndex="1" GridPane.rowIndex="2">
-                        <Label styleClass="smallfont" text="安利（中国）物流中心广州经济技术开发区永和经济区永和大道11号" wrapText="true"/>
+                        <Label styleClass="smallfont" text="安利（中国）物流中心广州经济技术开发区永和经济区永和大道11号" wrapText="true" />
                     </VBox>
-                    <HBox styleClass="gp-centerleft,bolder" GridPane.columnIndex="2" GridPane.columnSpan="4"
-                          GridPane.rowIndex="2">
-                        <Label text=" 贵公司订货单编号："/>
-                        <TextField fx:id="anli_serial" style="-fx-pref-width: 150px" text="16005448-OP-00119"/>
+                    <HBox styleClass="gp-centerleft,bolder" GridPane.columnIndex="2" GridPane.columnSpan="4" GridPane.rowIndex="2">
+                        <Label text=" 贵公司订货单编号：" />
+                        <TextField fx:id="anli_serial" style="-fx-pref-width: 150px" text="16005448-OP-00119" />
                     </HBox>
                     <HBox styleClass="gp-center,bolder" GridPane.columnIndex="0" GridPane.rowIndex="3">
-                        <Label text="货号"/>
+                        <Label text="货号" />
                     </HBox>
                     <HBox styleClass="gp-center,bolder" GridPane.columnIndex="1" GridPane.rowIndex="3">
-                        <Label text="货名"/>
+                        <Label text="货名" />
                     </HBox>
                     <HBox styleClass="gp-center,bolder" GridPane.columnIndex="2" GridPane.rowIndex="3">
-                        <Label text="规格"/>
+                        <Label text="规格" />
                     </HBox>
                     <HBox styleClass="gp-center,bolder" GridPane.columnIndex="3" GridPane.rowIndex="3">
-                        <Label text="单位"/>
+                        <Label text="单位" />
                     </HBox>
                     <HBox styleClass="gp-center,bolder" GridPane.columnIndex="4" GridPane.rowIndex="3">
-                        <Label text="数量"/>
+                        <Label text="数量" />
                     </HBox>
                     <HBox styleClass="gp-center,bolder" GridPane.columnIndex="5" GridPane.rowIndex="3">
-                        <Label text="包装"/>
+                        <Label text="包装" />
                     </HBox>
                     <HBox styleClass="gp-center,contentfont" GridPane.columnIndex="0" GridPane.rowIndex="4">
-                        <TextField fx:id="item_serial1" text="112563CH1*OP10"/>
+                        <TextField fx:id="item_serial1" text="112563CH1*OP10" />
                     </HBox>
                     <HBox styleClass="gp-center,contentfont" GridPane.columnIndex="1" GridPane.rowIndex="4">
-                        <TextField fx:id="item_name1" text="不锈钢软丝刷"/>
+                        <ChoiceBox fx:id="item_name1" styleClass="drop"/>
                     </HBox>
                     <HBox styleClass="gp-center,contentfont" GridPane.columnIndex="2" GridPane.rowIndex="4">
-                        <TextField fx:id="item_pack1" text="4个/盒"/>
+                        <TextField fx:id="item_pack1" text="4个/盒" />
                     </HBox>
                     <HBox styleClass="gp-center,contentfont" GridPane.columnIndex="3" GridPane.rowIndex="4">
-                        <TextField fx:id="item_unit1" text="盒"/>
+                        <TextField fx:id="item_unit1" text="盒" />
                     </HBox>
                     <HBox styleClass="gp-center,contentfont" GridPane.columnIndex="4" GridPane.rowIndex="4">
-                        <TextField fx:id="item_num1" text="1960盒/板"/>
+                        <TextField fx:id="item_num1" text="1960盒/板" />
                     </HBox>
                     <HBox styleClass="gp-center,contentfont" GridPane.columnIndex="5" GridPane.rowIndex="4">
-                        <TextField fx:id="item_detail1" text="70盒/箱×28箱/板×13板"/>
+                        <TextField fx:id="item_detail1" text="70盒/箱×28箱/板×13板" />
                     </HBox>
                     <HBox styleClass="gp-center,contentfont" GridPane.columnIndex="0" GridPane.rowIndex="5">
-                        <TextField fx:id="item_serial2" text="112563CH1*OP10"/>
+                        <TextField fx:id="item_serial2" text="112563CH1*OP10" />
                     </HBox>
                     <HBox styleClass="gp-center,contentfont" GridPane.columnIndex="1" GridPane.rowIndex="5">
-                        <TextField fx:id="item_name2" text="不锈钢软丝刷"/>
+                        <ChoiceBox fx:id="item_name2" styleClass="drop"/>
                     </HBox>
                     <HBox styleClass="gp-center,contentfont" GridPane.columnIndex="2" GridPane.rowIndex="5">
-                        <TextField fx:id="item_pack2" text="4个/盒"/>
+                        <TextField fx:id="item_pack2" text="4个/盒" />
                     </HBox>
                     <HBox styleClass="gp-center,contentfont" GridPane.columnIndex="3" GridPane.rowIndex="5">
-                        <TextField fx:id="item_unit2" text="盒"/>
+                        <TextField fx:id="item_unit2" text="盒" />
                     </HBox>
                     <HBox styleClass="gp-center,contentfont" GridPane.columnIndex="4" GridPane.rowIndex="5">
-                        <TextField fx:id="item_num2" text="1960盒/板"/>
+                        <TextField fx:id="item_num2" text="1960盒/板" />
                     </HBox>
                     <HBox styleClass="gp-center,contentfont" GridPane.columnIndex="5" GridPane.rowIndex="5">
-                        <TextField fx:id="item_detail2" text="70盒/箱×28箱/板×13板"/>
+                        <TextField fx:id="item_detail2" text="70盒/箱×28箱/板×13板" />
                     </HBox>
                     <HBox styleClass="gp-center,contentfont" GridPane.columnIndex="0" GridPane.rowIndex="6">
-                        <TextField fx:id="item_serial3" text="112563CH1*OP10"/>
+                        <TextField fx:id="item_serial3" text="112563CH1*OP10" />
                     </HBox>
                     <HBox styleClass="gp-center,contentfont" GridPane.columnIndex="1" GridPane.rowIndex="6">
-                        <TextField fx:id="item_name3" text="不锈钢软丝刷"/>
+                        <ChoiceBox fx:id="item_name3" styleClass="drop"/>
                     </HBox>
                     <HBox styleClass="gp-center,contentfont" GridPane.columnIndex="2" GridPane.rowIndex="6">
-                        <TextField fx:id="item_pack3" text="4个/盒"/>
+                        <TextField fx:id="item_pack3" text="4个/盒" />
                     </HBox>
                     <HBox styleClass="gp-center,contentfont" GridPane.columnIndex="3" GridPane.rowIndex="6">
-                        <TextField fx:id="item_unit3" text="盒"/>
+                        <TextField fx:id="item_unit3" text="盒" />
                     </HBox>
                     <HBox styleClass="gp-center,contentfont" GridPane.columnIndex="4" GridPane.rowIndex="6">
-                        <TextField fx:id="item_num3" text="1960盒/板"/>
+                        <TextField fx:id="item_num3" text="1960盒/板" />
                     </HBox>
                     <HBox styleClass="gp-center,contentfont" GridPane.columnIndex="5" GridPane.rowIndex="6">
-                        <TextField fx:id="item_detail3" text="70盒/箱×28箱/板×13板"/>
+                        <TextField fx:id="item_detail3" text="70盒/箱×28箱/板×13板" />
                     </HBox>
                     <HBox styleClass="gp-center" GridPane.columnIndex="0" GridPane.columnSpan="2" GridPane.rowIndex="7">
-                        <Label text="已付检测报告"/>
+                        <Label text="已付检测报告" />
                     </HBox>
-                    <HBox styleClass="gp-centerleft" GridPane.columnIndex="2" GridPane.columnSpan="4"
-                          GridPane.rowIndex="7">
-                        <Label text="合计："/>
-                        <Label fx:id="total_all" text="123321"/>
+                    <HBox styleClass="gp-centerleft" GridPane.columnIndex="2" GridPane.columnSpan="4" GridPane.rowIndex="7">
+                        <Label text="合计：" />
+                        <Label fx:id="total_all" text="0" />
                     </HBox>
                 </GridPane>
                 <HBox>
-                    <Label styleClass="smallfont,bolder" text="确认收到以上列明货物及质量符合要求"/>
+                    <Label styleClass="smallfont,bolder" text="确认收到以上列明货物及质量符合要求" />
                 </HBox>
                 <HBox styleClass="stamp,bolder">
-                    <Label text="客户签字及盖章"/>
-                    <Pane HBox.hgrow="ALWAYS"/>
-                    <Label text="承运人"/>
-                    <Pane HBox.hgrow="ALWAYS"/>
-                    <Label text="佛山市南海区丹灶晴旭金属制品厂"/>
+                    <Label text="客户签字及盖章" />
+                    <Pane HBox.hgrow="ALWAYS" />
+                    <Label text="承运人" />
+                    <Pane HBox.hgrow="ALWAYS" />
+                    <Label text="佛山市南海区丹灶晴旭金属制品厂" />
                 </HBox>
             </VBox>
             <VBox styleClass="rightp">
-                <Label text="①存根②客户③回单④记帐⑤仓库" VBox.vgrow="ALWAYS"/>
+                <Label text="①存根②客户③回单④记帐⑤仓库" VBox.vgrow="ALWAYS" />
             </VBox>
         </HBox>
     </VBox>

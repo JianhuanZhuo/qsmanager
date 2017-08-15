@@ -6,18 +6,34 @@ import javafx.beans.property.StringProperty;
 import javafx.beans.value.ObservableValue;
 import javafx.scene.control.TableColumn;
 import javafx.util.Callback;
+import org.apache.commons.beanutils.BeanUtils;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.function.Function;
+import java.util.stream.Stream;
 
 /**
  * FX 反射相关工具方法类
  * Created by tom on 2017/6/22.
  */
 public class FXReflectUtils {
+
+    /**
+     * 批量复制 s 的属性到 t 中，属性列表由 attrs 给出
+     * 如果没有对应的值，则默认抛出异常
+     */
+    public static void attrAssign(Object s, Object t, String... attrs){
+        Stream.of(attrs).forEach(a->{
+            try {
+                BeanUtils.setProperty(t, a, BeanUtils.getProperty(s, a));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
+    }
 
     public static<T> void connectForColumn(TableColumn<T, String> tab_col){
         tab_col.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<T, String>, ObservableValue<String>>() {

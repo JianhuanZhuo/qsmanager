@@ -23,6 +23,11 @@ public interface OrderService {
     List<OrderModel> selectByCid(Long cid) throws Exception;
 
     /**
+     * 选择指定 ID 订单
+     */
+    OrderModelFull selectById(Long id) throws Exception;
+
+    /**
      * 查询指定客户和年份的全部月份的订购总额
      * @param cid 指定客户
      * @param year 指定年份
@@ -53,4 +58,9 @@ public interface OrderService {
      * 获得指定订单 ID 的全部明细
      */
     List<OrderItemModel> selectAllByOid(Long oid) throws Exception;
+
+    /**
+     * 设置已投递标志
+     */
+    void deliOrder(Long oid) throws Exception;
 }

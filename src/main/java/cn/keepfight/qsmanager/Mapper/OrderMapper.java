@@ -17,6 +17,11 @@ public interface OrderMapper extends Mapper{
     List<OrderModelFull> selectAll(OrderSelection selection) throws Exception;
 
     /**
+     * 选择指定 ID 订单
+     */
+    OrderModelFull selectById(Long id) throws Exception;
+
+    /**
      * 查询指定客户和年份的全部月份的订购总额，需要联表查询
      * 该查询包含两个参数：cid 指定客户 year 指定年份
      */
@@ -42,4 +47,9 @@ public interface OrderMapper extends Mapper{
      * 获取订单全部可用的年份
      */
     List<Long> selectYear() throws Exception;
+
+    /**
+     * 设置已投递标志
+     */
+    void deliOrder(Long oid) throws Exception;
 }

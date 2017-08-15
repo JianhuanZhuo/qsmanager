@@ -1,5 +1,6 @@
 package cn.keepfight.utils;
 
+import cn.keepfight.qsmanager.QSApp;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.print.PageLayout;
@@ -11,6 +12,7 @@ import org.junit.Test;
 import javax.print.attribute.standard.OrientationRequested;
 import java.io.File;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.net.URI;
 import java.nio.file.*;
 import java.sql.Timestamp;
@@ -58,5 +60,20 @@ public class ViewPathUtilTest {
 
         System.out.println(p.getPrintableHeight());
         System.out.println("p.getPrintableWidth()"+p.getPrintableWidth());
+    }
+
+    @Test
+    public void testHH() throws Exception {
+        QSApp.service.getCustomService().selectAll().forEach(p-> System.out.println(p.getSerial()));
+    }
+
+    @Test
+    public void testOrder() throws Exception {
+//        QSApp.service.getOrderService().selectYear().forEach(System.out::println);
+
+        System.out.println( new BigDecimal("10.0000000"));
+        System.out.println( new BigDecimal("10.0000000").stripTrailingZeros());
+        System.out.println( new BigDecimal("10.0000000").stripTrailingZeros().toPlainString());
+        System.out.println( new BigDecimal("10.0000000").toPlainString());
     }
 }

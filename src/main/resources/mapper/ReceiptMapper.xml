@@ -6,14 +6,14 @@
 
     <!--List<ReceiptModel> selectAll(Long sid, Long year, Long month) throws Exception;-->
     <select id="selectAll" parameterType="ReceiptSelection" resultType="ReceiptModelFull">
-        SELECT r.id AS id, r.sid AS sid, r.serial AS serial, strftime('%s',r.rdate)||'000' AS rdate,
+        SELECT r.id AS id, r.sid AS sid, r.serial AS serial, date_format(r.rdate, '%s')||'000' AS rdate,
         s.serial || '-' || s.name AS supply
         FROM receipt r, supply s
         WHERE r.sid = #{sid}
         AND r.sid=s.id
-        AND strftime('%Y', r.rdate) = #{year}
+        AND date_format(r.rdate, '%Y') = #{year}
         <if test="month!=null">
-            AND strftime('%m', r.rdate) = #{month}
+            AND date_format(r.rdate, '%m') = #{month}
         </if>
         ORDER BY rdate
     </select>
@@ -21,10 +21,10 @@
     <!--查询指定供应商和年份的全部月份的供应总额-->
     <!--LAnnualTotalModelodel> supAnnualTotal(ReceiptSelection selection);-->
     <select id="supAnnualTotal" parameterType="ReceiptSelection" resultType="AnnualTotalModel">
-        SELECT strftime('%m', r.rdate) AS mon, sum(rd.price * rd.num) AS total
+        SELECT date_format(r.rdate, '%m') AS mon, sum(rd.price * rd.num) AS total
         FROM receipt_detail rd, receipt r, supply s
-        WHERE s.id == #{sid} AND strftime('%Y', r.rdate) == #{year} AND rd.rid == r.id AND s.id == r.sid
-        GROUP BY strftime('%m', r.rdate)
+        WHERE s.id = #{sid} AND date_format(r.rdate, '%Y') = #{year} AND rd.rid = r.id AND s.id = r.sid
+        GROUP BY date_format(r.rdate, '%m')
         ORDER BY mon
     </select>
 
@@ -32,9 +32,9 @@
     <insert id="insert" parameterType="ReceiptModel">
         INSERT INTO
         receipt (sid, serial, rdate)
-        VALUES (#{sid}, #{serial}, DATEtime(#{rdate}/1000, 'unixepoch', 'localtime'))
+        VALUES (#{sid}, #{serial}, from_unixtime(#{rdate}/1000))
         <selectKey keyProperty="id" order="AFTER" resultType="long">
-            SELECT last_insert_rowid();
+            SELECT last_insert_id();
         </selectKey>
     </insert>
 
@@ -46,7 +46,7 @@
 
     <!--List<Long> selectYear() throws Exception;-->
     <select id="selectYear" resultType="long">
-        SELECT DISTINCT strftime('%Y', rdate) as year
+        SELECT DISTINCT date_format(rdate, '%Y') as year
         FROM receipt
         ORDER BY year
     </select>
@@ -58,44 +58,44 @@
         SELECT
             s.name sup,
             sum(rd.num*rd.price) AS total,
-            sum(CASE WHEN strftime('%m', r.rdate) == '01'
+            sum(CASE WHEN date_format(r.rdate, '%m') = '01'
                 THEN rd.num*rd.price
                 ELSE 0 END) AS mon1,
-            sum(CASE WHEN strftime('%m', r.rdate) == '02'
+            sum(CASE WHEN date_format(r.rdate, '%m') = '02'
                 THEN rd.num*rd.price
                 ELSE 0 END) AS mon2,
-            sum(CASE WHEN strftime('%m', r.rdate) == '03'
+            sum(CASE WHEN date_format(r.rdate, '%m') = '03'
                 THEN rd.num*rd.price
                 ELSE 0 END) AS mon3,
-            sum(CASE WHEN strftime('%m', r.rdate) == '04'
+            sum(CASE WHEN date_format(r.rdate, '%m') = '04'
                 THEN rd.num*rd.price
                 ELSE 0 END) AS mon4,
-            sum(CASE WHEN strftime('%m', r.rdate) == '05'
+            sum(CASE WHEN date_format(r.rdate, '%m') = '05'
                 THEN rd.num*rd.price
                 ELSE 0 END) AS mon5,
-            sum(CASE WHEN strftime('%m', r.rdate) == '06'
+            sum(CASE WHEN date_format(r.rdate, '%m') = '06'
                 THEN rd.num*rd.price
                 ELSE 0 END) AS mon6,
-            sum(CASE WHEN strftime('%m', r.rdate) == '07'
+            sum(CASE WHEN date_format(r.rdate, '%m') = '07'
                 THEN rd.num*rd.price
                 ELSE 0 END) AS mon7,
-            sum(CASE WHEN strftime('%m', r.rdate) == '08'
+            sum(CASE WHEN date_format(r.rdate, '%m') = '08'
                 THEN rd.num*rd.price
                 ELSE 0 END) AS mon8,
-            sum(CASE WHEN strftime('%m', r.rdate) == '09'
+            sum(CASE WHEN date_format(r.rdate, '%m') = '09'
                 THEN rd.num*rd.price
                 ELSE 0 END) AS mon9,
-            sum(CASE WHEN strftime('%m', r.rdate) == '10'
+            sum(CASE WHEN date_format(r.rdate, '%m') = '10'
                 THEN rd.num*rd.price
                 ELSE 0 END) AS mon10,
-            sum(CASE WHEN strftime('%m', r.rdate) == '11'
+            sum(CASE WHEN date_format(r.rdate, '%m') = '11'
                 THEN rd.num*rd.price
                 ELSE 0 END) AS mon11,
-            sum(CASE WHEN strftime('%m', r.rdate) == '12'
+            sum(CASE WHEN date_format(r.rdate, '%m') = '12'
                 THEN rd.num*rd.price
                 ELSE 0 END) AS mon12
         FROM receipt_detail rd, receipt r, supply s
-        WHERE strftime('%Y', r.rdate) == #{year} AND rd.rid == r.id AND r.sid == s.id
+        WHERE date_format(r.rdate, '%Y') = #{year} AND rd.rid = r.id AND r.sid = s.id
         GROUP BY r.sid;
     </select>
 </mapper>

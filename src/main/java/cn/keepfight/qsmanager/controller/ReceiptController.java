@@ -93,9 +93,9 @@ public class ReceiptController implements ContentCtrl, Initializable{
         tab_color.setCellValueFactory(param -> new SimpleStringProperty(param.getValue().getColor()));
         tab_spec.setCellValueFactory(param -> new SimpleStringProperty(param.getValue().getSpec()));
         tab_unit.setCellValueFactory(param -> new SimpleStringProperty(param.getValue().getUnit()));
-        tab_price.setCellValueFactory(param -> new SimpleStringProperty(param.getValue().getPrice().toString()));
-        tab_num.setCellValueFactory(param -> new SimpleStringProperty(param.getValue().getNum().toString()));
-        tab_total.setCellValueFactory(param -> new SimpleStringProperty(param.getValue().getPrice().multiply(param.getValue().getNum()).toString()));
+        FXWidgetUtil.connectDecimal(tab_price, ReceiptDetailModel::getPrice);
+        FXWidgetUtil.connectDecimal(tab_num, ReceiptDetailModel::getNum);
+        FXWidgetUtil.connectDecimal(tab_total, x->x.getPrice().multiply(x.getNum()));
 
         del.setOnAction(event -> {
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION);

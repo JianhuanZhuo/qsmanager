@@ -1,10 +1,9 @@
 package cn.keepfight.qsmanager.service;
 
-import cn.keepfight.qsmanager.controller.PrintController;
-import cn.keepfight.qsmanager.controller.PrintSelection;
+import cn.keepfight.qsmanager.print.PrintController;
+import cn.keepfight.qsmanager.print.PrintSelection;
 import cn.keepfight.utils.CustomDialog;
 import cn.keepfight.utils.ViewPathUtil;
-import javafx.application.Platform;
 
 import java.io.IOException;
 import java.util.Optional;

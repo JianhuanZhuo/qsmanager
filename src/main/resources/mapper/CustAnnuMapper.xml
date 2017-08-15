@@ -9,8 +9,8 @@
     <select id="selectAnnual" parameterType="AnnualSelection" resultType="CustAnnualModel">
         SELECT *
         FROM cust_annual
-        WHERE year == #{year}
-              AND cid == #{sid}
+        WHERE year = #{year}
+              AND cid = #{sid}
     </select>
 
     <!--指定年份、指定客户查询年度对账的每月明细-->
@@ -21,17 +21,17 @@
             mon,
             total,
             billunit,
-            strftime('%s', billdate) || '000'  AS billdate,
+            concat(unix_timestamp(billdate), '000')  AS billdate,
             billtotal,
             rate,
             remitunit,
             pattern,
-            strftime('%s', remitdate) || '000' AS remitdate,
+            concat(unix_timestamp(remitdate), '000') AS remitdate,
             paytotal,
             note
         FROM cust_annual_mon sm, cust_annual s
-        WHERE s.year == #{year} AND s.cid == #{sid}
-              AND sm.caid == s.id
+        WHERE s.year = #{year} AND s.cid = #{sid}
+              AND sm.caid = s.id
     </select>
 
     <!--插入新的年对账表，如果指定的年份的对账表已存在，则异常-->
@@ -46,7 +46,7 @@
             , #{remainder}
         </if>);
         <selectKey keyProperty="id" order="AFTER" resultType="long">
-            SELECT last_insert_rowid();
+            SELECT last_insert_id();
         </selectKey>
     </insert>
 
@@ -72,12 +72,12 @@
             #{mon},
             #{total},
             #{billunit},
-            DATEtime(#{billdate} / 1000, 'unixepoch', 'localtime'),
+            from_unixtime(#{billdate}/1000),
             #{billtotal},
             #{rate},
             #{remitunit},
             #{pattern},
-            DATETIME(#{remitdate} / 1000, 'unixepoch', 'localtime'),
+            from_unixtime(#{remitdate}/1000),
             #{paytotal},
             #{note}
         );
@@ -90,16 +90,29 @@
         SET
             total     = #{total},
             billunit  = #{billunit},
-            billdate  = DATEtime(#{billdate} / 1000, 'unixepoch', 'localtime'),
+            billdate  = from_unixtime(#{billdate}/1000),
             billtotal = #{billtotal},
             rate      = #{rate},
             remitunit = #{remitunit},
             pattern   = #{pattern},
-            remitdate = DATETIME(#{remitdate} / 1000, 'unixepoch', 'localtime'),
+            remitdate = from_unixtime(#{remitdate}/1000),
             paytotal  = #{paytotal},
             note      = #{note}
-        WHERE caid == #{caid}
-              AND mon == #{mon}
+        WHERE caid = #{caid}
+              AND mon = #{mon}
     </update>
 
+
+    <!--查询指定客户和年份的全部月份的送货总额-->
+    <!--List<AnnualTotalModel> supAnnualTotal(DeliverySelection selection);-->
+    <select id="supAnnualTotal" parameterType="DeliverySelection" resultType="AnnualTotalModel">
+        SELECT date_format(d.orderdate, '%m') AS mon, sum(di.price * di.num * di.pack) AS total
+        FROM order_item di, orders d
+        WHERE
+        cid = #{cid}
+        AND date_format(d.orderdate, '%Y') = #{year}
+        AND di.oid = d.id
+        GROUP BY date_format(d.orderdate, '%m')
+        ORDER BY date_format(d.orderdate, '%m')
+    </select>
 </mapper>

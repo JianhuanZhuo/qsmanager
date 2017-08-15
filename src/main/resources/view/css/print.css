@@ -1,5 +1,5 @@
 /*预览样式*/
-.preview TextField {
+.snap TextField {
     -fx-background-color: transparent;
 }
 
@@ -203,4 +203,8 @@ GridPane.fitpack TextField {
 
 .annual_total{
     -fx-font: bolder normal 14px "微软雅黑";
+}
+
+.snap .drop{
+    -fx-background-color: transparent;
 }

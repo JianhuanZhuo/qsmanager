@@ -399,6 +399,13 @@ public class LocalServiceImpl implements ServerService {
             }
 
             @Override
+            public OrderModelFull selectById(Long id) throws Exception {
+                OrderModelFull res = FXUtils.getMapper(factory, OrderMapper.class, OrderMapper::selectById, id);
+                res.setOrderItemModels(FXUtils.getMapper(factory, OrderItemMapper.class, OrderItemMapper::selectAllByOid, res.getId()));
+                return res;
+            }
+
+            @Override
             public List<AnnualTotalModel> supAnnualTotal(Long cid, Long year) throws Exception {
                 OrderSelection selection = new OrderSelection();
                 selection.setYear(year);
@@ -409,6 +416,8 @@ public class LocalServiceImpl implements ServerService {
             @Override
             public void insert(OrderModelFull model) throws Exception {
                 LocalDate d = FXUtils.stampToLocalDate(model.getOrderdate());
+
+                // 获得唯一序列号
                 List<OrderModelFull> res = FXUtils.getMapper(factory, OrderMapper.class, OrderMapper::selectAll,
                         new OrderSelection(null, (long) d.getYear(), (long) d.getMonthValue(), null));
                 OptionalLong m = res.stream().mapToLong(x -> Long.valueOf(x.getSerial())).max();
@@ -452,64 +461,69 @@ public class LocalServiceImpl implements ServerService {
             public List<OrderItemModel> selectAllByOid(Long oid) throws Exception {
                 return FXUtils.getMapper(factory, OrderItemMapper.class, OrderItemMapper::selectAllByOid, oid);
             }
-        };
-    }
-
-    @Override
-    public DeliveryService getDeliveryService() {
-        return new DeliveryService() {
-            @Override
-            public List<DeliveryModelFull> selectAll(DeliverySelection selection) throws Exception {
-                List<DeliveryModelFull> res = FXUtils.getMapper(factory, DeliveryMapper.class, DeliveryMapper::selectAll, selection);
-                for (DeliveryModelFull modelFull : res) {
-                    modelFull.setDeliveryItemModels(FXUtils.getMapper(factory, DeliveryItemMapper.class, DeliveryItemMapper::selectByDid, modelFull.getId()));
-                }
-                return res;
-            }
 
             @Override
-            public DeliveryModelFull selectByID(Long id) throws Exception {
-                DeliveryModelFull res = FXUtils.getMapper(factory, DeliveryMapper.class, DeliveryMapper::selectByID, id);
-                res.setDeliveryItemModels(FXUtils.getMapper(factory, DeliveryItemMapper.class, DeliveryItemMapper::selectByDid, res.getId()));
-                return res;
-            }
-
-            @Override
-            public void insert(DeliveryModelFull model) throws Exception {
-                System.out.println("public void insert(DeliveryModelFull model) throws Exception : " + model.getCid());
-                LocalDate d = FXUtils.stampToLocalDate(model.getDdate());
-                List<DeliveryModelFull> res = FXUtils.getMapper(factory, DeliveryMapper.class, DeliveryMapper::selectAll, new DeliverySelection(null, (long) d.getYear(), (long) d.getMonthValue(), null));
-                OptionalLong m = res.stream().mapToLong(x -> Long.valueOf(x.getSerial())).max();
-                if (m.isPresent()) {
-                    model.setSerial("" + (m.getAsLong() + 1));
-                } else {
-                    model.setSerial(QSUtil.orderSerial(model.getDdate(), 1L));
-                }
-                DeliveryModel x = model.get();
-                FXUtils.getMapper(factory, DeliveryMapper.class, DeliveryMapper::insert, x);
-                // 回设 RID
-                model.setId(x.getId());
-                for (DeliveryItemModel item : model.getDeliveryItemModels()) {
-                    FXUtils.getMapper(factory, DeliveryItemMapper.class, DeliveryItemMapper::insert, item);
-                }
-            }
-
-            @Override
-            public void update(DeliveryModelFull model) throws Exception {
-                FXUtils.getMapper(factory, DeliveryMapper.class, DeliveryMapper::update, model.get());
-                FXUtils.getMapper(factory, DeliveryItemMapper.class, DeliveryItemMapper::deleteByDid, model.getId());
-                for (DeliveryItemModel item : model.getDeliveryItemModels()) {
-                    FXUtils.getMapper(factory, DeliveryItemMapper.class, DeliveryItemMapper::insert, item);
-                }
-            }
-
-            @Override
-            public void delete(DeliveryModel model) throws Exception {
-                FXUtils.getMapper(factory, DeliveryItemMapper.class, DeliveryItemMapper::deleteByDid, model.getId());
-                FXUtils.getMapper(factory, DeliveryMapper.class, DeliveryMapper::delete, model);
+            public void deliOrder(Long oid) throws Exception {
+                FXUtils.getMapper(factory, OrderMapper.class, OrderMapper::deliOrder, oid);
             }
         };
     }
+
+//    @Override
+//    public DeliveryService getDeliveryService() {
+//        return new DeliveryService() {
+//            @Override
+//            public List<DeliveryModelFull> selectAll(DeliverySelection selection) throws Exception {
+//                List<DeliveryModelFull> res = FXUtils.getMapper(factory, DeliveryMapper.class, DeliveryMapper::selectAll, selection);
+//                for (DeliveryModelFull modelFull : res) {
+//                    modelFull.setDeliveryItemModels(FXUtils.getMapper(factory, DeliveryItemMapper.class, DeliveryItemMapper::selectByDid, modelFull.getId()));
+//                }
+//                return res;
+//            }
+//
+//            @Override
+//            public DeliveryModelFull selectByID(Long id) throws Exception {
+//                DeliveryModelFull res = FXUtils.getMapper(factory, DeliveryMapper.class, DeliveryMapper::selectByID, id);
+//                res.setDeliveryItemModels(FXUtils.getMapper(factory, DeliveryItemMapper.class, DeliveryItemMapper::selectByDid, res.getId()));
+//                return res;
+//            }
+//
+//            @Override
+//            public void insert(DeliveryModelFull model) throws Exception {
+//                System.out.println("public void insert(DeliveryModelFull model) throws Exception : " + model.getCid());
+//                LocalDate d = FXUtils.stampToLocalDate(model.getDdate());
+//                List<DeliveryModelFull> res = FXUtils.getMapper(factory, DeliveryMapper.class, DeliveryMapper::selectAll, new DeliverySelection(null, (long) d.getYear(), (long) d.getMonthValue(), null));
+//                OptionalLong m = res.stream().mapToLong(x -> Long.valueOf(x.getSerial())).max();
+//                if (m.isPresent()) {
+//                    model.setSerial("" + (m.getAsLong() + 1));
+//                } else {
+//                    model.setSerial(QSUtil.orderSerial(model.getDdate(), 1L));
+//                }
+//                DeliveryModel x = model.get();
+//                FXUtils.getMapper(factory, DeliveryMapper.class, DeliveryMapper::insert, x);
+//                // 回设 RID
+//                model.setId(x.getId());
+//                for (DeliveryItemModel item : model.getDeliveryItemModels()) {
+//                    FXUtils.getMapper(factory, DeliveryItemMapper.class, DeliveryItemMapper::insert, item);
+//                }
+//            }
+//
+//            @Override
+//            public void update(DeliveryModelFull model) throws Exception {
+//                FXUtils.getMapper(factory, DeliveryMapper.class, DeliveryMapper::update, model.get());
+//                FXUtils.getMapper(factory, DeliveryItemMapper.class, DeliveryItemMapper::deleteByDid, model.getId());
+//                for (DeliveryItemModel item : model.getDeliveryItemModels()) {
+//                    FXUtils.getMapper(factory, DeliveryItemMapper.class, DeliveryItemMapper::insert, item);
+//                }
+//            }
+//
+//            @Override
+//            public void delete(DeliveryModel model) throws Exception {
+//                FXUtils.getMapper(factory, DeliveryItemMapper.class, DeliveryItemMapper::deleteByDid, model.getId());
+//                FXUtils.getMapper(factory, DeliveryMapper.class, DeliveryMapper::delete, model);
+//            }
+//        };
+//    }
 
     @Override
     public CustAnnualService getCustAnnualService() {
@@ -530,7 +544,6 @@ public class LocalServiceImpl implements ServerService {
                 }
                 modelFull.set(annualModel);
 
-
                 // 查询月份的原有记录，并使用 Map 作为存储
                 List<CustAnnualMonModel> mons = FXUtils.getMapper(factory, CustAnnuMapper.class, CustAnnuMapper::selectMon, selection);
                 Map<Long, CustAnnualMonModel> monMap = mons.stream()
@@ -541,7 +554,7 @@ public class LocalServiceImpl implements ServerService {
                 DeliverySelection cy = new DeliverySelection();
                 cy.setCid(cid);
                 cy.setYear(year);
-                List<AnnualTotalModel> monTotals = FXUtils.getMapper(factory, DeliveryMapper.class, DeliveryMapper::supAnnualTotal, cy);
+                List<AnnualTotalModel> monTotals = FXUtils.getMapper(factory, CustAnnuMapper.class, CustAnnuMapper::supAnnualTotal, cy);
                 monTotals.forEach(m -> monMap.compute(m.getMon(), (k, v) -> {
                     if (v == null) {
                         v = new CustAnnualMonModel();
@@ -575,6 +588,11 @@ public class LocalServiceImpl implements ServerService {
                 } else {
                     FXUtils.getMapper(factory, CustAnnuMapper.class, CustAnnuMapper::insertMon, model);
                 }
+            }
+
+            @Override
+            public List<AnnualTotalModel> supAnnualTotal(DeliverySelection selection) throws Exception  {
+                return FXUtils.getMapper(factory, CustAnnuMapper.class, CustAnnuMapper::supAnnualTotal, selection);
             }
         };
     }

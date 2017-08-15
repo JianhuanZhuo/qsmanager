@@ -217,7 +217,7 @@ public class FXUtils {
      */
     public static BigDecimal getDecimal(String str, BigDecimal defaultValue){
         try {
-            return new BigDecimal(str);
+            return new BigDecimal(str).stripTrailingZeros();
         }catch (Exception e){
             return defaultValue;
         }
@@ -268,7 +268,7 @@ public class FXUtils {
         if (d==null){
             return "0";
         }else {
-            return d.toString();
+            return d.stripTrailingZeros().toPlainString();
         }
     }
 
@@ -376,7 +376,7 @@ public class FXUtils {
         return new StringConverter<BigDecimal>() {
             @Override
             public String toString(BigDecimal o) {
-                return Objects.isNull(o) ? nullValue : ("" + o);
+                return Objects.isNull(o) ? nullValue : (o.stripTrailingZeros().toPlainString());
             }
             @Override
             public BigDecimal fromString(String s) {
@@ -418,7 +418,7 @@ public class FXUtils {
         return new StringConverter<BigDecimal>() {
             @Override
             public String toString(BigDecimal o) {
-                return Objects.isNull(o) ? "0%" : ("" + o.movePointRight(2)+"%");
+                return Objects.isNull(o) ? "0%" : ("" + o.movePointRight(2).stripTrailingZeros().toPlainString()+"%");
             }
             @Override
             public BigDecimal fromString(String s) {

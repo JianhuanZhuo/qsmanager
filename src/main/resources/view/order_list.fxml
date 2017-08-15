@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.*?>
+<VBox styleClass="tab-pane-common" VBox.vgrow="ALWAYS"
+      xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:id="root"
+      fx:controller="cn.keepfight.qsmanager.controller.OrderPaneController">
+    <HBox styleClass="hbox-common">
+        <ChoiceBox fx:id="cust_sel" prefWidth="130.0"/>
+        <ChoiceBox fx:id="year_sel" prefWidth="80.0"/>
+        <ChoiceBox fx:id="month_sel" prefWidth="80.0"/>
+        <ChoiceBox fx:id="day_sel" prefWidth="80.0"/>
+        <Button fx:id="load" text="加载">
+            <graphic>
+                <ImageView styleClass="image-button">
+                    <Image url="@img/search.png"/>
+                </ImageView>
+            </graphic>
+        </Button>
+        <Pane HBox.hgrow="ALWAYS"/>
+        <Label fx:id="label" text="(下单请先选择客户)" />
+        <Button fx:id="add_order" text="我要下单">
+            <graphic>
+                <ImageView fitHeight="16" fitWidth="16" styleClass="image-button">
+                    <Image url="@img/item-add.png"/>
+                </ImageView>
+            </graphic>
+        </Button>
+    </HBox>
+    <ScrollPane fitToHeight="true" fitToWidth="true" VBox.vgrow="ALWAYS">
+        <ListView fx:id="orderList" styleClass="itemlist"/>
+    </ScrollPane>
+</VBox>

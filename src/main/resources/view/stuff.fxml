@@ -56,6 +56,7 @@
         </GridPane>
         <Separator/>
         <Label text="可见菜单选项：" style="-fx-padding: 5px;"/>
+        <Label text="（按住 Ctrl 或 Shift 键快捷多选，确定后按保存即可）"/>
         <ListView fx:id="menuSelect" styleClass="select-list" VBox.vgrow="ALWAYS"/>
     </VBox>
 </HBox>

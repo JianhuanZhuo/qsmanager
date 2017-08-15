@@ -9,8 +9,8 @@
     <select id="selectAnnual" parameterType="AnnualSelection" resultType="SupAnnualModel">
         SELECT *
         FROM sup_annual
-        WHERE year == #{year}
-              AND sid == #{sid}
+        WHERE year = #{year}
+              AND sid = #{sid}
     </select>
 
     <!--指定年份、指定供应商查询年度对账的每月明细-->
@@ -21,17 +21,17 @@
             mon,
             total,
             billunit,
-            strftime('%s', billdate) || '000'  AS billdate,
+            concat(unix_timestamp(billdate), '000')  AS billdate,
             billtotal,
             rate,
             remitunit,
             pattern,
-            strftime('%s', remitdate) || '000' AS remitdate,
+            concat(unix_timestamp(remitdate), '000') AS remitdate,
             paytotal,
             note
         FROM sup_annual_mon sm, sup_annual s
-        WHERE s.year == #{year} AND s.sid == #{sid}
-              AND sm.said == s.id
+        WHERE s.year = #{year} AND s.sid = #{sid}
+              AND sm.said = s.id
     </select>
 
     <!--插入新的年对账表，如果指定的年份的对账表已存在，则异常-->
@@ -46,7 +46,7 @@
             , #{remainder}
         </if>);
         <selectKey keyProperty="id" order="AFTER" resultType="long">
-            SELECT last_insert_rowid();
+            SELECT last_insert_id();
         </selectKey>
     </insert>
 
@@ -72,12 +72,12 @@
             #{mon},
             #{total},
             #{billunit},
-            DATEtime(#{billdate} / 1000, 'unixepoch', 'localtime'),
+            from_unixtime(#{billdate}/1000),
             #{billtotal},
             #{rate},
             #{remitunit},
             #{pattern},
-            DATETIME(#{remitdate} / 1000, 'unixepoch', 'localtime'),
+            from_unixtime(#{remitdate}/1000),
             #{paytotal},
             #{note}
         );
@@ -90,16 +90,16 @@
         SET
             total     = #{total},
             billunit  = #{billunit},
-            billdate  = DATEtime(#{billdate} / 1000, 'unixepoch', 'localtime'),
+            billdate  = from_unixtime(#{billdate}/1000),
             billtotal = #{billtotal},
             rate      = #{rate},
             remitunit = #{remitunit},
             pattern   = #{pattern},
-            remitdate = DATETIME(#{remitdate} / 1000, 'unixepoch', 'localtime'),
+            remitdate = from_unixtime(#{remitdate}/1000),
             paytotal  = #{paytotal},
             note      = #{note}
-        WHERE said == #{said}
-              AND mon == #{mon}
+        WHERE said = #{said}
+              AND mon = #{mon}
     </update>
 
     <!--指定年份统计付款-->
@@ -108,44 +108,44 @@
         SELECT
             s.name            AS sup,
             sum(sam.paytotal) AS total,
-            sum(CASE WHEN mon == 1
+            sum(CASE WHEN mon = 1
                 THEN sam.paytotal
                 ELSE 0 END)   AS mon1,
-            sum(CASE WHEN mon == 2
+            sum(CASE WHEN mon = 2
                 THEN sam.paytotal
                 ELSE 0 END)   AS mon2,
-            sum(CASE WHEN mon == 3
+            sum(CASE WHEN mon = 3
                 THEN sam.paytotal
                 ELSE 0 END)   AS mon3,
-            sum(CASE WHEN mon == 4
+            sum(CASE WHEN mon = 4
                 THEN sam.paytotal
                 ELSE 0 END)   AS mon4,
-            sum(CASE WHEN mon == 5
+            sum(CASE WHEN mon = 5
                 THEN sam.paytotal
                 ELSE 0 END)   AS mon5,
-            sum(CASE WHEN mon == 6
+            sum(CASE WHEN mon = 6
                 THEN sam.paytotal
                 ELSE 0 END)   AS mon6,
-            sum(CASE WHEN mon == 7
+            sum(CASE WHEN mon = 7
                 THEN sam.paytotal
                 ELSE 0 END)   AS mon7,
-            sum(CASE WHEN mon == 8
+            sum(CASE WHEN mon = 8
                 THEN sam.paytotal
                 ELSE 0 END)   AS mon8,
-            sum(CASE WHEN mon == 9
+            sum(CASE WHEN mon = 9
                 THEN sam.paytotal
                 ELSE 0 END)   AS mon9,
-            sum(CASE WHEN mon == 10
+            sum(CASE WHEN mon = 10
                 THEN sam.paytotal
                 ELSE 0 END)   AS mon10,
-            sum(CASE WHEN mon == 11
+            sum(CASE WHEN mon = 11
                 THEN sam.paytotal
                 ELSE 0 END)   AS mon11,
-            sum(CASE WHEN mon == 12
+            sum(CASE WHEN mon = 12
                 THEN sam.paytotal
                 ELSE 0 END)   AS mon12
         FROM sup_annual sa, sup_annual_mon sam, supply s
-        WHERE sa.year == #{year} AND sam.said == sa.id AND sa.sid == s.id
+        WHERE sa.year = #{year} AND sam.said = sa.id AND sa.sid = s.id
         GROUP BY s.id
     </select>
 
@@ -171,13 +171,13 @@
         (
         /*采购统计*/
         SELECT
-        strftime('%m', r.rdate) AS mon,
+        date_format(r.rdate, '%m') AS mon,
         sum(price * num) AS rec
         FROM receipt r, receipt_detail rd
-        WHERE r.id == rd.rid AND strftime('%Y', r.rdate) == ''||#{year}
-        GROUP BY strftime('%m', r.rdate)
+        WHERE r.id = rd.rid AND date_format(r.rdate, '%Y') = ''||#{year}
+        GROUP BY date_format(r.rdate, '%m')
         ) rec
-        ON m.mon == rec.mon
+        ON m.mon = rec.mon
         ) mrec
         LEFT OUTER JOIN
         (
@@ -188,9 +188,9 @@
         ELSE '' || mon END AS mon,
         paytotal
         FROM sup_annual s, sup_annual_mon sa
-        WHERE s.id == sa.said AND year == #{year}
+        WHERE s.id = sa.said AND year = #{year}
         GROUP BY mon
         ) pay
-        ON mrec.mon == pay.mon;
+        ON mrec.mon = pay.mon;
     </select>
 </mapper>

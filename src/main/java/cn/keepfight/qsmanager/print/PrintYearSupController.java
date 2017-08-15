@@ -1,10 +1,10 @@
-package cn.keepfight.qsmanager.controller;
+package cn.keepfight.qsmanager.print;
 
 import cn.keepfight.qsmanager.QSApp;
 import cn.keepfight.qsmanager.model.*;
+import cn.keepfight.qsmanager.print.PrintTemplate;
 import cn.keepfight.utils.FXUtils;
 import cn.keepfight.utils.FXWidgetUtil;
-import javafx.beans.binding.Bindings;
 import javafx.beans.binding.IntegerBinding;
 import javafx.beans.property.*;
 import javafx.fxml.Initializable;
@@ -15,12 +15,12 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.layout.VBox;
+import javafx.util.Pair;
 
 import java.math.BigDecimal;
 import java.net.URL;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 
 /**
  * 送货单表格打印控制器
@@ -65,6 +65,8 @@ public class PrintYearSupController extends PrintTemplate<SupAnnualModelFull> im
     public TextField pay_total;
     public TextField all_total;
 
+    private SupAnnualModelFull datas;
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         table.fixedCellSizeProperty().bind(table.heightProperty().subtract(27).divide(SIZE_PER_PAGE));
@@ -108,9 +110,10 @@ public class PrintYearSupController extends PrintTemplate<SupAnnualModelFull> im
 
     @Override
     public void fill(SupAnnualModelFull datas) {
+        this.datas = datas;
         // 填充客户信息
         try {
-            CustomModel c = QSApp.service.getCustomService().selectAllByID(datas.getSid());
+            SupplyModel c = QSApp.service.getSupplyService().selectByID(datas.getSid());
             addr.setText(c.getAddr());
             serial.setText(c.getSerial());
             phone.setText(c.getPhone());
@@ -128,6 +131,11 @@ public class PrintYearSupController extends PrintTemplate<SupAnnualModelFull> im
             resp_date.setText(FXUtils.stampToDate(System.currentTimeMillis(), "yyyy年MM月"));
 
             bf_total.setText(FXUtils.decimalStr(datas.getRemainder()));
+
+            // 加载默认记忆选项并添加默认下拉
+            FXWidgetUtil.defaultList(
+                    new Pair<>(addr, "supply.info.addr."+c.getSerial())
+            );
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -177,24 +185,27 @@ public class PrintYearSupController extends PrintTemplate<SupAnnualModelFull> im
 
 
     @Override
-    public IntegerBinding pageNum() {
-        return new IntegerBinding() {
-            {
-                bind(table.getItems());
-            }
+    public void printBefore() {
+        // 保存信息
+        try {
+            SupplyModel c = QSApp.service.getSupplyService().selectByID(datas.getSid());
+            c.setNamefull(name.getText());
+            c.setAddr(addr.getText());
+            c.setPhone(phone.getText());
+            c.setFax(fax.getText());
+            c.setAccpv(pvacc.getText());
+            c.setBccpv(pvbcc.getText());
+            c.setAccpb(pbacc.getText());
+            c.setBccpb(pbbcc.getText());
+            QSApp.service.getSupplyService().update(c);
 
-            @Override
-            protected int computeValue() {
-                return table.getItems().isEmpty() ? 0 : 1;
-            }
-        };
+            FXWidgetUtil.addDefaultList(
+                    new Pair<>("supply.info.addr."+c.getSerial(), addr.getText())
+            );
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
-
-    @Override
-    public void selectPage(int i) {
-        // DO nothing
-    }
-
 
     private class Item extends SupAnnualMonModel {
         Property<BigDecimal> ratetotalProperty = new SimpleObjectProperty<>();

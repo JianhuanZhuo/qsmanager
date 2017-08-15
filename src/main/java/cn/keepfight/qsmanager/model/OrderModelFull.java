@@ -1,7 +1,11 @@
 package cn.keepfight.qsmanager.model;
 
+import cn.keepfight.utils.FXReflectUtils;
+import cn.keepfight.utils.FXUtils;
+
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * 订单全模型
@@ -14,6 +18,8 @@ public class OrderModelFull implements ModelFull<OrderModel>{
     private String serial;
     private Long orderdate;
     private String note;
+    private boolean deli = false;
+    private boolean building = false;
 
     private String cust;
 
@@ -21,21 +27,13 @@ public class OrderModelFull implements ModelFull<OrderModel>{
 
     @Override
     public void set(OrderModel orderModel) {
-        setId(orderModel.getId());
-        setCid(orderModel.getCid());
-        setSerial(orderModel.getSerial());
-        setOrderdate(orderModel.getOrderdate());
-        setNote(orderModel.getNote());
+        FXReflectUtils.attrAssign(orderModel, this, "id", "cid", "serial", "orderdate", "note", "deli", "building");
     }
 
     @Override
     public OrderModel get() {
         OrderModel model = new OrderModel();
-        model.setId(getId());
-        model.setCid(getCid());
-        model.setSerial(getSerial());
-        model.setOrderdate(getOrderdate());
-        model.setNote(getNote());
+        FXReflectUtils.attrAssign(this, model, "id", "cid", "serial", "orderdate", "note", "deli", "building");
         return model;
     }
 
@@ -89,6 +87,10 @@ public class OrderModelFull implements ModelFull<OrderModel>{
     }
 
     public void setOrderItemModels(List<OrderItemModel> goodsModels) {
+        // 为每个设置对齐 ID
+        if (goodsModels!=null && getId()!=null){
+            goodsModels.stream().filter(Objects::nonNull).forEach(x->x.setOid(getId()));
+        }
         this.goodsModels = goodsModels;
     }
 
@@ -98,5 +100,21 @@ public class OrderModelFull implements ModelFull<OrderModel>{
 
     public void setCust(String cust) {
         this.cust = cust;
+    }
+
+    public boolean isDeli() {
+        return deli;
+    }
+
+    public void setDeli(boolean deli) {
+        this.deli = deli;
+    }
+
+    public boolean isBuilding() {
+        return building;
+    }
+
+    public void setBuilding(boolean building) {
+        this.building = building;
     }
 }

@@ -40,11 +40,11 @@
         </if>
         #{serial}, #{name}, #{detail}, #{pack}, #{packDefault}, #{price}, #{unit}, #{picurl})
         <selectKey keyProperty="id" order="AFTER" resultType="long">
-            SELECT last_insert_rowid();
+            SELECT last_insert_id();
         </selectKey>
     </insert>
-    
-    
+
+
     <!--删除指定订单项，以ID为准。-->
     <!--void delete(OrderItemModel model) throws Exception;-->
     <delete id="delete" parameterType="OrderItemModel">

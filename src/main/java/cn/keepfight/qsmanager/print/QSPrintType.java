@@ -1,5 +1,6 @@
-package cn.keepfight.qsmanager.controller;
+package cn.keepfight.qsmanager.print;
 
+import cn.keepfight.qsmanager.print.*;
 import cn.keepfight.utils.ViewPathUtil;
 import javafx.application.Platform;
 import javafx.print.PageOrientation;

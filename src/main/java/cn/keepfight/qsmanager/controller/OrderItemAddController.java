@@ -91,7 +91,7 @@ public class OrderItemAddController implements DialogContent<OrderItemModel> {
                 tab_serial.setText(model.getSerial());
                 tab_name.setText(model.getName());
                 tab_detail.setText(model.getDetail());
-                tab_price.setText("" + model.getPrice());
+                tab_price.setText(FXUtils.decimalStr(model.getPrice()));
                 tab_unit.setText(model.getUnit());
                 tab_pack.getItems().setAll(model.getPack(), 1L, null);
                 tab_pack.getSelectionModel().selectFirst();
@@ -158,15 +158,15 @@ public class OrderItemAddController implements DialogContent<OrderItemModel> {
         tab_serial.setText(model.getSerial());
         tab_name.setText(model.getName());
         tab_detail.setText(model.getDetail());
-        tab_price.setText("" + model.getPrice());
         tab_unit.setText(model.getUnit());
         tab_pack.getItems().setAll(new HashSet<>(Arrays.asList(model.getPackDefault(), 1L, null)));
         tab_pack.getSelectionModel().selectFirst();
         tab_packNum.setText(""+model.getPack());
-        tab_num.setText(""+model.getNum());
-        tab_rate.setText("" + model.getRate());
-        tab_rebate.setText("" + model.getRebate());
-        tab_delifee.setText("" + model.getDelifee());
+        tab_price.setText(FXUtils.decimalStr(model.getPrice()));
+        tab_num.setText(FXUtils.decimalStr(model.getNum()));
+        tab_rate.setText(FXUtils.decimalStr(model.getRate()));
+        tab_rebate.setText(FXUtils.decimalStr(model.getRebate()));
+        tab_delifee.setText(FXUtils.decimalStr(model.getDelifee()));
     }
 
     @Override
@@ -238,7 +238,6 @@ public class OrderItemAddController implements DialogContent<OrderItemModel> {
         Platform.runLater(() -> {
             try {
                 serialChangeEnable = false;
-//                serial_c.getItems().setAll(QSApp.service.getProductService().selectAll());
                 serial_c.getItems().setAll(QSApp.service.getOrderFavorService().selectAll(cid));
                 serial_c.getItems().add(null);
                 serialChangeEnable = true;

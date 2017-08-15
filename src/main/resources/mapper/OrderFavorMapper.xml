@@ -19,7 +19,7 @@
         INSERT INTO order_favor (cid, pid)
         VALUES (#{cid},#{pid})
         <selectKey keyProperty="id" order="AFTER" resultType="long">
-            SELECT last_insert_rowid();
+            SELECT last_insert_id();
         </selectKey>
     </insert>
 

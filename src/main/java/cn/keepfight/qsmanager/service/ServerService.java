@@ -1,7 +1,5 @@
 package cn.keepfight.qsmanager.service;
 
-import cn.keepfight.qsmanager.model.ReceiptModelFull;
-
 /**
  * Created by tom on 2017/6/7.
  */
@@ -61,10 +59,10 @@ public interface ServerService {
      */
     OrderService getOrderService();
 
-    /**
-     * 获得送货单服务实现实例
-     */
-    DeliveryService getDeliveryService();
+//    /**
+//     * 获得送货单服务实现实例
+//     */
+//    DeliveryService getDeliveryService();
 
     /**
      * 获得客户年度对账表操作服务实现实例

@@ -7,14 +7,14 @@
     <!--List<ProductModel> selectAll() throws Exception;-->
     <select id="selectAll" resultType="ProductModel">
         SELECT *
-        FROM Product
+        FROM product
         ORDER BY serial
     </select>
 
     <!--void insert(ProductModel Product) throws Exception;-->
     <insert id="insert" parameterType="ProductModel">
         INSERT INTO
-        Product (
+        product (
         serial,
         name,
         detail,
@@ -33,19 +33,19 @@
         #{picurl}
         )
         <selectKey keyProperty="id" order="AFTER" resultType="long">
-            SELECT last_insert_rowid();
+            SELECT last_insert_id();
         </selectKey>
     </insert>
 
     <!--void delete(ProductModel Product) throws Exception;-->
     <delete id="delete" parameterType="ProductModel">
-        DELETE FROM Product
+        DELETE FROM product
         WHERE id = #{id}
     </delete>
 
     <!--void update(ProductModel Product) throws Exception;-->
     <update id="update" parameterType="ProductModel">
-        UPDATE Product
+        UPDATE product
         SET
         serial = #{serial},
         name = #{name},

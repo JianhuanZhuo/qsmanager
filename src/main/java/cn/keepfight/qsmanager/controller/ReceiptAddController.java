@@ -85,9 +85,9 @@ public class ReceiptAddController implements DialogContent<ReceiptModelFull> {
         FXWidgetUtil.connect(tab_color, ReceiptDetailModel::colorProperty);
         FXWidgetUtil.connect(tab_spec, ReceiptDetailModel::specProperty);
         FXWidgetUtil.connect(tab_unit, ReceiptDetailModel::unitProperty);
-        FXWidgetUtil.connectObj(tab_price, ReceiptDetailModel::priceProperty);
-        FXWidgetUtil.connectObj(tab_num, ReceiptDetailModel::numProperty);
-        FXWidgetUtil.connectObj(tab_total, ReceiptDetailModel::totalProperty);
+        FXWidgetUtil.connectDecimalObj(tab_price, ReceiptDetailModel::priceProperty);
+        FXWidgetUtil.connectDecimalObj(tab_num, ReceiptDetailModel::numProperty);
+        FXWidgetUtil.connectDecimalObj(tab_total, ReceiptDetailModel::totalProperty);
 
         // 新增明细按钮
         item_add.setOnMouseClicked(e -> {

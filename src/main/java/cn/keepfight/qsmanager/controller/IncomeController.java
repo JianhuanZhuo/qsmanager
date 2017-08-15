@@ -2,6 +2,9 @@ package cn.keepfight.qsmanager.controller;
 
 import cn.keepfight.qsmanager.QSApp;
 import cn.keepfight.qsmanager.model.*;
+import cn.keepfight.qsmanager.print.PrintSelection;
+import cn.keepfight.qsmanager.print.PrintSource;
+import cn.keepfight.qsmanager.print.QSPrintType;
 import cn.keepfight.utils.*;
 import javafx.application.Platform;
 import javafx.beans.binding.ObjectBinding;
@@ -33,9 +36,9 @@ public class IncomeController implements ContentCtrl, Initializable {
     private VBox root;
 
     @FXML
-    private VBox deliveryListPane;
+    private VBox orderPane;
     @FXML
-    private DeliveryListPaneController deliveryListPaneController;
+    private OrderPaneController orderPaneController;
 
     @FXML
     private ChoiceBox<CustomModel> an_cust_sel;
@@ -199,6 +202,8 @@ public class IncomeController implements ContentCtrl, Initializable {
             source.setYear(year);
             QSApp.service.getPrintService().build(new PrintSelection(QSPrintType.YEAR_CUST, source));
         });
+
+        orderPaneController.config(OrderPaneController.USING_IN_INCOME);
     }
 
     @Override
@@ -216,12 +221,12 @@ public class IncomeController implements ContentCtrl, Initializable {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        deliveryListPaneController.loaded();
+        orderPaneController.loaded();
     }
 
     @Override
     public void showed() {
-        deliveryListPaneController.showed();
+        orderPaneController.showed();
     }
 
     /**
@@ -262,9 +267,5 @@ public class IncomeController implements ContentCtrl, Initializable {
                 e.printStackTrace();
             }
         });
-    }
-
-    public void listDelivery(String serial) {
-        deliveryListPaneController.listDelivery(serial);
     }
 }

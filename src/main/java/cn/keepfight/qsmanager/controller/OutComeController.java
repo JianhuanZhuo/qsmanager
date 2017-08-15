@@ -2,6 +2,9 @@ package cn.keepfight.qsmanager.controller;
 
 import cn.keepfight.qsmanager.QSApp;
 import cn.keepfight.qsmanager.model.*;
+import cn.keepfight.qsmanager.print.PrintSelection;
+import cn.keepfight.qsmanager.print.PrintSource;
+import cn.keepfight.qsmanager.print.QSPrintType;
 import cn.keepfight.utils.*;
 import javafx.application.Platform;
 import javafx.beans.binding.ObjectBinding;
@@ -185,41 +188,30 @@ public class OutComeController implements ContentCtrl {
 
 
         // 添加表格转换器
+        FXWidgetUtil.connectDecimal(total, SupAnnualMonModel::getTotal);
+        FXWidgetUtil.connectDecimal(billtotal, SupAnnualMonModel::getBilltotal);
+        FXWidgetUtil.connectDecimal(paytotal, SupAnnualMonModel::getPaytotal);
+        FXWidgetUtil.connectDecimal(ratetotal, SupAnnualMonModel::getBilltotal);
         mon.setCellValueFactory(cellFeature ->
                 new SimpleStringProperty(cellFeature.getValue().getMon().toString() + "月"));
-        total.setCellValueFactory(cellFeature ->
-                new SimpleStringProperty(cellFeature.getValue().getTotalStr()));
         billunit.setCellValueFactory(cellFeature ->
                 new SimpleStringProperty(cellFeature.getValue().getBillunit()));
         billdate.setCellValueFactory(cellFeature ->
                 new SimpleStringProperty(FXUtils.stampToDate(cellFeature.getValue().getBilldate())));
-        billtotal.setCellValueFactory(cellFeature ->
-                new SimpleStringProperty(cellFeature.getValue().getBilltotalStr()));
-        rate.setCellValueFactory(cellFeature ->
-                new SimpleObjectProperty<>(cellFeature.getValue().getRate()));
         remitunit.setCellValueFactory(cellFeature ->
                 new SimpleStringProperty(cellFeature.getValue().getRemitunit()));
         pattern.setCellValueFactory(cellFeature ->
                 new SimpleStringProperty(cellFeature.getValue().getPattern()));
         remitdate.setCellValueFactory(cellFeature ->
                 new SimpleStringProperty(FXUtils.stampToDate(cellFeature.getValue().getRemitdate())));
-        paytotal.setCellValueFactory(cellFeature ->
-                new SimpleStringProperty(cellFeature.getValue().getPaytotalStr()));
         note.setCellValueFactory(cellFeature ->
                 new SimpleStringProperty(cellFeature.getValue().getNote()));
 
+        rate.setCellValueFactory(cellFeature ->
+                new SimpleObjectProperty<>(cellFeature.getValue().getRate()));
         rate.setCellFactory(TextFieldTableCell.forTableColumn(FXUtils.rateConverter()));
 
-        ratetotal.setCellValueFactory(param -> {
-            String str;
-            try {
-                str = param.getValue().getRate().multiply(param.getValue().getBilltotal()).toString();
-            } catch (Exception e) {
-                // 乘法有错，则无视之
-                str = "0";
-            }
-            return new SimpleStringProperty(str);
-        });
+
 
         //计算
         FXWidgetUtil.calculate(anTable.getItems(), SupAnnualMonModel::getTotal, an_total_annu::setText);

@@ -39,4 +39,9 @@ public interface CustAnnuMapper {
      * 更新月明细
      */
     void updateMon(CustAnnualMonModel model) throws Exception;
+
+    /**
+     * 查询指定客户和年份的全部月份的送货总额
+     */
+    List<AnnualTotalModel> supAnnualTotal(DeliverySelection selection) throws Exception ;
 }

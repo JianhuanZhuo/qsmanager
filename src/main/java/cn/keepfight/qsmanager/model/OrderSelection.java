@@ -8,35 +8,14 @@ public class OrderSelection {
     private Long cid; // 客户ID
     private String year;
     private String month;
-    private String s; // 订单状态选择
+    private String day;
 
     public OrderSelection(){}
-    public OrderSelection(Long cid, Long year, Long month, State s){
+    public OrderSelection(Long cid, Long year, Long month, Long s){
         setCid(cid);
         setYear(year);
         setMonth(month);
-        setS(s);
-    }
-
-
-    public enum State{
-        READY("r", "未发货"), // 未发货
-        DOING("i", "已发货"), // 已发货
-        DONE("d", "已完成");  // 已完成，全部发完
-
-        private String s;
-        private String displayText;
-        State(String c, String displayText){
-            s = c;
-            this.displayText = displayText;
-        }
-        public String getS(){
-            return s;
-        }
-
-        public String getDisplayText() {
-            return displayText;
-        }
+        setDay(s);
     }
 
     public Long getCid() {
@@ -79,15 +58,15 @@ public class OrderSelection {
         }
     }
 
-    public String getS() {
-        return s;
+    public String getDay() {
+        return day;
     }
 
-    public void setS(State s) {
+    public void setDay(Long s) {
         if (s==null){
-            this.s = null;
-        }else {
-            this.s = s.getS();
+            this.day=null;
+            return;
         }
+        this.day = s.toString();
     }
 }

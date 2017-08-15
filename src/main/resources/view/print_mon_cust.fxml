@@ -12,7 +12,7 @@
 
 <VBox fx:id="root" styleClass="layout_holder, preview" stylesheets="@css/print.css"
       xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1"
-      fx:controller="cn.keepfight.qsmanager.controller.PrintMonCustController">
+      fx:controller="cn.keepfight.qsmanager.print.PrintMonCustController">
     <VBox styleClass="print_layout,layout_A4H">
         <VBox style="-fx-spacing: 2px">
             <HBox styleClass="print_title">
@@ -77,6 +77,9 @@
                                 </columns>
                             </TableColumn>
                         </columns>
+                        <columnResizePolicy>
+                            <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                        </columnResizePolicy>
                     </TableView>
                     <HBox alignment="CENTER_RIGHT" styleClass="additional_cell">
                         <Label text="金额合计："/>

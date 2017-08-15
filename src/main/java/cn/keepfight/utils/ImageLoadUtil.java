@@ -25,7 +25,8 @@ public class ImageLoadUtil {
     private static final Image preloadImage = new Image(VIEW_IMAGE_URL + "picture_preload.png");
     private static final Image loadfailImage = new Image(VIEW_IMAGE_URL + "picture_loadfail.png");
 
-    public static final String LOCAL_PROTOCOL_PREFIX="sqlocal";
+    public static final String LOCAL_PROTOCOL_PREFIX="qslocal";
+    public static final String REMOTE_PROTOCOL_PREFIX="qsremote";
 
     /**
      * 图像缓存
@@ -92,7 +93,9 @@ public class ImageLoadUtil {
                         System.out.println("+_targetFile.toURI().toString()"+targetFile.toURI().toString());
 
                         resImage.set(new Image(targetFile.toURI().toString()));
-                    } else {
+                    }else if (imageUrl.startsWith(REMOTE_PROTOCOL_PREFIX+":")){
+                        resImage.set(new Image(QSAPI.imagePath(imageUrl.replace(REMOTE_PROTOCOL_PREFIX+":", ""))));
+                    }else {
                         resImage.set(new Image(imageUrl));
                     }
                 } catch (Exception e) {

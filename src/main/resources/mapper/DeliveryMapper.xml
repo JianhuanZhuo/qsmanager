@@ -19,10 +19,10 @@
             AND r.cid = #{cid}
         </if>
         <if test="year!=null">
-            AND strftime('%Y', r.ddate) = #{year}
+            AND date_format(r.ddate, '%Y') = #{year}
         </if>
         <if test="month!=null">
-            AND strftime('%m', r.ddate) = #{month}
+            AND date_format(r.ddate, '%m') = #{month}
         </if>
         <if test="orderStr!=null">
             AND order_serial LIKE #{orderStr} || '%'
@@ -48,7 +48,7 @@
         delivery (cid, serial, ddate, cust, order_serial)
         VALUES (#{cid}, #{serial}, DATEtime(#{ddate}/1000, 'unixepoch', 'localtime'), #{cust}, #{order_serial})
         <selectKey keyProperty="id" order="AFTER" resultType="long">
-            SELECT last_insert_rowid();
+            SELECT last_insert_id();
         </selectKey>
     </insert>
 
@@ -77,13 +77,13 @@
     <!--查询指定客户和年份的全部月份的送货总额-->
     <!--List<AnnualTotalModel> supAnnualTotal(DeliverySelection selection);-->
     <select id="supAnnualTotal" parameterType="DeliverySelection" resultType="AnnualTotalModel">
-        SELECT strftime('%m', d.ddate) AS mon, sum(di.price * di.num * di.pack) AS total
+        SELECT date_format(d.ddate, '%m') AS mon, sum(di.price * di.num * di.pack) AS total
         FROM delivery_item di, delivery d
         WHERE
             cid == #{cid}
-            AND strftime('%Y', d.ddate) == #{year}
+            AND date_format(d.ddate, '%Y') == #{year}
             AND di.did == d.id
-        GROUP BY strftime('%m', d.ddate)
-        ORDER BY strftime('%m', d.ddate)
+        GROUP BY date_format(d.ddate, '%m')
+        ORDER BY date_format(d.ddate, '%m')
     </select>
 </mapper>

@@ -1,9 +1,10 @@
-package cn.keepfight.qsmanager.controller;
+package cn.keepfight.qsmanager.print;
 
 import cn.keepfight.qsmanager.QSApp;
 import cn.keepfight.qsmanager.model.CustAnnualModelFull;
 import cn.keepfight.qsmanager.model.CustAnnualMonModel;
 import cn.keepfight.qsmanager.model.CustomModel;
+import cn.keepfight.utils.ConfigUtil;
 import cn.keepfight.utils.FXUtils;
 import cn.keepfight.utils.FXWidgetUtil;
 import javafx.beans.binding.IntegerBinding;
@@ -16,6 +17,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.layout.VBox;
+import javafx.util.Pair;
 
 import java.math.BigDecimal;
 import java.net.URL;
@@ -64,6 +66,8 @@ public class PrintYearCustController extends PrintTemplate<CustAnnualModelFull> 
     public TextField pay_total;
     public TextField all_total;
 
+    private CustAnnualModelFull datas;
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         table.fixedCellSizeProperty().bind(table.heightProperty().subtract(27).divide(SIZE_PER_PAGE));
@@ -111,6 +115,7 @@ public class PrintYearCustController extends PrintTemplate<CustAnnualModelFull> 
 
     @Override
     public void fill(CustAnnualModelFull datas) {
+        this.datas = datas;
         // 填充客户信息
         try {
             CustomModel c = QSApp.service.getCustomService().selectAllByID(datas.getCid());
@@ -131,6 +136,10 @@ public class PrintYearCustController extends PrintTemplate<CustAnnualModelFull> 
             resp_date.setText(FXUtils.stampToDate(System.currentTimeMillis(), "yyyy年MM月"));
 
             bf_total.setText(FXUtils.decimalStr(datas.getRemainder()));
+
+            FXWidgetUtil.addDefaultList(
+                    new Pair<>("custom.info.addr."+c.getSerial(), addr.getText())
+            );
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -171,22 +180,26 @@ public class PrintYearCustController extends PrintTemplate<CustAnnualModelFull> 
     }
 
     @Override
-    public IntegerBinding pageNum() {
-        return new IntegerBinding() {
-            {
-                bind(table.getItems());
-            }
+    public void printBefore() {
+        // 保存信息
+        try {
+            CustomModel c = QSApp.service.getCustomService().selectAllByID(datas.getCid());
+            c.setNamefull(name.getText());
+            c.setAddr(addr.getText());
+            c.setPhone(phone.getText());
+            c.setFax(fax.getText());
+            c.setAccpv(pvacc.getText());
+            c.setBccpv(pvbcc.getText());
+            c.setAccpb(pbacc.getText());
+            c.setBccpb(pbbcc.getText());
+            QSApp.service.getCustomService().update(c);
 
-            @Override
-            protected int computeValue() {
-                return table.getItems().isEmpty() ? 0 : 1;
-            }
-        };
-    }
-
-    @Override
-    public void selectPage(int i) {
-        // Nothing to do
+            FXWidgetUtil.addDefaultList(
+                    new Pair<>("custom.info.addr."+c.getSerial(), addr.getText())
+            );
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private class Item extends CustAnnualMonModel {

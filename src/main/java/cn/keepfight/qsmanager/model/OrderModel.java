@@ -10,6 +10,8 @@ public class OrderModel {
     private String serial;
     private Long orderdate;
     private String note;
+    private boolean deli = false;
+    private boolean building = false;
 
     public Long getId() {
         return id;
@@ -49,5 +51,21 @@ public class OrderModel {
 
     public void setNote(String note) {
         this.note = note;
+    }
+
+    public boolean isDeli() {
+        return deli;
+    }
+
+    public void setDeli(boolean deli) {
+        this.deli = deli;
+    }
+
+    public boolean isBuilding() {
+        return building;
+    }
+
+    public void setBuilding(boolean building) {
+        this.building = building;
     }
 }

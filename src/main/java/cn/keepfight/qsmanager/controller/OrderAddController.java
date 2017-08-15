@@ -102,19 +102,17 @@ public class OrderAddController implements DialogContent<OrderModelFull> {
         FXWidgetUtil.connect(tab_name, OrderItemModel::nameProperty);
         FXWidgetUtil.connect(tab_serial, OrderItemModel::serialProperty);
         FXWidgetUtil.connect(tab_detail, OrderItemModel::detailProperty);
-        FXWidgetUtil.connectObj(tab_price, OrderItemModel::priceProperty);
+        FXWidgetUtil.connectDecimalObj(tab_price, OrderItemModel::priceProperty);
         FXWidgetUtil.connectNum(tab_pack, OrderItemModel::packProperty);
-//        tab_unit.setCellValueFactory(param -> new SimpleStringProperty(param.getValue().getUnit()));
-        FXWidgetUtil.connectObj(tab_num, OrderItemModel::numProperty);
-        FXWidgetUtil.connectObj(tab_total, OrderItemModel::takeTotalProperty);
-        FXWidgetUtil.connectObj(tab_rate, OrderItemModel::rateProperty);
-//        FXWidgetUtil.connectObj(tab_ratetotal, OrderItemModel::rateTotalProperty);
-        FXWidgetUtil.connectObj(tab_ratetotal, x->x.rateProperty());
-        FXWidgetUtil.connectObj(tab_totallWithRate, OrderItemModel::totalWithRateProperty);
-        FXWidgetUtil.connectObj(tab_rebate, OrderItemModel::rebateProperty);
-        FXWidgetUtil.connectObj(tab_allrebate, OrderItemModel::rebateTotalProperty);
-        FXWidgetUtil.connectObj(tab_delifee, OrderItemModel::delifeeProperty);
-        FXWidgetUtil.connectObj(tab_actPay, OrderItemModel::actPayTotalProperty);
+        FXWidgetUtil.connectDecimalObj(tab_num, OrderItemModel::numProperty);
+        FXWidgetUtil.connectDecimalObj(tab_total, OrderItemModel::takeTotalProperty);
+        FXWidgetUtil.connectDecimalObj(tab_rate, OrderItemModel::rateProperty);
+        FXWidgetUtil.connectDecimalObj(tab_ratetotal, OrderItemModel::rateProperty);
+        FXWidgetUtil.connectDecimalObj(tab_totallWithRate, OrderItemModel::totalWithRateProperty);
+        FXWidgetUtil.connectDecimalObj(tab_rebate, OrderItemModel::rebateProperty);
+        FXWidgetUtil.connectDecimalObj(tab_allrebate, OrderItemModel::rebateTotalProperty);
+        FXWidgetUtil.connectDecimalObj(tab_delifee, OrderItemModel::delifeeProperty);
+        FXWidgetUtil.connectDecimalObj(tab_actPay, OrderItemModel::actPayTotalProperty);
 
 
         FXWidgetUtil.calculate(table.getItems(), OrderItemModel::getNum, s_num::setText);

@@ -1,14 +1,10 @@
-package cn.keepfight.qsmanager.controller;
+package cn.keepfight.qsmanager.print;
 
 import cn.keepfight.qsmanager.QSApp;
-import cn.keepfight.qsmanager.model.DeliverySelection;
-import cn.keepfight.qsmanager.model.ReceiptSelection;
 
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
-
-import static cn.keepfight.qsmanager.controller.PrintSourceLocate.Flag.*;
 
 /**
  * 送货单定位
@@ -17,7 +13,7 @@ import static cn.keepfight.qsmanager.controller.PrintSourceLocate.Flag.*;
 public class PrintLocateMonSup implements PrintSourceLocate {
     @Override
     public Set<Flag> reqFlag() {
-        return new HashSet<>(Arrays.asList(SUP, YEAR, MON));
+        return new HashSet<>(Arrays.asList(Flag.SUP, Flag.YEAR, Flag.MON));
     }
 
     @Override

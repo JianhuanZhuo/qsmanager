@@ -15,7 +15,7 @@
       stylesheets="@css/print.css"
       xmlns="http://javafx.com/javafx/8.0.111"
       xmlns:fx="http://javafx.com/fxml/1"
-      fx:controller="cn.keepfight.qsmanager.controller.PrintReceiptController">
+      fx:controller="cn.keepfight.qsmanager.print.PrintReceiptController">
     <VBox styleClass="print_layout,layout_A5H">
         <VBox>
             <HBox styleClass="print_title">
@@ -80,6 +80,9 @@
                                 </columns>
                             </TableColumn>
                         </columns>
+                        <columnResizePolicy>
+                            <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                        </columnResizePolicy>
                     </TableView>
                     <HBox styleClass="additional_cell" alignment="CENTER_RIGHT">
                         <Label text="合计："/>

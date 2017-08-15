@@ -8,7 +8,7 @@
       stylesheets="@css/print.css,@css/common.css"
       xmlns="http://javafx.com/javafx/8.0.111"
       xmlns:fx="http://javafx.com/fxml/1"
-      fx:controller="cn.keepfight.qsmanager.controller.PrintController">
+      fx:controller="cn.keepfight.qsmanager.print.PrintController">
     <HBox styleClass="title-line">
         <Label text="打印"/>
         <Pane HBox.hgrow="ALWAYS"/>
@@ -26,11 +26,11 @@
         <Label text="打印件类型："/>
         <ChoiceBox fx:id="type_sel" prefWidth="180"/>
         <Pane HBox.hgrow="ALWAYS"/>
-        <Label text="数据填充："/>
-        <ChoiceBox fx:id="obj" prefWidth="100"/>
-        <ChoiceBox fx:id="year" prefWidth="100"/>
-        <ChoiceBox fx:id="month" prefWidth="100"/>
-        <ChoiceBox fx:id="serial" prefWidth="100"/>
+        <!--<Label text="数据填充："/>-->
+        <!--<ChoiceBox fx:id="obj" prefWidth="100"/>-->
+        <!--<ChoiceBox fx:id="year" prefWidth="100"/>-->
+        <!--<ChoiceBox fx:id="month" prefWidth="100"/>-->
+        <!--<ChoiceBox fx:id="serial" prefWidth="100"/>-->
     </HBox>
     <Separator/>
     <!--<HBox styleClass="hbox-common">-->
@@ -48,8 +48,8 @@
         <!--<fx:include fx:id="print_pane" source="print_delivery.fxml"/>-->
     </ScrollPane>
     <HBox styleClass="hbox-common">
-        <Button fx:id="prev" text="上一页"/>
-        <Button fx:id="next" text="下一页"/>
+        <!--<Button fx:id="prev" text="上一页"/>-->
+        <!--<Button fx:id="next" text="下一页"/>-->
         <Pane HBox.hgrow="ALWAYS"/>
         <Button fx:id="action" text="执行打印"/>
         <Button fx:id="compute" text="自动计算"/>

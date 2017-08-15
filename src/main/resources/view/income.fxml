@@ -29,7 +29,7 @@
     </HBox>
     <TabPane fx:id="tab_pane" styleClass="tab-pane-common" tabClosingPolicy="UNAVAILABLE" VBox.vgrow="ALWAYS">
         <Tab styleClass="tab-common" text="账单列表">
-            <fx:include fx:id="deliveryListPane" source="delivery_list.fxml"/>
+            <fx:include fx:id="orderPane" source="order_list.fxml"/>
         </Tab>
         <Tab styleClass="tab-common" text="年度对账表">
             <VBox>

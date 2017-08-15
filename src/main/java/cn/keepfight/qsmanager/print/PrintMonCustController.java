@@ -1,15 +1,13 @@
-package cn.keepfight.qsmanager.controller;
+package cn.keepfight.qsmanager.print;
 
 import cn.keepfight.qsmanager.QSApp;
 import cn.keepfight.qsmanager.model.CustomModel;
-import cn.keepfight.qsmanager.model.DeliveryItemModel;
-import cn.keepfight.qsmanager.model.DeliveryModelFull;
-import cn.keepfight.qsmanager.model.SupAnnualMonModel;
+import cn.keepfight.qsmanager.model.OrderItemModel;
+import cn.keepfight.qsmanager.model.OrderModelFull;
 import cn.keepfight.utils.ConfigUtil;
 import cn.keepfight.utils.FXUtils;
 import cn.keepfight.utils.FXWidgetUtil;
 import javafx.beans.binding.Bindings;
-import javafx.beans.binding.IntegerBinding;
 import javafx.beans.property.*;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
@@ -25,22 +23,21 @@ import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 
 /**
  * 送货单表格打印控制器
  * Created by tom on 2017/6/23.
  */
-public class PrintMonCustRateController extends PrintTemplate<List<DeliveryModelFull>> implements Initializable {
+public class PrintMonCustController extends PrintTemplate<List<OrderModelFull>> implements Initializable {
 
     public VBox root;
+
     public TextField cust;
     public TextField addr;
     public TextField phone;
     public TextField contract;
     public TextField maker;
     public TextField mdate;
-
     public TableView<Item> table;
     public TableColumn<Item, Number> id;
     public TableColumn<Item, Long> tab_date;
@@ -53,10 +50,6 @@ public class PrintMonCustRateController extends PrintTemplate<List<DeliveryModel
     public TableColumn<Item, BigDecimal> tab_num;
     public TableColumn<Item, BigDecimal> tab_total;
 
-    public TableColumn<Item, BigDecimal> tab_rate;
-    public TableColumn<Item, BigDecimal> tab_total_rate;
-    public TableColumn<Item, BigDecimal> tab_total_with_rate;
-
     public TableColumn<Item, BigDecimal> tab_rebate;
     public TableColumn<Item, BigDecimal> tab_total_rebate;
     public TableColumn<Item, BigDecimal> tab_delifee;
@@ -66,35 +59,20 @@ public class PrintMonCustRateController extends PrintTemplate<List<DeliveryModel
     public TextField total_rebate;
     public TextField total_delifee;
     public TextField total_act;
-    public TextField total_mon_with_rate;
-
     private static final int SIZE_PER_PAGE = 12;
 
-
-    private List<Item> items;
+    private Long cid;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        table.fixedCellSizeProperty().bind(table.heightProperty().subtract(45).divide(SIZE_PER_PAGE));
+        table.fixedCellSizeProperty().bind(table.heightProperty().subtract(52).divide(SIZE_PER_PAGE));
         id.setCellValueFactory(param -> new ReadOnlyObjectWrapper<>(param.getTableView().getItems().indexOf(param.getValue()) + 1));
 
         table.setEditable(true);
+        FXWidgetUtil.cellDecimal(tab_price, tab_num, tab_total, tab_delifee, tab_total_rebate);
+        FXWidgetUtil.cellLong(tab_pack);
+        FXWidgetUtil.cellStr(tab_name, tab_serial, tab_detail, tab_unit);
         tab_date.setCellFactory(TextFieldTableCell.forTableColumn(FXUtils.timestampConverter()));
-        tab_name.setCellFactory(TextFieldTableCell.forTableColumn());
-        tab_serial.setCellFactory(TextFieldTableCell.forTableColumn());
-        tab_detail.setCellFactory(TextFieldTableCell.forTableColumn());
-        tab_price.setCellFactory(TextFieldTableCell.forTableColumn(FXUtils.decimalConverter("0")));
-        tab_unit.setCellFactory(TextFieldTableCell.forTableColumn());
-        tab_pack.setCellFactory(TextFieldTableCell.forTableColumn(FXUtils.longConverter("0")));
-        tab_num.setCellFactory(TextFieldTableCell.forTableColumn(FXUtils.decimalConverter("0")));
-        tab_total.setCellFactory(TextFieldTableCell.forTableColumn(FXUtils.decimalConverter("0")));
-
-        tab_rate.setCellFactory(TextFieldTableCell.forTableColumn(FXUtils.rateConverter()));
-        tab_total_rate.setCellFactory(TextFieldTableCell.forTableColumn(FXUtils.decimalConverter("0")));
-        tab_total_with_rate.setCellFactory(TextFieldTableCell.forTableColumn(FXUtils.decimalConverter("0")));
-
-        tab_total_rebate.setCellFactory(TextFieldTableCell.forTableColumn(FXUtils.decimalConverter("0")));
-        tab_delifee.setCellFactory(TextFieldTableCell.forTableColumn(FXUtils.decimalConverter("0")));
 
         tab_date.setCellValueFactory(x -> x.getValue().tab_dateProperty().asObject());
         tab_name.setCellValueFactory(x -> x.getValue().nameProperty());
@@ -105,11 +83,6 @@ public class PrintMonCustRateController extends PrintTemplate<List<DeliveryModel
         tab_pack.setCellValueFactory(x -> x.getValue().packProperty().asObject());
         tab_num.setCellValueFactory(x -> x.getValue().numProperty());
         tab_total.setCellValueFactory(x -> x.getValue().tab_totalProperty());
-
-        tab_rate.setCellValueFactory(x -> x.getValue().rateProperty());
-        tab_total_rate.setCellValueFactory(x -> x.getValue().rate_totalProperty());
-        tab_total_with_rate.setCellValueFactory(x -> x.getValue().total_with_rateProperty());
-
         tab_rebate.setCellValueFactory(x -> x.getValue().rebateProperty());
         tab_total_rebate.setCellValueFactory(x -> x.getValue().total_rebateProperty());
         tab_delifee.setCellValueFactory(x -> x.getValue().delifeeProperty());
@@ -122,33 +95,32 @@ public class PrintMonCustRateController extends PrintTemplate<List<DeliveryModel
         return root;
     }
 
-
     @Override
-    public IntegerBinding pageNum() {
-        return FXWidgetUtil.pageNumBind(() -> items, List::size, SIZE_PER_PAGE, table.getItems());
-    }
-
-
-    @Override
-    public void fill(List<DeliveryModelFull> datas) {
-        items = datas.stream()
-                .flatMap(x -> x.getDeliveryItemModels().stream()
-                        .map(m -> new Pair<>(x.getDdate(), m)))
+    public void fill(List<OrderModelFull> datas) {
+        List<Item> items = datas.stream()
+                .flatMap(x -> x.getOrderItemModels().stream()
+                        .map(m -> new Pair<>(x.getOrderdate(), m)))
                 .map(x -> {
                     Item item = new Item(x.getValue());
                     item.setTab_date(x.getKey());
                     return item;
                 })
                 .collect(Collectors.toList());
-
+        this.cid = null;
         if (!datas.isEmpty()) {
+            this.cid = datas.get(0).getCid();
             // 填充客户信息
             try {
-                CustomModel c = QSApp.service.getCustomService().selectAllByID(datas.get(0).getCid());
+                CustomModel c = QSApp.service.getCustomService().selectAllByID(this.cid);
                 cust.setText(c.getNamefull());
                 addr.setText(c.getAddr());
                 phone.setText(c.getPhone());
                 contract.setText("");
+
+                // 加载默认记忆选项并添加默认下拉
+                FXWidgetUtil.defaultList(
+                        new Pair<>(addr, "custom.info.addr."+c.getSerial())
+                );
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -163,24 +135,9 @@ public class PrintMonCustRateController extends PrintTemplate<List<DeliveryModel
         total_rebate.setText("0");
         total_delifee.setText("0");
         total_mon.setText("0");
-        total_mon_with_rate.setText("0");
 
         // 初始化数据显示
-        selectPage(0);
-    }
-
-    @Override
-    public void selectPage(int i) {
-        try {
-            table.getItems().setAll(
-                    items.subList(
-                            i * SIZE_PER_PAGE,
-                            Math.min((i + 1) * SIZE_PER_PAGE, items.size())
-                    )
-            );
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        table.getItems().setAll(items);
     }
 
     @Override
@@ -192,15 +149,13 @@ public class PrintMonCustRateController extends PrintTemplate<List<DeliveryModel
 
     @Override
     public void autoCalculate() {
-        table.getItems().forEach(x->{
-            x.setTab_total(x.getTotal());
+       table.getItems().forEach(x->{
+            x.setTab_total(x.getTakeTotal());
             x.setTotal_rebate(x.getRebateTotal());
-            x.setRate_total(x.getRateTotal());
-            x.setTotal_with_rate(x.getTotalWithRate());
         });
 
         FXWidgetUtil.compute(table.getItems(),
-                Item::getTotal,
+                Item::getTakeTotal,
                 total_mon::setText);
         FXWidgetUtil.compute(table.getItems(),
                 Item::getRebateTotal,
@@ -211,33 +166,40 @@ public class PrintMonCustRateController extends PrintTemplate<List<DeliveryModel
         FXWidgetUtil.compute(table.getItems(),
                 Item::getDelifee,
                 total_delifee::setText);
-        FXWidgetUtil.compute(table.getItems(),
-                Item::getTotal_with_rate,
-                total_mon_with_rate::setText);
 
         // 总应付金额
         total_act.setText(
-                FXUtils.getDecimal(total_mon_with_rate.getText(), new BigDecimal(0))
+                FXUtils.getDecimal(total_mon.getText(), new BigDecimal(0))
                         .add(FXUtils.getDecimal(total_delifee.getText(), new BigDecimal(0)))
-                        .subtract(FXUtils.getDecimal(total_rebate.getText(), new BigDecimal(0))).toString()
+                        .subtract(FXUtils.getDecimal(total_rebate.getText(), new BigDecimal(0))).stripTrailingZeros().toPlainString()
         );
     }
 
+    @Override
+    public void printBefore() {
+        // 保存信息
+        try {
+            ConfigUtil.alter("fxapp.properties", "print.maker", maker.getText());
+            CustomModel c = QSApp.service.getCustomService().selectAllByID(this.cid );
+            c.setNamefull(cust.getText());
+            c.setPhone(phone.getText());
+            c.setAddr(addr.getText());
+            QSApp.service.getCustomService().update(c);
 
+            FXWidgetUtil.addDefaultList(
+                    new Pair<>("custom.info.addr."+c.getSerial(), addr.getText())
+            );
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
-    private static class Item extends DeliveryItemModel {
+    private static class Item extends OrderItemModel {
         LongProperty tab_date = new SimpleLongProperty();
         private ObjectProperty<BigDecimal> tab_total = new SimpleObjectProperty<>();
-
-        private ObjectProperty<BigDecimal> rate = new SimpleObjectProperty<>();
-        private ObjectProperty<BigDecimal> rate_total = new SimpleObjectProperty<>();
-        private ObjectProperty<BigDecimal> total_with_rate = new SimpleObjectProperty<>();
-
-        private ObjectProperty<BigDecimal> rebate = new SimpleObjectProperty<>();
         private ObjectProperty<BigDecimal> total_rebate = new SimpleObjectProperty<>();
-        private ObjectProperty<BigDecimal> delifee = new SimpleObjectProperty<>();
 
-        Item(DeliveryItemModel m) {
+        Item(OrderItemModel m) {
             super(m);
         }
 
@@ -253,18 +215,6 @@ public class PrintMonCustRateController extends PrintTemplate<List<DeliveryModel
             return tab_date;
         }
 
-        public BigDecimal getRebate() {
-            return rebate.get();
-        }
-
-        public ObjectProperty<BigDecimal> rebateProperty() {
-            return rebate;
-        }
-
-        public void setRebate(BigDecimal rebate) {
-            this.rebate.set(rebate);
-        }
-
         public BigDecimal getTotal_rebate() {
             return total_rebate.get();
         }
@@ -277,18 +227,6 @@ public class PrintMonCustRateController extends PrintTemplate<List<DeliveryModel
             this.total_rebate.set(total_rebate);
         }
 
-        public BigDecimal getDelifee() {
-            return delifee.get();
-        }
-
-        public ObjectProperty<BigDecimal> delifeeProperty() {
-            return delifee;
-        }
-
-        public void setDelifee(BigDecimal delifee) {
-            this.delifee.set(delifee);
-        }
-
         public BigDecimal getTab_total() {
             return tab_total.get();
         }
@@ -299,66 +237,6 @@ public class PrintMonCustRateController extends PrintTemplate<List<DeliveryModel
 
         public void setTab_total(BigDecimal tab_total) {
             this.tab_total.set(tab_total);
-        }
-
-        public BigDecimal getRate() {
-            return rate.get();
-        }
-
-        public ObjectProperty<BigDecimal> rateProperty() {
-            return rate;
-        }
-
-        public void setRate(BigDecimal rate) {
-            this.rate.set(rate);
-        }
-
-        public BigDecimal getRate_total() {
-            return rate_total.get();
-        }
-
-        public ObjectProperty<BigDecimal> rate_totalProperty() {
-            return rate_total;
-        }
-
-        public void setRate_total(BigDecimal rate_total) {
-            this.rate_total.set(rate_total);
-        }
-
-        public BigDecimal getTotal_with_rate() {
-            return total_with_rate.get();
-        }
-
-        public ObjectProperty<BigDecimal> total_with_rateProperty() {
-            return total_with_rate;
-        }
-
-        public void setTotal_with_rate(BigDecimal total_with_rate) {
-            this.total_with_rate.set(total_with_rate);
-        }
-
-        public BigDecimal getRateTotal(){
-            try {
-                return getRate().multiply(getTotal());
-            } catch (Exception e) {
-                return new BigDecimal(0);
-            }
-        }
-
-        public BigDecimal getTotalWithRate(){
-            try {
-                return getRateTotal().add(getTotal());
-            } catch (Exception e) {
-                return new BigDecimal(0);
-            }
-        }
-
-        public BigDecimal getRebateTotal() {
-            try {
-                return getRebate().multiply(getNum());
-            } catch (Exception e) {
-                return new BigDecimal(0);
-            }
         }
     }
 }

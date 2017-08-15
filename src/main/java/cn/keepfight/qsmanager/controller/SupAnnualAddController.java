@@ -64,16 +64,7 @@ public class SupAnnualAddController implements DialogContent<SupAnnualMonModel>,
         FXUtils.limitNum(paytotal, 10, 5, true);
         FXUtils.limitNum(billtotal, 10, 5, true);
 
-        InvalidationListener handler = (x) -> {
-            try {
-                ratetotal.setText(new BigDecimal(rate.getText()).multiply(new BigDecimal(billtotal.getText())).toString());
-            }catch (Exception e){
-                ratetotal.setText("0");
-            }
-        };
-
-        rate.focusedProperty().addListener(handler);
-        billtotal.focusedProperty().addListener(handler);
+        FXWidgetUtil.simpleBiMultiply(ratetotal, rate, billtotal);
     }
 
     @Override
@@ -106,25 +97,17 @@ public class SupAnnualAddController implements DialogContent<SupAnnualMonModel>,
     public void fill(SupAnnualMonModel model) {
         this.model = model;
         mon.setText(model.getMon().toString() + "月");
-        if (!model.getTotalStr().equals("")){
-            total.setText(model.getTotalStr());
-        }
+        total.setText(FXUtils.decimalStr(model.getTotal()));
         billunit.setText(model.getBillunit());
         billdate.setValue(FXUtils.stampToLocalDate(model.getBilldate()));
-        if (!model.getBilltotalStr().equals("")) {
-            billtotal.setText(model.getBilltotalStr());
-        }
-        if (!model.getRateStr().equals("")) {
-            rate.setText(model.getRateStr());
-        }
+        billtotal.setText(FXUtils.decimalStr(model.getBilltotal()));
+        rate.setText(FXUtils.decimalStr(model.getRate()));
 
         remitunit.setText(model.getRemitunit());
         pattern.setText(model.getPattern());
         remitdate.setValue(FXUtils.stampToLocalDate(model.getRemitdate()));
 
-        if (!model.getPaytotalStr().equals("")) {
-            paytotal.setText(model.getPaytotalStr());
-        }
+        paytotal.setText(FXUtils.decimalStr(model.getPaytotal()));
         note.setText(model.getNote());
     }
 

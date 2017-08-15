@@ -18,7 +18,7 @@ import javafx.util.StringConverter;
 import java.math.BigDecimal;
 
 /**
- * 新增原料界面控制器
+ * 新增送货明细界面控制器
  * Created by tom on 2017/6/7.
  */
 public class ReceiptItemAddController implements DialogContent<ReceiptDetailModel> {
@@ -68,7 +68,7 @@ public class ReceiptItemAddController implements DialogContent<ReceiptDetailMode
             serial.setText(model.getSerial());
             name.setText(model.getName());
             unit.setText(model.getUnit());
-            price.setText(model.getPrice().toString());
+            price.setText(FXUtils.decimalStr(model.getPrice()));
             color.setText(model.getColor());
             spec.setText(model.getSpec());
         });
@@ -107,10 +107,10 @@ public class ReceiptItemAddController implements DialogContent<ReceiptDetailMode
         serial.setText(detailModel.getSerial());
         name.setText(detailModel.getName());
         unit.setText(detailModel.getUnit());
-        price.setText(detailModel.getPrice().toString());
+        price.setText(FXUtils.decimalStr(detailModel.getPrice()));
         color.setText(detailModel.getColor());
         spec.setText(detailModel.getSpec());
-        num.setText(detailModel.getNum().toString());
+        num.setText(FXUtils.decimalStr(detailModel.getNum()));
 
         Platform.runLater(()->{
             for (MaterialModel model : serial_c.getItems()) {

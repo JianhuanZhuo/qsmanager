@@ -1,4 +1,4 @@
-package cn.keepfight.qsmanager.controller;
+package cn.keepfight.qsmanager.print;
 
 /**
  * 打印源

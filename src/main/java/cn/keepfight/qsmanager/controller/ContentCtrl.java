@@ -22,4 +22,14 @@ public interface ContentCtrl {
 
 
     default<T> void updateState(T s){}
+
+    default void refresh(){}
+
+    /**
+     * 配置面板功能
+     * @param x 方案编号
+     */
+    default void config(int x){
+        
+    }
 }

@@ -3,7 +3,9 @@ package cn.keepfight.qsmanager.model;
 import cn.keepfight.utils.FXUtils;
 import javafx.beans.binding.ObjectBinding;
 import javafx.beans.property.*;
+import org.apache.commons.beanutils.BeanUtils;
 
+import java.lang.reflect.InvocationTargetException;
 import java.math.BigDecimal;
 
 /**
@@ -24,6 +26,7 @@ public class OrderItemModel implements ModelFull<ProductModel> {
     private ObjectProperty<BigDecimal> price = new SimpleObjectProperty<>();
     private StringProperty picurl = new SimpleStringProperty();
     private StringProperty unit = new SimpleStringProperty();
+    private StringProperty note = new SimpleStringProperty();
 
 
     private ObjectProperty<BigDecimal> num = new SimpleObjectProperty<>(new BigDecimal(0));
@@ -47,6 +50,13 @@ public class OrderItemModel implements ModelFull<ProductModel> {
     public OrderItemModel(){}
     public OrderItemModel(ProductModel model){
         set(model);
+    }
+    public OrderItemModel(OrderItemModel model){
+        try {
+            BeanUtils.copyProperties(this, model);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -232,6 +242,18 @@ public class OrderItemModel implements ModelFull<ProductModel> {
 
     public void setPack(long pack) {
         this.pack.set(pack);
+    }
+
+    public String getNote() {
+        return note.get();
+    }
+
+    public StringProperty noteProperty() {
+        return note;
+    }
+
+    public void setNote(String note) {
+        this.note.set(note);
     }
 
     public BigDecimal getTakeTotal(){

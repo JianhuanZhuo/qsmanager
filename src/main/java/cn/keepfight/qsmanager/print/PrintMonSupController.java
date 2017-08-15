@@ -1,11 +1,13 @@
-package cn.keepfight.qsmanager.controller;
+package cn.keepfight.qsmanager.print;
 
 import cn.keepfight.qsmanager.QSApp;
-import cn.keepfight.qsmanager.model.*;
+import cn.keepfight.qsmanager.model.CustomModel;
+import cn.keepfight.qsmanager.model.ReceiptDetailModel;
+import cn.keepfight.qsmanager.model.ReceiptModelFull;
+import cn.keepfight.qsmanager.model.SupplyModel;
 import cn.keepfight.utils.FXUtils;
 import cn.keepfight.utils.FXWidgetUtil;
 import javafx.beans.binding.Bindings;
-import javafx.beans.binding.IntegerBinding;
 import javafx.beans.property.*;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
@@ -22,7 +24,6 @@ import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 
 /**
  * 送货单表格打印控制器
@@ -57,12 +58,9 @@ public class PrintMonSupController extends PrintTemplate<List<ReceiptModelFull>>
     public Label resp_year;
     public Label resp_date;
 
-    private int currentPage = 0;
-
     private static final int SIZE_PER_PAGE = 12;
 
-
-    private List<Item> items;
+    private Long sid;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -98,7 +96,7 @@ public class PrintMonSupController extends PrintTemplate<List<ReceiptModelFull>>
 
     @Override
     public void fill(List<ReceiptModelFull> datas) {
-        items = datas.stream()
+        List<Item> items = datas.stream()
                 .flatMap(x -> x.getDetailList().stream()
                         .map(m -> new Pair<>(new Pair<>(x.getRdate(), x.getSerial()), m)))
                 .map(x -> {
@@ -110,7 +108,9 @@ public class PrintMonSupController extends PrintTemplate<List<ReceiptModelFull>>
                 .collect(Collectors.toList());
 
 
+        this.sid = null;
         if (!datas.isEmpty()) {
+            this.sid =datas.get(0).getSid();
             // 填充客户信息
             try {
                 SupplyModel s = QSApp.service.getSupplyService().selectByID(datas.get(0).getSid());
@@ -122,6 +122,11 @@ public class PrintMonSupController extends PrintTemplate<List<ReceiptModelFull>>
 
                 // 底部信息
                 resp_name.setText(s.getNamefull());
+
+                // 加载默认记忆选项并添加默认下拉
+                FXWidgetUtil.defaultList(
+                        new Pair<>(addr, "supply.info.addr."+ s.getSerial())
+                );
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -141,26 +146,7 @@ public class PrintMonSupController extends PrintTemplate<List<ReceiptModelFull>>
         total_mon.setText("0");
 
         // 初始化数据显示
-        selectPage(0);
-    }
-
-    @Override
-    public IntegerBinding pageNum() {
-        return FXWidgetUtil.pageNumBind(() -> items, List::size, SIZE_PER_PAGE, table.getItems());
-    }
-
-    @Override
-    public void selectPage(int i) {
-        try {
-            table.getItems().setAll(
-                    items.subList(
-                            i * SIZE_PER_PAGE,
-                            Math.min((i + 1) * SIZE_PER_PAGE, items.size())
-                    )
-            );
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        table.getItems().setAll(items);
     }
 
     @Override
@@ -172,14 +158,31 @@ public class PrintMonSupController extends PrintTemplate<List<ReceiptModelFull>>
 
     @Override
     public void autoCalculate() {
-        table.getItems().forEach(x->{
-            x.setTab_total(x.getTotal());
-        });
+        table.getItems().forEach(x-> x.setTab_total(x.getTotal()));
 
         FXWidgetUtil.compute(table.getItems(),
                 Item::getTotal,
                 total_mon::setText);
     }
+
+    @Override
+    public void printBefore() {
+        // 保存信息
+        try {
+            CustomModel c = QSApp.service.getCustomService().selectAllByID(this.sid );
+            c.setNamefull(name.getText());
+            c.setPhone(phone.getText());
+            c.setAddr(addr.getText());
+            QSApp.service.getCustomService().update(c);
+
+            FXWidgetUtil.addDefaultList(
+                    new Pair<>("supply.info.addr."+c.getSerial(), addr.getText())
+            );
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
 
     private static class Item extends ReceiptDetailModel {
         LongProperty tab_date = new SimpleLongProperty();

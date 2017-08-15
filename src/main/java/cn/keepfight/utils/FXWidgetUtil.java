@@ -1,6 +1,7 @@
 package cn.keepfight.utils;
 
 
+import cn.keepfight.qsmanager.print.PrintDeliveryController;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.beans.Observable;
@@ -8,6 +9,9 @@ import javafx.beans.binding.IntegerBinding;
 import javafx.beans.binding.NumberExpressionBase;
 import javafx.beans.binding.ObjectExpression;
 import javafx.beans.binding.StringBinding;
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
@@ -16,9 +20,11 @@ import javafx.print.Printer;
 import javafx.print.PrinterJob;
 import javafx.scene.Node;
 import javafx.scene.control.*;
+import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.transform.Scale;
 import javafx.util.Duration;
 import javafx.util.Pair;
+import javafx.util.StringConverter;
 
 import java.lang.reflect.Field;
 import java.math.BigDecimal;
@@ -82,7 +88,11 @@ public class FXWidgetUtil {
     public static void defaultList(Pair<TextField, String>... textFieldStringPair) {
         Properties ps = ConfigUtil.load(PROPERTIES_FILE);
         for (Pair<TextField, String> pair : textFieldStringPair) {
-            defaultList(pair.getKey(), Arrays.asList(((String) ps.get(pair.getValue())).split(SPLITER)));
+            try {
+                defaultList(pair.getKey(), Arrays.asList(((String) ps.get(pair.getValue())).split(SPLITER)));
+            }catch (Exception e){
+                // to do nothing
+            }
         }
     }
 
@@ -98,7 +108,13 @@ public class FXWidgetUtil {
             if (p.getValue() == null || p.getValue().trim().equals("")) {
                 continue;
             }
-            List<String> ls = new LinkedList<>(Arrays.asList(((String) ps.get(p.getKey())).split(SPLITER)));
+
+            List<String> ls = new ArrayList<>(7);
+            try {
+                ls.addAll(Arrays.asList(((String) ps.get(p.getKey())).split(SPLITER)));
+            }catch (Exception e){
+                // to do nothing
+            }
             ls.add(0, p.getValue());
             ps.setProperty(p.getKey(), ls.stream()
                     .distinct()
@@ -115,7 +131,7 @@ public class FXWidgetUtil {
 
     public static <T> void compute(List<T> list, Function<T, BigDecimal> toDecimal,
                                Consumer<String> consumer, BinaryOperator<BigDecimal> accumulator){
-        Optional t = list.stream()
+        Optional<BigDecimal> t = list.stream()
                 .map((item)->{
                     try {
                         return toDecimal.apply(item);
@@ -127,7 +143,7 @@ public class FXWidgetUtil {
                 .reduce(accumulator);
         String text = "0";
         if (t.isPresent()) {
-            text = t.get().toString();
+            text = t.get().stripTrailingZeros().toPlainString();
         }
         consumer.accept(text);
     }
@@ -147,21 +163,6 @@ public class FXWidgetUtil {
 
         // 添加监听
         obserList.addListener((ListChangeListener<T>) c -> {
-//                    Optional t = obserList.stream()
-//                            .map((item)->{
-//                                try {
-//                                    return toDecimal.apply(item);
-//                                }catch (Exception e){
-//                                    return null;
-//                                }
-//                            })
-//                            .filter(Objects::nonNull)
-//                            .reduce(accumulator);
-//                    String text = "0";
-//                    if (t.isPresent()) {
-//                        text = t.get().toString();
-//                    }
-//                    consumer.accept(text);
                     compute(obserList, toDecimal, consumer, accumulator);
                 }
         );
@@ -227,7 +228,7 @@ public class FXWidgetUtil {
             @Override
             protected String computeValue() {
                 try {
-                    return oper.apply(new BigDecimal(sa.getText()), new BigDecimal(sb.getText())).toString();
+                    return oper.apply(new BigDecimal(sa.getText()), new BigDecimal(sb.getText())).stripTrailingZeros().toPlainString();
                 } catch (Exception e) {
                     return "0";
                 }
@@ -255,7 +256,7 @@ public class FXWidgetUtil {
                                     new BigDecimal(sa.getText()),
                                     new BigDecimal(sb.getText())),
                            new BigDecimal(sc.getText())
-                    ).toString();
+                    ).stripTrailingZeros().toPlainString();
                 } catch (Exception e) {
                     return "0";
                 }
@@ -263,25 +264,57 @@ public class FXWidgetUtil {
         });
     }
 
+
+    private static<T> void connectHelper(TableColumn<T, String> tab_col, Function<T, String> getStr, String d){
+        tab_col.setCellValueFactory(param -> {
+            String s;
+            try {
+                s = getStr.apply(param.getValue());
+            }catch (Exception e){
+                s = d;
+            }
+            return new SimpleStringProperty(s);
+        });
+    }
+
+    private static<T> void connectHelper(TableColumn<T, String> tab_col, ObservableValue<String> s){
+        tab_col.setCellValueFactory(param -> s);
+    }
+
     /**
      * 以指定的转换方式连接表格列
      */
     public static<T> void connect(TableColumn<T, String> tab_col, Function<T, ObservableValue<String>> x){
         tab_col.setCellValueFactory(param -> x.apply(param.getValue()));
+        connectHelper(tab_col, p->x.apply(p).getValue(), "");
     }
 
     /**
      * 以指定的转换方式连接表格列
      */
     public static<T> void connectNum(TableColumn<T, String> tab_col, Function<T, NumberExpressionBase> x){
-        tab_col.setCellValueFactory(param -> x.apply(param.getValue()).asString());
+        connectHelper(tab_col, p->x.apply(p).asString().get(), "0");
     }
 
     /**
      * 以指定的转换方式连接表格列
      */
     public static<T> void connectObj(TableColumn<T, String> tab_col, Function<T, ObjectExpression> x){
-        tab_col.setCellValueFactory(param ->x.apply(param.getValue()).asString());
+        connectHelper(tab_col, p->x.apply(p).asString().get(), "");
+    }
+
+    /**
+     * 以指定的转换方式连接表格列
+     */
+    public static<T> void connectDecimal(TableColumn<T, String> tab_col, Function<T, BigDecimal> x){
+        connectHelper(tab_col, p->x.apply(p).stripTrailingZeros().toPlainString(), "0");
+    }
+
+    /**
+     * 以指定的转换方式连接表格列
+     */
+    public static<T> void connectDecimalObj(TableColumn<T, String> tab_col, Function<T, ObjectProperty<BigDecimal>> x){
+        tab_col.setCellValueFactory(param -> new SimpleStringProperty(x.apply(param.getValue()).get().stripTrailingZeros().toPlainString()));
     }
 
 
@@ -385,5 +418,48 @@ public class FXWidgetUtil {
                 }
             }
         };
+    }
+
+    @SafeVarargs
+    public static<T> void cellStr(TableColumn<T, String>... cs){
+        for (TableColumn<T, String> c : cs) {
+            c.setCellFactory(TextFieldTableCell.forTableColumn());
+        }
+    }
+
+    @SafeVarargs
+    public static<T> void cellDecimal(StringConverter<BigDecimal> converter, TableColumn<T, BigDecimal>... cs){
+        for (TableColumn<T, BigDecimal> c : cs) {
+            c.setCellFactory(TextFieldTableCell.forTableColumn(converter));
+        }
+    }
+
+    @SafeVarargs
+    public static<T> void cellDecimal(TableColumn<T, BigDecimal>... cs){
+        cellDecimal(FXUtils.decimalConverter("0"), cs);
+    }
+
+    @SafeVarargs
+    public static<T> void cellInteger(StringConverter<Integer> converter, TableColumn<T, Integer>... cs){
+        for (TableColumn<T, Integer> c : cs) {
+            c.setCellFactory(TextFieldTableCell.forTableColumn(converter));
+        }
+    }
+
+    @SafeVarargs
+    public static<T> void cellInteger(TableColumn<T, Integer>... cs){
+
+    }
+
+    @SafeVarargs
+    public static<T> void cellLong(StringConverter<Long> converter, TableColumn<T, Long>... cs){
+        for (TableColumn<T, Long> c : cs) {
+            c.setCellFactory(TextFieldTableCell.forTableColumn(converter));
+        }
+    }
+
+    @SafeVarargs
+    public static<T> void cellLong(TableColumn<T, Long>... cs){
+        cellLong(FXUtils.longConverter("0"), cs);
     }
 }
