@@ -1,10 +1,12 @@
 package cn.keepfight.qsmanager;
 
 import cn.keepfight.qsmanager.controller.ContentCtrl;
+import cn.keepfight.qsmanager.controller.OrderPaneController;
 import cn.keepfight.utils.ViewPathUtil;
 import javafx.application.Platform;
 
 import java.io.IOException;
+import java.util.Properties;
 
 /**
  * 菜单列表
@@ -26,12 +28,24 @@ public enum MenuList {
     String image;
     String english;
     String title;
+    Properties ps;
 
     MenuList(String title) {
         view = name().toLowerCase() + ".fxml";
         image = "menu-" + name().toLowerCase() + ".png";
         english = name().toLowerCase() + " manage";
         this.title = title;
+        ps = new Properties();
+
+        // 这是一场意外
+        if (name().toLowerCase().equals("income")){
+            view="income_manager.fxml";
+        }else if(name().toLowerCase().equals("outcome")){
+            view="outcome_manager.fxml";
+        }else if(name().toLowerCase().equals("orders")){
+            view="order_pane.fxml";
+            ps.put("mode", OrderPaneController.USING_IN_ORDERS);
+        }
     }
 
     private static boolean loaded = false;
@@ -71,5 +85,9 @@ public enum MenuList {
 
     public String getName(){
         return name();
+    }
+
+    public Properties getPs() {
+        return ps;
     }
 }

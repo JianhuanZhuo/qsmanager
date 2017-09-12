@@ -149,19 +149,6 @@ public class PrintDeliveryController extends PrintTemplate<OrderModelFull> imple
 
     @Override
     public void cancel() {
-        System.out.println("cancel!");
-        if (datas.isBuilding()){
-            System.out.println("cancel2!");
-            if (table.getItems().filtered(item->item.nameItem.get()!=null && !item.nameItem.get().trim().equals("")).isEmpty()){
-                System.out.println("cance3!");
-                try {
-                    QSApp.service.getOrderService().delete(datas.get());
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    // 无法删除则后面让人手动删除即可
-                }
-            }
-        }
     }
 
     @Override
@@ -212,7 +199,6 @@ public class PrintDeliveryController extends PrintTemplate<OrderModelFull> imple
 
     @Override
     public void printAfter() {
-        if (datas.isBuilding()){
         // 填充
         List<OrderItemModel> is = table.getItems()
                 .stream()
@@ -221,14 +207,11 @@ public class PrintDeliveryController extends PrintTemplate<OrderModelFull> imple
         datas.setOrderItemModels(is);
         try {
             QSApp.service.getOrderService().update(datas);
-            // 修改为 false
-            datas.setBuilding(false);
         } catch (Exception e) {
             e.printStackTrace();
             // @TODO 如果这里挂了该怎么破？
         }
     }
-}
 
     private class Item extends OrderItemModel {
         Item(){}

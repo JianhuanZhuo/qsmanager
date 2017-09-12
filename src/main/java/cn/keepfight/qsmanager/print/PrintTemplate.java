@@ -12,11 +12,6 @@ import javafx.scene.Node;
 public abstract class PrintTemplate<T> {
 
     /**
-     * 当前页面索引
-     */
-    private IntegerProperty pageNow = new SimpleIntegerProperty(0);
-
-    /**
      * 获取内容界面根目录，用于展示面板填充
      */
     abstract public Node getRoot();

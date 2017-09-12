@@ -83,7 +83,6 @@ public class OrderAddController implements DialogContent<OrderModelFull> {
     @FXML
     private Label s_total;
 
-
     public static final String NO_SERIAL = "订单号待生成";
     // 子界面
     private OrderItemAddController addController;

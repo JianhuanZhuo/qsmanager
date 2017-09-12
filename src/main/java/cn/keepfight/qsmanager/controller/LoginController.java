@@ -4,6 +4,7 @@ import cn.keepfight.qsmanager.QSApp;
 import cn.keepfight.qsmanager.model.CustomModel;
 import cn.keepfight.qsmanager.service.LoginService;
 import cn.keepfight.utils.*;
+import javafx.beans.binding.StringBinding;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.*;
@@ -13,6 +14,7 @@ import javafx.scene.layout.VBox;
 
 import java.io.IOException;
 import java.util.Optional;
+import java.util.Properties;
 
 /**
  * 系统登录面板
@@ -64,7 +66,24 @@ public class LoginController implements ContentCtrl {
     }
 
     @Override
-    public void showed() {
+    public void showed(Properties params) {
+
+    }
+
+    @Override
+    public StringBinding getTitle() {
+        return new StringBinding() {
+            @Override
+            protected String computeValue() {
+                return "登录界面";
+            }
+        };
+    }
+
+    @Override
+    public boolean transparentBackground() {
+        // 使用透明模式的页面
+        return true;
     }
 
     void loginOut() {

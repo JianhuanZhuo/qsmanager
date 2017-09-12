@@ -166,7 +166,7 @@ public class PrintAnliController extends PrintTemplate<OrderModelFull> implement
                 new Pair<>(item_num3, "prefer.delivery.anli.num")
         );
 
-        List<OrderItemModel> os = deliveryItemModels.stream().filter(x->x.getName().equals("不锈钢软丝刷")).limit(3).collect(Collectors.toList());
+        List<OrderItemModel> os = deliveryItemModels.stream().filter(x -> x.getName().equals("不锈钢软丝刷")).limit(3).collect(Collectors.toList());
         for (int i = 0; i < os.size(); i++) {
             OrderItemModel x = os.get(i);
             names.get(i).getSelectionModel().select(x.getName());
@@ -180,68 +180,47 @@ public class PrintAnliController extends PrintTemplate<OrderModelFull> implement
 
     @Override
     public void cancel() {
-        System.out.println("cancel!");
-        if (datas.isBuilding()){
-            System.out.println("cancel2!");
-            try {
-                for (int i = 0; i <3; i++) {
-                    if (names.get(i).getSelectionModel().getSelectedItem()!=null){
-                        throw new Exception("");
-                    }
-                }
-                try {
-                    QSApp.service.getOrderService().delete(datas.get());
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    // 无法删除则后面让人手动删除即可
-                }
-            }catch (Exception e){
-                // to do nothing
-            }
-        }
     }
 
     @Override
     public void printBefore() {
-        if (!datas.isDeli()){
+        if (!datas.isDeli()) {
             System.out.println("!datas.isDeli()");
             try {
                 QSApp.service.getOrderService().deliOrder(datas.getId());
                 datas.setDeli(true);
             } catch (Exception e) {
                 // @TODO 这里的话，nothing to do
+                e.printStackTrace();
             }
         }
     }
 
     @Override
     public void printAfter() {
-        if (datas.isBuilding()) {
-            // 填充
-            List<OrderItemModel> is  = new ArrayList<>(3);
-            for (int i = 0; i < 3; i++) {
-                if (names.get(i).getSelectionModel().getSelectedItem()!=null){
-                    OrderItemModel model = new OrderItemModel();
-                    model.setName(names.get(i).getValue());
-                    model.setUnit(units.get(i).getText());
-                    model.setDetail(details.get(i).getText());
-                    model.setPrice(new BigDecimal(0));
-                    model.setNum(new BigDecimal(anliPacks.get(i).get().count()));
-                    model.setPack(1);
-                    model.setPackDefault(1);
-                    model.setSerial(serials.get(i).getText());
-                    is.add(model);
-                }
+        // 填充
+        List<OrderItemModel> is = new ArrayList<>(3);
+        for (int i = 0; i < 3; i++) {
+            if (names.get(i).getSelectionModel().getSelectedItem() != null) {
+                OrderItemModel model = new OrderItemModel();
+                model.setName(names.get(i).getValue());
+                model.setUnit(units.get(i).getText());
+                model.setDetail(details.get(i).getText());
+                model.setPrice(new BigDecimal(0));
+                model.setNum(new BigDecimal(anliPacks.get(i).get().count()));
+                model.setPack(1);
+                model.setPackDefault(1);
+                model.setSerial(serials.get(i).getText());
+                is.add(model);
             }
-            datas.setOrderItemModels(is);
-            try {
-                QSApp.service.getOrderService().update(datas);
-                // 修改为 false
-                datas.setBuilding(false);
-            } catch (Exception e) {
-                e.printStackTrace();
-                // @TODO 如果这里挂了该怎么破？
-            }
+        }
+        datas.setOrderItemModels(is);
+        try {
+            // 修改为 false
+            QSApp.service.getOrderService().update(datas);
+        } catch (Exception e) {
+            e.printStackTrace();
+            // @TODO 如果这里挂了该怎么破？
         }
         // 记忆序列号
         FXWidgetUtil.addDefaultList(
@@ -266,7 +245,7 @@ public class PrintAnliController extends PrintTemplate<OrderModelFull> implement
     @Override
     public void autoCalculate() {
         int total = 0;
-        for (int i = 0; i <3; i++) {
+        for (int i = 0; i < 3; i++) {
             try {
                 total += anliPacks.get(i).get().count();
             } catch (Exception e) {
@@ -275,9 +254,9 @@ public class PrintAnliController extends PrintTemplate<OrderModelFull> implement
         }
         total_all.setText("" + total);
     }
-    
-    private void clear(){
-        for (int i = 0; i <3; i++) {
+
+    private void clear() {
+        for (int i = 0; i < 3; i++) {
             names.get(i).getSelectionModel().select(null);
             serials.get(i).setText("");
             packs.get(i).setText("");

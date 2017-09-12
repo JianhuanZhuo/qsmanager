@@ -5,11 +5,9 @@ import cn.keepfight.qsmanager.model.*;
 import cn.keepfight.qsmanager.print.PrintSelection;
 import cn.keepfight.qsmanager.print.PrintSource;
 import cn.keepfight.qsmanager.print.QSPrintType;
-import cn.keepfight.utils.CustomDialog;
-import cn.keepfight.utils.FXUtils;
-import cn.keepfight.utils.ViewPathUtil;
-import cn.keepfight.utils.WarningBuilder;
+import cn.keepfight.utils.*;
 import javafx.application.Platform;
+import javafx.beans.binding.StringBinding;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -17,6 +15,7 @@ import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
+import javafx.util.Pair;
 
 import java.io.IOException;
 import java.net.URL;
@@ -51,10 +50,10 @@ public class OrderPaneController implements ContentCtrl, Initializable{
     private ListView<OrderModelFull> orderList;
 
 
-    private OrderAddController orderAddController;
+//    private OrderAddController orderAddController;
 
-    public final static int USING_IN_ORDERS = 1;
-    public final static int USING_IN_INCOME = 2;
+    public final static String USING_IN_ORDERS = "USING_IN_ORDERS";
+    public final static String USING_IN_INCOME = "USING_IN_INCOME";
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -73,7 +72,6 @@ public class OrderPaneController implements ContentCtrl, Initializable{
         day_sel.getItems().add(null);
 
         load.setOnAction(e-> loadOrders());
-
     }
 
     @Override
@@ -84,23 +82,19 @@ public class OrderPaneController implements ContentCtrl, Initializable{
     @Override
     public void loaded() {
         loadSelection();
-        Platform.runLater(() -> {
-            try {
-                orderAddController = ViewPathUtil.loadViewForController("order_add.fxml");
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        });
+//        Platform.runLater(() -> {
+//            try {
+//                orderAddController = ViewPathUtil.loadViewForController("order_add.fxml");
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            }
+//        });
     }
 
     @Override
-    public void showed() {
-
-    }
-
-    @Override
-    public void config(int x) {
-        if (x==USING_IN_ORDERS){
+    public void showed(Properties params) {
+        String mode = params.getProperty("mode");
+        if (USING_IN_ORDERS.equals(mode)){
             label.setText("(下单请先选择客户)");
             add_order.setText("我要下单");
             add_order.disableProperty().bind(cust_sel.getSelectionModel().selectedItemProperty().isNull());
@@ -109,7 +103,6 @@ public class OrderPaneController implements ContentCtrl, Initializable{
                 OrderModelFull orderModel = new OrderModelFull();
                 orderModel.setCid(cust_sel.getSelectionModel().getSelectedItem().getId());
                 orderModel.setOrderdate(System.currentTimeMillis());
-                orderModel.setBuilding(true);
                 // 插入
                 try {
                     QSApp.service.getOrderService().insert(orderModel);
@@ -124,15 +117,18 @@ public class OrderPaneController implements ContentCtrl, Initializable{
                 source.setYear((long) localDate.getYear());
                 source.setMonth((long) localDate.getMonthValue());
                 source.setItem(orderModel.getId());
+                QSPrintType t;
                 if (cust_sel.getSelectionModel().getSelectedItem().getName()!=null
-                 && cust_sel.getSelectionModel().getSelectedItem().getName().contains("安利")){
-                    QSApp.service.getPrintService().build(new PrintSelection(QSPrintType.DELIVERY_ANLI, source));
+                        && cust_sel.getSelectionModel().getSelectedItem().getName().contains("安利")){
+                    t = QSPrintType.DELIVERY_ANLI;
                 }else {
-                    QSApp.service.getPrintService().build(new PrintSelection(QSPrintType.DELIVERY, source));
+                    t = QSPrintType.DELIVERY;
+//                    QSApp.service.getPrintService().build(new PrintSelection(QSPrintType.DELIVERY, source));
                 }
-                loadOrders();
+                QSApp.mainPane.changeTo(MainPaneList.PRINT_MANAGER, FXUtils.ps(new Pair<>("selection", new PrintSelection(t, source))));
+//                loadOrders();
             });
-        }else if (x==USING_IN_INCOME){
+        }else if (USING_IN_INCOME.equals(mode)){
             label.setText("(月账请先选择客户、年份和月份)");
             add_order.setText("打印月账");
             add_order.disableProperty().bind(cust_sel.getSelectionModel().selectedItemProperty().isNull()
@@ -149,19 +145,24 @@ public class OrderPaneController implements ContentCtrl, Initializable{
         }
     }
 
-    void updateOrder(OrderModelFull modelFull) {
-        Optional<OrderModelFull> op = CustomDialog.gen().build(orderAddController, modelFull);
-        op.ifPresent(model -> {
-            try {
-                model.setId(modelFull.getId());
-                QSApp.service.getOrderService().update(model);
-                loadOrders();
-            } catch (Exception e1) {
-                e1.printStackTrace();
-                WarningBuilder.build("新增供应送货失败", "新增供应送货失败，请检查网络是否通畅");
-            }
-        });
+    @Override
+    public StringBinding getTitle() {
+        return FXWidgetUtil.sBinding("订单列表");
     }
+
+//    void updateOrder(OrderModelFull modelFull) {
+//        Optional<OrderModelFull> op = CustomDialog.gen().build(orderAddController, modelFull);
+//        op.ifPresent(model -> {
+//            try {
+//                model.setId(modelFull.getId());
+//                QSApp.service.getOrderService().update(model);
+//                loadOrders();
+//            } catch (Exception e1) {
+//                e1.printStackTrace();
+//                WarningBuilder.build("新增供应送货失败", "新增供应送货失败，请检查网络是否通畅");
+//            }
+//        });
+//    }
 
 
     /**

@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+
+<HBox fx:id="root" alignment="TOP_CENTER" styleClass="content-pane" stylesheets="@css/common.css, @css/pay.css"
+      xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="cn.keepfight.qsmanager.controller.PayTakeController">
+    <VBox>
+        <HBox styleClass="hbox-common">
+            <RadioButton text="当月收入预算"/>
+            <Pane HBox.hgrow="ALWAYS"/>
+            <CheckBox text="将之前拖欠的账目加入到这个月的收入中"/>
+        </HBox>
+        <HBox styleClass="hbox-common">
+            <RadioButton text="其他月份"/>
+            <HBox styleClass="hbox-common">
+                <TextField prefWidth="80.0"/>
+                <Label text="年"/>
+                <ChoiceBox prefWidth="54.0"/>
+            </HBox>
+            <Pane HBox.hgrow="ALWAYS"/>
+        </HBox>
+        <HBox>
+            <VBox styleClass="jh-box, pay-box-line, pay-box-custome">
+                <Label text="客户"/>
+            </VBox>
+            <Pane>
+                <Label styleClass="jh-box, pay-box-line, pay-box-detail" text="收入预算明细"/>
+            </Pane>
+            <VBox styleClass="jh-box, pay-box-line, pay-box-predict">
+                <Label text="收入预算总计"/>
+            </VBox>
+            <VBox styleClass="jh-box, pay-box-line, pay-box-sum">
+                <Label text="已收金额总计"/>
+            </VBox>
+        </HBox>
+        <VBox>
+            <HBox>
+                <VBox styleClass="jh-box, pay-box-line, pay-box-custome">
+                    <Label text="安利"/>
+                </VBox>
+                <VBox>
+                    <HBox styleClass="hbox-common, jh-box, pay-box-line, pay-box-detail">
+                        <Button styleClass="btnable">
+                            <graphic>
+                                <ImageView fitHeight="16.0" fitWidth="16.0">
+                                    <Image url="@img/select_checkbox_pre.png"/>
+                                </ImageView>
+                            </graphic>
+                        </Button>
+                        <Label styleClass="pay-item-detail" text="2017年7月/￥2000.00"/>
+                        <Label styleClass="pay-item-spot, primary" text="部分"/>
+                    </HBox>
+                    <HBox styleClass="hbox-common, jh-box, pay-box-line, pay-box-detail">
+                        <Button styleClass="btnable">
+                            <graphic>
+                                <ImageView fitHeight="16.0" fitWidth="16.0">
+                                    <Image url="@img/select_checkbox_pre.png"/>
+                                </ImageView>
+                            </graphic>
+                        </Button>
+                        <Label styleClass="pay-item-detail" text="2017年7月/￥2000.00"/>
+                        <Label styleClass="pay-item-spot, warning" text="拖欠"/>
+                    </HBox>
+                    <HBox styleClass="hbox-common, jh-box, pay-box-line, pay-box-detail">
+                        <Button styleClass="btnable">
+                            <graphic>
+                                <ImageView fitHeight="16.0" fitWidth="16.0">
+                                    <Image url="@img/select_checkbox_pre.png"/>
+                                </ImageView>
+                            </graphic>
+                        </Button>
+                        <Label styleClass="pay-item-detail" text="2017年7月/￥2000.00"/>
+                        <Label styleClass="pay-item-spot, fail" text="过期"/>
+                    </HBox>
+                </VBox>
+                <VBox styleClass="jh-box, pay-box-line, pay-box-predict">
+                    <Label text="￥3500"/>
+                </VBox>
+                <VBox styleClass="jh-box, pay-box-line, pay-box-sum">
+                    <Label text="￥3500"/>
+                </VBox>
+            </HBox>
+            <HBox>
+                <VBox styleClass="jh-box, pay-box-line, pay-box-custome">
+                    <Label text="安利"/>
+                </VBox>
+                <VBox>
+                    <HBox styleClass="hbox-common, jh-box, pay-box-line, pay-box-detail">
+                        <Button styleClass="btnable">
+                            <graphic>
+                                <ImageView fitHeight="16.0" fitWidth="16.0">
+                                    <Image url="@img/select_checkbox_pre.png"/>
+                                </ImageView>
+                            </graphic>
+                        </Button>
+                        <Label styleClass="pay-item-detail" text="2017年7月/￥2000.00"/>
+                        <Label styleClass="pay-item-spot, primary" text="部分"/>
+                    </HBox>
+                    <HBox styleClass="hbox-common, jh-box, pay-box-line, pay-box-detail">
+                        <Button styleClass="btnable">
+                            <graphic>
+                                <ImageView fitHeight="16.0" fitWidth="16.0">
+                                    <Image url="@img/select_checkbox_pre.png"/>
+                                </ImageView>
+                            </graphic>
+                        </Button>
+                        <Label styleClass="pay-item-detail" text="2017年7月/￥2000.00"/>
+                        <Label styleClass="pay-item-spot, warning" text="拖欠"/>
+                    </HBox>
+                    <HBox styleClass="hbox-common, jh-box, pay-box-line, pay-box-detail">
+                        <Button styleClass="btnable">
+                            <graphic>
+                                <ImageView fitHeight="16.0" fitWidth="16.0">
+                                    <Image url="@img/select_checkbox_pre.png"/>
+                                </ImageView>
+                            </graphic>
+                        </Button>
+                        <Label styleClass="pay-item-detail" text="2017年7月/￥2000.00"/>
+                        <Label styleClass="pay-item-spot, fail" text="过期"/>
+                    </HBox>
+                </VBox>
+                <VBox styleClass="jh-box, pay-box-line, pay-box-predict">
+                    <Label text="￥3500"/>
+                </VBox>
+                <VBox styleClass="jh-box, pay-box-line, pay-box-sum">
+                    <Label text="￥3500"/>
+                </VBox>
+            </HBox>
+            <HBox>
+                <VBox styleClass="jh-box, pay-box-line, pay-box-custome">
+                    <Label text="安利"/>
+                </VBox>
+                <VBox>
+                    <HBox styleClass="hbox-common, jh-box, pay-box-line, pay-box-detail">
+                        <Button styleClass="btnable">
+                            <graphic>
+                                <ImageView fitHeight="16.0" fitWidth="16.0">
+                                    <Image url="@img/select_checkbox_pre.png"/>
+                                </ImageView>
+                            </graphic>
+                        </Button>
+                        <Label styleClass="pay-item-detail" text="2017年7月/￥2000.00"/>
+                        <Label styleClass="pay-item-spot, primary" text="部分"/>
+                    </HBox>
+                    <HBox styleClass="hbox-common, jh-box, pay-box-line, pay-box-detail">
+                        <Button styleClass="btnable">
+                            <graphic>
+                                <ImageView fitHeight="16.0" fitWidth="16.0">
+                                    <Image url="@img/select_checkbox_pre.png"/>
+                                </ImageView>
+                            </graphic>
+                        </Button>
+                        <Label styleClass="pay-item-detail" text="2017年7月/￥2000.00"/>
+                        <Label styleClass="pay-item-spot, warning" text="拖欠"/>
+                    </HBox>
+                    <HBox styleClass="hbox-common, jh-box, pay-box-line, pay-box-detail">
+                        <Button styleClass="btnable">
+                            <graphic>
+                                <ImageView fitHeight="16.0" fitWidth="16.0">
+                                    <Image url="@img/select_checkbox_pre.png"/>
+                                </ImageView>
+                            </graphic>
+                        </Button>
+                        <Label styleClass="pay-item-detail" text="2017年7月/￥2000.00"/>
+                        <Label styleClass="pay-item-spot, fail" text="过期"/>
+                    </HBox>
+                </VBox>
+                <VBox styleClass="jh-box, pay-box-line, pay-box-predict">
+                    <Label text="￥3500"/>
+                </VBox>
+                <VBox styleClass="jh-box, pay-box-line, pay-box-sum">
+                    <Label text="￥3500"/>
+                </VBox>
+            </HBox>
+        </VBox>
+    </VBox>
+</HBox>

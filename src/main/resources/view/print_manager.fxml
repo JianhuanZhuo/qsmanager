@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<VBox styleClass="title-pane, vbox-common"
+      prefHeight="600.0" prefWidth="800.0"
+      fx:id="root"
+      stylesheets="@css/print.css,@css/common.css"
+      xmlns="http://javafx.com/javafx/8.0.111"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="cn.keepfight.qsmanager.print.PrintManagerController">
+    <HBox styleClass="hbox-common">
+        <Label text="选择打印机："/>
+        <ChoiceBox fx:id="print_sel" prefWidth="180" />
+        <Label text="打印件类型："/>
+        <ChoiceBox fx:id="type_sel" prefWidth="180"/>
+        <Pane HBox.hgrow="ALWAYS"/>
+        <Label text="填表格时双击编辑后按回车输入"/>
+    </HBox>
+    <Separator/>
+    <ScrollPane fx:id="printScrollPane" hbarPolicy="ALWAYS" vbarPolicy="ALWAYS" VBox.vgrow="ALWAYS">
+        <!--<fx:include fx:id="print_pane" source="print_delivery.fxml"/>-->
+    </ScrollPane>
+    <HBox styleClass="hbox-common">
+        <Label fx:id="printHit" styleClass="print_hit" HBox.hgrow="ALWAYS" text="打印不兼容！"/>
+        <Pane HBox.hgrow="ALWAYS"/>
+        <Button fx:id="action" text="执行打印"/>
+        <Button fx:id="compute" text="自动计算"/>
+    </HBox>
+</VBox>

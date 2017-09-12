@@ -4,7 +4,10 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
@@ -16,9 +19,6 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<?import javafx.scene.control.ScrollPane?>
-<?import javafx.scene.control.TableView?>
-<?import javafx.scene.control.TableColumn?>
 <HBox fx:id="root" styleClass="content-pane,hbox-spacing" stylesheets="@css/common.css"
       xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1"
       fx:controller="cn.keepfight.qsmanager.controller.CustomController">
@@ -43,54 +43,77 @@
         <ListView fx:id="custList" VBox.vgrow="ALWAYS"/>
     </VBox>
     <Separator orientation="VERTICAL"/>
-    <VBox fx:id="infoPane" styleClass="vbox-spacing" HBox.hgrow="ALWAYS">
-        <VBox styleClass="title-pane,spacing-content">
-            <HBox styleClass="title-line">
-                <Label text="客户基本信息"/>
-                <Pane HBox.hgrow="ALWAYS"/>
-                <Button fx:id="saveInfo" styleClass="btnable" text="保存">
-                    <graphic>
-                        <ImageView styleClass="image-button">
-                            <Image url="@img/save.png"/>
-                        </ImageView>
-                    </graphic>
-                </Button>
-            </HBox>
-            <GridPane styleClass="infogp">
-                <Label text="客户全称："/>
-                <TextField fx:id="info_namefull" GridPane.columnIndex="1" GridPane.columnSpan="3"/>
-                <Label text="客户简称：" GridPane.rowIndex="1"/>
-                <TextField fx:id="info_name" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
-                <Label text="客户电话：" GridPane.rowIndex="2"/>
-                <TextField fx:id="info_phone" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
-                <Label text="客户编号：" GridPane.columnIndex="2" GridPane.rowIndex="1"/>
-                <TextField fx:id="info_serial" GridPane.columnIndex="3" GridPane.rowIndex="1"/>
-                <Label text="客户传真：" GridPane.columnIndex="2" GridPane.rowIndex="2"/>
-                <TextField fx:id="info_fax" GridPane.columnIndex="3" GridPane.rowIndex="2"/>
-                <Label text="私帐收款户名：" GridPane.rowIndex="3"/>
-                <TextField fx:id="info_accpv" GridPane.columnIndex="1" GridPane.rowIndex="3"/>
-                <Label text="私账收款账号：" GridPane.rowIndex="4"/>
-                <TextField fx:id="info_bccpv" GridPane.columnIndex="1" GridPane.rowIndex="4" GridPane.columnSpan="3"/>
-                <Label text="公帐收款户名：" GridPane.rowIndex="5"/>
-                <TextField fx:id="info_accpb" GridPane.columnIndex="1" GridPane.rowIndex="5"/>
-                <Label text="公账收款账号：" GridPane.rowIndex="6"/>
-                <TextField fx:id="info_bccpb" GridPane.columnIndex="1" GridPane.columnSpan="3" GridPane.rowIndex="6"/>
-                <Label text="客户地址：" GridPane.rowIndex="8"/>
-                <TextField fx:id="info_addr" GridPane.columnIndex="1" GridPane.columnSpan="3" GridPane.rowIndex="8"/>
-                <Label text="客户备注：" GridPane.rowIndex="9"/>
-                <TextArea fx:id="info_note" GridPane.columnIndex="1" GridPane.columnSpan="3" GridPane.rowIndex="9"
-                          GridPane.rowSpan="2"/>
-                <Label fx:id="info_attach" text="附件" textFill="#3366ff" underline="true" GridPane.columnIndex="3"
-                       GridPane.rowIndex="11">
-                    <graphic>
-                        <ImageView pickOnBounds="true" preserveRatio="true" styleClass="image-size-common">
-                            <Image url="@img/attachment.png"/>
-                        </ImageView>
-                    </graphic>
-                </Label>
-            </GridPane>
-        </VBox>
-        <HBox styleClass="hbox-spacing">
+    <ScrollPane fitToWidth="true" HBox.hgrow="ALWAYS">
+        <VBox fx:id="infoPane" styleClass="vbox-common">
+            <VBox styleClass="title-pane,spacing-content">
+                <HBox styleClass="title-line">
+                    <Label text="客户基本信息"/>
+                    <Pane HBox.hgrow="ALWAYS"/>
+                    <Button fx:id="saveInfo" styleClass="btnable" text="保存">
+                        <graphic>
+                            <ImageView styleClass="image-button">
+                                <Image url="@img/save.png"/>
+                            </ImageView>
+                        </graphic>
+                    </Button>
+                </HBox>
+                <GridPane styleClass="infogp">
+                    <Label text="客户全称："/>
+                    <TextField fx:id="info_namefull" GridPane.columnIndex="1" GridPane.columnSpan="3"/>
+                    <Label text="客户简称：" GridPane.rowIndex="1"/>
+                    <TextField fx:id="info_name" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+                    <Label text="客户电话：" GridPane.rowIndex="2"/>
+                    <TextField fx:id="info_phone" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
+                    <Label text="客户编号：" GridPane.columnIndex="2" GridPane.rowIndex="1"/>
+                    <TextField fx:id="info_serial" GridPane.columnIndex="3" GridPane.rowIndex="1"/>
+                    <Label text="客户传真：" GridPane.columnIndex="2" GridPane.rowIndex="2"/>
+                    <TextField fx:id="info_fax" GridPane.columnIndex="3" GridPane.rowIndex="2"/>
+                    <Label text="私帐收款户名：" GridPane.rowIndex="3"/>
+                    <TextField fx:id="info_accpv" GridPane.columnIndex="1" GridPane.rowIndex="3"/>
+                    <Label text="私账收款账号：" GridPane.rowIndex="4"/>
+                    <TextField fx:id="info_bccpv" GridPane.columnIndex="1" GridPane.columnSpan="3"
+                               GridPane.rowIndex="4"/>
+                    <Label text="公帐收款户名：" GridPane.rowIndex="5"/>
+                    <TextField fx:id="info_accpb" GridPane.columnIndex="1" GridPane.rowIndex="5"/>
+                    <Label text="公账收款账号：" GridPane.rowIndex="6"/>
+                    <TextField fx:id="info_bccpb" GridPane.columnIndex="1" GridPane.columnSpan="3"
+                               GridPane.rowIndex="6"/>
+                    <Label text="客户地址：" GridPane.rowIndex="8"/>
+                    <TextField fx:id="info_addr" GridPane.columnIndex="1" GridPane.columnSpan="3"
+                               GridPane.rowIndex="8"/>
+                    <Label text="客户备注：" GridPane.rowIndex="9"/>
+                    <TextArea fx:id="info_note" GridPane.columnIndex="1" GridPane.columnSpan="3" GridPane.rowIndex="9"
+                              GridPane.rowSpan="2"/>
+                    <Label fx:id="info_attach" text="附件" textFill="#3366ff" underline="true" GridPane.columnIndex="3"
+                           GridPane.rowIndex="11">
+                        <graphic>
+                            <ImageView pickOnBounds="true" preserveRatio="true" styleClass="image-size-common">
+                                <Image url="@img/attachment.png"/>
+                            </ImageView>
+                        </graphic>
+                    </Label>
+                    <columnConstraints>
+                        <ColumnConstraints/>
+                        <ColumnConstraints/>
+                        <ColumnConstraints/>
+                        <ColumnConstraints/>
+                    </columnConstraints>
+                    <rowConstraints>
+                        <RowConstraints/>
+                        <RowConstraints/>
+                        <RowConstraints/>
+                        <RowConstraints/>
+                        <RowConstraints/>
+                        <RowConstraints/>
+                        <RowConstraints/>
+                        <RowConstraints/>
+                        <RowConstraints/>
+                        <RowConstraints/>
+                        <RowConstraints/>
+                        <RowConstraints/>
+                    </rowConstraints>
+                </GridPane>
+            </VBox>
             <VBox styleClass="title-pane">
                 <HBox styleClass="title-line">
                     <Label text="客户账号信息"/>
@@ -112,7 +135,7 @@
                     </rowConstraints>
                 </GridPane>
             </VBox>
-            <VBox styleClass="title-pane" HBox.hgrow="ALWAYS">
+            <VBox styleClass="title-pane">
                 <HBox styleClass="title-line">
                     <Label text="采购列表信息"/>
                     <Pane HBox.hgrow="ALWAYS"/>
@@ -132,7 +155,7 @@
                     </Button>
                 </HBox>
                 <ScrollPane fitToHeight="true" fitToWidth="true">
-                    <TableView fx:id="matTable" prefHeight="266.0">
+                    <TableView fx:id="matTable" prefHeight="400.0">
                         <columns>
                             <TableColumn fx:id="mat_name" text="产品名称"/>
                             <TableColumn fx:id="mat_spec" text="产品规格"/>
@@ -143,6 +166,6 @@
                     </TableView>
                 </ScrollPane>
             </VBox>
-        </HBox>
-    </VBox>
+        </VBox>
+    </ScrollPane>
 </HBox>

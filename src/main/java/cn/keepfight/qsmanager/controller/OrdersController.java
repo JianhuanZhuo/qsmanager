@@ -1,12 +1,17 @@
 package cn.keepfight.qsmanager.controller;
 
+import cn.keepfight.utils.FXWidgetUtil;
+import javafx.beans.binding.StringBinding;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.layout.VBox;
+import javafx.util.Pair;
 
 import java.net.URL;
+import java.util.List;
+import java.util.Properties;
 import java.util.ResourceBundle;
 
 /**
@@ -23,7 +28,6 @@ public class OrdersController implements ContentCtrl,Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        orderPaneController.config(OrderPaneController.USING_IN_ORDERS);
     }
 
     @Override
@@ -35,8 +39,14 @@ public class OrdersController implements ContentCtrl,Initializable {
     public void loaded() {
         orderPaneController.loaded();
     }
+
     @Override
-    public void showed() {
-        orderPaneController.showed();
+    public void showed(Properties params) {
+        orderPaneController.showed(params);
+    }
+
+    @Override
+    public StringBinding getTitle() {
+        return FXWidgetUtil.sBinding("订单管理");
     }
 }

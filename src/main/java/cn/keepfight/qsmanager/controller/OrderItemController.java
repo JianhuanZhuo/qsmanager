@@ -8,6 +8,7 @@ import cn.keepfight.qsmanager.print.PrintSource;
 import cn.keepfight.qsmanager.print.QSPrintType;
 import cn.keepfight.utils.FXUtils;
 import cn.keepfight.utils.FXWidgetUtil;
+import javafx.beans.binding.StringBinding;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -15,6 +16,7 @@ import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
+import javafx.util.Pair;
 
 import java.math.BigDecimal;
 import java.net.URL;
@@ -86,7 +88,12 @@ public class OrderItemController implements ContentCtrl, Initializable {
     }
 
     @Override
-    public void showed() {
+    public void showed(Properties params) {
+    }
+
+    @Override
+    public StringBinding getTitle() {
+        return FXWidgetUtil.sBinding("订单详情");
     }
 
     @Override
@@ -113,7 +120,13 @@ public class OrderItemController implements ContentCtrl, Initializable {
             }
         });
 
-        a_alter.setOnAction(event -> ordersController.updateOrder(modelFull));
+//        a_alter.setOnAction(event -> ordersController.updateOrder(modelFull));
+        a_alter.setOnAction(event -> {
+            Properties ps = new Properties();
+            ps.put("id", modelFull.getId());
+            QSApp.mainPane.changeTo(MainPaneList.ORDER_MAKE, ps);
+//            ordersController.updateOrder(modelFull);
+        });
         a_print.setOnAction(event -> {
             // 打印
             PrintSource source = new PrintSource();
@@ -122,7 +135,8 @@ public class OrderItemController implements ContentCtrl, Initializable {
             source.setYear((long) localDate.getYear());
             source.setMonth((long) localDate.getMonthValue());
             source.setItem(modelFull.getId());
-            QSApp.service.getPrintService().build(new PrintSelection(QSPrintType.DELIVERY, source));
+//            QSApp.service.getPrintService().build(new PrintSelection(QSPrintType.DELIVERY, source));
+            QSApp.mainPane.changeTo(MainPaneList.PRINT_MANAGER, FXUtils.ps(new Pair<>("selection", new PrintSelection(QSPrintType.DELIVERY, source))));
         });
 
         FXWidgetUtil.hackTooltipStartTiming(msg);

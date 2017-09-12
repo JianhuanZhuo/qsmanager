@@ -1,6 +1,7 @@
 package cn.keepfight.qsmanager;
 
 import cn.keepfight.qsmanager.controller.MainPane;
+import cn.keepfight.qsmanager.controller.MainPaneList;
 import cn.keepfight.qsmanager.service.LocalServiceImpl;
 import cn.keepfight.qsmanager.service.ServerService;
 import cn.keepfight.utils.ViewPathUtil;
@@ -49,6 +50,7 @@ public class QSApp extends Application {
         mainPane.logout();
 
         Platform.runLater(MenuList::loadMenuView);
+        Platform.runLater(MainPaneList::loadMenuView);
     }
 
     @Override

@@ -3,9 +3,11 @@ package cn.keepfight.qsmanager.controller;
 import cn.keepfight.qsmanager.QSApp;
 import cn.keepfight.qsmanager.model.ProductModel;
 import cn.keepfight.utils.CustomDialog;
+import cn.keepfight.utils.FXWidgetUtil;
 import cn.keepfight.utils.ViewPathUtil;
 import cn.keepfight.utils.WarningBuilder;
 import javafx.application.Platform;
+import javafx.beans.binding.StringBinding;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
@@ -15,9 +17,10 @@ import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.util.Pair;
 
 import java.io.IOException;
-import java.util.Optional;
+import java.util.*;
 
 /**
  * 产品管理界面控制器
@@ -70,46 +73,76 @@ public class ProductsController implements ContentCtrl {
     }
 
     @Override
-    public void showed() {
+    public void showed(Properties params) {
 
+    }
+
+    @Override
+    public StringBinding getTitle() {
+        return FXWidgetUtil.sBinding("产品列表");
+    }
+
+    @Override
+    public List<BarBtn> getBarBtns(Properties params) {
+        return Arrays.asList(new BarBtn() {
+            @Override
+            public String getText() {
+                return "删除";
+            }
+
+            @Override
+            public String getHit() {
+                return null;
+            }
+
+            @Override
+            public String getImage() {
+                return "item-del.png";
+            }
+
+            @Override
+            public Runnable getAction() {
+                return ()-> {
+                    ProductModel model = prodTable.getSelectionModel().getSelectedItem();
+                    if (model == null) {
+                        WarningBuilder.build("删除产品失败", "请先选中指定产品后再进行删除！");
+                    } else {
+                        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                        alert.setHeaderText("是否要删除这个产品？");
+                        alert.setContentText("系统为了账目安全，你必须先删除和该产品相关的交易记录！");
+                        Optional<ButtonType> result = alert.showAndWait();
+                        if (result.isPresent() && result.get() == ButtonType.OK) {
+                            try {
+                                QSApp.service.getProductService().delete(model);
+                                loadProducts();
+                            } catch (Exception e) {
+                                WarningBuilder.build("删除产品失败", "请先清空该产品相关的交易记录，再进行删除！");
+                            }
+                        }
+                    }
+                };
+            }
+        });
     }
 
     @FXML
     public void initialize() throws IOException {
 
-        add.setOnAction(event -> {
-            Optional<ProductModel> op = CustomDialog.gen().build(addController);
-            op.ifPresent(model -> {
-                try {
-                    QSApp.service.getProductService().insert(model);
-                    loadProducts();
-                } catch (Exception e1) {
-                    e1.printStackTrace();
-                    WarningBuilder.build("新增产品失败", "新增客户失败，请检查网络是否通畅");
-                }
-            });
-        });
+//        add.setOnAction(event -> {
+//            Optional<ProductModel> op = CustomDialog.gen().build(addController);
+//            op.ifPresent(model -> {
+//                try {
+//                    QSApp.service.getProductService().insert(model);
+//                    loadProducts();
+//                } catch (Exception e1) {
+//                    e1.printStackTrace();
+//                    WarningBuilder.build("新增产品失败", "新增客户失败，请检查网络是否通畅");
+//                }
+//            });
+//        });
 
         // 删除客户按钮
-        del.setOnMouseClicked(event -> {
-            ProductModel model = prodTable.getSelectionModel().getSelectedItem();
-            if (model == null) {
-                WarningBuilder.build("删除产品失败", "请先选中指定产品后再进行删除！");
-            } else {
-                Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-                alert.setHeaderText("是否要删除这个产品？");
-                alert.setContentText("系统为了账目安全，你必须先删除和该产品相关的交易记录！");
-                Optional<ButtonType> result = alert.showAndWait();
-                if (result.isPresent() && result.get() == ButtonType.OK) {
-                    try {
-                        QSApp.service.getProductService().delete(model);
-                        loadProducts();
-                    } catch (Exception e) {
-                        WarningBuilder.build("删除产品失败", "请先清空该产品相关的交易记录，再进行删除！");
-                    }
-                }
-            }
-        });
+//        del.setOnMouseClicked(event );
 
         // 双击编辑产品
         prodTable.setRowFactory(tv -> {

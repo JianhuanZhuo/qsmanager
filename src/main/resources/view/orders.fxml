@@ -13,6 +13,6 @@
         <Pane HBox.hgrow="ALWAYS"/>
     </HBox>
     <VBox VBox.vgrow="ALWAYS">
-        <fx:include fx:id="orderPane" source="order_list.fxml"/>
+        <fx:include fx:id="orderPane" source="order_pane.fxml"/>
     </VBox>
 </VBox>

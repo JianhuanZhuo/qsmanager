@@ -2,6 +2,7 @@ package cn.keepfight.qsmanager.controller;
 
 import cn.keepfight.qsmanager.model.OrderItemModel;
 import cn.keepfight.utils.FXUtils;
+import cn.keepfight.utils.FXWidgetUtil;
 import cn.keepfight.utils.ImageLoadUtil;
 import javafx.beans.binding.ObjectBinding;
 import javafx.beans.binding.StringBinding;
@@ -15,12 +16,14 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
+import javafx.util.Pair;
 import javafx.util.StringConverter;
 
 import java.math.BigDecimal;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Properties;
 import java.util.ResourceBundle;
 
 /**
@@ -60,8 +63,13 @@ public class ShopItemController implements ContentCtrl, Initializable {
     }
 
     @Override
-    public void showed() {
+    public void showed(Properties params) {
 
+    }
+
+    @Override
+    public StringBinding getTitle() {
+        return FXWidgetUtil.sBinding("采购项目");
     }
 
     @Override

@@ -29,7 +29,7 @@ public class MenuListController {
                     c.setup(m);
                     root.getChildren().add(c.getRoot());
 
-                    c.getRoot().setOnMouseClicked(event -> QSApp.mainPane.changeTo(m));
+                    c.getRoot().setOnMouseClicked(event -> QSApp.mainPane.switchMenu(m));
                 } catch (IOException e) {
                     e.printStackTrace();
                 }

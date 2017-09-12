@@ -19,7 +19,6 @@ public class OrderModelFull implements ModelFull<OrderModel>{
     private Long orderdate;
     private String note;
     private boolean deli = false;
-    private boolean building = false;
 
     private String cust;
 
@@ -27,13 +26,13 @@ public class OrderModelFull implements ModelFull<OrderModel>{
 
     @Override
     public void set(OrderModel orderModel) {
-        FXReflectUtils.attrAssign(orderModel, this, "id", "cid", "serial", "orderdate", "note", "deli", "building");
+        FXReflectUtils.attrAssign(orderModel, this, "id", "cid", "serial", "orderdate", "note", "deli");
     }
 
     @Override
     public OrderModel get() {
         OrderModel model = new OrderModel();
-        FXReflectUtils.attrAssign(this, model, "id", "cid", "serial", "orderdate", "note", "deli", "building");
+        FXReflectUtils.attrAssign(this, model, "id", "cid", "serial", "orderdate", "note", "deli");
         return model;
     }
 
@@ -108,13 +107,5 @@ public class OrderModelFull implements ModelFull<OrderModel>{
 
     public void setDeli(boolean deli) {
         this.deli = deli;
-    }
-
-    public boolean isBuilding() {
-        return building;
-    }
-
-    public void setBuilding(boolean building) {
-        this.building = building;
     }
 }

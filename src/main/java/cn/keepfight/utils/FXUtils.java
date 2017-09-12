@@ -9,6 +9,7 @@ import javafx.scene.Node;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextInputControl;
 import javafx.scene.image.WritableImage;
+import javafx.util.Pair;
 import javafx.util.StringConverter;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
@@ -513,5 +514,14 @@ public class FXUtils {
         }catch (Exception e){
             return new ArrayList<>(0);
         }
+    }
+
+    @SafeVarargs
+    public static Properties ps(Pair<Object, Object>... p){
+        Properties properties = new Properties();
+        for (Pair<Object, Object> aP : p) {
+            properties.put(aP.getKey(), aP.getValue());
+        }
+        return properties;
     }
 }

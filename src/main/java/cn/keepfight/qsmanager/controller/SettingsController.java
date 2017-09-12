@@ -1,6 +1,8 @@
 package cn.keepfight.qsmanager.controller;
 
 import cn.keepfight.utils.ConfigUtil;
+import cn.keepfight.utils.FXWidgetUtil;
+import javafx.beans.binding.StringBinding;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
@@ -10,6 +12,7 @@ import javafx.scene.layout.VBox;
 import javafx.util.Pair;
 
 import java.net.URL;
+import java.util.List;
 import java.util.Properties;
 import java.util.ResourceBundle;
 
@@ -52,8 +55,15 @@ public class SettingsController implements ContentCtrl, Initializable {
     public void loaded() {
         readProperties();
     }
+
     @Override
-    public void showed() {
+    public void showed(Properties params) {
+
+    }
+
+    @Override
+    public StringBinding getTitle() {
+        return FXWidgetUtil.sBinding("设置");
     }
 
     private void readProperties(){

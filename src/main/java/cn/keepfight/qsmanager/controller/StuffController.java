@@ -5,6 +5,7 @@ import cn.keepfight.qsmanager.QSApp;
 import cn.keepfight.qsmanager.model.CustomModel;
 import cn.keepfight.utils.*;
 import javafx.application.Platform;
+import javafx.beans.binding.StringBinding;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -13,6 +14,7 @@ import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.util.Pair;
 
 import java.io.IOException;
 import java.net.URL;
@@ -197,8 +199,13 @@ public class StuffController implements ContentCtrl, Initializable{
     }
 
     @Override
-    public void showed() {
+    public void showed(Properties params) {
 
+    }
+
+    @Override
+    public StringBinding getTitle() {
+        return FXWidgetUtil.sBinding("员工管理");
     }
 
     /**

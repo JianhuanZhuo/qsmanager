@@ -1,6 +1,12 @@
 package cn.keepfight.qsmanager.controller;
 
+import javafx.beans.binding.StringBinding;
 import javafx.scene.Node;
+import javafx.util.Pair;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Properties;
 
 /**
  * 中间子面板的控制器的共性接口
@@ -16,20 +22,40 @@ public interface ContentCtrl {
     void loaded();
 
     /**
-     * 该接口在每次显示（即点击菜单切换到该面板时）调用
+     * 带参数的界面调用显示
+     * @param params 调用页面前时使用
      */
-    void showed();
-
+    void showed(Properties params);
 
     default<T> void updateState(T s){}
 
-    default void refresh(){}
+    /**
+     * 获得页面的 title
+     * @return 页面 title，将被显示页面上方
+     */
+    StringBinding getTitle();
 
     /**
-     * 配置面板功能
-     * @param x 方案编号
+     * 是否使用透明背景，是则不显示 title
      */
-    default void config(int x){
-        
+    default boolean transparentBackground(){
+        return false;
+    }
+
+    /**
+     * 获取按钮列表，在这个基础上会再加一个刷新按钮
+     * @param params 页面打开参数
+     * @return 默认返回一个空的列表
+     */
+    default List<BarBtn> getBarBtns(Properties params){
+        return new ArrayList<>(1);
+    }
+
+    /**
+     * 当页面隐藏时调用
+     * @return 返回表示
+     */
+    default boolean hide(){
+        return true;
     }
 }

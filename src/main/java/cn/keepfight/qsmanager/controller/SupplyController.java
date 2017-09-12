@@ -5,6 +5,7 @@ import cn.keepfight.qsmanager.model.MaterialModel;
 import cn.keepfight.qsmanager.model.SupplyModel;
 import cn.keepfight.utils.*;
 import javafx.application.Platform;
+import javafx.beans.binding.StringBinding;
 import javafx.beans.property.ListProperty;
 import javafx.beans.property.SimpleListProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -14,9 +15,12 @@ import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.util.Pair;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Optional;
+import java.util.Properties;
 
 import static cn.keepfight.utils.FXUtils.limitLength;
 
@@ -122,7 +126,12 @@ public class SupplyController implements ContentCtrl {
     }
 
     @Override
-    public void showed() {
+    public void showed(Properties params) {
+    }
+
+    @Override
+    public StringBinding getTitle() {
+        return FXWidgetUtil.sBinding("供应商管理");
     }
 
 

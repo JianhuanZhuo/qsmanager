@@ -8,7 +8,7 @@
     <!--List<OrderModelFull> selectAll(OrderSelection selection) throws Exception;-->
     <select id="selectAll" parameterType="OrderSelection" resultType="OrderModelFull">
         SELECT o.id AS id, cid, o.serial AS serial,  concat(unix_timestamp(orderdate), '000') AS orderdate, o.note AS note,
-        concat(c.serial , '-' , c.name) AS cust
+        concat(c.serial , '-' , c.name) AS cust, deli
         FROM orders o, custom c
         WHERE o.cid=c.id
         <if test="cid!=null">
@@ -31,7 +31,7 @@
     <!--OrderModelFull selectById(Long id) throws Exception;-->
     <select id="selectById" parameterType="long" resultType="OrderModelFull">
         SELECT o.id AS id, cid, o.serial AS serial,  concat(unix_timestamp(orderdate), '000') AS orderdate, o.note AS note,
-        concat(c.serial , '-' , c.name) AS cust
+        concat(c.serial , '-' , c.name) AS cust, deli
         FROM orders o, custom c
         WHERE o.cid=c.id AND o.id = #{id}
     </select>
@@ -41,8 +41,8 @@
     <!-- 插入的是 2004-08-19 11:51:06 字符串 -->
     <insert id="insert" parameterType="OrderModel">
         INSERT INTO
-        orders (serial, cid, orderdate, note)
-        VALUES (#{serial}, #{cid}, from_unixtime(#{orderdate}/1000), #{note})
+        orders (serial, cid, orderdate, note, deli)
+        VALUES (#{serial}, #{cid}, from_unixtime(#{orderdate}/1000), #{note}, #{deli})
         <selectKey keyProperty="id" order="AFTER" resultType="long">
             SELECT last_insert_id();
         </selectKey>
@@ -72,7 +72,17 @@
             serial    = #{serial},
             cid       = #{cid},
             orderdate = from_unixtime(#{orderdate}/1000),
-            note      = #{note}
+            note      = #{note},
+            deli      = #{deli}
         WHERE id = #{id}
+    </update>
+
+    <!--设置已投递标志-->
+    <!--void deliOrder(Long oid) throws Exception;-->
+    <update id="deliOrder" parameterType="long">
+        UPDATE orders
+        SET
+        deli = 1
+        WHERE id = #{oid}
     </update>
 </mapper>

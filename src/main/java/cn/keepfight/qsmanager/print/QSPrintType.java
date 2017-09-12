@@ -22,17 +22,17 @@ import java.util.function.Consumer;
  * </li>
  * Created by tom on 2017/6/26.
  */
-    public enum QSPrintType {
-        DELIVERY("普通送货单 A5横向", Paper.A5, "print_delivery.fxml", new PrintLocateDelivery()),
-        RECEIPT("普通收据单 A5横向", Paper.A5, "print_receipt.fxml", new PrintLocateDelivery()),
-        DELIVERY_ANLI("安利专用送货单 A5横向", Paper.A5, "print_anli.fxml", new PrintLocateDelivery()),
-        MON_CUST("客户月对账单 A4横向", Paper.A4, "print_mon_cust.fxml", new PrintLocateMonCust()),
-        MON_CUST_RATE("客户月对账单(发票) A4横向", Paper.A4, "print_mon_cust_rate.fxml", new PrintLocateMonCust()),
-        YEAR_CUST("客户年度对账单 A4横向", Paper.A4, "print_year_cust.fxml", new PrintLocateYearCust()),
-        MON_SUP("供应商月对账单 A4横向", Paper.A4, "print_mon_sup.fxml", new PrintLocateMonSup()),
-        YEAR_SUP("供应商年度对账单 A4横向", Paper.A4, "print_year_sup.fxml", new PrintLocateYearSup());
+public enum QSPrintType {
+    DELIVERY("普通送货单 A5横向", Paper.A5, "print_delivery.fxml", new PrintLocateDelivery()),
+    RECEIPT("普通收据单 A5横向", Paper.A5, "print_receipt.fxml", new PrintLocateDelivery()),
+    DELIVERY_ANLI("安利专用送货单 A5横向", Paper.A5, "print_anli.fxml", new PrintLocateDelivery()),
+    MON_CUST("客户月对账单 A4横向", Paper.A4, "print_mon_cust.fxml", new PrintLocateMonCust()),
+    MON_CUST_RATE("客户月对账单(发票) A4横向", Paper.A4, "print_mon_cust_rate.fxml", new PrintLocateMonCust()),
+    YEAR_CUST("客户年度对账单 A4横向", Paper.A4, "print_year_cust.fxml", new PrintLocateYearCust()),
+    MON_SUP("供应商月对账单 A4横向", Paper.A4, "print_mon_sup.fxml", new PrintLocateMonSup()),
+    YEAR_SUP("供应商年度对账单 A4横向", Paper.A4, "print_year_sup.fxml", new PrintLocateYearSup());
 
-        private String desc;
+    private String desc;
     private Paper paper;
     private PageOrientation orientation;
     private double marginReqire; // 最小间距要求

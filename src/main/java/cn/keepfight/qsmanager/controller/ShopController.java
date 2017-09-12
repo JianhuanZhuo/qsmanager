@@ -4,11 +4,13 @@ import cn.keepfight.qsmanager.QSApp;
 import cn.keepfight.qsmanager.model.OrderItemModel;
 import cn.keepfight.qsmanager.model.OrderModelFull;
 import cn.keepfight.utils.CustomDialog;
+import cn.keepfight.utils.FXWidgetUtil;
 import cn.keepfight.utils.ViewPathUtil;
 import cn.keepfight.utils.WarningBuilder;
 import javafx.application.Platform;
 import javafx.beans.InvalidationListener;
 import javafx.beans.binding.ListBinding;
+import javafx.beans.binding.StringBinding;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -16,13 +18,12 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
+import javafx.util.Pair;
 
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.net.URL;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.ResourceBundle;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -69,8 +70,13 @@ public class ShopController implements ContentCtrl, Initializable {
     }
 
     @Override
-    public void showed() {
+    public void showed(Properties params) {
 
+    }
+
+    @Override
+    public StringBinding getTitle() {
+        return FXWidgetUtil.sBinding("采购管理");
     }
 
     @Override

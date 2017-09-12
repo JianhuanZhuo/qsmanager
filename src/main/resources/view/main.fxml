@@ -9,6 +9,9 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
 
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Separator?>
 <BorderPane styleClass="mainpane"
             stylesheets="@css/main.css, @css/common.css"
             xmlns="http://javafx.com/javafx/8.0.111"
@@ -39,20 +42,44 @@
         </HBox>
     </top>
     <left>
-        <ScrollPane styleClass="menuScp,hide" fx:id="menuScrollPane">
+        <ScrollPane styleClass="menuScp" fx:id="menuScrollPane">
             <BorderPane.margin>
                 <Insets bottom="10.0" top="10.0"/>
             </BorderPane.margin>
-            <!--<fx:include source="menu.fxml" />-->
+            <!--<fx:include source="menu.fxml"/>-->
         </ScrollPane>
     </left>
     <center>
-        <ScrollPane styleClass="centerScp" fx:id="centerScp">
+        <VBox fx:id="titlePane" styleClass="title-pane">
             <BorderPane.margin>
                 <Insets bottom="10.0" left="10.0" right="10.0" top="10.0"/>
             </BorderPane.margin>
-            <!--<fx:include source="login.fxml" />-->
-        </ScrollPane>
+            <HBox fx:id="titleLine" styleClass="title-line">
+                <Button fx:id="returnBtn" styleClass="btnable" text="返回">
+                    <graphic>
+                        <ImageView fitHeight="18" fitWidth="18" styleClass="image-button">
+                            <Image url="@img/return.png"/>
+                        </ImageView>
+                    </graphic>
+                </Button>
+                <Separator orientation="VERTICAL"/>
+                <Label fx:id="title" text="晴旭管理系统"/>
+                <Pane HBox.hgrow="ALWAYS"/>
+                <Pane fx:id="btnList">
+                    <Button styleClass="btnable" text="添加">
+                        <graphic>
+                            <ImageView fitHeight="18" fitWidth="18" styleClass="image-button">
+                                <Image url="@img/item-add.png"/>
+                            </ImageView>
+                        </graphic>
+                    </Button>
+                </Pane>
+            </HBox>
+            <ScrollPane VBox.vgrow="ALWAYS" styleClass="centerScp" fx:id="centerScp">
+                <!--<fx:include source="custom.fxml"/>-->
+                <!--<fx:include source="login.fxml"/>-->
+            </ScrollPane>
+        </VBox>
     </center>
 
     <bottom>

@@ -3,22 +3,29 @@ package cn.keepfight.qsmanager.controller;
 import cn.keepfight.qsmanager.MenuList;
 import cn.keepfight.qsmanager.model.CustomModel;
 import cn.keepfight.utils.FXUtils;
+import cn.keepfight.utils.ImageLoadUtil;
 import cn.keepfight.utils.ViewPathUtil;
 import javafx.application.Platform;
+import javafx.beans.property.ListProperty;
+import javafx.beans.property.SimpleListProperty;
+import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
 
 import java.io.IOException;
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * 主界面面板控制器
  * Created by tom on 2017/6/5.
  */
 public class MainPane {
-
     @FXML
     private ScrollPane menuScrollPane;
     @FXML
@@ -30,13 +37,26 @@ public class MainPane {
     @FXML
     private HBox action;
 
-    private MenuList state = MenuList.SETTINGS;
+    @FXML
+    private VBox titlePane;
+    @FXML
+    private HBox titleLine;
+    @FXML
+    private Button returnBtn;
+    @FXML
+    private Label title;
+    @FXML
+    private Pane btnList;
+
+    private CustomModel userModel;
 
     private LoginController loginController;
     private MenuListController listController;
 
     private List<MenuList> legalList;
     private Map<ContentCtrl, Boolean> isLoaded = new HashMap<>();
+
+    private ListProperty<ContentCtrl> contentStack = new SimpleListProperty<>(FXCollections.observableArrayList(new ArrayList<>()));
 
     @FXML
     public void initialize() throws IOException {
@@ -61,29 +81,107 @@ public class MainPane {
         user.setOnMouseClicked(event -> {
         });
 
-
+        returnBtn.disableProperty().bind(contentStack.sizeProperty().lessThanOrEqualTo(1));
+        returnBtn.setOnAction(event -> backNav());
     }
 
     /**
-     * 转至指定菜单内容
-     *
-     * @param menu 指定菜单枚举
+     * 切换菜单，这是一个重置页面栈的行为
+     * @param menu 需要切换到的菜单
      */
-    public void changeTo(MenuList menu) {
-        if (state.equals(menu)) {
-            return;
+    public void switchMenu(MenuList menu){
+        while (!contentStack.isEmpty()){
+            if (!peek().hide()){
+                return;
+            }else {
+                pop();
+            }
         }
-        // 加载至主界面
-        ContentCtrl controller = menu.getController();
-        centerScp.setContent(controller.getRoot());
+        changeTo(menu.getController(), menu.getPs());
+    }
+
+    /**
+     * 转至指定界面
+     *
+     * @param mainPane 指定界面
+     */
+    public void changeTo(MainPaneList mainPane) {
+        changeTo(mainPane.getController(), new Properties());
+    }
+
+    /**
+     * 转至指定界面
+     * @param mainPane 指定界面
+     * @param params     界面参数
+     */
+    public void changeTo(MainPaneList mainPane, Properties params) {
+        changeTo(mainPane.getController(), params);
+    }
+
+    /**
+     * 转至指定界面
+     * @param controller 指定界面控制器
+     */
+    public void changeTo(ContentCtrl controller) {
+        changeTo(controller, new Properties());
+    }
+
+    /**
+     * 转至指定界面
+     *
+     * @param controller 指定界面控制器
+     * @param params     界面参数
+     */
+    public void changeTo(ContentCtrl controller, Properties params) {
+
+        Platform.runLater(() -> centerScp.setContent(MainPaneList.LOADING.getController().getRoot()));
+
+        title.textProperty().bind(controller.getTitle());
+        Platform.runLater(() -> btnList.getChildren().clear());
 
         // 考虑到一次切换界面的刷新意义不大
-        if (!isLoaded.getOrDefault(controller, false)){
+        if (!isLoaded.getOrDefault(controller, false)) {
             Platform.runLater(controller::loaded);
             isLoaded.put(controller, true);
         }
-        controller.showed();
-        state = menu;
+
+        Platform.runLater(() -> controller.showed(params));
+        Platform.runLater(() -> {
+            List<Button> btns = controller.getBarBtns(params)
+                    .stream()
+                    .map(x -> {
+                        ImageView m = ImageLoadUtil.bindImage(new ImageView(), x.getImage());
+                        FXUtils.addStyle("image-button", m);
+                        m.setFitWidth(18);
+                        m.setFitHeight(18);
+                        return new Button(x.getText(), m);
+                    })
+                    .collect(Collectors.toList());
+            btnList.getChildren().setAll(btns);
+            titleVisible(!controller.transparentBackground());
+        });
+
+        // 加载至主界面
+        Platform.runLater(() -> centerScp.setContent(controller.getRoot()));
+
+        // 添加到队列中
+        push(controller);
+    }
+
+    /**
+     * 返回上个界面
+     */
+    public void backNav(){
+        // 无上层的页面
+        if (contentStack.size()<=1){
+            return;
+        }
+        if (!peek().hide()){
+            return;
+        }else {
+            pop();
+        }
+        changeTo(pop());
     }
 
     public void login(CustomModel userModel) throws IOException {
@@ -101,23 +199,23 @@ public class MainPane {
 
         centerScp.setContent(null);
 //        changeTo(legalList.get(0));
+
+        this.userModel = userModel;
     }
 
     /**
      * 检出操作，为初次进入系统的默认操作
      */
     public void logout() {
-        //提供系统登录界面
-
-        Platform.runLater(() -> centerScp.setContent(loginController.getRoot()));
+        // 清空页面栈并提供系统登录界面
+        contentStack.clear();
+        changeTo(loginController);
 
         //隐藏
         FXUtils.addStyle("hide", action, menuScrollPane);
 
         listController.unloadMenuList();
         loginController.loginOut();
-
-        state = MenuList.SETTINGS;
     }
 
     private void loadMenu(CustomModel userModel) {
@@ -151,17 +249,37 @@ public class MainPane {
                         MenuList.SETTINGS);
                 break;
             case 3:
-//                legalList = Arrays.asList(
-//                        MenuList.CUSTOM,
-//                        MenuList.SUPPLY,
-//                        MenuList.PRODUCTS,
-//                        MenuList.ORDERS,
-//                        MenuList.SETTINGS);
                 legalList = FXUtils.split(userModel.getNamefull(), "~", MenuList::valueOf);
                 break;
             default:
                 legalList = new ArrayList<>();
                 break;
         }
+    }
+
+    private void titleVisible(boolean v) {
+        if (v) {
+            FXUtils.delStyle("transparent-title", titlePane);
+            titleLine.setManaged(true);
+        } else {
+            FXUtils.addStyle("transparent-title", titlePane);
+            titleLine.setManaged(false);
+        }
+    }
+
+    private void push(ContentCtrl c){
+        contentStack.add(c);
+    }
+
+    private ContentCtrl pop(){
+        return contentStack.remove(contentStack.size() - 1);
+    }
+
+    private ContentCtrl peek(){
+        return contentStack.get(contentStack.size()-1);
+    }
+
+    public CustomModel getUserModel() {
+        return userModel;
     }
 }

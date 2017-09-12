@@ -178,19 +178,6 @@ public class PrintReceiptController extends PrintTemplate<OrderModelFull> implem
 
     @Override
     public void cancel() {
-        System.out.println("cancel!");
-        if (datas.isBuilding()){
-            System.out.println("cancel2!");
-            if (table.getItems().filtered(item->item.nameItem.get()!=null && !item.nameItem.get().trim().equals("")).isEmpty()){
-                System.out.println("cance3!");
-                try {
-                    QSApp.service.getOrderService().delete(datas.get());
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    // 无法删除则后面让人手动删除即可
-                }
-            }
-        }
     }
 
     @Override

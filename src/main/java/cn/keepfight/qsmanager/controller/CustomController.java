@@ -3,11 +3,13 @@ package cn.keepfight.qsmanager.controller;
 import cn.keepfight.qsmanager.QSApp;
 import cn.keepfight.qsmanager.model.CustomModel;
 import cn.keepfight.qsmanager.model.ProductModel;
+import cn.keepfight.utils.FXWidgetUtil;
 import cn.keepfight.utils.QSUtil;
 import cn.keepfight.utils.ViewPathUtil;
 import cn.keepfight.utils.WarningBuilder;
 import javafx.application.Platform;
 import javafx.beans.binding.BooleanBinding;
+import javafx.beans.binding.StringBinding;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
@@ -15,9 +17,12 @@ import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.util.Pair;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Optional;
+import java.util.Properties;
 
 import static cn.keepfight.utils.FXUtils.limitLength;
 
@@ -109,8 +114,13 @@ public class CustomController implements ContentCtrl {
     }
 
     @Override
-    public void showed() {
+    public void showed(Properties params) {
 
+    }
+
+    @Override
+    public StringBinding getTitle() {
+        return FXWidgetUtil.sBinding("客户管理");
     }
 
     @FXML

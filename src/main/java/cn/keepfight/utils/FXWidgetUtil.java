@@ -12,6 +12,7 @@ import javafx.beans.binding.StringBinding;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
@@ -367,22 +368,22 @@ public class FXWidgetUtil {
         Thread.sleep(100);
 
         double scaleX
-                = pageLayout.getPrintableWidth() / node.getBoundsInParent().getWidth();
+                = (pageLayout.getPrintableWidth()-10) / node.getBoundsInParent().getWidth();
         double scaleY
-                = pageLayout.getPrintableHeight() / node.getBoundsInParent().getHeight();
+                = (pageLayout.getPrintableHeight()-10) / node.getBoundsInParent().getHeight();
 
         int loop = 0;
         while (loop++ <10 && (Math.abs(scaleX-1.0)>0.2 || Math.abs(scaleY-1.0)>0.2)){
             System.err.println("need to sleep 1s to wait style rerencering!");
             Thread.sleep(1000);
-            scaleX = pageLayout.getPrintableWidth() / node.getBoundsInParent().getWidth();
-            scaleY = pageLayout.getPrintableHeight() / node.getBoundsInParent().getHeight();
+            scaleX = (pageLayout.getPrintableWidth()-10) / node.getBoundsInParent().getWidth();
+            scaleY = (pageLayout.getPrintableHeight()-10) / node.getBoundsInParent().getHeight();
             System.out.println("scaleX:"+scaleX);
             System.out.println("scaleY:"+scaleY);
         }
 
         System.out.println("pageLayout.getPrintableWidth():"+pageLayout.getPrintableWidth());
-        System.out.println("pageLayout.getPrintableWidth():"+pageLayout.getPrintableWidth());
+        System.out.println("pageLayout.getPrintableHeight():"+pageLayout.getPrintableHeight());
 
         Scale scale = new Scale(scaleX, scaleY);
         node.getTransforms().add(scale);
@@ -461,5 +462,25 @@ public class FXWidgetUtil {
     @SafeVarargs
     public static<T> void cellLong(TableColumn<T, Long>... cs){
         cellLong(FXUtils.longConverter("0"), cs);
+    }
+
+    public static StringBinding sBinding(String s){
+        return new StringBinding() {
+            @Override
+            protected String computeValue() {
+                return s;
+            }
+        };
+    }
+    public static StringBinding spBinding(StringProperty s){
+        return new StringBinding() {
+            {
+                bind(s);
+            }
+            @Override
+            protected String computeValue() {
+                return s.get();
+            }
+        };
     }
 }

@@ -3,18 +3,18 @@ package cn.keepfight.qsmanager.controller;
 import cn.keepfight.qsmanager.model.ReceiptDetailModel;
 import cn.keepfight.qsmanager.model.ReceiptModelFull;
 import cn.keepfight.utils.FXWidgetUtil;
+import javafx.beans.binding.StringBinding;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
+import javafx.util.Pair;
 
 import java.net.URL;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Optional;
-import java.util.ResourceBundle;
+import java.util.*;
 
 /**
  * 供应商供应送货单控制器
@@ -65,7 +65,7 @@ public class ReceiptController implements ContentCtrl, Initializable{
 
     // 内部表现数据
     private ReceiptModelFull modelFull;
-    private OutComeController outComeController;
+    private ReceiptListController outComeController;
 
     // 静态
     private static SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
@@ -82,7 +82,13 @@ public class ReceiptController implements ContentCtrl, Initializable{
     }
 
     @Override
-    public void showed() {
+    public void showed(Properties params) {
+
+    }
+
+    @Override
+    public StringBinding getTitle() {
+        return FXWidgetUtil.sBinding("供应页面");
     }
 
 
@@ -109,7 +115,7 @@ public class ReceiptController implements ContentCtrl, Initializable{
         update.setOnAction(event -> outComeController.updateReceipt(modelFull));
     }
 
-    public void fill(ReceiptModelFull modelFull, OutComeController outComeController) {
+    public void fill(ReceiptModelFull modelFull, ReceiptListController outComeController) {
         this.modelFull = modelFull;
         this.outComeController = outComeController;
 
