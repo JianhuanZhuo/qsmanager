@@ -185,7 +185,8 @@ public class PrintManagerController implements ContentCtrl, Initializable {
                 // 使用Platfor.runLater 是为了保证在打印完成前，不会先去除样式
                 Platform.runLater(() -> {
                     try {
-                        FXWidgetUtil.printNode(rootNode, printer, pageLayout);
+//                        FXWidgetUtil.printNode(rootNode, printer, pageLayout);
+                        FXWidgetUtil.printNodeNew(rootNode, printer, pageLayout, type.getFolder());
                     } catch (Exception e) {
                         e.printStackTrace();
                     } finally {

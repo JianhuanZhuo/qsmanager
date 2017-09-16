@@ -16,9 +16,7 @@ import javafx.beans.property.StringProperty;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
-import javafx.print.PageLayout;
-import javafx.print.Printer;
-import javafx.print.PrinterJob;
+import javafx.print.*;
 import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.TextFieldTableCell;
@@ -384,6 +382,60 @@ public class FXWidgetUtil {
 
         System.out.println("pageLayout.getPrintableWidth():"+pageLayout.getPrintableWidth());
         System.out.println("pageLayout.getPrintableHeight():"+pageLayout.getPrintableHeight());
+
+        Scale scale = new Scale(scaleX, scaleY);
+        node.getTransforms().add(scale);
+
+        try {
+            job.getJobSettings().setJobName("丹灶晴旭管理软件打印任务");
+            if (job.printPage(pageLayout, node)){
+                return job.endJob();
+            }
+        }finally {
+            node.getTransforms().remove(scale);
+        }
+        return false;
+    }
+
+
+    public static boolean printNodeNew(Node node, Printer printer, PageLayout pageLayout, int folder) throws Exception{
+        PrinterJob job = PrinterJob.createPrinterJob(printer);
+        System.out.println("node.getBoundsInParent().getHeight():"+node.getBoundsInParent().getHeight());
+        System.out.println("node.getBoundsInParent().getWidth():"+node.getBoundsInParent().getWidth());
+        System.out.println("pageLayout.getPrintableWidth():"+pageLayout.getPrintableWidth());
+        System.out.println("pageLayout.getPrintableHeight():"+pageLayout.getPrintableHeight());
+
+        Thread.sleep(100);
+
+//        Set<PrintResolution> rs = printer.getPrinterAttributes().getSupportedPrintResolutions();
+//        PrintResolution best = null;
+//        for (PrintResolution r: rs) {
+//            System.out.println("r:"+r);
+//            if (best ==null || best.getFeedResolution()<r.getFeedResolution()){
+//                best = r;
+//            }
+//        }
+//        job.getJobSettings().setPrintResolution(best);
+//        job.getJobSettings().setPrintQuality(PrintQuality.HIGH);
+
+        double realPrintable = (pageLayout.getPrintableHeight() - (folder - 1) * 2 * pageLayout.getTopMargin()) / folder;
+
+
+        System.out.println("folder:"+folder+"\n"+"realPrintable:" + realPrintable);
+
+        // 减5防止大一点点，超过打印范围，换页了
+        double scaleX = (pageLayout.getPrintableWidth()-5) / node.getBoundsInParent().getWidth();
+        double scaleY = (realPrintable-5) / node.getBoundsInParent().getHeight();
+
+//        int loop = 0;
+//        while (loop++ <10 && (Math.abs(scaleX-1.0)>0.2 || Math.abs(scaleY-1.0)>0.2)){
+//            System.err.println("need to sleep 1s to wait style rerencering!");
+//            Thread.sleep(1000);
+//            scaleX = (pageLayout.getPrintableWidth()-10) / node.getBoundsInParent().getWidth();
+//            scaleY = (pageLayout.getPrintableHeight()-10) / node.getBoundsInParent().getHeight();
+//            System.out.println("scaleX:"+scaleX);
+//            System.out.println("scaleY:"+scaleY);
+//        }
 
         Scale scale = new Scale(scaleX, scaleY);
         node.getTransforms().add(scale);

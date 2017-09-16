@@ -23,14 +23,14 @@ import java.util.function.Consumer;
  * Created by tom on 2017/6/26.
  */
 public enum QSPrintType {
-    DELIVERY("普通送货单 A5横向", Paper.A5, "print_delivery.fxml", new PrintLocateDelivery()),
-    RECEIPT("普通收据单 A5横向", Paper.A5, "print_receipt.fxml", new PrintLocateDelivery()),
-    DELIVERY_ANLI("安利专用送货单 A5横向", Paper.A5, "print_anli.fxml", new PrintLocateDelivery()),
-    MON_CUST("客户月对账单 A4横向", Paper.A4, "print_mon_cust.fxml", new PrintLocateMonCust()),
-    MON_CUST_RATE("客户月对账单(发票) A4横向", Paper.A4, "print_mon_cust_rate.fxml", new PrintLocateMonCust()),
-    YEAR_CUST("客户年度对账单 A4横向", Paper.A4, "print_year_cust.fxml", new PrintLocateYearCust()),
-    MON_SUP("供应商月对账单 A4横向", Paper.A4, "print_mon_sup.fxml", new PrintLocateMonSup()),
-    YEAR_SUP("供应商年度对账单 A4横向", Paper.A4, "print_year_sup.fxml", new PrintLocateYearSup());
+    DELIVERY("普通送货单 二分联", Paper.A4, PageOrientation.PORTRAIT, 25, "print_delivery.fxml", new PrintLocateDelivery(), 2),
+    RECEIPT("普通收据单 二分联", Paper.A4, PageOrientation.PORTRAIT, 25, "print_receipt.fxml", new PrintLocateDelivery(), 2),
+    DELIVERY_ANLI("安利专用送货单 二分联", Paper.A4, PageOrientation.PORTRAIT, 25, "print_anli.fxml", new PrintLocateDelivery(), 2),
+    MON_CUST("客户月对账单 A4横向", Paper.A4, "print_mon_cust.fxml", new PrintLocateMonCust(), 1),
+    MON_CUST_RATE("客户月对账单(发票) A4横向", Paper.A4, "print_mon_cust_rate.fxml", new PrintLocateMonCust(), 1),
+    YEAR_CUST("客户年度对账单 A4横向", Paper.A4, "print_year_cust.fxml", new PrintLocateYearCust(), 1),
+    MON_SUP("供应商月对账单 A4横向", Paper.A4, "print_mon_sup.fxml", new PrintLocateMonSup(), 1),
+    YEAR_SUP("供应商年度对账单 A4横向", Paper.A4, "print_year_sup.fxml", new PrintLocateYearSup(), 1);
 
     private String desc;
     private Paper paper;
@@ -41,17 +41,20 @@ public enum QSPrintType {
 
     private PrintTemplate controller;
 
-    QSPrintType(String desc, Paper paper, String viewPath, PrintSourceLocate locate) {
-        this(desc, paper, PageOrientation.LANDSCAPE, 25, viewPath, locate);
+    private int folder;
+
+    QSPrintType(String desc, Paper paper, String viewPath, PrintSourceLocate locate, int folder) {
+        this(desc, paper, PageOrientation.LANDSCAPE, 25, viewPath, locate, folder);
     }
 
-    QSPrintType(String desc, Paper paper, PageOrientation orientation, double marginReqire, String viewPath, PrintSourceLocate locate) {
+    QSPrintType(String desc, Paper paper, PageOrientation orientation, double marginReqire, String viewPath, PrintSourceLocate locate, int folder) {
         this.desc = desc;
         this.paper = paper;
         this.orientation = orientation;
         this.marginReqire = marginReqire;
         this.viewPath = viewPath;
         this.locate = locate;
+        this.folder = folder;
     }
 
     public String getDesc() {
@@ -92,5 +95,9 @@ public enum QSPrintType {
 
     public PrintSourceLocate getLocate() {
         return locate;
+    }
+
+    public int getFolder() {
+        return folder;
     }
 }
