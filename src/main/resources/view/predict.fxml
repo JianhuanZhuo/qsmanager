@@ -1,27 +1,54 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.layout.VBox?>
-<?import javafx.scene.control.Separator?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.CheckBox?>
-<VBox fx:id="root" stylesheets="@css/common.css" styleClass="content-pane" xmlns="http://javafx.com/javafx"
-      xmlns:fx="http://javafx.com/fxml"
-      fx:controller="cn.keepfight.qsmanager.controller.PredictController">
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.FlowPane?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox fx:id="root" styleClass="content-pane" stylesheets="@css/common.css" xmlns="http://javafx.com/javafx/8.0.131" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cn.keepfight.qsmanager.controller.PredictController">
 
     <HBox styleClass="hbox-common, hbox-title, left-align">
-        <Label text="现金部分"/>
+        <Label text="现金部分" />
     </HBox>
     <HBox styleClass="hbox-common, left-align">
         <CheckBox text="私账存余" />
+        <TextField promptText="请输入私账存余现金" />
+    </HBox>
+    <HBox styleClass="hbox-common, left-align">
+        <CheckBox text="公账存余" />
+        <TextField promptText="请输入公账存余现金" />
+        <Pane HBox.hgrow="ALWAYS" />
+        <Label text="￥+200,232,00" />
     </HBox>
     <Separator />
     <HBox styleClass="hbox-common, hbox-title, left-align">
-        <Label text="收入部分"/>
+        <Label text="收入部分" />
+        
     </HBox>
+   <GridPane alignment="CENTER" gridLinesVisible="true" prefHeight="145.0" prefWidth="591.0">
+     <columnConstraints>
+       <ColumnConstraints hgrow="SOMETIMES" maxWidth="285.66668701171875" minWidth="10.0" prefWidth="108.33334350585938" />
+       <ColumnConstraints hgrow="SOMETIMES" maxWidth="481.6666564941406" minWidth="10.0" prefWidth="481.6666564941406" />
+     </columnConstraints>
+     <rowConstraints>
+       <RowConstraints maxHeight="52.0" minHeight="10.0" prefHeight="52.0" vgrow="SOMETIMES" />
+       <RowConstraints maxHeight="48.0" minHeight="8.0" prefHeight="48.0" vgrow="SOMETIMES" />
+       <RowConstraints maxHeight="62.333343505859375" minHeight="10.0" prefHeight="45.0" vgrow="SOMETIMES" />
+     </rowConstraints>
+      <children>
+         <Label text="安利" />
+      </children>
+   </GridPane>
     <Separator />
     <HBox styleClass="hbox-common, hbox-title, left-align">
-        <Label text="支出部分"/>
+        <Label text="支出部分" />
     </HBox>
     <Separator />
 </VBox>
