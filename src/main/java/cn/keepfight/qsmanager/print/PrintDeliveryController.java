@@ -77,7 +77,8 @@ public class PrintDeliveryController extends PrintTemplate<OrderModelFull> imple
         });
 
         FXWidgetUtil.cellStr(detail, unit, note);
-        FXWidgetUtil.cellDecimal(price, num, total);
+        FXWidgetUtil.cellDecimal(num);
+        FXWidgetUtil.cellMoney(price, total);
 
         price.setCellValueFactory(x -> x.getValue().priceProperty());
         num.setCellValueFactory(x -> x.getValue().numProperty());
@@ -164,7 +165,7 @@ public class PrintDeliveryController extends PrintTemplate<OrderModelFull> imple
                 .reduce(BigDecimal::add);
         String text = "0";
         if (t.isPresent()) {
-            text = t.get().stripTrailingZeros().toPlainString();
+            text = FXUtils.deciToMoney(t.get());
         }
         all_total.setText(text);
     }

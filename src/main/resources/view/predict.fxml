@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.CheckBox?>
+<VBox fx:id="root" stylesheets="@css/common.css" styleClass="content-pane" xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="cn.keepfight.qsmanager.controller.PredictController">
+
+    <HBox styleClass="hbox-common, hbox-title, left-align">
+        <Label text="现金部分"/>
+    </HBox>
+    <HBox styleClass="hbox-common, left-align">
+        <CheckBox text="私账存余" />
+    </HBox>
+    <Separator />
+    <HBox styleClass="hbox-common, hbox-title, left-align">
+        <Label text="收入部分"/>
+    </HBox>
+    <Separator />
+    <HBox styleClass="hbox-common, hbox-title, left-align">
+        <Label text="支出部分"/>
+    </HBox>
+    <Separator />
+</VBox>

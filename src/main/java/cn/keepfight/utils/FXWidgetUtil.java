@@ -411,12 +411,18 @@ public class FXWidgetUtil {
 //        PrintResolution best = null;
 //        for (PrintResolution r: rs) {
 //            System.out.println("r:"+r);
-//            if (best ==null || best.getFeedResolution()<r.getFeedResolution()){
+//            if (best ==null){
 //                best = r;
+//            }else{
+//                int oldOne = best.getFeedResolution()+best.getCrossFeedResolution();
+//                int newOne = r.getFeedResolution()+r.getCrossFeedResolution();
+//                if (oldOne<newOne){
+//                    best = r;
+//                }
 //            }
 //        }
 //        job.getJobSettings().setPrintResolution(best);
-//        job.getJobSettings().setPrintQuality(PrintQuality.HIGH);
+        job.getJobSettings().setPrintQuality(PrintQuality.HIGH);
 
         double realPrintable = (pageLayout.getPrintableHeight() - (folder - 1) * 2 * pageLayout.getTopMargin()) / folder;
 
@@ -490,6 +496,11 @@ public class FXWidgetUtil {
     @SafeVarargs
     public static<T> void cellDecimal(TableColumn<T, BigDecimal>... cs){
         cellDecimal(FXUtils.decimalConverter("0"), cs);
+    }
+
+    @SafeVarargs
+    public static<T> void cellMoney(TableColumn<T, BigDecimal>... cs){
+        cellDecimal(FXUtils.deciMoneyConverter(""), cs);
     }
 
     @SafeVarargs

@@ -75,11 +75,11 @@
  *
  ***************************************************************/
 .print_title {
-    -fx-font: bolder bolder 24px "微软雅黑";
+    -fx-font: normal normal 24px "宋体";
 }
 
 .print_font {
-    -fx-font: normal normal 12px "微软雅黑";
+    -fx-font: normal normal 12px "宋体";
 }
 
 .fitpack TextField {
@@ -97,7 +97,7 @@ GridPane.fitpack TextField {
 
 /*表格内容*/
 .tab Label {
-    -fx-font: normal normal 12px "微软雅黑";
+    -fx-font: normal normal 12px "宋体";
 }
 
 .tab .table-row-cell {
@@ -113,15 +113,15 @@ GridPane.fitpack TextField {
     -fx-border-insets: -0.5;
     -fx-border-color: black;
     -fx-alignment: center;
-    -fx-font: normal normal 12px "微软雅黑";
+    -fx-font: normal normal 12px "宋体";
 }
 
 /*用于带税的月对账表*/
 .tab.smallfont .table-cell{
-    -fx-font: normal normal 10px "微软雅黑";
+    -fx-font: normal normal 12px "宋体";
 }
 .tab.smallfont Label {
-    -fx-font: normal normal 11px "微软雅黑";
+    -fx-font: normal normal 12px "宋体";
 }
 
 .additional_cell{
@@ -131,7 +131,7 @@ GridPane.fitpack TextField {
 }
 
 .additional_cell.lessfont{
-    -fx-font: normal normal 11px "微软雅黑";
+    -fx-font: normal normal 12px "宋体";
 }
 
 /*表格头部*/
@@ -144,26 +144,29 @@ GridPane.fitpack TextField {
 
 /*表格右边的骑缝*/
 .rightp {
-    -fx-pref-width: 25;
+    -fx-pref-width: 15;
     -fx-alignment: center;
 }
 
 .rightp Label {
     -fx-max-width: 10px;
     -fx-wrap-text: true;
-    -fx-font: normal normal 10px "微软雅黑";
+    -fx-font: normal normal 12px "宋体";
 }
 
 /*底部提示样式*/
 .btm-tip {
-    -fx-font: normal normal 10px "微软雅黑";
+    /*-fx-font: normal normal 12px "宋体";*/
+    -fx-font: normal normal 12px "宋体";
 }
+
+
 
 /*底部盖章的样式*/
 .stamp {
     -fx-min-height: 25px;
     -fx-max-height: 25px;
-    -fx-font: normal normal 12px "微软雅黑";
+    -fx-font: normal normal 12px "宋体";
     -fx-alignment: bottom-left;
 }
 
@@ -190,11 +193,11 @@ GridPane.fitpack TextField {
 }
 
 .smallfont{
-    -fx-font: normal normal 10px "微软雅黑";
+    -fx-font: normal normal 12px "宋体";
 }
 
 .contentfont{
-    -fx-font: normal normal 11px "微软雅黑";
+    -fx-font: normal normal 12px "宋体";
 }
 
 .bolder{
@@ -202,9 +205,14 @@ GridPane.fitpack TextField {
 }
 
 .annual_total{
-    -fx-font: bolder normal 14px "微软雅黑";
+    -fx-font: bolder normal 14px "宋体";
 }
 
 .snap .drop{
     -fx-background-color: transparent;
+}
+.layout_holder TextField, .layout_holder Label, .layout_holder .cell{
+    -fx-fill: #000000;
+    -fx-text-fill: black;
+    /*-fx-font-weight: bolder;*/
 }

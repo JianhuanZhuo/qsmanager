@@ -89,7 +89,8 @@ public class PrintReceiptController extends PrintTemplate<OrderModelFull> implem
         table.setEditable(true);
         table.getColumns().forEach(x -> x.setSortable(false));
         FXWidgetUtil.cellStr(detail, unit, name);
-        FXWidgetUtil.cellDecimal(price, num);
+        FXWidgetUtil.cellDecimal(num);
+        FXWidgetUtil.cellMoney(price);
         FXWidgetUtil.cellInteger(yuan_u4, yuan_u3, yuan_u2, yuan_u1, yuan, yuan_d1, yuan_d2);
 
         name.setCellValueFactory(x -> x.getValue().nameItem);
@@ -222,7 +223,7 @@ public class PrintReceiptController extends PrintTemplate<OrderModelFull> implem
                 .reduce(BigDecimal::add);
         String text = "0";
         if (t.isPresent()) {
-            text = t.get().stripTrailingZeros().toPlainString();
+            text = FXUtils.deciToMoney(t.get());
         }
         all_total.setText(text);
     }

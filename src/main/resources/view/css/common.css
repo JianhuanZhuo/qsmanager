@@ -28,7 +28,7 @@
     -fx-spacing: 5px;
 }
 
-.title-pane > .title-line {
+.title-line {
     -fx-background-color: #F5F8FD;
     -fx-min-height: 30px;
     -fx-max-height: 30px;
@@ -46,7 +46,7 @@
     visibility: hidden;
 }
 
-.title-pane > .title-line > Label{
+.title-line > Label{
     -fx-font: normal normal 16px "微软雅黑";
 }
 
@@ -60,7 +60,7 @@
     -fx-font: normal normal 14px "微软雅黑";
 }
 
-.title-pane > .title-line .btnable, .hbox-common>.btnable {
+.title-line .btnable, .hbox-common>.btnable {
     -fx-background-color: transparent;
     -fx-cursor: hand;
     -fx-alignment: center;
@@ -70,7 +70,11 @@
     /*-fx-background-color: white;*/
 }
 
-.title-pane > .title-line .btnable Label{
+.hbox-title{
+    -fx-font-weight: bolder;
+}
+
+.title-line .btnable Label{
     -fx-font: normal normal 14px "微软雅黑";
 }
 
@@ -101,6 +105,13 @@
 
 .hbox-common .right-spacing{
     -fx-padding: 5px 12px 5px 0px;
+}
+
+.right-align{
+    -fx-alignment: center-right;
+}
+.left-align{
+    -fx-alignment: center-left;
 }
 
 .box-center{

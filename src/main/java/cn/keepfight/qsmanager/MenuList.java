@@ -57,6 +57,18 @@ public enum MenuList {
         }
     }
 
+    /**
+     * 获得匹配项
+     */
+    public static MenuList getByTittle(String title){
+        for (MenuList m: values()){
+            if (m.getTitle().equals(title)){
+                return m;
+            }
+        }
+        return null;
+    }
+
     private void load(){
         Platform.runLater(() -> {
             try {

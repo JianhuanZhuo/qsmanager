@@ -169,6 +169,18 @@ public class MainPane {
     }
 
     /**
+     * 替换当前页面，即先将当期页面弹出后再加载一个页面，前一个页面不会被保留 <hr/>
+     * 一般用于刷新当前页面，比如修改参数后的下一个页面、上一个页面
+     * @param mainPane 用来替换当前页面的页面
+     * @param params 页面参数
+     */
+    public void replace(MainPaneList mainPane, Properties params) {
+        pop();
+        changeTo(mainPane.getController(), params);
+    }
+
+
+    /**
      * 返回上个界面
      */
     public void backNav(){

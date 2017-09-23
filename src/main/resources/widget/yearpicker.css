@@ -1,0 +1,17 @@
+.field{
+    -fx-min-height: 23px;
+    -fx-max-height: 23px;
+    -fx-min-width: 100px;
+    -fx-max-width: 100px;
+    -fx-opacity: 100%;
+}
+
+.btn{
+    -fx-background-radius: 0px;
+    -fx-padding: -2px 10px;
+    -fx-border-radius: 0px;
+    -fx-border-insets: 2px;
+    -fx-translate-x: -29;
+}
+
+

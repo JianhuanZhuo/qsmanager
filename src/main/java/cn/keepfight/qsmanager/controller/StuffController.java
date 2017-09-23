@@ -11,10 +11,8 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.*;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.util.Pair;
 
 import java.io.IOException;
 import java.net.URL;
@@ -52,7 +50,7 @@ public class StuffController implements ContentCtrl, Initializable{
 
     @FXML
 //    private ListView<Pair<MenuList, Boolean>> menuSelect;
-    private ListView<MenuList> menuSelect;
+    private VBox menuSelect;
 
     private StuffAddController addController;
 
@@ -97,25 +95,10 @@ public class StuffController implements ContentCtrl, Initializable{
 //                setText(null);
 //            }
 //        });
-        menuSelect.setCellFactory(list->new ListCell<MenuList>() {
-            @Override
-            protected void updateItem(MenuList item, boolean empty) {
-                super.updateItem(item, empty);
-                if (item != null && !empty) {
-                    setText(item.getTitle());
-                    setGraphic(ImageLoadUtil.bindImage(new ImageView(), "no.png", ImageLoadUtil.IMG_SIZE_16));
-                    this.selectedProperty().addListener((x,o,n)->{
-                        String p = n?"yes.png":"no.png";
-                        setGraphic(ImageLoadUtil.bindImage(new ImageView(), p, ImageLoadUtil.IMG_SIZE_16));
-                    });
-                }else{
-                    setGraphic(null);
-                    setText(null);
-                }
-            }
-        });
-        menuSelect.getItems().setAll(MenuList.values());
-        menuSelect.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+        menuSelect.setSpacing(5);
+        Arrays.stream(MenuList.values())
+                .map(MenuList::getTitle)
+                .forEach(s->menuSelect.getChildren().add(new CheckBox(s)));
     }
 
     private void initAction() {
@@ -222,13 +205,22 @@ public class StuffController implements ContentCtrl, Initializable{
     }
 
     private void selectMenu(CustomModel c){
-        List<MenuList> mlist = FXUtils.split(c.getNamefull(), "~", MenuList::valueOf);
-        menuSelect.getSelectionModel().clearSelection();
-        mlist.forEach(m-> menuSelect.getSelectionModel().select(m));
+        List<String> titles = FXUtils.split(c.getNamefull(), "~", s -> MenuList.valueOf(s).getTitle());
+        for (Node node : menuSelect.getChildren()){
+            CheckBox checkBox = (CheckBox) node;
+            if (titles.contains(checkBox.getText())){
+                checkBox.setSelected(true);
+            }else {
+                checkBox.setSelected(false);
+            }
+        }
     }
 
 
     private String getMenuSelectList(){
-        return menuSelect.getSelectionModel().getSelectedItems().stream().map(MenuList::getName).collect(Collectors.joining("~"));
+        return menuSelect.getChildren().stream()
+                .filter(n->((CheckBox)n).isSelected())
+                .map(n->MenuList.getByTittle(((CheckBox)n).getText()))
+                .map(MenuList::getName).collect(Collectors.joining("~"));
     }
 }

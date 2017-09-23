@@ -22,6 +22,8 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.sql.Timestamp;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.time.LocalDate;
@@ -224,6 +226,20 @@ public class FXUtils {
         }
     }
 
+    public static String deciToMoney(BigDecimal b){
+        DecimalFormat nf = new DecimalFormat("#,##0.###");
+        String s = nf.format(b);
+        int i = s.indexOf(".");
+        if (i==-1){
+            if (!s.equals("0")) {
+                s += ".00";
+            }
+        }else if (i==(s.length()-2)){
+            s+="0";
+        }
+        return s;
+    }
+
     /**
      * 带默认值的分数字符串转换，若转换错误则返回默认值
      * 重载方法默认值为0
@@ -377,12 +393,34 @@ public class FXUtils {
         return new StringConverter<BigDecimal>() {
             @Override
             public String toString(BigDecimal o) {
-                return Objects.isNull(o) ? nullValue : (o.stripTrailingZeros().toPlainString());
+                return Objects.isNull(o) ? nullValue : o.stripTrailingZeros().toPlainString();
             }
             @Override
             public BigDecimal fromString(String s) {
                 try {
-                    return new BigDecimal(s);
+                    return new BigDecimal(s.replace(",", ""));
+                } catch (Exception e) {
+                    return null;
+                }
+            }
+        };
+    }
+
+
+    public static StringConverter<BigDecimal> deciMoneyConverter(String nullValue){
+        return new StringConverter<BigDecimal>() {
+            @Override
+            public String toString(BigDecimal o) {
+                if (Objects.isNull(o)){
+                    return nullValue;
+                }else {
+                    return deciToMoney(o);
+                }
+            }
+            @Override
+            public BigDecimal fromString(String s) {
+                try {
+                    return new BigDecimal(s.replace(",", ""));
                 } catch (Exception e) {
                     return null;
                 }
