@@ -10,6 +10,7 @@ import javafx.beans.property.ListProperty;
 import javafx.beans.property.SimpleListProperty;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
+import javafx.geometry.Orientation;
 import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -46,7 +47,7 @@ public class MainPane {
     @FXML
     private Label title;
     @FXML
-    private Pane btnList;
+    private HBox btnList;
 
     private CustomModel userModel;
 
@@ -134,7 +135,14 @@ public class MainPane {
      */
     public void changeTo(ContentCtrl controller, Properties params) {
 
+        if (controller==null){
+            // 如果为 NULL，这提示错误
+            changeTo(MainPaneList.LOADING_ERROR);
+            return;
+        }
+
         Platform.runLater(() -> centerScp.setContent(MainPaneList.LOADING.getController().getRoot()));
+
 
         title.textProperty().bind(controller.getTitle());
         Platform.runLater(() -> btnList.getChildren().clear());
@@ -147,17 +155,37 @@ public class MainPane {
 
         Platform.runLater(() -> controller.showed(params));
         Platform.runLater(() -> {
-            List<Button> btns = controller.getBarBtns(params)
-                    .stream()
-                    .map(x -> {
-                        ImageView m = ImageLoadUtil.bindImage(new ImageView(), x.getImage());
-                        FXUtils.addStyle("image-button", m);
-                        m.setFitWidth(18);
-                        m.setFitHeight(18);
-                        return new Button(x.getText(), m);
-                    })
-                    .collect(Collectors.toList());
-            btnList.getChildren().setAll(btns);
+            List<Button> btns;
+            try {
+                System.out.println("bar:"+controller.getBarBtns(params).size());
+                btns = controller.getBarBtns(params).stream()
+                        .map(this::addTileBtn)
+                        .collect(Collectors.toList());
+            }catch (Exception e){
+                System.err.println("controller.getBarBtns() error!");
+                e.printStackTrace();
+                btns = new ArrayList<>(1);
+            }
+            if (btns.size()!=0){
+                btnList.getChildren().setAll(btns);
+                btnList.getChildren().add(new Separator(Orientation.VERTICAL));
+            }
+
+            // 添加刷新按钮
+            btnList.getChildren().add(addTileBtn(new BarBtn(){
+                @Override public String getText() {
+                    return "刷新";
+                }
+                @Override public String getHit() {
+                    return "点击刷新该页面";
+                }
+                @Override public String getImage() {
+                    return "reset.png";
+                }
+                @Override public Runnable getAction() {
+                    return ()->controller.showed(params);
+                }
+            }));
             titleVisible(!controller.transparentBackground());
         });
 
@@ -293,5 +321,29 @@ public class MainPane {
 
     public CustomModel getUserModel() {
         return userModel;
+    }
+
+
+    /**
+     * 转换一个 bar 对象为一个按钮实例
+     */
+    private Button addTileBtn(BarBtn bar){
+        Button btn = new Button(bar.getText());
+        String img = bar.getImage();
+        if (img!=null && !"".equals(img)){
+            ImageView m = ImageLoadUtil.bindImage(new ImageView(), bar.getImage());
+            m.setFitWidth(18);
+            m.setFitHeight(18);
+            btn.setGraphic(m);
+        }
+        String hit = bar.getHit();
+        if (hit!=null){
+            btn.setTooltip(new Tooltip(hit));
+        }
+        Runnable r = bar.getAction();
+        if (r!=null){
+            btn.setOnAction(event -> r.run());
+        }
+        return btn;
     }
 }

@@ -91,6 +91,16 @@
     -fx-cursor: hand;
 }
 
+/*菜单按钮*/
+.menu-bar-line>Button{
+    -fx-background-color: transparent;
+    -fx-cursor: hand;
+    -fx-alignment: center;
+}
+.menu-bar-line>Button Label{
+    -fx-font: normal normal 14px "微软雅黑";
+}
+
 /*common*/
 .hbox-common{
     -fx-spacing: 5px;

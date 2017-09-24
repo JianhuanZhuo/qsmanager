@@ -42,6 +42,7 @@ public class OutComeManagerController implements ContentCtrl {
         annuBtn.setOnAction(event -> QSApp.mainPane.changeTo(MainPaneList.OUTCOME_ANNUAL));
         staticBtn.setOnAction(event -> QSApp.mainPane.changeTo(MainPaneList.OUTCOME));
         salaryBtn.setOnAction(event -> QSApp.mainPane.changeTo(MainPaneList.SALARY));
+        rayBtn.setOnAction(event -> QSApp.mainPane.changeTo(MainPaneList.SALARY_MONTH));
     }
 
     @Override

@@ -4,6 +4,7 @@ import cn.keepfight.qsmanager.QSApp;
 import cn.keepfight.qsmanager.model.CustomModel;
 import cn.keepfight.qsmanager.service.LoginService;
 import cn.keepfight.utils.*;
+import javafx.application.Platform;
 import javafx.beans.binding.StringBinding;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
@@ -67,7 +68,7 @@ public class LoginController implements ContentCtrl {
 
     @Override
     public void showed(Properties params) {
-
+        Platform.runLater(()->psw.requestFocus());
     }
 
     @Override

@@ -67,4 +67,36 @@ public class ViewPathUtil {
         loader.load();
         return loader.getController();
     }
+
+
+    /**
+     * 指定frame视图名，获得对应的URL路径
+     *
+     * @param viewURL 视图名
+     * @return URL路径
+     */
+    public static URL getWidgetView(String viewURL) {
+        //@TODO 做出配置的方式
+        if (!viewURL.contains(".fxml")) {
+            System.out.println(viewURL + " do not contain .fxml! It's may wrong!");
+        }
+        return instance.getClass().getClassLoader().getResource(path + viewURL);
+    }
+
+    /**
+     * 指定 widget 视图名，获得该视图加载器
+     *
+     * @param viewURL widget 视图名
+     * @return 加载器
+     */
+    public static FXMLLoader getWidgetLoader(String viewURL) {
+        System.out.println("Widget--------------------getLoader:"+viewURL);
+        return new FXMLLoader(ViewPathUtil.getWidgetView(viewURL));
+    }
+
+    public static <T> T loadWidgetForController(String viewURL) throws IOException {
+        FXMLLoader loader = getWidgetLoader(viewURL);
+        loader.load();
+        return loader.getController();
+    }
 }

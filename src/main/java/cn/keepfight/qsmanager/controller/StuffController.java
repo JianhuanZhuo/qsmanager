@@ -52,6 +52,13 @@ public class StuffController implements ContentCtrl, Initializable{
 //    private ListView<Pair<MenuList, Boolean>> menuSelect;
     private VBox menuSelect;
 
+    @FXML
+    private  TextField info_serial1;
+    @FXML
+    private  TextField info_serial11;
+    @FXML
+    private  CheckBox check_fired;
+
     private StuffAddController addController;
 
     private CustomModel currentModel;
@@ -81,20 +88,6 @@ public class StuffController implements ContentCtrl, Initializable{
         limitLength(info_acc, 60);
         limitLength(info_psw, 60);
 
-//        menuSelect.setCellFactory(list->new ListCell<Pair<MenuList, Boolean>>() {
-//            @Override
-//            protected void updateItem(Pair<MenuList, Boolean> item, boolean empty) {
-//                super.updateItem(item, empty);
-//                if (item != null && !empty) {
-//                    CheckBox c = new CheckBox(item.getKey().getTitle());
-//                    c.setSelected(item.getValue());
-//                    setGraphic(c);
-//                } else {
-//                    setGraphic(null);
-//                }
-//                setText(null);
-//            }
-//        });
         menuSelect.setSpacing(5);
         Arrays.stream(MenuList.values())
                 .map(MenuList::getTitle)

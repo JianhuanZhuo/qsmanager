@@ -11,7 +11,7 @@
 
 <VBox fx:id="root" stylesheets="@css/common.css" xmlns="http://javafx.com/javafx/8.0.111"
       xmlns:fx="http://javafx.com/fxml/1" fx:controller="cn.keepfight.qsmanager.controller.SalaryController">
-    <HBox styleClass="title-line">
+    <HBox fx:id="title" styleClass="title-line">
         <Label layoutX="15.0" layoutY="15.0" text="年度工资总表（月份明细点击月份）"/>
         <Pane HBox.hgrow="ALWAYS"/>
     </HBox>

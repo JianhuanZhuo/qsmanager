@@ -9,15 +9,16 @@
       fx:controller="cn.keepfight.widget.PredictItem">
     <HBox styleClass="edit-price" VBox.vgrow="ALWAYS">
         <Label>￥</Label>
-        <TextField text="121,666,00"/>
+        <TextField fx:id="label_edit" text="121,666,00"/>
     </HBox>
     <HBox styleClass="total-price">
-        <Label>/￥822,231,00</Label>
+        <Label>/￥</Label>
+        <Label fx:id="label_total">822,231,00</Label>
     </HBox>
     <Separator/>
     <StackPane>
         <VBox alignment="CENTER">
-            <Label>2017年4月</Label>
+            <Label fx:id="label_date">2017年4月</Label>
         </VBox>
         <VBox alignment="BOTTOM_RIGHT">
             <ImageView styleClass="flag" fitHeight="21.0" fitWidth="28.0">

@@ -20,8 +20,10 @@ public enum MainPaneList {
     PRINT_MANAGER,
     OUTCOME,
     LOADING,
+    LOADING_ERROR,
     PAY_EDIT,
     SALARY,
+    SALARY_MONTH,
     OUTCOME_ANNUAL;
 
     String view;

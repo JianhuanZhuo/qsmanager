@@ -65,15 +65,7 @@
                 <Separator orientation="VERTICAL"/>
                 <Label fx:id="title" text="晴旭管理系统"/>
                 <Pane HBox.hgrow="ALWAYS"/>
-                <Pane fx:id="btnList">
-                    <Button styleClass="btnable" text="添加">
-                        <graphic>
-                            <ImageView fitHeight="18" fitWidth="18" styleClass="image-button">
-                                <Image url="@img/item-add.png"/>
-                            </ImageView>
-                        </graphic>
-                    </Button>
-                </Pane>
+                <HBox styleClass="menu-bar-line" alignment="CENTER_RIGHT" fx:id="btnList"/>
             </HBox>
             <ScrollPane VBox.vgrow="ALWAYS" styleClass="centerScp" fx:id="centerScp">
                 <!--<fx:include source="custom.fxml"/>-->
