@@ -39,5 +39,7 @@
 
         <!-- 革新之后的 -->
         <mapper resource="mapper/UserMapper.xml"/>
+        <mapper resource="mapper/OperatorMapper.xml"/>
+        <mapper resource="mapper/TraderMapper.xml"/>
     </mappers>
 </configuration>

@@ -24,7 +24,7 @@ public class OperatorDao {
     /**
      * 最后一次登陆时间
      */
-    private Long lastLoginStamp;
+    private Long last_login_stamp;
 
     public String getAccount() {
         return account;
@@ -66,18 +66,18 @@ public class OperatorDao {
         this.authority = authority;
     }
 
-    public Long getLastLoginStamp() {
-        return lastLoginStamp;
+    public Long getLast_login_stamp() {
+        return last_login_stamp;
     }
 
-    public void setLastLoginStamp(Long lastLoginStamp) {
-        this.lastLoginStamp = lastLoginStamp;
+    public void setLast_login_stamp(Long last_login_stamp) {
+        this.last_login_stamp = last_login_stamp;
     }
 
     /**
      * 设置最后一次登陆时间为当前系统时间
      */
-    public void setLastLoginStamp(){
-        this.lastLoginStamp = System.currentTimeMillis();
+    public void setLast_login_stamp(){
+        this.last_login_stamp = System.currentTimeMillis();
     }
 }

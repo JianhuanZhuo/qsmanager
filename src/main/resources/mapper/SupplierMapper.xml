@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!--
+id
+userDao
+traderDao
+-->
+
+<mapper namespace="cn.keepfight.qsmanager.Mapper.SupplierMapper">
+    <resultMap id="result_supplier" type="SupplierDao">
+        <id property="id" column="id"/>
+        <association property="userDao"
+                     resultMap="cn.keepfight.qsmanager.Mapper.UserMapper.result_user"
+                     columnPrefix="user_"/>
+        <association property="traderDao"
+                     resultMap="cn.keepfight.qsmanager.Mapper.TraderMapper.result_trader"
+                     columnPrefix="trader_"/>
+    </resultMap>
+
+    <!--* 选择全部供应商-->
+    <!--List<SupplierDao> selectAll() throws Exception;-->
+    <select id="selectAll" resultType="result_supplier">
+        SELECT
+            supplier.id                   id,
+            user.id                       user_id,
+            user.nickname                 user_nickname,
+            user.halt                     user_halt,
+            user.note                     user_note,
+            trader.id                     trader_id,
+            trader.serial                 trader_serial,
+            trader.name                   trader_name,
+            trader.name_full              trader_name_full,
+            trader.phone                  trader_phone,
+            trader.fax                    trader_fax,
+            trader.public_account_name    trader_public_account_name,
+            trader.public_account_serial  trader_public_account_serial,
+            trader.private_account_name   trader_private_account_name,
+            trader.private_account_serial trader_private_account_serial,
+            trader.addr1                  trader_addr1,
+            trader.addr2                  trader_addr2,
+            trader.addr3                  trader_addr3
+        FROM supplier, user, trader
+        WHERE supplier.user_id = user.id
+              AND supplier.trader_id = trader.id
+        ORDER BY supplier.id
+    </select>
+
+
+    <!--* 根据供应商 ID 选择-->
+    <!--SupplierDao selectByID(Long id) throws Exception;-->
+    <select id="selectByID" parameterType="long" resultType="result_supplier">
+        SELECT
+            supplier.id                   id,
+            user.id                       user_id,
+            user.nickname                 user_nickname,
+            user.halt                     user_halt,
+            user.note                     user_note,
+            trader.id                     trader_id,
+            trader.serial                 trader_serial,
+            trader.name                   trader_name,
+            trader.name_full              trader_name_full,
+            trader.phone                  trader_phone,
+            trader.fax                    trader_fax,
+            trader.public_account_name    trader_public_account_name,
+            trader.public_account_serial  trader_public_account_serial,
+            trader.private_account_name   trader_private_account_name,
+            trader.private_account_serial trader_private_account_serial,
+            trader.addr1                  trader_addr1,
+            trader.addr2                  trader_addr2,
+            trader.addr3                  trader_addr3
+        FROM supplier, user, trader
+        WHERE supplier.user_id = user.id
+              AND supplier.trader_id = trader.id
+              AND supplier.id = #{id}
+    </select>
+
+    <!--* 更新指定供应商，以ID为准-->
+    <!--void update(SupplierDao custom) throws Exception;-->
+    <!--<update id="update" parameterType="SupplierDao">-->
+    <!--UPDATE supplier-->
+    <!--SET-->
+    <!--serial        = #{serial},-->
+    <!--name          = #{name},-->
+    <!--salary_basic  = #{salary_basic},-->
+    <!--salary_annual = #{salary_annual}-->
+    <!--WHERE id = #{id}-->
+    <!--</update>-->
+
+    <!--* 插入指定供应商，插入后，该供应商的ID将得到更新-->
+    <!--void insert(SupplierDao custom) throws Exception;-->
+    <insert id="insert" parameterType="SupplierDao">
+        INSERT INTO supplier(
+        user_id,
+        trader_id
+        )VALUES (
+        #{user_id},
+        #{trader_id}
+        )
+        <selectKey keyProperty="id" order="AFTER" resultType="long">
+            SELECT last_insert_id();
+        </selectKey>
+    </insert>
+
+
+    <!--* 删除指定供应商，以ID为准。-->
+    <!--void deleteByID(Long id) throws Exception;-->
+    <delete id="deleteByID" parameterType="long">
+        DELETE FROM supplier
+        WHERE id = #{id}
+    </delete>
+</mapper>

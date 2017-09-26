@@ -14,19 +14,17 @@ public class StuffDao {
 
     private String name;
 
-    private UserDao userDao;
-
-    private Boolean halt;
+    private OperatorDao operatorDao;
 
     /**
      * 基本工资
      */
-    private BigDecimal salaryBasic;
+    private BigDecimal salary_basic;
 
     /**
      * 工龄工资
      */
-    private BigDecimal salaryAnnual;
+    private BigDecimal salary_annual;
 
     public Long getId() {
         return id;
@@ -52,36 +50,27 @@ public class StuffDao {
         this.name = name;
     }
 
-    public UserDao getUserDao() {
-        return userDao;
+    public OperatorDao getOperatorDao() {
+        return operatorDao;
     }
 
-    public void setUserDao(UserDao userDao) {
-        this.userDao = userDao;
+    public void setOperatorDao(OperatorDao operatorDao) {
+        this.operatorDao = operatorDao;
     }
 
-    public Boolean getHalt() {
-        return halt;
+    public BigDecimal getSalary_basic() {
+        return salary_basic;
     }
 
-    public void setHalt(Boolean halt) {
-        this.halt = halt;
+    public void setSalary_basic(BigDecimal salary_basic) {
+        this.salary_basic = salary_basic;
     }
 
-    public BigDecimal getSalaryBasic() {
-        return salaryBasic;
+    public BigDecimal getSalary_annual() {
+        return salary_annual;
     }
 
-    public void setSalaryBasic(BigDecimal salaryBasic) {
-        this.salaryBasic = salaryBasic;
+    public void setSalary_annual(BigDecimal salary_annual) {
+        this.salary_annual = salary_annual;
     }
-
-    public BigDecimal getSalaryAnnual() {
-        return salaryAnnual;
-    }
-
-    public void setSalaryAnnual(BigDecimal salaryAnnual) {
-        this.salaryAnnual = salaryAnnual;
-    }
-
 }

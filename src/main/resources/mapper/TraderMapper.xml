@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!--
+id
+serial
+name
+name_full
+phone
+fax
+public_account_name
+public_account_serial
+private_account_name
+private_account_serial
+addr1
+addr2
+addr3
+-->
+<mapper namespace="cn.keepfight.qsmanager.Mapper.TraderMapper">
+    <resultMap id="result_trader" type="TraderDao">
+        <id property="id" column="id"/>
+        <result property="serial" column="serial"/>
+        <result property="name" column="name"/>
+        <result property="name_full" column="name_full"/>
+        <result property="phone" column="phone"/>
+        <result property="fax" column="fax"/>
+        <result property="public_account_name" column="public_account_name"/>
+        <result property="public_account_serial" column="public_account_serial"/>
+        <result property="private_account_name" column="private_account_name"/>
+        <result property="private_account_serial" column="private_account_serial"/>
+        <result property="addr1" column="addr1"/>
+        <result property="addr2" column="addr1"/>
+        <result property="addr3" column="addr1"/>
+    </resultMap>
+
+    <!--* 选择全部交易商-->
+    <!--List<TraderDao> selectAll() throws Exception;-->
+    <select id="selectAll" resultType="result_trader">
+        SELECT
+            trader.id                     id,
+            trader.serial                 serial,
+            trader.name                   name,
+            trader.name_full              name_full,
+            trader.phone                  phone,
+            trader.fax                    fax,
+            trader.public_account_name    public_account_name,
+            trader.public_account_serial  public_account_serial,
+            trader.private_account_name   private_account_name,
+            trader.private_account_serial private_account_serial,
+            trader.addr1                  addr1,
+            trader.addr2                  addr2,
+            trader.addr3                  addr3
+        FROM trader
+        ORDER BY trader.id
+    </select>
+
+
+    <!--* 根据交易商 ID 选择客户-->
+    <!--TraderDao selectByID(Long id) throws Exception;-->
+    <select id="selectByID" parameterType="long" resultType="result_trader">
+        SELECT
+            trader.id                     id,
+            trader.serial                 serial,
+            trader.name                   name,
+            trader.name_full              name_full,
+            trader.phone                  phone,
+            trader.fax                    fax,
+            trader.public_account_name    public_account_name,
+            trader.public_account_serial  public_account_serial,
+            trader.private_account_name   private_account_name,
+            trader.private_account_serial private_account_serial,
+            trader.addr1                  addr1,
+            trader.addr2                  addr2,
+            trader.addr3                  addr3
+        FROM trader
+        WHERE id = #{id}
+    </select>
+
+    <!--* 更新指定交易商，以ID为准-->
+    <!--void update(TraderDao custom) throws Exception;-->
+    <update id="update" parameterType="TraderDao">
+        UPDATE trader
+        SET
+            serial                 = #{serial},
+            name                   = #{name},
+            name_full              = #{name_full},
+            phone                  = #{phone},
+            fax                    = #{fax},
+            public_account_name    = #{public_account_name},
+            public_account_serial  = #{public_account_serial},
+            private_account_name   = #{private_account_name},
+            private_account_serial = #{private_account_serial},
+            addr1                  = #{addr1},
+            addr2                  = #{addr2},
+            addr3                  = #{addr3}
+        WHERE id = #{id}
+    </update>
+
+    <!--* 插入指定交易商，插入后，该交易商的ID将得到更新-->
+    <!--void insert(TraderDao custom) throws Exception;-->
+    <insert id="insert" parameterType="TraderDao">
+        INSERT INTO trader(
+        serial,
+        name,
+        name_full,
+        phone,
+        fax,
+        public_account_name,
+        public_account_serial,
+        private_account_name,
+        private_account_serial,
+        addr1,
+        addr2,
+        addr3
+        )VALUES (
+        #{serial},
+        #{name},
+        #{name_full},
+        #{phone},
+        #{fax},
+        #{public_account_name},
+        #{public_account_serial},
+        #{private_account_name},
+        #{private_account_serial},
+        #{addr1},
+        #{addr2},
+        #{addr3}
+        )
+        <selectKey keyProperty="id" order="AFTER" resultType="long">
+            SELECT last_insert_id();
+        </selectKey>
+    </insert>
+
+    <!--* 删除指定交易商，以ID为准。-->
+    <!--void deleteByID(Long id) throws Exception;-->
+    <delete id="deleteByID" parameterType="long">
+        DELETE FROM trader
+        WHERE id = #{id}
+    </delete>
+</mapper>

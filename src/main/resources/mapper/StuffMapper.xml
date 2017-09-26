@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!--
+id
+serial
+name
+salary_basic
+salary_annual
+operatorDao
+-->
+
+<mapper namespace="cn.keepfight.qsmanager.Mapper.StuffMapper">
+
+    <resultMap id="result_stuff" type="StuffDao">
+        <id property="id" column="id"/>
+        <result property="serial" column="serial"/>
+        <result property="name" column="name"/>
+        <result property="halt" column="halt"/>
+        <result property="salary_basic" column="salary_basic"/>
+        <result property="salary_annual" column="salary_annual"/>
+        <association property="operatorDao"
+                     resultMap="cn.keepfight.qsmanager.Mapper.OperatorMapper.result_operator"
+                     columnPrefix="operator_"/>
+    </resultMap>
+
+    <!--* 选择全部员工-->
+    <!--List<StuffDao> selectAll() throws Exception;-->
+    <select id="selectAll" resultType="result_stuff">
+        SELECT
+            stuff.id                  id,
+            stuff.serial              serial,
+            stuff.name                name,
+            stuff.salary_basic        salary_basic,
+            stuff.salary_annual       salary_annual,
+            operator.id               operator_id,
+            operator.account          operator_account,
+            operator.password         operator_password,
+            operator.authority        operator_anthority,
+            operator.last_login_stamp operator_last_login_stamp,
+            user.id                   operator_user_id,
+            user.nickname             operator_user_nickname,
+            user.halt                 operator_user_halt,
+            user.note                 operator_user_note
+        FROM stuff, operator, user
+        WHERE stuff.operator_id = operator.id
+              AND operator.user_id = user.id
+        ORDER BY stuff.id
+    </select>
+
+
+    <!--* 根据员工 ID 选择-->
+    <!--StuffDao selectByID(Long id) throws Exception;-->
+    <select id="selectByID" parameterType="long" resultType="result_stuff">
+        SELECT
+            stuff.id                  id,
+            stuff.serial              serial,
+            stuff.name                name,
+            stuff.salary_basic        salary_basic,
+            stuff.salary_annual       salary_annual,
+            operator.id               operator_id,
+            operator.account          operator_account,
+            operator.password         operator_password,
+            operator.authority        operator_anthority,
+            operator.last_login_stamp operator_last_login_stamp,
+            user.id                   operator_user_id,
+            user.nickname             operator_user_nickname,
+            user.halt                 operator_user_halt,
+            user.note                 operator_user_note
+        FROM stuff, operator, user
+        WHERE stuff.operator_id = operator.id
+              AND operator.user_id = user.id
+              AND stuff.id = #{id}
+    </select>
+
+    <!--* 更新指定员工，以ID为准-->
+    <!--void update(StuffDao custom) throws Exception;-->
+    <update id="update" parameterType="StuffDao">
+        UPDATE stuff
+        SET
+            serial        = #{serial},
+            name          = #{name},
+            salary_basic  = #{salary_basic},
+            salary_annual = #{salary_annual}
+        WHERE id = #{id}
+    </update>
+
+    <!--* 插入指定员工，插入后，该员工的ID将得到更新-->
+    <!--void insert(StuffDao custom) throws Exception;-->
+    <insert id="insert" parameterType="StuffDao">
+        INSERT INTO stuff(
+        serial,
+        name,
+        salary_basic,
+        salary_annual,
+        operator_id
+        )VALUES (
+        #{serial},
+        #{name},
+        #{salary_basic},
+        #{salary_annual},
+        #{operator_id}
+        )
+        <selectKey keyProperty="id" order="AFTER" resultType="long">
+            SELECT last_insert_id();
+        </selectKey>
+    </insert>
+
+
+    <!--* 删除指定员工，以ID为准。-->
+    <!--void deleteByID(Long id) throws Exception;-->
+    <delete id="deleteByID" parameterType="long">
+        DELETE FROM stuff
+        WHERE id = #{id}
+    </delete>
+</mapper>

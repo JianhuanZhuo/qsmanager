@@ -12,10 +12,10 @@ public class TraderDao {
     private String name_full;
     private String phone;
     private String fax;
-    private String publicAccountName;
-    private String publicAccountSerial;
-    private String privateAccountName;
-    private String privateAccountSerial;
+    private String public_account_name;
+    private String public_account_serial;
+    private String private_account_name;
+    private String private_account_serial;
     private String addr1;
     private String addr2;
     private String addr3;
@@ -68,36 +68,36 @@ public class TraderDao {
         this.fax = fax;
     }
 
-    public String getPublicAccountName() {
-        return publicAccountName;
+    public String getPublic_account_serial() {
+        return public_account_serial;
     }
 
-    public void setPublicAccountName(String publicAccountName) {
-        this.publicAccountName = publicAccountName;
+    public void setPublic_account_serial(String public_account_serial) {
+        this.public_account_serial = public_account_serial;
     }
 
-    public String getPublicAccountSerial() {
-        return publicAccountSerial;
+    public String getPublic_account_name() {
+        return public_account_name;
     }
 
-    public void setPublicAccountSerial(String publicAccountSerial) {
-        this.publicAccountSerial = publicAccountSerial;
+    public void setPublic_account_name(String public_account_name) {
+        this.public_account_name = public_account_name;
     }
 
-    public String getPrivateAccountName() {
-        return privateAccountName;
+    public String getPrivate_account_name() {
+        return private_account_name;
     }
 
-    public void setPrivateAccountName(String privateAccountName) {
-        this.privateAccountName = privateAccountName;
+    public void setPrivate_account_name(String private_account_name) {
+        this.private_account_name = private_account_name;
     }
 
-    public String getPrivateAccountSerial() {
-        return privateAccountSerial;
+    public String getPrivate_account_serial() {
+        return private_account_serial;
     }
 
-    public void setPrivateAccountSerial(String privateAccountSerial) {
-        this.privateAccountSerial = privateAccountSerial;
+    public void setPrivate_account_serial(String private_account_serial) {
+        this.private_account_serial = private_account_serial;
     }
 
     public String getAddr1() {

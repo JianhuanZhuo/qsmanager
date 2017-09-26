@@ -1,7 +1,14 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--
 
+    userDao
+    account
+    password;
+    authority
+    last_login_stamp
+-->
 <mapper namespace="cn.keepfight.qsmanager.Mapper.OperatorMapper">
 
     <resultMap id="result_operator" type="OperatorDao">
@@ -9,7 +16,7 @@
         <result property="account" column="account"/>
         <result property="password" column="password"/>
         <result property="anthority" column="anthority"/>
-        <result property="lastLoginStamp" column="last_login_stamp"/>
+        <result property="last_login_stamp" column="last_login_stamp"/>
         <association property="userDao" resultMap="cn.keepfight.qsmanager.Mapper.UserMapper.result_user"
                      columnPrefix="user_"/>
     </resultMap>
@@ -18,17 +25,17 @@
     <!--List<OperatorDao> selectAll() throws Exception;-->
     <select id="selectAll" resultType="result_operator">
         SELECT
-            operator.id id,
-            account,
-            password,
-            anthority,
-            last_login_stamp,
-            u.id        user_id,
-            u.nickname  user_nickname,
-            u.halt      user_halt,
-            u.note      user_note
-        FROM operator, user u
-        WHERE operator.user_id = u.id
+            operator.id               id,
+            operator.account          account,
+            operator.password         password,
+            operator.authority        anthority,
+            operator.last_login_stamp last_login_stamp,
+            user.id                   user_id,
+            user.nickname             user_nickname,
+            user.halt                 user_halt,
+            user.note                 user_note
+        FROM operator, user
+        WHERE operator.user_id = user.id
         ORDER BY id
     </select>
 
@@ -36,9 +43,19 @@
     <!--* 根据系统操作者 ID 选择-->
     <!--OperatorDao selectByID(Long id) throws Exception;-->
     <select id="selectByID" parameterType="long" resultType="result_operator">
-        SELECT *
-        FROM operator
-        WHERE id = #{id}
+        SELECT
+            operator.id               id,
+            operator.account          account,
+            operator.password         password,
+            operator.authority        anthority,
+            operator.last_login_stamp last_login_stamp,
+            user.id                   user_id,
+            user.nickname             user_nickname,
+            user.halt                 user_halt,
+            user.note                 user_note
+        FROM operator, user
+        WHERE operator.user_id = user.id
+              AND operator.id = #{id}
     </select>
 
     <!--* 更新指定系统操作者，以ID为准-->
@@ -46,9 +63,11 @@
     <update id="update" parameterType="OperatorDao">
         UPDATE operator
         SET
-            nickname = #{nickname},
-            halt     = #{halt},
-            note     = #{note}
+            account          = #{account},
+            password         = #{password},
+            authority        = #{authority},
+            last_login_stamp = #{last_login_stamp},
+            user_id          = #{user_id}
         WHERE id = #{id}
     </update>
 
@@ -56,19 +75,17 @@
     <!--void insert(OperatorDao custom) throws Exception;-->
     <insert id="insert" parameterType="OperatorDao">
         INSERT INTO operator(
-        halt
-        <if test="nickname!=null">, nickname</if>
-        <if test="note!=null">
-            , note
-        </if>
+        account,
+        password,
+        authority,
+        last_login_stamp,
+        user_id
         )VALUES (
-        #{halt}
-        <if test="nickname!=null">
-            , #{nickname}
-        </if>
-        <if test="note!=null">
-            , #{note}
-        </if>
+        #{account},
+        #{password},
+        #{authority},
+        #{last_login_stamp},
+        #{user_id}
         )
         <selectKey keyProperty="id" order="AFTER" resultType="long">
             SELECT last_insert_id();
@@ -80,7 +97,7 @@
     <!--void deleteByID(Long id) throws Exception;-->
     <delete id="deleteByID" parameterType="long">
         DELETE FROM operator
-        WHERE id = #{1}
+        WHERE id = #{id}
     </delete>
 
     <!--* 根据指定口令检查系统操作者的合法性-->
@@ -88,17 +105,17 @@
     <!--OperatorDao checkLegality(@Param("account") String account,@Param("password") String password) throws Exception;-->
     <select id="checkLegality" resultType="result_operator">
         SELECT
-            operator.id id,
-            account,
-            password,
-            anthority,
-            last_login_stamp,
-            u.id        user_id,
-            u.nickname  user_nickname,
-            u.halt      user_halt,
-            u.note      user_note
-        FROM operator, user u
-        WHERE operator.user_id = u.id
+            operator.id               id,
+            operator.account          account,
+            operator.password         password,
+            operator.authority        anthority,
+            operator.last_login_stamp last_login_stamp,
+            user.id                   user_id,
+            user.nickname             user_nickname,
+            user.halt                 user_halt,
+            user.note                 user_note
+        FROM operator, user
+        WHERE operator.user_id = user.id
               AND account = #{account}
               AND password = #{password}
         LIMIT 1
