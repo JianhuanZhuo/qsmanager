@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.keepfight.qsmanager.Mapper.TestOrderMapper">
+
+    <!--选择指定条件的全部订单，其中客户、年份、月份、选择状态可以为空，表示忽视该条件-->
+    <!--List<OrderModelFull> selectAll(OrderSelection selection) throws Exception;-->
+    <select id="selectAll" parameterType="OrderSelection" resultType="OrderModelFull">
+        SELECT o.id AS id, cid, o.serial AS serial,  concat(unix_timestamp(orderdate), '000') AS orderdate, o.note AS note,
+        concat(c.serial , '-' , c.name) AS cust, deli
+        FROM orders o, custom c
+        WHERE o.cid=c.id
+        <if test="cid!=null">
+            AND o.cid = #{cid}
+        </if>
+        <if test="year!=null">
+            AND date_format(orderdate, '%Y') = #{year}
+        </if>
+        <if test="month!=null">
+            AND date_format(orderdate, '%m') = #{month}
+        </if>
+        <!--<if test="s!=null">-->
+        <!--AND date_format(orderdate, '%m') = #{month}-->
+        <!--</if>-->
+        ORDER BY orderdate
+    </select>
+
+    <resultMap id="result_user" type="UserDao">
+        <id property="id" column="id" />
+    </resultMap>
+
+    <resultMap id="resultSelectAllTest" type="OperatorDao">
+        <!--<id property="id" column="id" />-->
+        <result property="account" column="serial" />
+        <!--<result property="content" column="content" />-->
+        <!--<association property="userDao" javaType="UserDao">-->
+            <!--<id property="id" column="id" />-->
+            <!--&lt;!&ndash;<result property="userName" column="userName" />&ndash;&gt;-->
+            <!--&lt;!&ndash;<result property="userAddress" column="userAddress" />&ndash;&gt;-->
+        <!--</association>-->
+        <association property="userDao" resultMap="result_user" columnPrefix="user_" />
+    </resultMap>
+
+    <!--List<UserDao> selectAllTest() throws Exception;-->
+    <!--<select id="selectAllTest" resultType="OperatorDao">-->
+    <select id="selectAllTest" resultMap="resultSelectAllTest">
+        SELECT id, serial, cid user_id
+        FROM orders
+    </select>
+
+    <!--选择指定 ID 订单-->
+    <!--OrderModelFull selectById(Long id) throws Exception;-->
+    <select id="selectById" parameterType="long" resultType="OrderModelFull">
+        SELECT o.id AS id, cid, o.serial AS serial,  concat(unix_timestamp(orderdate), '000') AS orderdate, o.note AS note,
+        concat(c.serial , '-' , c.name) AS cust, deli
+        FROM orders o, custom c
+        WHERE o.cid=c.id AND o.id = #{id}
+    </select>
+
+    <!--新增订单，订单号为，YY-MM-DD-NUM 当天的全部订单序号-->
+    <!--void insert(OrderModel order) throws Exception;-->
+    <!-- 插入的是 2004-08-19 11:51:06 字符串 -->
+    <insert id="insert" parameterType="OrderModel">
+        INSERT INTO
+        orders (serial, cid, orderdate, note, deli)
+        VALUES (#{serial}, #{cid}, from_unixtime(#{orderdate}/1000), #{note}, #{deli})
+        <selectKey keyProperty="id" order="AFTER" resultType="long">
+            SELECT last_insert_id();
+        </selectKey>
+    </insert>
+
+    <!--删除指定 ID 的订单记录。-->
+    <!--void delete(OrderModel model) throws Exception;-->
+    <delete id="delete" parameterType="OrderModel">
+        DELETE FROM orders
+        WHERE id = #{id}
+    </delete>
+
+
+    <!--获取订单全部可用的年份-->
+    <!--List<Long> selectYear() throws Exception;-->
+    <select id="selectYear" resultType="long">
+        SELECT DISTINCT date_format(orderdate, '%Y') AS year
+        FROM orders
+        ORDER BY year
+    </select>
+
+    <!--修改一条订单记录-->
+    <!--void update(OrderModel model) throws Exception;-->
+    <update id="update" parameterType="OrderModel">
+        UPDATE orders
+        SET
+            serial    = #{serial},
+            cid       = #{cid},
+            orderdate = from_unixtime(#{orderdate}/1000),
+            note      = #{note},
+            deli      = #{deli}
+        WHERE id = #{id}
+    </update>
+
+    <!--设置已投递标志-->
+    <!--void deliOrder(Long oid) throws Exception;-->
+    <update id="deliOrder" parameterType="long">
+        UPDATE orders
+        SET
+        deli = 1
+        WHERE id = #{oid}
+    </update>
+</mapper>

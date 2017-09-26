@@ -28,11 +28,6 @@ public class StuffDao {
      */
     private BigDecimal salaryAnnual;
 
-    /**
-     * 备注信息
-     */
-    private String note;
-
     public Long getId() {
         return id;
     }
@@ -89,11 +84,4 @@ public class StuffDao {
         this.salaryAnnual = salaryAnnual;
     }
 
-    public String getNote() {
-        return note;
-    }
-
-    public void setNote(String note) {
-        this.note = note;
-    }
 }

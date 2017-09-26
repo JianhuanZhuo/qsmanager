@@ -5,10 +5,16 @@ package cn.keepfight.qsmanager.dao;
  * Created by tom on 2017/9/25.
  */
 public class CustomerDao {
+
+    Long id;
+
+    /**
+     * 交易商
+     */
     TraderDao traderDao;
 
     /**
-     * 系统用户
+     * 系统操作者
      */
-    UserDao userDao;
+    OperatorDao operatorDao;
 }

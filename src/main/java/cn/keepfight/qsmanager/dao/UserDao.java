@@ -8,19 +8,23 @@ import java.io.Serializable;
  * Created by tom on 2017/9/24.
  */
 public class UserDao implements Serializable{
+
     private Long id;
-    private String account;
-    private String password;
 
     /**
-     * 菜单访问权限字符串，这是一个用 ~ 拼接的串
+     * 系统问候昵称
      */
-    private String authority;
+    private String nickname;
 
     /**
      * 账户是否已停用
      */
     private Boolean halt;
+
+    /**
+     * 备注信息
+     */
+    private String note;
 
     public Long getId() {
         return id;
@@ -30,20 +34,12 @@ public class UserDao implements Serializable{
         this.id = id;
     }
 
-    public String getAccount() {
-        return account;
+    public String getNickname() {
+        return nickname;
     }
 
-    public void setAccount(String account) {
-        this.account = account;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
+    public void setNickname(String nickName) {
+        this.nickname = nickName;
     }
 
     public Boolean getHalt() {
@@ -54,35 +50,11 @@ public class UserDao implements Serializable{
         this.halt = halt;
     }
 
-    public String getAuthority() {
-        return authority;
+    public String getNote() {
+        return note;
     }
 
-    public void setAuthority(String authority) {
-        this.authority = authority;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        UserDao userDao = (UserDao) o;
-
-        if (id != null ? !id.equals(userDao.id) : userDao.id != null) return false;
-        if (account != null ? !account.equals(userDao.account) : userDao.account != null) return false;
-        if (password != null ? !password.equals(userDao.password) : userDao.password != null) return false;
-        if (authority != null ? !authority.equals(userDao.authority) : userDao.authority != null) return false;
-        return halt != null ? halt.equals(userDao.halt) : userDao.halt == null;
-    }
-
-    @Override
-    public int hashCode() {
-        int result = id != null ? id.hashCode() : 0;
-        result = 31 * result + (account != null ? account.hashCode() : 0);
-        result = 31 * result + (password != null ? password.hashCode() : 0);
-        result = 31 * result + (authority != null ? authority.hashCode() : 0);
-        result = 31 * result + (halt != null ? halt.hashCode() : 0);
-        return result;
+    public void setNote(String note) {
+        this.note = note;
     }
 }

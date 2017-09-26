@@ -1,23 +1,35 @@
 package cn.keepfight.utils;
 
+import cn.keepfight.qsmanager.Mapper.OrderItemMapper;
+import cn.keepfight.qsmanager.Mapper.OrderMapper;
+import cn.keepfight.qsmanager.Mapper.TestOrderMapper;
 import cn.keepfight.qsmanager.QSApp;
+import cn.keepfight.qsmanager.dao.OperatorDao;
+import cn.keepfight.qsmanager.dao.UserDao;
+import cn.keepfight.qsmanager.model.OrderModelFull;
+import cn.keepfight.qsmanager.model.OrderSelection;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.print.PageLayout;
 import javafx.print.PageOrientation;
 import javafx.print.Paper;
 import javafx.print.Printer;
+import org.apache.ibatis.io.Resources;
+import org.apache.ibatis.session.SqlSessionFactory;
+import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 import org.junit.Test;
 
 import javax.print.attribute.standard.OrientationRequested;
 import java.io.File;
 import java.io.IOException;
+import java.io.Reader;
 import java.math.BigDecimal;
 import java.net.URI;
 import java.nio.file.*;
 import java.sql.Timestamp;
 import java.time.Instant;
 import java.time.ZoneId;
+import java.util.List;
 import java.util.Scanner;
 
 import static org.junit.Assert.*;
@@ -75,5 +87,21 @@ public class ViewPathUtilTest {
         System.out.println( new BigDecimal("10.0000000").stripTrailingZeros());
         System.out.println( new BigDecimal("10.0000000").stripTrailingZeros().toPlainString());
         System.out.println( new BigDecimal("10.0000000").toPlainString());
+    }
+
+    @Test
+    public void testMybatis() throws Exception {
+        SqlSessionFactory factory = new SqlSessionFactoryBuilder().build(Resources.getResourceAsReader("mybatis.xml"));
+        OrderSelection selection = new OrderSelection();
+//        List<OrderModelFull> res = FXUtils.getMapper(factory, TestOrderMapper.class, TestOrderMapper::selectAll,  selection);
+//        System.out.println(res.size());
+        List<OperatorDao> users = FXUtils.getMapper(factory, TestOrderMapper.class, TestOrderMapper::selectAllTest);
+        System.out.println(users.size());
+        users.forEach(x->{
+            System.out.println(x.getId());
+            System.out.println(x.getAccount());
+
+            System.out.println("user_id"+x.getUserDao().getId());
+        });
     }
 }

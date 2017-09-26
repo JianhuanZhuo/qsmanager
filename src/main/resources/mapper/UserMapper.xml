@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.keepfight.qsmanager.Mapper.UserMapper">
+
+    <resultMap id="result_user" type="UserDao">
+        <id property="id" column="id"/>
+        <result property="nickname" column="nickname"/>
+        <result property="halt" column="halt"/>
+        <result property="note" column="note"/>
+    </resultMap>
+
+    <!--* 选择全部用户-->
+    <!--List<UserDao> selectAll() throws Exception;-->
+    <select id="selectAll" resultType="result_user">
+        SELECT *
+        FROM user
+        ORDER BY id
+    </select>
+
+
+    <!--* 根据用户 ID 选择客户-->
+    <!--UserDao selectByID(Long id) throws Exception;-->
+    <select id="selectByID" parameterType="long" resultType="result_user">
+        SELECT *
+        FROM user
+        WHERE id = #{id}
+    </select>
+
+    <!--* 更新指定用户，以ID为准-->
+    <!--void update(UserDao custom) throws Exception;-->
+    <update id="update" parameterType="UserDao">
+        UPDATE user
+        SET
+            nickname = #{nickname},
+            halt     = #{halt},
+            note     = #{note}
+        WHERE id = #{id}
+    </update>
+
+    <!--* 插入指定用户，插入后，该用户的ID将得到更新-->
+    <!--void insert(UserDao custom) throws Exception;-->
+    <insert id="insert" parameterType="UserDao">
+        INSERT INTO user(
+        halt
+        <if test="nickname!=null">, nickname</if>
+        <if test="note!=null">, note</if>
+        )VALUES (
+        #{halt}
+        <if test="nickname!=null">, #{nickname}</if>
+        <if test="note!=null">, #{note}</if>
+        )
+        <selectKey keyProperty="id" order="AFTER" resultType="long">
+            SELECT last_insert_id();
+        </selectKey>
+    </insert>
+
+    <!--* 删除指定用户，以ID为准。-->
+    <!--void deleteByID(Long id) throws Exception;-->
+    <delete id="deleteByID" parameterType="long">
+        DELETE FROM user
+        WHERE id = #{id}
+    </delete>
+</mapper>

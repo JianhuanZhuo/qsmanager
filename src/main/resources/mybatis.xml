@@ -7,6 +7,7 @@
     <typeAliases>
         <!--<typeAlias alias="User" type="cn.keepfight.qsmanager.model.UserModel"/>-->
         <package name="cn.keepfight.qsmanager.model"/>
+        <package name="cn.keepfight.qsmanager.dao"/>
     </typeAliases>
     <environments default="development">
         <environment id="development">
@@ -31,8 +32,12 @@
         <mapper resource="mapper/CustAnnuMapper.xml"/>
         <mapper resource="mapper/OrderFavorMapper.xml"/>
         <mapper resource="mapper/OrderMapper.xml"/>
+        <mapper resource="mapper/TestOrderMapper.xml"/>
         <mapper resource="mapper/OrderItemMapper.xml"/>
         <mapper resource="mapper/DeliveryItemMapper.xml"/>
         <mapper resource="mapper/DeliveryMapper.xml"/>
+
+        <!-- 革新之后的 -->
+        <mapper resource="mapper/UserMapper.xml"/>
     </mappers>
 </configuration>

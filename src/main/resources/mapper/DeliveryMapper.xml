@@ -63,7 +63,7 @@
             ddate        = DATEtime(#{ddate}/1000, 'unixepoch', 'localtime'),
             cust         = #{cust},
             order_serial = #{order_serial}
-        WHERE id == #{id}
+        WHERE id = #{id}
     </update>
 
     <!--删除送货记录-->
@@ -80,9 +80,9 @@
         SELECT date_format(d.ddate, '%m') AS mon, sum(di.price * di.num * di.pack) AS total
         FROM delivery_item di, delivery d
         WHERE
-            cid == #{cid}
-            AND date_format(d.ddate, '%Y') == #{year}
-            AND di.did == d.id
+            cid = #{cid}
+            AND date_format(d.ddate, '%Y') = #{year}
+            AND di.did = d.id
         GROUP BY date_format(d.ddate, '%m')
         ORDER BY date_format(d.ddate, '%m')
     </select>
