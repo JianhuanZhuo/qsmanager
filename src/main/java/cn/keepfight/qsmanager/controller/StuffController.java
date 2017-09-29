@@ -2,10 +2,16 @@ package cn.keepfight.qsmanager.controller;
 
 import cn.keepfight.qsmanager.MenuList;
 import cn.keepfight.qsmanager.QSApp;
+import cn.keepfight.qsmanager.dao.StuffDao;
+import cn.keepfight.qsmanager.dao.StuffWrapper;
 import cn.keepfight.qsmanager.model.CustomModel;
+import cn.keepfight.qsmanager.service.StuffServices;
 import cn.keepfight.utils.*;
+import cn.keepfight.widget.MenuListChecker;
 import javafx.application.Platform;
 import javafx.beans.binding.StringBinding;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -25,7 +31,7 @@ import static cn.keepfight.utils.FXUtils.limitLength;
  * 员工菜单模块控制器
  * Created by tom on 2017/7/19.
  */
-public class StuffController implements ContentCtrl, Initializable{
+public class StuffController implements ContentCtrl, Initializable {
     @FXML
     private HBox root;
     @FXML
@@ -33,7 +39,7 @@ public class StuffController implements ContentCtrl, Initializable{
     @FXML
     private Button delStuff;
     @FXML
-    private ListView<CustomModel> stuffList;
+    private ListView<StuffDao> stuffList;
 
     @FXML
     private VBox infoPane;
@@ -48,20 +54,17 @@ public class StuffController implements ContentCtrl, Initializable{
     @FXML
     private PasswordField info_psw;
 
-    @FXML
-//    private ListView<Pair<MenuList, Boolean>> menuSelect;
-    private VBox menuSelect;
+    public TextField info_salary_basic;
+    public TextField info_salary_annual;
+    public CheckBox check_halt;
 
     @FXML
-    private  TextField info_serial1;
-    @FXML
-    private  TextField info_serial11;
-    @FXML
-    private  CheckBox check_fired;
+    private VBox menuSelect;
+    private MenuListChecker menuListChecker = new MenuListChecker();
 
     private StuffAddController addController;
 
-    private CustomModel currentModel;
+    private StuffWrapper currentStuff = new StuffWrapper();
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -70,9 +73,9 @@ public class StuffController implements ContentCtrl, Initializable{
     }
 
     private void initUI() {
-        stuffList.setCellFactory(list -> new ListCell<CustomModel>() {
+        stuffList.setCellFactory(list -> new ListCell<StuffDao>() {
             @Override
-            protected void updateItem(CustomModel item, boolean empty) {
+            protected void updateItem(StuffDao item, boolean empty) {
                 super.updateItem(item, empty);
                 if (item != null && !empty) {
                     setText(item.getSerial() + "-" + item.getName());
@@ -88,72 +91,62 @@ public class StuffController implements ContentCtrl, Initializable{
         limitLength(info_acc, 60);
         limitLength(info_psw, 60);
 
-        menuSelect.setSpacing(5);
-        Arrays.stream(MenuList.values())
-                .map(MenuList::getTitle)
-                .forEach(s->menuSelect.getChildren().add(new CheckBox(s)));
+
+        info_name.textProperty().bindBidirectional(currentStuff.nameProperty());
+        info_serial.textProperty().bindBidirectional(currentStuff.serialProperty());
+        info_acc.textProperty().bindBidirectional(currentStuff.getOperatorWrapper().accountProperty());
+        info_psw.textProperty().bindBidirectional(currentStuff.getOperatorWrapper().passwordProperty());
+
+        info_salary_basic.textProperty()
+                .bindBidirectional(currentStuff.salary_basicProperty(), FXUtils.deciMoneyConverter("0"));
+        info_salary_annual.textProperty()
+                .bindBidirectional(currentStuff.salary_annualProperty(), FXUtils.deciMoneyConverter("0"));
+
+        check_halt.selectedProperty().bindBidirectional(
+                currentStuff.getOperatorWrapper().getUserWrapper().haltProperty()
+        );
+
+        menuSelect.getChildren().add(menuListChecker);
+//        menuListChecker.getDataProperty().bindBidirectional(
+//                currentStuff.getOperatorWrapper().authorityPr1operty());
     }
 
     private void initAction() {
         // 新增客户按钮
         addStuff.setOnMouseClicked(e -> QSUtil.add(() -> addController,
                 (model -> {
-                    QSApp.service.getStuffService().insert(model);
+                    StuffServices.insert(model);
                     loadStuff();
                 })));
 
         // 删除客户按钮
-        delStuff.setOnMouseClicked(event -> QSUtil.del(()->stuffList.getSelectionModel(),
-                (model)->{
-                    QSApp.service.getStuffService().delete(model);
+        delStuff.setOnMouseClicked(event -> QSUtil.del(() -> stuffList.getSelectionModel(),
+                (model) -> {
+                    StuffServices.delete(model.getId());
                     loadStuff();
                 }));
 
         // 点击左侧切换信息
         stuffList.getSelectionModel().selectedItemProperty().addListener(item -> {
-            CustomModel custom = stuffList.getSelectionModel().getSelectedItem();
-            if (custom == null) {
+            StuffDao stuff = stuffList.getSelectionModel().getSelectedItem();
+            if (stuff == null) {
                 return;
             }
-
-            // 保存
-            currentModel = custom;
-
-            info_name.setText(custom.getName());
-            info_serial.setText(custom.getSerial());
-            info_acc.setText(custom.getAcc());
-            info_psw.setText(custom.getPsw());
-
-            selectMenu(custom);
+            currentStuff.wrap(stuff);
         });
 
         infoPane.disableProperty().bind(stuffList.getSelectionModel().selectedItemProperty().isNull());
         delStuff.disableProperty().bind(stuffList.getSelectionModel().selectedItemProperty().isNull());
-
+        saveInfo.disableProperty().bind(stuffList.getSelectionModel().selectedItemProperty().isNull());
         // 保存更新信息
         saveInfo.setOnMouseClicked(event -> {
-            if (currentModel == null) {
-                return;
-            }
-            CustomModel custom = new CustomModel();
-
-            custom.setId(currentModel.getId());
-            custom.setUtype(currentModel.getUtype());
-
-            custom.setName(info_name.getText());
-            custom.setSerial(info_serial.getText());
-
-            custom.setAcc(info_acc.getText());
-            custom.setPsw(info_psw.getText());
-
-            custom.setNamefull(getMenuSelectList());
-
             try {
-                QSApp.service.getStuffService().update(custom);
-                loadStuff();
+                StuffServices.update(currentStuff.get());
             } catch (Exception e) {
+                e.printStackTrace();
                 WarningBuilder.build("更新错误，请保证网络通畅再重试！");
             }
+            loadStuff();
         });
     }
 
@@ -164,7 +157,6 @@ public class StuffController implements ContentCtrl, Initializable{
 
     @Override
     public void loaded() {
-        loadStuff();
         Platform.runLater(() -> {
             try {
                 addController = ViewPathUtil.loadViewForController("stuff_add.fxml");
@@ -176,7 +168,8 @@ public class StuffController implements ContentCtrl, Initializable{
 
     @Override
     public void showed(Properties params) {
-
+        loadStuff();
+        System.out.println("suff show");
     }
 
     @Override
@@ -187,33 +180,17 @@ public class StuffController implements ContentCtrl, Initializable{
     /**
      * 加载全部员工信息
      */
-    private void loadStuff(){
+    private void loadStuff() {
         Platform.runLater(() -> {
             try {
-                stuffList.getItems().setAll(FXCollections.observableList(QSApp.service.getStuffService().selectAll()));
+                stuffList.getItems().setAll(FXCollections.observableList(StuffServices.selectAll()));
+                stuffList.getItems().forEach(x -> {
+                    System.out.println(x.getOperatorDao().getLast_login_stamp());
+                });
             } catch (Exception e) {
                 e.printStackTrace();
+                WarningBuilder.build("加载员工信息错误，请保证网络通畅再重试！");
             }
         });
-    }
-
-    private void selectMenu(CustomModel c){
-        List<String> titles = FXUtils.split(c.getNamefull(), "~", s -> MenuList.valueOf(s).getTitle());
-        for (Node node : menuSelect.getChildren()){
-            CheckBox checkBox = (CheckBox) node;
-            if (titles.contains(checkBox.getText())){
-                checkBox.setSelected(true);
-            }else {
-                checkBox.setSelected(false);
-            }
-        }
-    }
-
-
-    private String getMenuSelectList(){
-        return menuSelect.getChildren().stream()
-                .filter(n->((CheckBox)n).isSelected())
-                .map(n->MenuList.getByTittle(((CheckBox)n).getText()))
-                .map(MenuList::getName).collect(Collectors.joining("~"));
     }
 }

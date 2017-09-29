@@ -13,7 +13,7 @@
 
     <!--* 选择全部用户-->
     <!--List<UserDao> selectAll() throws Exception;-->
-    <select id="selectAll" resultType="result_user">
+    <select id="selectAll" resultMap="result_user">
         SELECT *
         FROM user
         ORDER BY id
@@ -22,7 +22,7 @@
 
     <!--* 根据用户 ID 选择客户-->
     <!--UserDao selectByID(Long id) throws Exception;-->
-    <select id="selectByID" parameterType="long" resultType="result_user">
+    <select id="selectByID" parameterType="long" resultMap="result_user">
         SELECT *
         FROM user
         WHERE id = #{id}

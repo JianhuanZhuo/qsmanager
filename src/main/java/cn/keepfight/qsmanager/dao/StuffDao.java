@@ -56,6 +56,8 @@ public class StuffDao {
 
     public void setOperatorDao(OperatorDao operatorDao) {
         this.operatorDao = operatorDao;
+        // 员工默认为无访问权限
+        operatorDao.setAuthority("");
     }
 
     public BigDecimal getSalary_basic() {

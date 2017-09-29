@@ -1,6 +1,8 @@
 package cn.keepfight.qsmanager.controller;
 
-import cn.keepfight.qsmanager.model.CustomModel;
+import cn.keepfight.qsmanager.dao.OperatorDao;
+import cn.keepfight.qsmanager.dao.StuffDao;
+import cn.keepfight.qsmanager.dao.UserDao;
 import cn.keepfight.utils.DialogContent;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
@@ -13,7 +15,7 @@ import javafx.scene.layout.VBox;
  * 新增客户信息控制器
  * Created by tom on 2017/6/7.
  */
-public class StuffAddController implements DialogContent<CustomModel> {
+public class StuffAddController implements DialogContent<StuffDao> {
     @FXML
     private VBox root;
     @FXML
@@ -34,11 +36,9 @@ public class StuffAddController implements DialogContent<CustomModel> {
     }
 
     @Override
-    public void fill(CustomModel model) {
-        name.setText(model.getName());
-        serial.setText(model.getSerial());
-        acc.setText(model.getAcc());
-        psw.setText(model.getPsw());
+    @Deprecated
+    public void fill(StuffDao model) {
+        throw new RuntimeException("不支持的方法");
     }
 
     @Override
@@ -57,16 +57,21 @@ public class StuffAddController implements DialogContent<CustomModel> {
     }
 
     @Override
-    public CustomModel pack() {
-        CustomModel custom = new CustomModel();
-        custom.setName(name.getText());
-        custom.setSerial(serial.getText());
-        custom.setAcc(acc.getText());
-        custom.setPsw(psw.getText());
+    public StuffDao pack() {
+        StuffDao stuff = new StuffDao();
+        OperatorDao operator = new OperatorDao();
+        UserDao user = new UserDao();
+        user.setHalt(false);
+        user.setNickname(name.getText());
 
-        //默认的值也要上
-        custom.setUtype(3L);
+        operator.setUserDao(user);
+        operator.setAccount(acc.getText());
+        operator.setPassword(psw.getText());
 
-        return custom;
+        stuff.setOperatorDao(operator);
+        stuff.setName(name.getText());
+        stuff.setSerial(serial.getText());
+
+        return stuff;
     }
 }

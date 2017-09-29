@@ -15,7 +15,7 @@
         <id property="id" column="id"/>
         <result property="account" column="account"/>
         <result property="password" column="password"/>
-        <result property="anthority" column="anthority"/>
+        <result property="authority" column="authority"/>
         <result property="last_login_stamp" column="last_login_stamp"/>
         <association property="userDao" resultMap="cn.keepfight.qsmanager.Mapper.UserMapper.result_user"
                      columnPrefix="user_"/>
@@ -23,12 +23,12 @@
 
     <!--* 选择全部系统操作者-->
     <!--List<OperatorDao> selectAll() throws Exception;-->
-    <select id="selectAll" resultType="result_operator">
+    <select id="selectAll" resultMap="result_operator">
         SELECT
             operator.id               id,
             operator.account          account,
             operator.password         password,
-            operator.authority        anthority,
+            operator.authority        authority,
             operator.last_login_stamp last_login_stamp,
             user.id                   user_id,
             user.nickname             user_nickname,
@@ -42,12 +42,12 @@
 
     <!--* 根据系统操作者 ID 选择-->
     <!--OperatorDao selectByID(Long id) throws Exception;-->
-    <select id="selectByID" parameterType="long" resultType="result_operator">
+    <select id="selectByID" parameterType="long" resultMap="result_operator">
         SELECT
             operator.id               id,
             operator.account          account,
             operator.password         password,
-            operator.authority        anthority,
+            operator.authority        authority,
             operator.last_login_stamp last_login_stamp,
             user.id                   user_id,
             user.nickname             user_nickname,
@@ -67,7 +67,7 @@
             password         = #{password},
             authority        = #{authority},
             last_login_stamp = #{last_login_stamp},
-            user_id          = #{user_id}
+            user_id          = #{userDao.id}
         WHERE id = #{id}
     </update>
 
@@ -85,7 +85,7 @@
         #{password},
         #{authority},
         #{last_login_stamp},
-        #{user_id}
+        #{userDao.id}
         )
         <selectKey keyProperty="id" order="AFTER" resultType="long">
             SELECT last_insert_id();
@@ -103,12 +103,12 @@
     <!--* 根据指定口令检查系统操作者的合法性-->
     <!--* @return 若账号密码合法返回口令对应的系统操作者，否则返回 null-->
     <!--OperatorDao checkLegality(@Param("account") String account,@Param("password") String password) throws Exception;-->
-    <select id="checkLegality" resultType="result_operator">
+    <select id="checkLegality" resultMap="result_operator">
         SELECT
             operator.id               id,
             operator.account          account,
             operator.password         password,
-            operator.authority        anthority,
+            operator.authority        authority,
             operator.last_login_stamp last_login_stamp,
             user.id                   user_id,
             user.nickname             user_nickname,

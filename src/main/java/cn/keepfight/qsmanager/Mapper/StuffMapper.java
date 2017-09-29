@@ -10,7 +10,7 @@ import java.util.List;
  */
 public interface StuffMapper extends Mapper {
 
-    /**
+    /**`
      * 选择全部员工
      */
     List<StuffDao> selectAll() throws Exception;

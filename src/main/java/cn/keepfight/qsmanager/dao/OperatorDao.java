@@ -1,5 +1,7 @@
 package cn.keepfight.qsmanager.dao;
 
+import java.util.Date;
+
 /**
  * 系统操作对象dao.
  * 表示可以登陆该系统的用户对象
@@ -24,7 +26,7 @@ public class OperatorDao {
     /**
      * 最后一次登陆时间
      */
-    private Long last_login_stamp;
+    private Date last_login_stamp;
 
     public String getAccount() {
         return account;
@@ -66,18 +68,19 @@ public class OperatorDao {
         this.authority = authority;
     }
 
-    public Long getLast_login_stamp() {
+    public Date getLast_login_stamp() {
         return last_login_stamp;
     }
 
-    public void setLast_login_stamp(Long last_login_stamp) {
+    public OperatorDao setLast_login_stamp(Date last_login_stamp) {
         this.last_login_stamp = last_login_stamp;
+        return this;
     }
 
     /**
      * 设置最后一次登陆时间为当前系统时间
      */
     public void setLast_login_stamp(){
-        this.last_login_stamp = System.currentTimeMillis();
+        this.last_login_stamp = new Date(System.currentTimeMillis());
     }
 }

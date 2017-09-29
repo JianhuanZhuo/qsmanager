@@ -27,7 +27,7 @@ operatorDao
 
     <!--* 选择全部员工-->
     <!--List<StuffDao> selectAll() throws Exception;-->
-    <select id="selectAll" resultType="result_stuff">
+    <select id="selectAll" resultMap="result_stuff">
         SELECT
             stuff.id                  id,
             stuff.serial              serial,
@@ -52,7 +52,7 @@ operatorDao
 
     <!--* 根据员工 ID 选择-->
     <!--StuffDao selectByID(Long id) throws Exception;-->
-    <select id="selectByID" parameterType="long" resultType="result_stuff">
+    <select id="selectByID" parameterType="long" resultMap="result_stuff">
         SELECT
             stuff.id                  id,
             stuff.serial              serial,
@@ -81,8 +81,9 @@ operatorDao
         SET
             serial        = #{serial},
             name          = #{name},
-            salary_basic  = #{salary_basic},
-            salary_annual = #{salary_annual}
+            <if test="salary_basic!=null">salary_basic  = #{salary_basic},</if>
+            <if test="salary_annual!=null">salary_annual = #{salary_annual},</if>
+            operator_id   = #{operatorDao.id}
         WHERE id = #{id}
     </update>
 
@@ -92,15 +93,15 @@ operatorDao
         INSERT INTO stuff(
         serial,
         name,
-        salary_basic,
-        salary_annual,
+        <if test="salary_basic!=null">salary_basic,</if>
+        <if test="salary_annual!=null">salary_annual,</if>
         operator_id
         )VALUES (
         #{serial},
         #{name},
-        #{salary_basic},
-        #{salary_annual},
-        #{operator_id}
+        <if test="salary_basic!=null">#{salary_basic},</if>
+        <if test="salary_annual!=null">{salary_annual},</if>
+        #{operatorDao.id}
         )
         <selectKey keyProperty="id" order="AFTER" resultType="long">
             SELECT last_insert_id();

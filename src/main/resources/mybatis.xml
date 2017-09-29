@@ -41,5 +41,7 @@
         <mapper resource="mapper/UserMapper.xml"/>
         <mapper resource="mapper/OperatorMapper.xml"/>
         <mapper resource="mapper/TraderMapper.xml"/>
+        <mapper resource="mapper/StuffMapper.xml"/>
+        <mapper resource="mapper/SupplierMapper.xml"/>
     </mappers>
 </configuration>

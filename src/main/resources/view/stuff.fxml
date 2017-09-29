@@ -64,13 +64,13 @@
             <Label text="员工密码：" GridPane.rowIndex="3"/>
             <PasswordField fx:id="info_psw" GridPane.columnIndex="1" GridPane.rowIndex="3"/>
             <Label text="基本工资：" GridPane.rowIndex="4"/>
-            <TextField fx:id="info_serial1" layoutX="85.0" layoutY="15.0" GridPane.columnIndex="1"
+            <TextField fx:id="info_salary_basic" layoutX="85.0" layoutY="15.0" GridPane.columnIndex="1"
                        GridPane.rowIndex="4"/>
             <Label layoutX="15.0" layoutY="135.0" text="工龄工资：" GridPane.rowIndex="5"/>
-            <TextField fx:id="info_serial11" layoutX="85.0" layoutY="131.0" GridPane.columnIndex="1"
+            <TextField fx:id="info_salary_annual" layoutX="85.0" layoutY="131.0" GridPane.columnIndex="1"
                        GridPane.rowIndex="5"/>
             <Button mnemonicParsing="false" text="查看工资" GridPane.columnIndex="2" GridPane.rowIndex="4"/>
-            <CheckBox fx:id="check_fired" text="停用该员工" GridPane.columnIndex="2"/>
+            <CheckBox fx:id="check_halt" text="停用该员工" GridPane.columnIndex="2"/>
             <columnConstraints>
                 <ColumnConstraints/>
                 <ColumnConstraints/>

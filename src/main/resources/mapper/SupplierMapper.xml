@@ -21,7 +21,7 @@ traderDao
 
     <!--* 选择全部供应商-->
     <!--List<SupplierDao> selectAll() throws Exception;-->
-    <select id="selectAll" resultType="result_supplier">
+    <select id="selectAll" resultMap="result_supplier">
         SELECT
             supplier.id                   id,
             user.id                       user_id,
@@ -50,7 +50,7 @@ traderDao
 
     <!--* 根据供应商 ID 选择-->
     <!--SupplierDao selectByID(Long id) throws Exception;-->
-    <select id="selectByID" parameterType="long" resultType="result_supplier">
+    <select id="selectByID" parameterType="long" resultMap="result_supplier">
         SELECT
             supplier.id                   id,
             user.id                       user_id,

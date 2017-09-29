@@ -36,7 +36,7 @@ addr3
 
     <!--* 选择全部交易商-->
     <!--List<TraderDao> selectAll() throws Exception;-->
-    <select id="selectAll" resultType="result_trader">
+    <select id="selectAll" resultMap="result_trader">
         SELECT
             trader.id                     id,
             trader.serial                 serial,
@@ -58,7 +58,7 @@ addr3
 
     <!--* 根据交易商 ID 选择客户-->
     <!--TraderDao selectByID(Long id) throws Exception;-->
-    <select id="selectByID" parameterType="long" resultType="result_trader">
+    <select id="selectByID" parameterType="long" resultMap="result_trader">
         SELECT
             trader.id                     id,
             trader.serial                 serial,
