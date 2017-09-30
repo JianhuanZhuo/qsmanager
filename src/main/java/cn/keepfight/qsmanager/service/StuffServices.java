@@ -17,7 +17,13 @@ public abstract class StuffServices {
     private static SqlSessionFactory factory = SqlSessionServices.getFactory();
 
     public static List<StuffDao> selectAll() throws Exception {
-        return FXUtils.getMapper(factory, StuffMapper.class, StuffMapper::selectAll);
+//        return FXUtils.getMapper(factory, StuffMapper.class, StuffMapper::selectAll);
+        List<StuffDao> res =  FXUtils.getMapper(factory, StuffMapper.class, StuffMapper::selectAll);
+        res.forEach(x->{
+            System.out.println(x.getName()+":"+x.getOperatorDao().getAuthority());
+            System.out.println(x.getName()+":"+x.getOperatorDao().getAccount());
+        });
+        return res;
     }
 
     public static  StuffDao selectAllByID(Long id) throws Exception {

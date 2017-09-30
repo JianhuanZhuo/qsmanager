@@ -25,6 +25,8 @@ public class OperatorWrapper implements DaoWrapper<OperatorDao> {
         setAuthority(data.getAuthority());
         setLast_login_stamp(data.getLast_login_stamp());
 
+        System.out.println("setAuthority:"+data.getAuthority());
+
         userWrapper.wrap(data.getUserDao());
     }
 

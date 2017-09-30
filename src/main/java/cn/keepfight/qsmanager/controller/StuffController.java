@@ -19,6 +19,7 @@ import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.util.StringConverter;
 
 import java.io.IOException;
 import java.net.URL;
@@ -107,8 +108,9 @@ public class StuffController implements ContentCtrl, Initializable {
         );
 
         menuSelect.getChildren().add(menuListChecker);
-//        menuListChecker.getDataProperty().bindBidirectional(
-//                currentStuff.getOperatorWrapper().authorityPr1operty());
+
+
+        menuListChecker.getDataProperty().bindBidirectional(currentStuff.getOperatorWrapper().authorityProperty());
     }
 
     private void initAction() {

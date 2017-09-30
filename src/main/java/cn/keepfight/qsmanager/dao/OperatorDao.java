@@ -49,6 +49,7 @@ public class OperatorDao {
     }
 
     public void setAccount(String account) {
+        System.out.println("setAccount:"+account);
         this.account = account;
     }
 
@@ -65,6 +66,7 @@ public class OperatorDao {
     }
 
     public void setAuthority(String authority) {
+        System.out.println("setAuthority:"+authority);
         this.authority = authority;
     }
 
