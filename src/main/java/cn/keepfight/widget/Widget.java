@@ -14,19 +14,19 @@ public interface Widget<T> {
      */
     Node getRoot();
 
-//    /**
-//     * 设置挂件表示的数据
-//     */
-//    default void set(T data){
-//        throw new RuntimeException("not support operation in jh!");
-//    }
-//
-//    /**
-//     * 获得对象的数据
-//     */
-//    default T get(){
-//        throw new RuntimeException("not support operation in jh!");
-//    }
+    /**
+     * 设置挂件表示的数据
+     */
+    default void set(T data){
+        throw new RuntimeException("not support operation in jh!");
+    }
+
+    /**
+     * 获得对象的数据
+     */
+    default T get(){
+        throw new RuntimeException("not support operation in jh!");
+    }
 
     /**
      * 获得对象属性对象

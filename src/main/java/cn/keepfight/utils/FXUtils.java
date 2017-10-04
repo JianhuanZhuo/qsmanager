@@ -220,7 +220,7 @@ public class FXUtils {
      */
     public static BigDecimal getDecimal(String str, BigDecimal defaultValue){
         try {
-            return new BigDecimal(str).stripTrailingZeros();
+            return new BigDecimal(str.replaceAll(",", "")).stripTrailingZeros();
         }catch (Exception e){
             return defaultValue;
         }

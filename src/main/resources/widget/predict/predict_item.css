@@ -1,25 +1,12 @@
 .predict-item{
-    -fx-min-width: 120px;
-    -fx-min-height: 60px;
+    -fx-padding: 3px;
     -fx-background-color: white;
     -fx-border-width: 1px;
     -fx-border-color: #CCCCCC;
-    -fx-border-style: dotted;
+    -fx-alignment: center-left;
 }
 
-.predict-item.select{
-    -fx-border-color: #0c0;
-    -fx-border-style: solid;
-}
-
-.edit-price {
-    -fx-padding: 2px;
-    -fx-alignment: center;
-    -fx-font-size: 14px;
-    /*-fx-padding: 2px 2xp 0 2xp;*/
-}
-
-.edit-price TextField{
+.text_edit{
     -fx-min-width: 90px;
     -fx-max-width: 90px;
     -fx-background-color: transparent;
@@ -30,17 +17,4 @@
     -fx-padding: 0px;
     -fx-text-fill: orange;
     -fx-alignment: center;
-}
-
-
-.total-price{
-    -fx-padding: 2xp;
-    -fx-alignment: center-right;
-}
-
-.flag {
-    -fx-image: url("r_flag.png");
-}
-.select .flag{
-    -fx-image: url("r_flag_s.png");
 }

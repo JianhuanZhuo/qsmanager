@@ -1,17 +1,12 @@
 package cn.keepfight.qsmanager.controller;
 
-import cn.keepfight.qsmanager.MenuList;
-import cn.keepfight.qsmanager.QSApp;
 import cn.keepfight.qsmanager.dao.StuffDao;
 import cn.keepfight.qsmanager.dao.StuffWrapper;
-import cn.keepfight.qsmanager.model.CustomModel;
 import cn.keepfight.qsmanager.service.StuffServices;
 import cn.keepfight.utils.*;
 import cn.keepfight.widget.MenuListChecker;
 import javafx.application.Platform;
 import javafx.beans.binding.StringBinding;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -19,12 +14,11 @@ import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.util.StringConverter;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.*;
-import java.util.stream.Collectors;
+import java.util.Properties;
+import java.util.ResourceBundle;
 
 import static cn.keepfight.utils.FXUtils.limitLength;
 
@@ -91,7 +85,6 @@ public class StuffController implements ContentCtrl, Initializable {
         limitLength(info_serial, 30);
         limitLength(info_acc, 60);
         limitLength(info_psw, 60);
-
 
         info_name.textProperty().bindBidirectional(currentStuff.nameProperty());
         info_serial.textProperty().bindBidirectional(currentStuff.serialProperty());
@@ -186,9 +179,7 @@ public class StuffController implements ContentCtrl, Initializable {
         Platform.runLater(() -> {
             try {
                 stuffList.getItems().setAll(FXCollections.observableList(StuffServices.selectAll()));
-                stuffList.getItems().forEach(x -> {
-                    System.out.println(x.getOperatorDao().getLast_login_stamp());
-                });
+                stuffList.getItems().forEach(x -> System.out.println(x.getOperatorDao().getLast_login_stamp()));
             } catch (Exception e) {
                 e.printStackTrace();
                 WarningBuilder.build("加载员工信息错误，请保证网络通畅再重试！");

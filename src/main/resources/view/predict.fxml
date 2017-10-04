@@ -1,18 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.ColumnConstraints?>
-<?import javafx.scene.layout.FlowPane?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox fx:id="root" styleClass="content-pane" stylesheets="@css/common.css" xmlns="http://javafx.com/javafx/8.0.131" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cn.keepfight.qsmanager.controller.PredictController">
+<VBox fx:id="root" styleClass="content-pane" stylesheets="@css/common.css" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cn.keepfight.qsmanager.controller.PredictController">
 
     <HBox styleClass="hbox-common, hbox-title, left-align">
         <Label text="现金部分" />
@@ -20,35 +23,177 @@
     <HBox styleClass="hbox-common, left-align">
         <CheckBox text="私账存余" />
         <TextField promptText="请输入私账存余现金" />
-    </HBox>
-    <HBox styleClass="hbox-common, left-align">
+        <Pane HBox.hgrow="ALWAYS" />
         <CheckBox text="公账存余" />
         <TextField promptText="请输入公账存余现金" />
+    </HBox>
+    <HBox styleClass="hbox-common, left-align">
         <Pane HBox.hgrow="ALWAYS" />
-        <Label text="￥+200,232,00" />
+        <Label text="总计：￥" />
+        <Label layoutX="513.0" layoutY="15.0" text="+0" />
     </HBox>
     <Separator />
     <HBox styleClass="hbox-common, hbox-title, left-align">
         <Label text="收入部分" />
-        
+
     </HBox>
-   <GridPane alignment="CENTER" gridLinesVisible="true" prefHeight="145.0" prefWidth="591.0">
-     <columnConstraints>
-       <ColumnConstraints hgrow="SOMETIMES" maxWidth="285.66668701171875" minWidth="10.0" prefWidth="108.33334350585938" />
-       <ColumnConstraints hgrow="SOMETIMES" maxWidth="481.6666564941406" minWidth="10.0" prefWidth="481.6666564941406" />
-     </columnConstraints>
-     <rowConstraints>
-       <RowConstraints maxHeight="52.0" minHeight="10.0" prefHeight="52.0" vgrow="SOMETIMES" />
-       <RowConstraints maxHeight="48.0" minHeight="8.0" prefHeight="48.0" vgrow="SOMETIMES" />
-       <RowConstraints maxHeight="62.333343505859375" minHeight="10.0" prefHeight="45.0" vgrow="SOMETIMES" />
-     </rowConstraints>
-      <children>
-         <Label text="安利" />
-      </children>
-   </GridPane>
+    <GridPane alignment="CENTER" gridLinesVisible="true">
+        <columnConstraints>
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="100.0" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+        </columnConstraints>
+        <rowConstraints>
+            <RowConstraints />
+            <RowConstraints />
+        </rowConstraints>
+        <Label text="安利" />
+        <VBox spacing="3.0" GridPane.columnIndex="1">
+            <GridPane.margin>
+                <Insets bottom="3.0" left="3.0" right="3.0" top="3.0" />
+            </GridPane.margin>
+            <fx:include source="../widget/predict/predict_item.fxml" />
+            <fx:include source="../widget/predict/predict_item.fxml" />
+            <fx:include source="../widget/predict/predict_item.fxml" />
+        </VBox>
+        <VBox spacing="3.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+            <GridPane.margin>
+                <Insets bottom="3.0" left="3.0" right="3.0" top="3.0" />
+            </GridPane.margin>
+            <fx:include source="../widget/predict/predict_item.fxml" />
+            <fx:include source="../widget/predict/predict_item.fxml" />
+            <fx:include source="../widget/predict/predict_item.fxml" />
+        </VBox>
+        <Label text="合计：￥123,231.00" GridPane.columnIndex="2" />
+    </GridPane>
+    <HBox layoutX="15.0" layoutY="73.0" styleClass="hbox-common, left-align">
+        <Pane HBox.hgrow="ALWAYS" />
+        <Label text="总计：￥" />
+        <Label text="+200,232,00" />
+    </HBox>
     <Separator />
     <HBox styleClass="hbox-common, hbox-title, left-align">
         <Label text="支出部分" />
     </HBox>
-    <Separator />
+
+    <GridPane alignment="CENTER" gridLinesVisible="true">
+        <columnConstraints>
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="100.0" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+        </columnConstraints>
+        <rowConstraints>
+            <RowConstraints />
+            <RowConstraints />
+        </rowConstraints>
+        <Label text="安利" />
+        <VBox spacing="3.0" GridPane.columnIndex="1">
+            <GridPane.margin>
+                <Insets bottom="3.0" left="3.0" right="3.0" top="3.0" />
+            </GridPane.margin>
+            <fx:include source="../widget/predict/predict_item.fxml" />
+            <fx:include source="../widget/predict/predict_item.fxml" />
+            <fx:include source="../widget/predict/predict_item.fxml" />
+        </VBox>
+        <VBox spacing="3.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+            <GridPane.margin>
+                <Insets bottom="3.0" left="3.0" right="3.0" top="3.0" />
+            </GridPane.margin>
+            <fx:include source="../widget/predict/predict_item.fxml" />
+            <fx:include source="../widget/predict/predict_item.fxml" />
+            <fx:include source="../widget/predict/predict_item.fxml" />
+        </VBox>
+        <Label text="合计：￥123,231.00" GridPane.columnIndex="2" />
+    </GridPane>
+    <GridPane>
+        <columnConstraints>
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+        </columnConstraints>
+        <rowConstraints>
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        </rowConstraints>
+        <children>
+            <HBox styleClass="hbox-common, left-align">
+                <children>
+                    <CheckBox selected="true" text="固定工资" />
+                    <Label text="2000*10+3740=￥23,740.00" />
+                </children>
+            </HBox>
+            <HBox layoutX="10.0" layoutY="9.0" styleClass="hbox-common, left-align" GridPane.columnIndex="1">
+                <children>
+                    <CheckBox text="剩余工资" />
+                    <Label layoutX="89.0" layoutY="19.0" text="￥20,525.00/20,525.00" />
+                    <Button mnemonicParsing="false" styleClass="btnable" text="编辑">
+                        <graphic>
+                            <ImageView fitHeight="18.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true" styleClass="image-size-icon">
+                                <image>
+                                    <Image url="@img/edit.png" />
+                                </image>
+                            </ImageView>
+                        </graphic>
+                    </Button>
+                </children>
+            </HBox>
+            <HBox styleClass="hbox-common, left-align" GridPane.rowIndex="1">
+                <children>
+                    <CheckBox selected="true" text="厂租支出" />
+                    <TextField promptText="请输入厂租支出金额" />
+                </children>
+            </HBox>
+            <HBox layoutX="10.0" layoutY="39.0" styleClass="hbox-common, left-align" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                <children>
+                    <CheckBox selected="true" text="运费支出" />
+                    <TextField promptText="请输入运费支出金额" />
+                </children>
+            </HBox>
+            <HBox styleClass="hbox-common, left-align" GridPane.rowIndex="2">
+                <children>
+                    <CheckBox selected="true" text="水费支出" />
+                    <TextField promptText="请输入水费支出金额" />
+                </children>
+            </HBox>
+            <HBox layoutX="10.0" layoutY="69.0" styleClass="hbox-common, left-align" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                <children>
+                    <CheckBox selected="true" text="电费支出" />
+                    <TextField promptText="请输入水费支出金额" />
+                </children>
+            </HBox>
+            <HBox styleClass="hbox-common, left-align" GridPane.rowIndex="3">
+                <children>
+                    <CheckBox selected="true" text="机械支出" />
+                    <TextField promptText="请输入水费支出金额" />
+                </children>
+            </HBox>
+            <HBox layoutX="10.0" layoutY="99.0" styleClass="hbox-common, left-align" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                <children>
+                    <CheckBox selected="true" text="杂项支出" />
+                    <TextField promptText="请输入水费支出金额" />
+                </children>
+            </HBox>
+        </children>
+    </GridPane>
+    <HBox layoutX="15.0" layoutY="271.0" styleClass="hbox-common, left-align">
+        <children>
+            <Pane HBox.hgrow="ALWAYS" />
+            <Label text="总计：￥" />
+            <Label text="+200,232,00" />
+        </children>
+    </HBox>
+    <Separator layoutX="15.0" layoutY="296.0" />
+    <HBox layoutX="15.0" layoutY="299.0" styleClass="hbox-common, hbox-title, left-align">
+        <children>
+            <Label text="收支汇总" />
+        </children>
+    </HBox>
+   <HBox layoutX="15.0" layoutY="467.0" styleClass="hbox-common, left-align">
+      <children>
+         <Pane HBox.hgrow="ALWAYS" />
+         <Label text="剩余流动资金：￥" />
+         <Label text="+200,232,00" />
+      </children>
+   </HBox>
 </VBox>

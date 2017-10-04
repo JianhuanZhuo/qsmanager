@@ -1,31 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.*?>
-<?import javafx.scene.image.Image?>
-<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.*?>
-<VBox fx:id="root" alignment="CENTER" styleClass="predict-item, select" stylesheets="@predict_item.css"
+<HBox fx:id="root" alignment="CENTER" styleClass="predict-item" stylesheets="@predict_item.css"
       xmlns="http://javafx.com/javafx/8.0.131" xmlns:fx="http://javafx.com/fxml/1"
       fx:controller="cn.keepfight.widget.PredictItem">
-    <HBox styleClass="edit-price" VBox.vgrow="ALWAYS">
-        <Label>￥</Label>
-        <TextField fx:id="label_edit" text="121,666,00"/>
-    </HBox>
-    <HBox styleClass="total-price">
-        <Label>/￥</Label>
-        <Label fx:id="label_total">822,231,00</Label>
-    </HBox>
-    <Separator/>
-    <StackPane>
-        <VBox alignment="CENTER">
-            <Label fx:id="label_date">2017年4月</Label>
-        </VBox>
-        <VBox alignment="BOTTOM_RIGHT">
-            <ImageView styleClass="flag" fitHeight="21.0" fitWidth="28.0">
-                <Image url="@r_flag.png"/>
-            </ImageView>
-        </VBox>
-    </StackPane>
-</VBox>
+    <CheckBox fx:id="check" text="2017年4月" />
+    <Separator orientation="VERTICAL"/>
+    <Label>￥</Label>
+    <TextField styleClass="text_edit" fx:id="text_edit" text="822,231,00"/>
+    <Label>/￥</Label>
+    <Label fx:id="label_total">822,231,00</Label>
+</HBox>
 
 
