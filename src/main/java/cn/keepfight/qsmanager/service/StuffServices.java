@@ -44,8 +44,8 @@ public abstract class StuffServices {
      * 删除指定 ID 的员工
      */
     public static  void delete(Long id) throws Exception {
+//        FXUtils.getMapper(factory, StuffMapper.class, StuffMapper::deleteByID, id);
         OperatorServices.delete(selectAllByID(id).getOperatorDao());
-        FXUtils.getMapper(factory, StuffMapper.class, StuffMapper::deleteByID, id);
     }
 
     /**

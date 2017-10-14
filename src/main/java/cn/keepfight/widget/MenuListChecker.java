@@ -76,7 +76,7 @@ public class MenuListChecker extends VBox implements Widget<String> {
         return this;
     }
 
-    private String get() {
+    public String get() {
         return toCheckBox.values().stream()
                 .filter(CheckBox::isSelected)
                 .map(n -> MenuList.getByTittle(n.getText()))
@@ -93,7 +93,7 @@ public class MenuListChecker extends VBox implements Widget<String> {
     }
 
 
-    private void set(String status) {
+    public void set(String status) {
         for (CheckBox c : toCheckBox.values()) {
             c.setSelected(false);
         }

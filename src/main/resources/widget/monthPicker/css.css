@@ -1,0 +1,61 @@
+.picker-item {
+    -fx-alignment: center-left;
+}
+
+.content {
+    -fx-font-size: 16px;
+}
+
+.year, .month {
+    -fx-underline: true;
+    -fx-text-fill: chocolate;
+    -fx-cursor: hand;
+}
+
+.year-picker {
+    -fx-min-width: 100px;
+    -fx-min-height: 100px;
+    -fx-pref-height: 100px;
+    -fx-background-color: azure;
+}
+
+.year-picker>HBox {
+    -fx-background-color: white;
+    /*-fx-border-color: red;*/
+    -fx-alignment: center;
+    -fx-padding: 0 5px;
+    -fx-border-width: 1px;
+    -fx-border-color: #E1E1E1;
+    -fx-spacing: 5px;
+}
+
+.year_list{
+    -fx-border-width: 0 1px 0 0;
+    -fx-border-color: #CCCCCC;
+    -fx-fill-width: true;
+}
+
+
+.year_list>Button{
+    -fx-min-width: 60px;
+    -fx-max-width: 90px;
+    -fx-min-height: 30px;
+    -fx-alignment: center;
+    -fx-padding: 0 10px;
+    -fx-background-color: transparent;
+    -fx-background-radius: 0px;
+}
+.year_list>Button:hover{
+    -fx-background-color: #ABD8ED;
+}
+
+.year_list>Button.uu,.year_list>Button.dd{
+    -fx-text-fill: #aaaaaa;
+}
+.year_list>Button.u,.year_list>Button.d{
+    -fx-text-fill: #444444;
+}
+.year_list>Button.center{
+    -fx-background-color: #ABD8ED;
+    -fx-text-fill: #ff4943;
+}

@@ -257,3 +257,7 @@ GridPane.infogp {
 .money.big{
     -fx-font-size: 22px;
 }
+
+.sroll-content {
+    -fx-padding: 5px 15px 5px 5px;
+}

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+
+<?import javafx.scene.control.Button?>
+<HBox fx:id="root" styleClass="picker-item" stylesheets="@css.css" xmlns="http://javafx.com/javafx/8.0.111"
+      xmlns:fx="http://javafx.com/fxml/1" fx:controller="cn.keepfight.widget.MonthPicker">
+    <HBox styleClass="content">
+        <Label fx:id="label_year" styleClass="year">2017</Label>
+        <Label>年</Label>
+        <Label fx:id="label_month" styleClass="month">7</Label>
+        <Label>月</Label>
+    </HBox>
+    <Pane stylesheets="@css.css" fx:id="floatPane" visible="false" layoutY="20.0" managed="false" styleClass="year-picker">
+        <HBox fx:id="floatBox" maxHeight="158.0" maxWidth="300.0" minHeight="50.0" minWidth="50">
+            <VBox fx:id="year_list" styleClass="year_list">
+                <Button fx:id="year_uu" styleClass="uu" text="2015"/>
+                <Button fx:id="year_u" styleClass="u" text="2016"/>
+                <Button fx:id="year_c" styleClass="center" text="2017"/>
+                <Button fx:id="year_d" styleClass="d" text="2018"/>
+                <Button fx:id="year_dd" styleClass="dd" text="2019"/>
+            </VBox>
+            <Label text="年"/>
+            <VBox fx:id="month_list" styleClass="year_list">
+                <Button fx:id="month_uu" styleClass="uu" text="12"/>
+                <Button fx:id="month_u" styleClass="u" text="11"/>
+                <Button fx:id="month_c" styleClass="center" text="1"/>
+                <Button fx:id="month_d" styleClass="d" text="2"/>
+                <Button fx:id="month_dd" styleClass="dd" text="3"/>
+            </VBox>
+            <Label text="月"/>
+        </HBox>
+    </Pane>
+</HBox>

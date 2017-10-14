@@ -5,7 +5,7 @@
 <HBox fx:id="root" alignment="CENTER" styleClass="predict-item" stylesheets="@predict_item.css"
       xmlns="http://javafx.com/javafx/8.0.131" xmlns:fx="http://javafx.com/fxml/1"
       fx:controller="cn.keepfight.widget.PredictItem">
-    <CheckBox fx:id="check" text="2017年4月" />
+    <CheckBox fx:id="check" text="2017年4月"/>
     <Separator orientation="VERTICAL"/>
     <Label>￥</Label>
     <TextField styleClass="text_edit" fx:id="text_edit" text="822,231,00"/>

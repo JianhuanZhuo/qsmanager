@@ -50,6 +50,7 @@ public class QSUtil {
                 try {
                     delAction.accept(model);
                 } catch (Exception e) {
+                    e.printStackTrace();
                     WarningBuilder.build("删除记录失败");
                 }
             }

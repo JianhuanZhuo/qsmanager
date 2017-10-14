@@ -42,8 +42,8 @@ public abstract class OperatorServices {
      * 删除指定 ID 的系统操作者
      */
     public static void delete(Long id) throws Exception {
+//        FXUtils.getMapper(factory, OperatorMapper.class, OperatorMapper::deleteByID, id);
         UserServices.delete(selectAllByID(id).getUserDao());
-        FXUtils.getMapper(factory, OperatorMapper.class, OperatorMapper::deleteByID, id);
     }
 
     /**

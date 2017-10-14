@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<HBox fx:id="root" alignment="CENTER" styleClass="item" stylesheets="@css.css"
+      xmlns="http://javafx.com/javafx/8.0.131" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="cn.keepfight.widget.AddSalaryItem">
+    <CheckBox fx:id="check" text="-" />
+    <Separator orientation="VERTICAL"/>
+    <HBox fx:id="content" styleClass="item-content">
+        <Label>工资总额：￥</Label>
+        <TextField styleClass="text_edit" fx:id="text_total" text="0"/>
+        <Label>基本工资：￥</Label>
+        <TextField styleClass="text_edit" fx:id="text_basic" text="0"/>
+        <Label fx:id="halt" styleClass="warning"/>
+    </HBox>
+</HBox>
+
+

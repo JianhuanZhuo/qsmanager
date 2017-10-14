@@ -24,6 +24,7 @@ public enum MainPaneList {
     PAY_EDIT,
     SALARY,
     SALARY_MONTH,
+    PREDICT,
     OUTCOME_ANNUAL;
 
     String view;
