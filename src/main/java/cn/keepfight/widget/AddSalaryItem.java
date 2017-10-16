@@ -21,9 +21,9 @@ public class AddSalaryItem implements Initializable, Widget<AddSalaryItem.AddSal
     public HBox root;
     public CheckBox check;
     public TextField text_total;
-    public TextField text_basic;
     public HBox content;
     public Label halt;
+    public TextField text_fix;
 
     private AddSalaryObj obj;
 
@@ -40,8 +40,8 @@ public class AddSalaryItem implements Initializable, Widget<AddSalaryItem.AddSal
     public Node setStuff(StuffDao data) {
         set(new AddSalaryObj(
                 true,
-                data.getSalary_basic(),
-                data.getSalary_basic(),
+                new BigDecimal(0),
+                new BigDecimal(2000),
                 data));
         return getRoot();
     }
@@ -51,7 +51,7 @@ public class AddSalaryItem implements Initializable, Widget<AddSalaryItem.AddSal
         obj = data;
         check.selectedProperty().set(data.getSelect());
         text_total.setText(FXUtils.deciToMoney(data.getTotal()));
-        text_basic.setText(FXUtils.deciToMoney(data.getStuff().getSalary_basic()));
+        text_fix.setText(FXUtils.deciToMoney(data.getFix()));
         if (!data.getStuff().getOperatorDao().getUserDao().getHalt()) {
             halt.setText("");
             check.setSelected(true);
@@ -68,7 +68,7 @@ public class AddSalaryItem implements Initializable, Widget<AddSalaryItem.AddSal
             throw new RuntimeException("why not initialize?");
         }
         obj.setTotal(FXUtils.getDecimal(text_total.getText()));
-        obj.setBasic(FXUtils.getDecimal(text_basic.getText()));
+        obj.setFix(FXUtils.getDecimal(text_fix.getText()));
         obj.setSelect(check.isSelected());
         return obj;
     }
@@ -76,13 +76,13 @@ public class AddSalaryItem implements Initializable, Widget<AddSalaryItem.AddSal
     public static class AddSalaryObj {
         private Boolean select = false;
         private BigDecimal total = new BigDecimal(0);
-        private BigDecimal basic = new BigDecimal(0);
+        private BigDecimal fix = new BigDecimal(0);
         private StuffDao stuff;
 
         public AddSalaryObj(Boolean select, BigDecimal total, BigDecimal basic, StuffDao stuff) {
             this.select = select;
             this.total = total;
-            this.basic = basic;
+            this.fix = basic;
             this.stuff = stuff;
         }
 
@@ -104,13 +104,12 @@ public class AddSalaryItem implements Initializable, Widget<AddSalaryItem.AddSal
             return this;
         }
 
-        public BigDecimal getBasic() {
-            return basic;
+        public BigDecimal getFix() {
+            return fix;
         }
 
-        public AddSalaryObj setBasic(BigDecimal basic) {
-            this.basic = basic;
-            return this;
+        public void setFix(BigDecimal fix) {
+            this.fix = fix;
         }
 
         public StuffDao getStuff() {

@@ -25,7 +25,6 @@ public class MenuListChecker extends VBox implements Widget<String> {
     public MenuListChecker() {
         setSpacing(5);
         Arrays.stream(MenuList.values())
-//                .map(m -> new Pair<>(m.getName(), m.getTitle()))
                 .forEach(m -> {
                     CheckBox c = new CheckBox(m.getTitle());
                     toCheckBox.put(m.getName(), c);
@@ -46,8 +45,7 @@ public class MenuListChecker extends VBox implements Widget<String> {
                                     .map(MenuList::getName)
                                     .collect(Collectors.joining("~"));
 
-//                            String status = get()+"~";
-                            System.out.println("status:" + status);
+//                            System.out.println("status:" + status);
                             menuListStatus.set(status);
                         }
                     });
@@ -56,7 +54,7 @@ public class MenuListChecker extends VBox implements Widget<String> {
         // 监听
         menuListStatus.addListener((observable, oldValue, newValue) -> {
             if (transformFlag.compareAndSet(false, true)) {
-                System.out.println("listener:" + newValue);
+//                System.out.println("listener:" + newValue);
                 for (CheckBox c : toCheckBox.values()) {
                     c.setSelected(false);
                 }

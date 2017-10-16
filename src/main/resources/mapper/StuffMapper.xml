@@ -46,7 +46,7 @@ operatorDao
         FROM stuff, operator, user
         WHERE stuff.operator_id = operator.id
               AND operator.user_id = user.id
-        ORDER BY stuff.id
+        ORDER BY stuff.serial
     </select>
 
 

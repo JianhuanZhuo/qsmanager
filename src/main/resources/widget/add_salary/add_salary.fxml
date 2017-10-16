@@ -1,19 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
-<HBox fx:id="root" alignment="CENTER" styleClass="item" stylesheets="@css.css"
-      xmlns="http://javafx.com/javafx/8.0.131" xmlns:fx="http://javafx.com/fxml/1"
-      fx:controller="cn.keepfight.widget.AddSalaryItem">
-    <CheckBox fx:id="check" text="-" />
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.HBox?>
+
+<HBox fx:id="root" styleClass="item" stylesheets="@add_salary_css.css" xmlns="http://javafx.com/javafx/8.0.111"
+      xmlns:fx="http://javafx.com/fxml/1" fx:controller="cn.keepfight.widget.AddSalaryItem">
+    <CheckBox fx:id="check" prefHeight="16.0" prefWidth="100.0" text="-"/>
     <Separator orientation="VERTICAL"/>
     <HBox fx:id="content" styleClass="item-content">
         <Label>工资总额：￥</Label>
-        <TextField styleClass="text_edit" fx:id="text_total" text="0"/>
-        <Label>基本工资：￥</Label>
-        <TextField styleClass="text_edit" fx:id="text_basic" text="0"/>
+        <TextField fx:id="text_total" styleClass="text_edit" text="0"/>
+        <Label>已发工资：￥</Label>
+        <TextField fx:id="text_fix" styleClass="text_edit" text="0"/>
         <Label fx:id="halt" styleClass="warning"/>
     </HBox>
 </HBox>
-
-

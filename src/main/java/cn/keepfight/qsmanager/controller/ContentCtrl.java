@@ -25,7 +25,15 @@ public interface ContentCtrl {
      * 带参数的界面调用显示
      * @param params 调用页面前时使用
      */
-    void showed(Properties params);
+    void showed(Properties params);;
+
+    /**
+     * 带参数的界面调用显示
+     * @param params 调用页面后使用
+     */
+    default void showedAfter(Properties params){
+
+    }
 
     default<T> void updateState(T s){}
 

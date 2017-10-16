@@ -1,4 +1,29 @@
 .picker-item {
+    -fx-alignment: center-left;
+    -fx-background-color: white;
+    /*-fx-border-color: black;*/
+    /*-fx-border-width: 1px;*/
+}
+
+.content {
+    -fx-font-size: 16px;
+    -fx-alignment: center-left;
+}
+
+.year, .month {
+    -fx-underline: true;
+    -fx-text-fill: chocolate;
+    -fx-cursor: hand;
+}
+
+.year-picker {
+    -fx-min-width: 100px;
+    -fx-min-height: 100px;
+    -fx-pref-height: 100px;
+    -fx-background-color: azure;
+}
+
+.year-picker>HBox {
     -fx-background-color: white;
     /*-fx-border-color: red;*/
     -fx-alignment: center;

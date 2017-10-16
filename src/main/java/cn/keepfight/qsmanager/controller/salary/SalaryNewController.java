@@ -14,11 +14,13 @@ import javafx.beans.property.SimpleListProperty;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
+import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 import javafx.util.Pair;
 
 import java.net.URL;
+import java.sql.Date;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -38,6 +40,7 @@ public class SalaryNewController implements ContentCtrl, Initializable {
 
     public Button ok;
     public Button cancel;
+    public DatePicker date;
 
     private Long year;
     private Long month;
@@ -66,9 +69,16 @@ public class SalaryNewController implements ContentCtrl, Initializable {
                         d.setYear(year);
                         d.setMonth(month);
                         d.setStuffDao(i.get().getStuff());
-                        d.setBasicSalary(i.get().getBasic());
+                        d.setFixSalary(i.get().getFix());
                         d.setTotalSalary(i.get().getTotal());
+                        d.setBasicSalary(i.get().getStuff().getSalary_basic());
                         d.setAgeSalary(i.get().getStuff().getSalary_annual());
+                        d.setDate(Date.valueOf(date.getValue()));
+                        if (d.getFixSalary().compareTo(d.getTotalSalary())>=0){
+                            d.setClear(1);
+                        }else {
+                            d.setClear(0);
+                        }
                         return d;
                     }).forEach(d -> {
                 try {
@@ -104,6 +114,7 @@ public class SalaryNewController implements ContentCtrl, Initializable {
         items = new ArrayList<>();
         p.set(new Pair<>(year, month));
         yearMonth.setText(year + "年" + month + "月");
+        date.setValue(null);
 
         try {
             List<StuffDao> ss = SalaryServices.selectStuffCanAddByMonth(year, month);

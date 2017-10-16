@@ -16,6 +16,7 @@ public class SalaryDao {
     private BigDecimal basicSalary;
     private BigDecimal ageSalary;
     private BigDecimal totalSalary;
+    private BigDecimal fixSalary;
     private int clear;
     private Date date;
 
@@ -30,6 +31,7 @@ public class SalaryDao {
         setTotalSalary(i.getTotalSalary());
         setDate(i.getDate());
         setClear(i.getClear());
+        setFixSalary(i.getFixSalary());
 
         setStuffDao(stuffDao);
     }
@@ -113,5 +115,13 @@ public class SalaryDao {
     public SalaryDao setMonth(long month) {
         this.month = month;
         return this;
+    }
+
+    public BigDecimal getFixSalary() {
+        return fixSalary;
+    }
+
+    public void setFixSalary(BigDecimal fixSalary) {
+        this.fixSalary = fixSalary;
     }
 }

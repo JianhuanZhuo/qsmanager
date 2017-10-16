@@ -67,6 +67,7 @@ public class StuffAddController implements DialogContent<StuffDao> {
         operator.setUserDao(user);
         operator.setAccount(acc.getText());
         operator.setPassword(psw.getText());
+        // 权限默认是空权限
         operator.setAuthority("");
 
         stuff.setOperatorDao(operator);

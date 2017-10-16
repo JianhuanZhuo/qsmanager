@@ -74,6 +74,12 @@ public class YearScrollPicker implements Initializable, PopupWidget<Long> {
     }
 
     @Override
+    public void set(Long data) {
+        this.data = data;
+        paint();
+    }
+
+    @Override
     public void show() {
         popup.show(locateNode,
                 locateNode.localToScreen(locateNode.getBoundsInLocal()).getMinX(),

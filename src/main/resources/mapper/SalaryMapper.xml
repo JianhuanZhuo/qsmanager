@@ -14,13 +14,6 @@
 
 <mapper namespace="cn.keepfight.qsmanager.Mapper.SalaryMapper">
 
-    <select id="staticSalaryByYear" parameterType="long" resultType="YearStaticDao">
-        SELECT
-            66 AS month,
-            2  AS total,
-            3  AS given
-    </select>
-
     <select id="selectSalarysByMonth" resultType="SalaryDao_i">
         SELECT
             id        AS id,
@@ -30,10 +23,27 @@
             basic     AS basicSalary,
             ageSalary AS ageSalary,
             salary    AS totalSalary,
+            fixSalary AS fixSalary,
             date      AS date,
             clear     AS clear
         FROM stuff_salary
         WHERE year = #{year} AND month = #{month};
+    </select>
+
+    <select id="selectSalarysByMonthAndStuff" resultType="SalaryDao_i">
+        SELECT
+            id        AS id,
+            #{year}   AS year,
+            #{month}  AS month,
+            stuff_id  AS stuffDaoID,
+            basic     AS basicSalary,
+            ageSalary AS ageSalary,
+            salary    AS totalSalary,
+            fixSalary AS fixSalary,
+            date      AS date,
+            clear     AS clear
+        FROM stuff_salary
+        WHERE year = #{year} AND month = #{month} AND stuff_id = #{stuff_id}
     </select>
 
     <!--选择-->
@@ -61,6 +71,7 @@
             FROM stuff_salary
             WHERE year = #{year} AND month = #{month}
         )
+        ORDER BY stuff.serial
     </select>
 
     <insert id="addNewSalary" parameterType="SalaryDao">
@@ -69,6 +80,7 @@
         year,
         month,
         salary,
+        fixSalary,
         basic,
         ageSalary,
         clear
@@ -81,6 +93,7 @@
         #{year},
         #{month},
         #{totalSalary},
+        #{fixSalary},
         #{basicSalary},
         #{ageSalary},
         #{clear}
@@ -92,4 +105,134 @@
             SELECT last_insert_id();
         </selectKey>
     </insert>
+
+    <!--* 修改指定年月和工人 ID 的当月工资-->
+    <!--void updateSalarysByMonthAndStuff(SalaryDao salaryDao) throws Exception;-->
+    <update id="updateSalarysByMonthAndStuff" parameterType="SalaryDao">
+        UPDATE stuff_salary
+        SET
+            salary    = #{totalSalary},
+            basic     = #{basicSalary},
+            ageSalary = #{ageSalary},
+            fixSalary = #{fixSalary},
+            date      = #{date},
+            clear     = #{clear}
+        WHERE
+            stuff_id = #{stuffDao.id}
+            AND year = #{year}
+            AND month = #{month}
+    </update>
+
+    <!--* 修改指定年月的固定工资发放时间-->
+    <!--void updateSalarysDateByMonth(@Param("year") Long year, @Param("month") Long month, @Param("date") Date date) throws Exception;-->
+    <update id="updateSalarysDateByMonth">
+        UPDATE stuff_salary
+        SET
+            date = #{date}
+        WHERE year = #{year}
+              AND month = #{month}
+    </update>
+
+    <delete id="deleteByMonthAndStuff" parameterType="SalaryDao">
+        DELETE FROM stuff_salary
+        WHERE
+            stuff_id = #{stuffDao.id}
+            AND year = #{year}
+            AND month = #{month}
+    </delete>
+
+    <select id="staticSalaryByYear" parameterType="long" resultType="YearStaticDao">
+        SELECT
+            mon AS month,
+            ifnull(total, 0) AS total,
+            ifnull(sum, 0)   AS given
+        FROM
+            mons m
+            LEFT JOIN
+            (
+                SELECT
+                    month,
+                    sum(salary)                                 total,
+                    sum(salary - fixSalary - ifnull(sum, 0)) AS sum
+                FROM
+                    stuff_salary s
+                    LEFT JOIN (
+                                  SELECT
+                                      i.salary_id,
+                                      sum(i.income) sum
+                                  FROM stuff_income i
+                                  GROUP BY i.salary_id
+                              ) x
+                        ON s.id = x.salary_id
+                WHERE
+                    s.year = #{year}
+                GROUP BY month
+            ) x
+                ON x.month = m.mon
+    </select>
+
+    <select id="selectStuffSalaryTardy" resultType="SalaryTardyDao">
+        SELECT
+            u.id                                     AS id,
+            u.name                                   AS name,
+            sum(salary - fixSalary - ifnull(sum, 0)) AS sum
+        FROM
+            stuff u, stuff_salary s
+            LEFT JOIN (
+                          SELECT
+                              i.salary_id,
+                              sum(i.income) sum
+                          FROM stuff_income i
+                          GROUP BY i.salary_id
+                      ) x
+                ON s.id = x.salary_id
+        WHERE
+            # 检查还没还完的
+            (fixSalary + ifnull(sum, 0) <![CDATA[ < ]]> salary)
+            AND
+            u.id = s.stuff_id
+        GROUP BY stuff_id;
+    </select>
+
+
+    <!--选择指定员工 ID 的拖欠工资及其月份，这个月份是对齐全部月份的-->
+    <select id="selectTardyByStuff" parameterType="long" resultType="StuffTardyDao">
+        SELECT
+            m.ym           AS ym,
+            ifnull(sum, 0) AS sum
+        FROM
+            (
+                # 获得全部需要还的年月份
+                SELECT DISTINCT concat(year, '-', lpad(month, 2, '0')) AS ym
+                FROM
+                    stuff_salary s
+                    LEFT JOIN (
+                                  SELECT
+                                      i.salary_id,
+                                      sum(i.income) sum
+                                  FROM stuff_income i
+                                  GROUP BY i.salary_id
+                              ) x
+                        ON s.id = x.salary_id
+            ) AS m
+            LEFT JOIN
+            (
+                # 获得指定需要还的
+                SELECT
+                    concat(year, '-', lpad(month, 2, '0')) AS ym,
+                    salary - fixSalary - ifnull(sum, 0)    AS sum
+                FROM
+                    stuff_salary s
+                    LEFT JOIN (
+                                  SELECT
+                                      i.salary_id,
+                                      sum(i.income) sum
+                                  FROM stuff_income i
+                                  GROUP BY i.salary_id
+                              ) x
+                        ON s.id = x.salary_id
+                WHERE s.stuff_id = #{stuff_id}
+            ) AS s
+                ON m.ym = s.ym;
+    </select>
 </mapper>

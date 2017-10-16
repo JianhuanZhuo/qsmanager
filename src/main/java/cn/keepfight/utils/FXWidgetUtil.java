@@ -1,7 +1,6 @@
 package cn.keepfight.utils;
 
 
-import cn.keepfight.qsmanager.print.PrintDeliveryController;
 import cn.keepfight.widget.AddSalaryItem;
 import cn.keepfight.widget.MonthPicker;
 import cn.keepfight.widget.YearScrollPicker;
@@ -13,18 +12,19 @@ import javafx.beans.binding.NumberExpressionBase;
 import javafx.beans.binding.ObjectExpression;
 import javafx.beans.binding.StringBinding;
 import javafx.beans.property.ObjectProperty;
-import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
-import javafx.print.*;
+import javafx.print.PageLayout;
+import javafx.print.PrintQuality;
+import javafx.print.Printer;
+import javafx.print.PrinterJob;
 import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.transform.Scale;
-import javafx.util.Callback;
 import javafx.util.Duration;
 import javafx.util.Pair;
 import javafx.util.StringConverter;
@@ -174,7 +174,8 @@ public class FXWidgetUtil {
                 .reduce(accumulator);
         String text = "0";
         if (t.isPresent()) {
-            text = t.get().stripTrailingZeros().toPlainString();
+//            text = t.get().stripTrailingZeros().toPlainString();
+            text = FXUtils.deciToMoney(t.get());
         }
         consumer.accept(text);
     }
@@ -207,6 +208,11 @@ public class FXWidgetUtil {
      * @param <T> 可变数组的泛化类型
      */
     public static <T>  void calculate(ObservableList<T> obserList, Function<T, BigDecimal> toDecimal,
+                                      Consumer<String> consumer){
+        calculate(obserList, toDecimal, consumer, BigDecimal::add);
+    }
+
+    public static <T>  void calculateMoney(ObservableList<T> obserList, Function<T, BigDecimal> toDecimal,
                                       Consumer<String> consumer){
         calculate(obserList, toDecimal, consumer, BigDecimal::add);
     }
@@ -247,6 +253,13 @@ public class FXWidgetUtil {
         simpleBiOper(target, BigDecimal::add, sa, sb);
     }
 
+    /**
+     * 将 target=sa+sb 进行绑定
+     */
+    public static void simpleBiSub(TextField target, TextField sa, TextField sb){
+        simpleBiOper(target, BigDecimal::subtract, sa, sb);
+    }
+
 
     /**
      * 将 target=sa oper sb 进行绑定
@@ -259,7 +272,10 @@ public class FXWidgetUtil {
             @Override
             protected String computeValue() {
                 try {
-                    return oper.apply(new BigDecimal(sa.getText()), new BigDecimal(sb.getText())).stripTrailingZeros().toPlainString();
+                    return oper.apply(
+                            new BigDecimal(sa.getText().replace(",", "")),
+                            new BigDecimal(sb.getText().replace(",", ""))
+                    ).stripTrailingZeros().toPlainString();
                 } catch (Exception e) {
                     return "0";
                 }
@@ -284,8 +300,8 @@ public class FXWidgetUtil {
                 try {
                     return oper2.apply(
                             oper1.apply(
-                                    new BigDecimal(sa.getText()),
-                                    new BigDecimal(sb.getText())),
+                                    new BigDecimal(sa.getText().replace(",", "")),
+                                    new BigDecimal(sb.getText().replace(",", ""))),
                            new BigDecimal(sc.getText())
                     ).stripTrailingZeros().toPlainString();
                 } catch (Exception e) {

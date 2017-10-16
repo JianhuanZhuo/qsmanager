@@ -8,17 +8,16 @@ import java.math.BigDecimal;
  * Created by tom on 2017/10/15.
  */
 public class YearStaticDao {
-    private int month;
+    private String month;
     private BigDecimal total;
     private BigDecimal given;
 
-    public int getMonth() {
+    public String getMonth() {
         return month;
     }
 
-    public YearStaticDao setMonth(int month) {
+    public void setMonth(String month) {
         this.month = month;
-        return this;
     }
 
     public BigDecimal getTotal() {

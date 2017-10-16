@@ -14,6 +14,7 @@ public class SalaryDao_i {
     private BigDecimal basicSalary;
     private BigDecimal ageSalary;
     private BigDecimal totalSalary;
+    private BigDecimal fixSalary;
     private int clear;
     private Date date;
 
@@ -96,5 +97,13 @@ public class SalaryDao_i {
     public SalaryDao_i setClear(int clear) {
         this.clear = clear;
         return this;
+    }
+
+    public BigDecimal getFixSalary() {
+        return fixSalary;
+    }
+
+    public void setFixSalary(BigDecimal fixSalary) {
+        this.fixSalary = fixSalary;
     }
 }

@@ -9,6 +9,7 @@ import java.math.BigDecimal;
 import java.sql.Date;
 
 /**
+ * 工资包装器
  * Created by tom on 2017/10/15.
  */
 public class SalaryDaoWrapper implements DaoWrapper<SalaryDao> {
@@ -19,6 +20,7 @@ public class SalaryDaoWrapper implements DaoWrapper<SalaryDao> {
     private ObjectProperty<BigDecimal> basicSalary = new SimpleObjectProperty<>();
     private ObjectProperty<BigDecimal> ageSalary = new SimpleObjectProperty<>();
     private ObjectProperty<BigDecimal> totalSalary = new SimpleObjectProperty<>();
+    private ObjectProperty<BigDecimal> fixSalary = new SimpleObjectProperty<>();
     private ObjectProperty<BigDecimal> otherSalary = new SimpleObjectProperty<>();
     private ObjectProperty<BigDecimal> willSalary = new SimpleObjectProperty<>();
     private BooleanProperty clear = new SimpleBooleanProperty(false);
@@ -28,12 +30,12 @@ public class SalaryDaoWrapper implements DaoWrapper<SalaryDao> {
     public SalaryDaoWrapper(){
         otherSalary.bind(new ObjectBinding<BigDecimal>() {
             {
-                bind(basicSalary, ageSalary);
+                bind(totalSalary, basicSalary, ageSalary);
             }
             @Override
             protected BigDecimal computeValue() {
                 try {
-                    return basicSalary.get().subtract(ageSalary.get());
+                    return totalSalary.get().subtract(basicSalary.get()).subtract(ageSalary.get());
                 }catch (Exception e){
                     return new BigDecimal(0);
                 }
@@ -41,12 +43,12 @@ public class SalaryDaoWrapper implements DaoWrapper<SalaryDao> {
         });
         willSalary.bind(new ObjectBinding<BigDecimal>() {
             {
-                bind(totalSalary, basicSalary);
+                bind(totalSalary, fixSalary);
             }
             @Override
             protected BigDecimal computeValue() {
                 try {
-                    return totalSalary.get().subtract(basicSalary.get());
+                    return totalSalary.get().subtract(fixSalary.get());
                 }catch (Exception e){
                     return new BigDecimal(0);
                 }
@@ -71,6 +73,7 @@ public class SalaryDaoWrapper implements DaoWrapper<SalaryDao> {
         setTotalSalary(data.getTotalSalary());
         setClear(data.getClear()!=0);
         setDate(data.getDate());
+        setFixSalary(data.getFixSalary());
 
         stuffDaoWrapper.wrap(data.getStuffDao());
     }
@@ -87,6 +90,7 @@ public class SalaryDaoWrapper implements DaoWrapper<SalaryDao> {
         res.setAgeSalary(getAgeSalary());
         res.setClear(isClear()?1:0);
         res.setDate(getDate());
+        res.setFixSalary(getFixSalary());
 
         res.setStuffDao(getStuffDaoWrapper().get());
 
@@ -222,5 +226,17 @@ public class SalaryDaoWrapper implements DaoWrapper<SalaryDao> {
     public SalaryDaoWrapper setStuffDaoWrapper(StuffWrapper stuffDaoWrapper) {
         this.stuffDaoWrapper = stuffDaoWrapper;
         return this;
+    }
+
+    public BigDecimal getFixSalary() {
+        return fixSalary.get();
+    }
+
+    public ObjectProperty<BigDecimal> fixSalaryProperty() {
+        return fixSalary;
+    }
+
+    public void setFixSalary(BigDecimal fixSalary) {
+        this.fixSalary.set(fixSalary);
     }
 }

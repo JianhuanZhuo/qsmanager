@@ -197,7 +197,7 @@ public class MainPane {
 
                 @Override
                 public Runnable getAction() {
-                    return () -> controller.showed(params);
+                    return () -> refresh();
                 }
             }));
             titleVisible(!controller.transparentBackground());
@@ -208,6 +208,8 @@ public class MainPane {
 
         // 添加到队列中
         push(controller, params);
+
+        Platform.runLater(() -> controller.showedAfter(params));
     }
 
     /**
@@ -231,6 +233,13 @@ public class MainPane {
         changeTo(pop().getKey(), params);
     }
 
+    /**
+     * 使用相同参数刷新当前页面
+     */
+    public void refresh(){
+        Pair<ContentCtrl, Properties> p = pop();
+        changeTo(p.getKey(), p.getValue());
+    }
 
     /**
      * 返回上个界面
