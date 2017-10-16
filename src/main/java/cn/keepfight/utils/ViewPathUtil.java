@@ -14,6 +14,7 @@ public class ViewPathUtil {
 
     private static Properties properties = PropertieUtil.loadProperties("fxapp.properties");
     private static String path = properties.getProperty("view.path");
+    private static String widgetpath = properties.getProperty("widget.path");
     private static ViewPathUtil instance = new ViewPathUtil();
 
     /**
@@ -80,7 +81,7 @@ public class ViewPathUtil {
         if (!viewURL.contains(".fxml")) {
             System.out.println(viewURL + " do not contain .fxml! It's may wrong!");
         }
-        return instance.getClass().getClassLoader().getResource(path + viewURL);
+        return instance.getClass().getClassLoader().getResource(widgetpath + viewURL);
     }
 
     /**

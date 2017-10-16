@@ -10,12 +10,13 @@
 <?import javafx.scene.layout.VBox?>
 
 <VBox fx:id="root" stylesheets="@css/common.css" xmlns="http://javafx.com/javafx/8.0.111"
-      xmlns:fx="http://javafx.com/fxml/1" fx:controller="cn.keepfight.qsmanager.controller.SalaryController">
-    <HBox fx:id="title" styleClass="title-line">
-        <Label layoutX="15.0" layoutY="15.0" text="年度工资总表（月份明细点击月份）"/>
+      xmlns:fx="http://javafx.com/fxml/1" fx:controller="cn.keepfight.qsmanager.controller.salary.SalaryController">
+    <HBox styleClass="title-line">
+        <Label fx:id="label_year" styleClass="url" text="2010"/>
+        <Label text="年度工资总表（年份选择点击橙色链接，查看月份明细双击下面表格月份）"/>
         <Pane HBox.hgrow="ALWAYS"/>
     </HBox>
-    <TableView prefHeight="288.0" prefWidth="590.0">
+    <TableView fx:id="table_static" prefHeight="288.0" prefWidth="590.0">
         <columns>
             <TableColumn prefWidth="75.0" text="月份"/>
             <TableColumn prefWidth="75.0" text="总工资"/>
@@ -27,25 +28,21 @@
         </columnResizePolicy>
     </TableView>
     <HBox styleClass="hbox-common">
-        <children>
-            <Label text="总工资合计：￥"/>
-            <Label layoutX="15.0" layoutY="15.0" text="223,233.21"/>
-            <Pane HBox.hgrow="ALWAYS"/>
-            <Label layoutX="15.0" layoutY="15.0" text="已发合计：￥"/>
-            <Label layoutX="104.0" layoutY="15.0" text="100,000.00"/>
-            <Pane HBox.hgrow="ALWAYS"/>
-            <Label layoutX="450.0" layoutY="15.0" text="未发合计：￥"/>
-            <Label layoutX="527.0" layoutY="15.0" text="123,233.21"/>
-            <Pane layoutX="595.0" layoutY="15.0" HBox.hgrow="ALWAYS"/>
-        </children>
+        <Label text="总工资合计：￥"/>
+        <Label text="223,233.21"/>
+        <Pane HBox.hgrow="ALWAYS"/>
+        <Label text="已发合计：￥"/>
+        <Label text="100,000.00"/>
+        <Pane HBox.hgrow="ALWAYS"/>
+        <Label text="未发合计：￥"/>
+        <Label text="123,233.21"/>
+        <Pane HBox.hgrow="ALWAYS"/>
     </HBox>
 
     <Separator/>
     <HBox styleClass="title-line">
-        <children>
-            <Label layoutX="15.0" layoutY="15.0" text="应付工资总表"/>
-            <Pane HBox.hgrow="ALWAYS"/>
-        </children>
+        <Label text="应付工资总表"/>
+        <Pane HBox.hgrow="ALWAYS"/>
     </HBox>
     <TableView prefHeight="288.0" prefWidth="590.0">
         <columns>
@@ -54,11 +51,9 @@
             <TableColumn prefWidth="75.0" text="应付总额"/>
         </columns>
     </TableView>
-    <HBox layoutX="15.0" layoutY="343.0">
-        <children>
-            <Label layoutX="450.0" layoutY="15.0" text="应付合计：￥"/>
-            <Label layoutX="527.0" layoutY="15.0" text="123,233.21"/>
-        </children>
+    <HBox layoutY="343.0">
+        <Label text="应付合计：￥"/>
+        <Label text="123,233.21"/>
         <styleClass>
             <String fx:value="hbox-common"/>
             <String fx:value="right-align"/>

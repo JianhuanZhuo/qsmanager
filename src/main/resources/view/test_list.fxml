@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.DatePicker?>
-<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.VBox?>
+
+<?import javafx.scene.control.Label?>
 <VBox fx:id="root" maxHeight="1.7976931348623157E308" styleClass="content-pane" stylesheets="@css/common.css"
       xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1"
       fx:controller="cn.keepfight.qsmanager.controller.TestListController">
-
-    <fx:include source="../widget/monthPicker/month_picker.fxml" />
-    <TextField/>
+    <Button text="btn" fx:id="xx"/>
+    <TextField fx:id="t"/>
+    <Label fx:id="b"/>
 </VBox>

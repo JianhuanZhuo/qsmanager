@@ -206,6 +206,13 @@ public class FXUtils {
     /**
      * 转时间戳为本地时间对象
      */
+    public static LocalDate stampToLocalDate(){
+        return stampToLocalDate(null);
+    }
+
+    /**
+     * 转时间戳为本地时间对象
+     */
     public static LocalDateTime stampToLocalDateTime(Long stamp){
         if (stamp==null){
             stamp = System.currentTimeMillis();

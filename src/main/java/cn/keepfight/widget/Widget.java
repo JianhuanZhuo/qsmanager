@@ -15,6 +15,12 @@ public interface Widget<T> {
     Node getRoot();
 
     /**
+     * 定位在某节点位置下
+     * @param node 挂靠节点
+     */
+    default void locate(Node node){}
+
+    /**
      * 设置挂件表示的数据
      */
     default void set(T data){

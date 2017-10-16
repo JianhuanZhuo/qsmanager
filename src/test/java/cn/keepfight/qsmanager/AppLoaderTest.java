@@ -21,7 +21,7 @@ public class AppLoaderTest extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        FXMLLoader loader = ViewPathUtil.getLoader("test_list.fxml");
+        FXMLLoader loader = ViewPathUtil.getLoader("salary_new.fxml");
         primaryStage.setScene(new Scene(loader.load()));
         primaryStage.show();
     }

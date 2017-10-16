@@ -2,6 +2,9 @@ package cn.keepfight.utils;
 
 
 import cn.keepfight.qsmanager.print.PrintDeliveryController;
+import cn.keepfight.widget.AddSalaryItem;
+import cn.keepfight.widget.MonthPicker;
+import cn.keepfight.widget.YearScrollPicker;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.beans.Observable;
@@ -21,10 +24,12 @@ import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.transform.Scale;
+import javafx.util.Callback;
 import javafx.util.Duration;
 import javafx.util.Pair;
 import javafx.util.StringConverter;
 
+import java.io.IOException;
 import java.lang.reflect.Field;
 import java.math.BigDecimal;
 import java.util.*;
@@ -92,6 +97,33 @@ public class FXWidgetUtil {
             }catch (Exception e){
                 // to do nothing
             }
+        }
+    }
+
+    public static MonthPicker getMonthPicker(){
+        try {
+            return ViewPathUtil.loadWidgetForController("monthPicker/month_picker.fxml");
+        } catch (IOException e) {
+            e.printStackTrace();
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static YearScrollPicker getYearPicker(){
+        try {
+            return ViewPathUtil.loadWidgetForController("yearPicker/year_picker.fxml");
+        } catch (IOException e) {
+            e.printStackTrace();
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static AddSalaryItem getSalaryNewItem(){
+        try {
+            return ViewPathUtil.loadWidgetForController("add_salary/add_salary.fxml");
+        } catch (IOException e) {
+            e.printStackTrace();
+            throw new RuntimeException(e);
         }
     }
 
@@ -314,6 +346,13 @@ public class FXWidgetUtil {
      */
     public static<T> void connectDecimalObj(TableColumn<T, String> tab_col, Function<T, ObjectProperty<BigDecimal>> x){
         tab_col.setCellValueFactory(param -> new SimpleStringProperty(x.apply(param.getValue()).get().stripTrailingZeros().toPlainString()));
+    }
+
+    /**
+     * 以指定的转换方式连接表格列
+     */
+    public static<T> void connectDecimalColumn(TableColumn<T, BigDecimal> tab_col, Function<T, ObjectProperty<BigDecimal>> x){
+        tab_col.setCellValueFactory(param -> x.apply(param.getValue()));
     }
 
 

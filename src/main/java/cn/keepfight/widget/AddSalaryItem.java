@@ -34,15 +34,16 @@ public class AddSalaryItem implements Initializable, Widget<AddSalaryItem.AddSal
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        content.disableProperty().bind(check.selectedProperty());
+        content.disableProperty().bind(check.selectedProperty().not());
     }
 
-    public void setStuff(StuffDao data) {
+    public Node setStuff(StuffDao data) {
         set(new AddSalaryObj(
                 true,
-                new BigDecimal(0),
-                new BigDecimal(0),
+                data.getSalary_basic(),
+                data.getSalary_basic(),
                 data));
+        return getRoot();
     }
 
     @Override
@@ -51,7 +52,7 @@ public class AddSalaryItem implements Initializable, Widget<AddSalaryItem.AddSal
         check.selectedProperty().set(data.getSelect());
         text_total.setText(FXUtils.deciToMoney(data.getTotal()));
         text_basic.setText(FXUtils.deciToMoney(data.getStuff().getSalary_basic()));
-        if (data.getStuff().getOperatorDao().getUserDao().getHalt()) {
+        if (!data.getStuff().getOperatorDao().getUserDao().getHalt()) {
             halt.setText("");
             check.setSelected(true);
         } else {

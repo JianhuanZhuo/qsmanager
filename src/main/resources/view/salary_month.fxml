@@ -8,44 +8,47 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox fx:id="root" styleClass="content-pane, vbox-common" stylesheets="@css/common.css" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cn.keepfight.qsmanager.controller.SalaryMonthController">
-    <HBox fx:id="title" styleClass="title-line">
-        <Label text="佛山市南海区丹灶晴旭金属制品厂" />
-        <Label text="2016年12月" underline="true" />
-        <Label text="工资" />
-      <fx:include source="../widget/monthPicker/month_picker.fxml" />
+<VBox fx:id="root" styleClass="content-pane, vbox-common" stylesheets="@css/common.css"
+      xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="cn.keepfight.qsmanager.controller.salary.SalaryMonthController">
+    <HBox styleClass="title-line">
+        <Label text="佛山市南海区丹灶晴旭金属制品厂工资表"/>
+        <Pane HBox.hgrow="ALWAYS"/>
+        <Label text="月份选择："/>
+        <Button fx:id="label_month" styleClass="url" text="2011年3月"/>
     </HBox>
     <HBox styleClass="hbox-common">
-        <Button text="新增员工" />
-        <Button text="编辑选中" />
-        <Pane HBox.hgrow="ALWAYS" />
-        <Button text="删除选中" />
+        <Button fx:id="btn_new" text="新增员工"/>
+        <Button text="编辑选中"/>
+        <Button text="删除选中"/>
+        <Pane HBox.hgrow="ALWAYS"/>
+        <Button text="统一发放日期"/>
     </HBox>
-    <TableView VBox.vgrow="ALWAYS">
+    <TableView fx:id="table_salary" VBox.vgrow="ALWAYS">
         <columns>
-            <TableColumn text="员工姓名" />
-            <TableColumn text="员工编号" />
-            <TableColumn prefWidth="75.0" text="基本工资" />
-            <TableColumn prefWidth="75.0" text="工龄工资" />
-            <TableColumn prefWidth="75.0" text="其他" />
-            <TableColumn prefWidth="75.0" text="当月应发" />
-            <TableColumn prefWidth="75.0" text="基本工资" />
-            <TableColumn prefWidth="75.0" text="发放日期" />
-            <TableColumn prefWidth="75.0" text="当月未发" />
+            <TableColumn fx:id="tab_name" text="员工姓名"/>
+            <TableColumn fx:id="tab_serial" text="员工编号"/>
+            <TableColumn fx:id="tab_salary_basic" prefWidth="75.0" text="基本工资"/>
+            <TableColumn fx:id="tab_salary_age" prefWidth="75.0" text="工龄工资"/>
+            <TableColumn fx:id="tab_salary_other" prefWidth="75.0" text="其他"/>
+            <TableColumn fx:id="tab_salary_total" prefWidth="75.0" text="当月应发"/>
+            <TableColumn fx:id="tab_salary_basic_given" prefWidth="75.0" text="已发基本工资"/>
+            <TableColumn fx:id="tab_given_date" prefWidth="75.0" text="发放日期"/>
+            <TableColumn fx:id="tab_will_give" prefWidth="75.0" text="当月未发"/>
         </columns>
         <columnResizePolicy>
-            <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+            <TableView fx:constant="CONSTRAINED_RESIZE_POLICY"/>
         </columnResizePolicy>
     </TableView>
     <HBox styleClass="hbox-common">
-        <Label text="应发合计：￥" />
-        <Label text="223,233.21" />
-        <Pane HBox.hgrow="ALWAYS" />
-        <Label text="已发合计：￥" />
-        <Label text="100,000.00" />
-        <Pane HBox.hgrow="ALWAYS" />
-        <Label text="未发合计：￥" />
-        <Label text="123,233.21" />
-        <Pane HBox.hgrow="ALWAYS" />
+        <Label text="应发合计：￥"/>
+        <Label text="223,233.21"/>
+        <Pane HBox.hgrow="ALWAYS"/>
+        <Label text="已发合计：￥"/>
+        <Label text="100,000.00"/>
+        <Pane HBox.hgrow="ALWAYS"/>
+        <Label text="未发合计：￥"/>
+        <Label text="123,233.21"/>
+        <Pane HBox.hgrow="ALWAYS"/>
     </HBox>
 </VBox>

@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!--
+    private long id;
+    private StuffDao stuffDao;
+    private BigDecimal basicSalary;
+    private BigDecimal ageSalary;
+    private BigDecimal totalSalary;
+    private Date date;
+    clear
+-->
+
+<mapper namespace="cn.keepfight.qsmanager.Mapper.SalaryMapper">
+
+    <select id="staticSalaryByYear" parameterType="long" resultType="YearStaticDao">
+        SELECT
+            66 AS month,
+            2  AS total,
+            3  AS given
+    </select>
+
+    <select id="selectSalarysByMonth" resultType="SalaryDao_i">
+        SELECT
+            id        AS id,
+            #{year}   AS year,
+            #{month}  AS month,
+            stuff_id  AS stuffDaoID,
+            basic     AS basicSalary,
+            ageSalary AS ageSalary,
+            salary    AS totalSalary,
+            date      AS date,
+            clear     AS clear
+        FROM stuff_salary
+        WHERE year = #{year} AND month = #{month};
+    </select>
+
+    <!--选择-->
+    <select id="selectStuffCanAddByMonth" resultMap="cn.keepfight.qsmanager.Mapper.StuffMapper.result_stuff">
+        SELECT
+            stuff.id                  id,
+            stuff.serial              serial,
+            stuff.name                name,
+            stuff.salary_basic        salary_basic,
+            stuff.salary_annual       salary_annual,
+            operator.id               operator_id,
+            operator.account          operator_account,
+            operator.password         operator_password,
+            operator.authority        operator_authority,
+            operator.last_login_stamp operator_last_login_stamp,
+            user.id                   operator_user_id,
+            user.nickname             operator_user_nickname,
+            user.halt                 operator_user_halt,
+            user.note                 operator_user_note
+        FROM stuff, operator, user
+        WHERE stuff.operator_id = operator.id
+              AND operator.user_id = user.id
+              AND stuff.id NOT IN (
+            SELECT stuff_id
+            FROM stuff_salary
+            WHERE year = #{year} AND month = #{month}
+        )
+    </select>
+
+    <insert id="addNewSalary" parameterType="SalaryDao">
+        INSERT INTO stuff_salary (
+        stuff_id,
+        year,
+        month,
+        salary,
+        basic,
+        ageSalary,
+        clear
+        <if test="date!=null">
+            ,date
+        </if>
+        )
+        VALUES (
+        #{stuffDao.id},
+        #{year},
+        #{month},
+        #{totalSalary},
+        #{basicSalary},
+        #{ageSalary},
+        #{clear}
+        <if test="date!=null">
+            ,#{date}
+        </if>
+        )
+        <selectKey keyProperty="id" order="AFTER" resultType="long">
+            SELECT last_insert_id();
+        </selectKey>
+    </insert>
+</mapper>

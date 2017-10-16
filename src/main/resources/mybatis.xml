@@ -43,5 +43,8 @@
         <mapper resource="mapper/TraderMapper.xml"/>
         <mapper resource="mapper/StuffMapper.xml"/>
         <mapper resource="mapper/SupplierMapper.xml"/>
+
+        <!--工资表-->
+        <mapper resource="mapper/SalaryMapper.xml"/>
     </mappers>
 </configuration>

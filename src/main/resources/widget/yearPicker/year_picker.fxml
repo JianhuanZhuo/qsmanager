@@ -4,7 +4,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <HBox fx:id="root" styleClass="picker-item" stylesheets="@css.css" xmlns="http://javafx.com/javafx/8.0.111"
-      xmlns:fx="http://javafx.com/fxml/1" fx:controller="cn.keepfight.widget.MonthPicker">
+      xmlns:fx="http://javafx.com/fxml/1" fx:controller="cn.keepfight.widget.YearScrollPicker">
     <VBox fx:id="year_list" styleClass="year_list">
         <Button fx:id="year_uu" styleClass="uu" text="2015"/>
         <Button fx:id="year_u" styleClass="u" text="2016"/>
@@ -13,12 +13,4 @@
         <Button fx:id="year_dd" styleClass="dd" text="2019"/>
     </VBox>
     <Label text="年"/>
-    <VBox fx:id="month_list" styleClass="year_list">
-        <Button fx:id="month_uu" styleClass="uu" text="12"/>
-        <Button fx:id="month_u" styleClass="u" text="11"/>
-        <Button fx:id="month_c" styleClass="center" text="1"/>
-        <Button fx:id="month_d" styleClass="d" text="2"/>
-        <Button fx:id="month_dd" styleClass="dd" text="3"/>
-    </VBox>
-    <Label text="月"/>
 </HBox>

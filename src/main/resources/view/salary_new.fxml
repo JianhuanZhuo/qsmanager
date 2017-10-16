@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.layout.VBox?>
+
+
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<VBox fx:id="root" styleClass="content-pane, vbox-common" stylesheets="@css/common.css"
+      xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="cn.keepfight.qsmanager.controller.salary.SalaryNewController">
+    <HBox styleClass="hbox-common">
+        <Label text="在下面的列表中勾选需要新增工资的员工（默认已选择全部在职员工）"/>
+        <Pane HBox.hgrow="ALWAYS"/>
+        <Label text="工资年月："/>
+        <Button fx:id="yearMonth" styleClass="url" text="2017年8月"/>
+    </HBox>
+    <Separator/>
+    <VBox fx:id="stuffList"/>
+    <HBox styleClass="hbox-common">
+        <Label fx:id="spaceholder" text="暂无可新增员工"/>
+    </HBox>
+    <Separator/>
+    <HBox styleClass="hbox-common">
+        <Pane HBox.hgrow="ALWAYS"/>
+        <Button fx:id="ok" text="确定添加工资"/>
+        <Button fx:id="cancel" text="取消本次操作"/>
+    </HBox>
+</VBox>

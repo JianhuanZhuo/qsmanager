@@ -17,6 +17,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
+import javafx.util.Pair;
 
 import java.io.IOException;
 import java.util.*;
@@ -57,7 +58,7 @@ public class MainPane {
     private List<MenuList> legalList;
     private Map<ContentCtrl, Boolean> isLoaded = new HashMap<>();
 
-    private ListProperty<ContentCtrl> contentStack = new SimpleListProperty<>(FXCollections.observableArrayList(new ArrayList<>()));
+    private ListProperty<Pair<ContentCtrl, Properties>> contentStack = new SimpleListProperty<>(FXCollections.observableArrayList(new ArrayList<>()));
 
     @FXML
     public void initialize() throws IOException {
@@ -88,13 +89,14 @@ public class MainPane {
 
     /**
      * 切换菜单，这是一个重置页面栈的行为
+     *
      * @param menu 需要切换到的菜单
      */
-    public void switchMenu(MenuList menu){
-        while (!contentStack.isEmpty()){
-            if (!peek().hide()){
+    public void switchMenu(MenuList menu) {
+        while (!contentStack.isEmpty()) {
+            if (!peek().getKey().hide()) {
                 return;
-            }else {
+            } else {
                 pop();
             }
         }
@@ -112,8 +114,9 @@ public class MainPane {
 
     /**
      * 转至指定界面
+     *
      * @param mainPane 指定界面
-     * @param params     界面参数
+     * @param params   界面参数
      */
     public void changeTo(MainPaneList mainPane, Properties params) {
         changeTo(mainPane.getController(), params);
@@ -121,6 +124,7 @@ public class MainPane {
 
     /**
      * 转至指定界面
+     *
      * @param controller 指定界面控制器
      */
     public void changeTo(ContentCtrl controller) {
@@ -135,14 +139,17 @@ public class MainPane {
      */
     public void changeTo(ContentCtrl controller, Properties params) {
 
-        if (controller==null){
+        if (controller == null) {
             // 如果为 NULL，这提示错误
             changeTo(MainPaneList.LOADING_ERROR);
             return;
         }
 
-        Platform.runLater(() -> centerScp.setContent(MainPaneList.LOADING.getController().getRoot()));
-
+        try {
+            centerScp.setContent(MainPaneList.LOADING.getController().getRoot());
+        } catch (Exception e) {
+            //  not to do
+        }
 
         title.textProperty().bind(controller.getTitle());
         Platform.runLater(() -> btnList.getChildren().clear());
@@ -157,33 +164,40 @@ public class MainPane {
         Platform.runLater(() -> {
             List<Button> btns;
             try {
-                System.out.println("bar:"+controller.getBarBtns(params).size());
+                System.out.println("bar:" + controller.getBarBtns(params).size());
                 btns = controller.getBarBtns(params).stream()
                         .map(this::addTileBtn)
                         .collect(Collectors.toList());
-            }catch (Exception e){
+            } catch (Exception e) {
                 System.err.println("controller.getBarBtns() error!");
                 e.printStackTrace();
                 btns = new ArrayList<>(1);
             }
-            if (btns.size()!=0){
+            if (btns.size() != 0) {
                 btnList.getChildren().setAll(btns);
                 btnList.getChildren().add(new Separator(Orientation.VERTICAL));
             }
 
             // 添加刷新按钮
-            btnList.getChildren().add(addTileBtn(new BarBtn(){
-                @Override public String getText() {
+            btnList.getChildren().add(addTileBtn(new BarBtn() {
+                @Override
+                public String getText() {
                     return "刷新";
                 }
-                @Override public String getHit() {
+
+                @Override
+                public String getHit() {
                     return "点击刷新该页面";
                 }
-                @Override public String getImage() {
+
+                @Override
+                public String getImage() {
                     return "reset.png";
                 }
-                @Override public Runnable getAction() {
-                    return ()->controller.showed(params);
+
+                @Override
+                public Runnable getAction() {
+                    return () -> controller.showed(params);
                 }
             }));
             titleVisible(!controller.transparentBackground());
@@ -193,35 +207,46 @@ public class MainPane {
         Platform.runLater(() -> centerScp.setContent(controller.getRoot()));
 
         // 添加到队列中
-        push(controller);
+        push(controller, params);
     }
 
     /**
      * 替换当前页面，即先将当期页面弹出后再加载一个页面，前一个页面不会被保留 <hr/>
      * 一般用于刷新当前页面，比如修改参数后的下一个页面、上一个页面
+     *
      * @param mainPane 用来替换当前页面的页面
-     * @param params 页面参数
+     * @param params   页面参数
      */
     public void replace(MainPaneList mainPane, Properties params) {
         pop();
         changeTo(mainPane.getController(), params);
     }
 
+    /**
+     * 使用指定参数刷新当前页面
+     *
+     * @param params 页面参数
+     */
+    public void reload(Properties params) {
+        changeTo(pop().getKey(), params);
+    }
+
 
     /**
      * 返回上个界面
      */
-    public void backNav(){
+    public void backNav() {
         // 无上层的页面
-        if (contentStack.size()<=1){
+        if (contentStack.size() <= 1) {
             return;
         }
-        if (!peek().hide()){
+        if (!peek().getKey().hide()) {
             return;
-        }else {
+        } else {
             pop();
         }
-        changeTo(pop());
+        Pair<ContentCtrl, Properties> pair = pop();
+        changeTo(pair.getKey(), pair.getValue());
     }
 
     public void login(CustomModel userModel) throws IOException {
@@ -307,16 +332,16 @@ public class MainPane {
         }
     }
 
-    private void push(ContentCtrl c){
-        contentStack.add(c);
+    private void push(ContentCtrl c, Properties ps) {
+        contentStack.add(new Pair<>(c, ps));
     }
 
-    private ContentCtrl pop(){
+    private Pair<ContentCtrl, Properties> pop() {
         return contentStack.remove(contentStack.size() - 1);
     }
 
-    private ContentCtrl peek(){
-        return contentStack.get(contentStack.size()-1);
+    private Pair<ContentCtrl, Properties> peek() {
+        return contentStack.get(contentStack.size() - 1);
     }
 
     public CustomModel getUserModel() {
@@ -327,21 +352,21 @@ public class MainPane {
     /**
      * 转换一个 bar 对象为一个按钮实例
      */
-    private Button addTileBtn(BarBtn bar){
+    private Button addTileBtn(BarBtn bar) {
         Button btn = new Button(bar.getText());
         String img = bar.getImage();
-        if (img!=null && !"".equals(img)){
+        if (img != null && !"".equals(img)) {
             ImageView m = ImageLoadUtil.bindImage(new ImageView(), bar.getImage());
             m.setFitWidth(18);
             m.setFitHeight(18);
             btn.setGraphic(m);
         }
         String hit = bar.getHit();
-        if (hit!=null){
+        if (hit != null) {
             btn.setTooltip(new Tooltip(hit));
         }
         Runnable r = bar.getAction();
-        if (r!=null){
+        if (r != null) {
             btn.setOnAction(event -> r.run());
         }
         return btn;

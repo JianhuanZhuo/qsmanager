@@ -261,3 +261,9 @@ GridPane.infogp {
 .sroll-content {
     -fx-padding: 5px 15px 5px 5px;
 }
+
+.url{
+    -fx-cursor: hand;
+    -fx-underline: true;
+    -fx-text-fill: #ff6600;
+}
