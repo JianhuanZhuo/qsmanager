@@ -5,6 +5,7 @@ import cn.keepfight.qsmanager.Mapper.StuffMapper;
 import cn.keepfight.qsmanager.dao.StuffDao;
 import cn.keepfight.qsmanager.dao.salary.*;
 import cn.keepfight.utils.FXUtils;
+import cn.keepfight.utils.SQLUtils;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 
@@ -101,28 +102,29 @@ public abstract class SalaryServices {
     /**
      * 员工工资拖欠情况
      */
-    public static List<SalaryTardyDao> selectStuffSalaryTardy() throws Exception{
-        List<SalaryTardyDao> res = FXUtils.getMapper(factory, SalaryMapper.class, SalaryMapper::selectStuffSalaryTardy);
-        for (SalaryTardyDao d: res){
-            d.setDetails(FXUtils.getMapper(factory, SalaryMapper.class, SalaryMapper::selectTardyByStuff, d.getId()));
+    public static List<SalaryTardyDao> selectStuffSalaryTardy() throws Exception {
+        try (SqlSession session = factory.openSession(true)) {
+            List<SalaryTardyDao> res = SQLUtils.getMapperSession(session, SalaryMapper.class, SalaryMapper::selectStuffSalaryTardy);
+            for (SalaryTardyDao d : res) {
+                d.setDetails(SQLUtils.getMapperSession(session, SalaryMapper.class, SalaryMapper::selectTardyByStuff, d.getId()));
+            }
+            return res;
         }
-        return res;
     }
 
 
     /**
      * 批量插入工资发放
      */
-    public static void insertIntoSalaryIncome(List<SalaryPayDao> list) throws Exception{
+    public static void insertIntoSalaryIncome(List<SalaryPayDao> list) throws Exception {
         FXUtils.getMapper(factory, SalaryMapper.class, SalaryMapper::insertIntoSalaryIncome, list);
     }
-
 
 
     /**
      * 删除指定日期下对某个月的工资发放
      */
-    public static void deleteMonthSalaryIncomeByDate(Long year, Long month, String date) throws  Exception{
+    public static void deleteMonthSalaryIncomeByDate(Long year, Long month, String date) throws Exception {
         try (SqlSession session = factory.openSession(true)) {
             session.getMapper(SalaryMapper.class).deleteMonthSalaryIncomeByDate(year, month, date);
         }

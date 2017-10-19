@@ -73,7 +73,6 @@ public class FXUtils {
         }
     }
 
-
     public static <T, P> void getMapper(SqlSessionFactory sqlSessionFactory, Class<T> clazz, ConsumerT<T, P> consumer, P p) throws Exception {
         try (SqlSession session = sqlSessionFactory.openSession(true)) {
             consumer.accept(session.getMapper(clazz), p);

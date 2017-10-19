@@ -194,6 +194,7 @@
                                   GROUP BY i.salary_id
                               ) x
                         ON s.id = x.salary_id
+                WHERE s.salary>x.sum
             ) AS m
             LEFT JOIN
             (

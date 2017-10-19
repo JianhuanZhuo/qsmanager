@@ -100,6 +100,8 @@ public class SalaryController implements ContentCtrl, Initializable {
             });
             return row;
         });
+
+        btn_clear.setOnAction(event -> QSApp.mainPane.changeTo(MainPaneList.SALARY_CLEAR));
     }
 
     @Override
@@ -147,6 +149,8 @@ public class SalaryController implements ContentCtrl, Initializable {
         } catch (Exception e) {
             e.printStackTrace();
         }
+
+
     }
 
     @Override
