@@ -1,9 +1,7 @@
 package cn.keepfight.qsmanager.service;
 
 import cn.keepfight.qsmanager.dao.StuffDao;
-import cn.keepfight.qsmanager.dao.salary.SalaryDao;
-import cn.keepfight.qsmanager.dao.salary.SalaryDao_i;
-import cn.keepfight.qsmanager.dao.salary.YearStaticDao;
+import cn.keepfight.qsmanager.dao.salary.*;
 import cn.keepfight.qsmanager.model.CustomModel;
 import org.apache.ibatis.annotations.Param;
 
@@ -60,4 +58,22 @@ public interface SalaryService {
      * 添加一条员工工资记录
      */
     void addNewSalary(SalaryDao salaryDao) throws Exception;
+
+
+    /**
+     * 员工工资拖欠情况
+     */
+    List<SalaryTardyDao> selectStuffSalaryTardy() throws Exception;
+
+
+    /**
+     * 批量插入工资发放
+     */
+    void insertIntoSalaryIncome(List<SalaryPayDao> list) throws Exception;
+
+    /**
+     * 删除指定日期下对某个月的工资发放
+     */
+    void deleteMonthSalaryIncomeByDate(
+            Long year, Long month, String date) throws  Exception;
 }

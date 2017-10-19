@@ -3,9 +3,11 @@ package cn.keepfight.qsmanager.dao.salary;
 import cn.keepfight.qsmanager.dao.StuffDao;
 
 import java.math.BigDecimal;
-import java.sql.Date;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
+ * 工资总额表
  * Created by tom on 2017/10/15.
  */
 public class SalaryDao {
@@ -16,9 +18,8 @@ public class SalaryDao {
     private BigDecimal basicSalary;
     private BigDecimal ageSalary;
     private BigDecimal totalSalary;
-    private BigDecimal fixSalary;
-    private int clear;
-    private Date date;
+    private BigDecimal tardySalary;//只读量
+    private List<StuffTardyDao> details;
 
     public SalaryDao(){}
 
@@ -29,9 +30,9 @@ public class SalaryDao {
         setBasicSalary(i.getBasicSalary());
         setAgeSalary(i.getAgeSalary());
         setTotalSalary(i.getTotalSalary());
-        setDate(i.getDate());
-        setClear(i.getClear());
-        setFixSalary(i.getFixSalary());
+
+        // 内部只读量
+        setTardySalary(i.getTardySalary());
 
         setStuffDao(stuffDao);
     }
@@ -81,24 +82,6 @@ public class SalaryDao {
         return this;
     }
 
-    public Date getDate() {
-        return date;
-    }
-
-    public SalaryDao setDate(Date date) {
-        this.date = date;
-        return this;
-    }
-
-    public int getClear() {
-        return clear;
-    }
-
-    public SalaryDao setClear(int clear) {
-        this.clear = clear;
-        return this;
-    }
-
     public long getYear() {
         return year;
     }
@@ -117,11 +100,30 @@ public class SalaryDao {
         return this;
     }
 
-    public BigDecimal getFixSalary() {
-        return fixSalary;
+    public BigDecimal getTardySalary() {
+        return tardySalary;
     }
 
-    public void setFixSalary(BigDecimal fixSalary) {
-        this.fixSalary = fixSalary;
+    public SalaryDao setTardySalary(BigDecimal tardySalary) {
+        this.tardySalary = tardySalary;
+        return this;
+    }
+
+    public List<StuffTardyDao> getDetails() {
+        return details;
+    }
+
+    public SalaryDao setDetails(List<StuffTardyDao> details) {
+        this.details = details;
+        return this;
+    }
+
+    public BigDecimal getDetailByYM(String ym){
+        for (StuffTardyDao d: details){
+            if (d.getYm().equals(ym)){
+                return d.getSum();
+            }
+        }
+        throw new RuntimeException("wow????");
     }
 }

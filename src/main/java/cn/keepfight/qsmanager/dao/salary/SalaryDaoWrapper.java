@@ -7,6 +7,7 @@ import javafx.beans.property.*;
 
 import java.math.BigDecimal;
 import java.sql.Date;
+import java.util.List;
 
 /**
  * 工资包装器
@@ -20,11 +21,9 @@ public class SalaryDaoWrapper implements DaoWrapper<SalaryDao> {
     private ObjectProperty<BigDecimal> basicSalary = new SimpleObjectProperty<>();
     private ObjectProperty<BigDecimal> ageSalary = new SimpleObjectProperty<>();
     private ObjectProperty<BigDecimal> totalSalary = new SimpleObjectProperty<>();
-    private ObjectProperty<BigDecimal> fixSalary = new SimpleObjectProperty<>();
     private ObjectProperty<BigDecimal> otherSalary = new SimpleObjectProperty<>();
-    private ObjectProperty<BigDecimal> willSalary = new SimpleObjectProperty<>();
-    private BooleanProperty clear = new SimpleBooleanProperty(false);
-    private ObjectProperty<Date> date = new SimpleObjectProperty<>();
+    private ObjectProperty<BigDecimal> tardySalary = new SimpleObjectProperty<>();
+    private List<StuffTardyDao> details;
     private StuffWrapper stuffDaoWrapper = new StuffWrapper();
 
     public SalaryDaoWrapper(){
@@ -41,19 +40,6 @@ public class SalaryDaoWrapper implements DaoWrapper<SalaryDao> {
                 }
             }
         });
-        willSalary.bind(new ObjectBinding<BigDecimal>() {
-            {
-                bind(totalSalary, fixSalary);
-            }
-            @Override
-            protected BigDecimal computeValue() {
-                try {
-                    return totalSalary.get().subtract(fixSalary.get());
-                }catch (Exception e){
-                    return new BigDecimal(0);
-                }
-            }
-        });
 
 
     }
@@ -61,7 +47,6 @@ public class SalaryDaoWrapper implements DaoWrapper<SalaryDao> {
         this();
         wrap(data);
     }
-
 
     @Override
     public void wrap(SalaryDao data) {
@@ -71,9 +56,8 @@ public class SalaryDaoWrapper implements DaoWrapper<SalaryDao> {
         setBasicSalary(data.getBasicSalary());
         setAgeSalary(data.getAgeSalary());
         setTotalSalary(data.getTotalSalary());
-        setClear(data.getClear()!=0);
-        setDate(data.getDate());
-        setFixSalary(data.getFixSalary());
+        setTardySalary(data.getTardySalary());
+        details = data.getDetails();
 
         stuffDaoWrapper.wrap(data.getStuffDao());
     }
@@ -88,9 +72,9 @@ public class SalaryDaoWrapper implements DaoWrapper<SalaryDao> {
         res.setTotalSalary(getTotalSalary());
         res.setBasicSalary(getBasicSalary());
         res.setAgeSalary(getAgeSalary());
-        res.setClear(isClear()?1:0);
-        res.setDate(getDate());
-        res.setFixSalary(getFixSalary());
+        res.setTardySalary(getTardySalary());
+
+        res.setDetails(getDetails());
 
         res.setStuffDao(getStuffDaoWrapper().get());
 
@@ -171,30 +155,6 @@ public class SalaryDaoWrapper implements DaoWrapper<SalaryDao> {
         this.totalSalary.set(totalSalary);
     }
 
-    public boolean isClear() {
-        return clear.get();
-    }
-
-    public BooleanProperty clearProperty() {
-        return clear;
-    }
-
-    public void setClear(boolean clear) {
-        this.clear.set(clear);
-    }
-
-    public Date getDate() {
-        return date.get();
-    }
-
-    public ObjectProperty<Date> dateProperty() {
-        return date;
-    }
-
-    public void setDate(Date date) {
-        this.date.set(date);
-    }
-
     public StuffWrapper getStuffDaoWrapper() {
         return stuffDaoWrapper;
     }
@@ -211,32 +171,25 @@ public class SalaryDaoWrapper implements DaoWrapper<SalaryDao> {
         this.otherSalary.set(otherSalary);
     }
 
-    public BigDecimal getWillSalary() {
-        return willSalary.get();
-    }
-
-    public ObjectProperty<BigDecimal> willSalaryProperty() {
-        return willSalary;
-    }
-
-    public void setWillSalary(BigDecimal willSalary) {
-        this.willSalary.set(willSalary);
-    }
-
     public SalaryDaoWrapper setStuffDaoWrapper(StuffWrapper stuffDaoWrapper) {
         this.stuffDaoWrapper = stuffDaoWrapper;
         return this;
     }
 
-    public BigDecimal getFixSalary() {
-        return fixSalary.get();
+
+    public BigDecimal getTardySalary() {
+        return tardySalary.get();
     }
 
-    public ObjectProperty<BigDecimal> fixSalaryProperty() {
-        return fixSalary;
+    public ObjectProperty<BigDecimal> tardySalaryProperty() {
+        return tardySalary;
     }
 
-    public void setFixSalary(BigDecimal fixSalary) {
-        this.fixSalary.set(fixSalary);
+    public void setTardySalary(BigDecimal tardySalary) {
+        this.tardySalary.set(tardySalary);
+    }
+
+    public List<StuffTardyDao> getDetails() {
+        return details;
     }
 }

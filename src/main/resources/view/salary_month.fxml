@@ -21,8 +21,10 @@
         <Button fx:id="btn_new" text="新增员工"/>
         <Button fx:id="btn_edit" text="编辑选中"/>
         <Button fx:id="btn_del" text="删除选中"/>
+        <Label text="（双击编辑该员工当月工资）"/>
         <Pane HBox.hgrow="ALWAYS"/>
-        <Button fx:id="filldate" text="统一发放日期"/>
+        <Button fx:id="btn_pay" text="工资发放" />
+        <Button fx:id="btn_pay_del" text="发放删除" />
     </HBox>
     <TableView fx:id="table_salary" VBox.vgrow="ALWAYS">
         <columns>
@@ -32,8 +34,6 @@
             <TableColumn fx:id="tab_salary_age" prefWidth="75.0" text="工龄工资"/>
             <TableColumn fx:id="tab_salary_other" prefWidth="75.0" text="其他"/>
             <TableColumn fx:id="tab_salary_total" prefWidth="75.0" text="当月应发"/>
-            <TableColumn fx:id="tab_salary_basic_given" prefWidth="75.0" text="已发工资"/>
-            <TableColumn fx:id="tab_given_date" prefWidth="75.0" text="发放日期"/>
             <TableColumn fx:id="tab_will_give" prefWidth="75.0" text="当月未发"/>
         </columns>
         <columnResizePolicy>
@@ -48,7 +48,7 @@
         <Label fx:id="sum_given" text="100,000.00"/>
         <Pane HBox.hgrow="ALWAYS"/>
         <Label text="未发合计：￥"/>
-        <Label fx:id="sum_will" text="123,233.21"/>
+        <Label fx:id="sum_tardy" text="123,233.21"/>
         <Pane HBox.hgrow="ALWAYS"/>
     </HBox>
 </VBox>

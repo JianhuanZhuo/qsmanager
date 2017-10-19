@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.control.Button?>
+<VBox fx:id="root" styleClass="content-pane, vbox-common" stylesheets="@css/salary.css, @css/common.css"
+      xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="cn.keepfight.qsmanager.controller.salary.SalaryClearController">
+    <HBox styleClass="hbox-common">
+        <Label text="选择结算的月份（默认结算全部月份，结算部分月份点击选择月份即可）"/>
+        <Pane HBox.hgrow="ALWAYS"/>
+    </HBox>
+    <HBox fx:id="monlist" styleClass="hbox-common, left-align">
+        <CheckBox text="2017-1"/>
+        <CheckBox text="2017-2"/>
+        <CheckBox text="2017-3"/>
+    </HBox>
+    <Separator/>
+
+    <TableView fx:id="table_stuff">
+        <columns>
+            <TableColumn fx:id="tab_f_name" text="员工"/>
+            <TableColumn fx:id="tab_total" text="全部应付总额"/>
+            <TableColumn fx:id="tab_clear" text="结算总额"/>
+            <TableColumn fx:id="tab_left" text="剩余总额"/>
+        </columns>
+    </TableView>
+    <HBox styleClass="hbox-common">
+        <Label text="全部应付总额：￥"/>
+        <Label fx:id="lab_total" text="0"/>
+        <Pane HBox.hgrow="ALWAYS"/>
+        <Label text="结算总额：￥"/>
+        <Label fx:id="lab_pay" text="0"/>
+        <Pane HBox.hgrow="ALWAYS"/>
+        <Label text="结算总额：￥"/>
+        <Label fx:id="lab_left" text="0"/>
+        <Pane HBox.hgrow="ALWAYS"/>
+    </HBox>
+    <Separator/>
+    <HBox styleClass="hbox-common">
+        <Pane HBox.hgrow="ALWAYS"/>
+        <Button fx:id="ok" text="确认保存"/>
+        <Button fx:id="cancel" text="取消本次操作"/>
+    </HBox>
+</VBox>

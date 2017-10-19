@@ -3,34 +3,28 @@ package cn.keepfight.qsmanager.controller.salary;
 import cn.keepfight.qsmanager.QSApp;
 import cn.keepfight.qsmanager.controller.ContentCtrl;
 import cn.keepfight.qsmanager.controller.MainPaneList;
+import cn.keepfight.qsmanager.dao.salary.SalaryDao;
 import cn.keepfight.qsmanager.dao.salary.SalaryDaoWrapper;
+import cn.keepfight.qsmanager.dao.salary.StuffTardyDao;
 import cn.keepfight.qsmanager.service.SalaryServices;
 import cn.keepfight.utils.FXUtils;
 import cn.keepfight.utils.FXWidgetUtil;
 import cn.keepfight.utils.WarningBuilder;
 import cn.keepfight.widget.MonthPicker;
 import cn.keepfight.widget.TableShowGrid;
-import javafx.beans.binding.Binding;
-import javafx.beans.binding.ObjectBinding;
 import javafx.beans.binding.StringBinding;
-import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.*;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import javafx.util.Pair;
 
 import java.math.BigDecimal;
 import java.net.URL;
-import java.sql.Date;
 import java.time.LocalDate;
-import java.util.List;
-import java.util.Optional;
-import java.util.Properties;
-import java.util.ResourceBundle;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -49,23 +43,23 @@ public class SalaryMonthController implements ContentCtrl, Initializable {
     public TableColumn<SalaryDaoWrapper, BigDecimal> tab_salary_age;
     public TableColumn<SalaryDaoWrapper, BigDecimal> tab_salary_other;
     public TableColumn<SalaryDaoWrapper, BigDecimal> tab_salary_total;
-    public TableColumn<SalaryDaoWrapper, BigDecimal> tab_salary_basic_given;
-    public TableColumn<SalaryDaoWrapper, String> tab_given_date;
     public TableColumn<SalaryDaoWrapper, BigDecimal> tab_will_give;
-
-    public Button filldate;
 
     public Button btn_new;
     public Button btn_edit;
     public Button btn_del;
+    public Button btn_pay;
+    public Button btn_pay_del;
 
     public Label sum_total;
     public Label sum_given;
-    public Label sum_will;
+    public Label sum_tardy;
 
     private long data_year = 2017;
     private long data_month = 10;
     private MonthPicker p;
+
+    private List<TableColumn> tabs = new ArrayList<>(10);
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -110,6 +104,26 @@ public class SalaryMonthController implements ContentCtrl, Initializable {
                 }
             }
         });
+        btn_pay_del.setOnAction(event -> {
+            ChoiceDialog<String> dialog = new ChoiceDialog<String>();
+            dialog.getItems().setAll(table_salary.getItems().get(0).get().getDetails()
+                    .stream()
+                    .map(StuffTardyDao::getYm)
+                    .collect(Collectors.toList()));
+            dialog.setHeaderText("选择工资发放记录日期，删除该记录日期下全部资金发放记录");
+            dialog.setContentText("选择需要删除的工资发放记录日期");
+            Optional<String> opts = dialog.showAndWait();
+            opts.ifPresent(s->{
+                System.out.println(s);
+                try {
+                    SalaryServices.deleteMonthSalaryIncomeByDate(data_year,data_month, s);
+                    QSApp.mainPane.refresh();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    WarningBuilder.build("删除错误", "删除错误，请检查网络连接或刷新页面重新删除");
+                }
+            });
+        });
 
         FXWidgetUtil.connect(tab_name, e -> e.getStuffDaoWrapper().nameProperty());
         FXWidgetUtil.connect(tab_serial, e -> e.getStuffDaoWrapper().serialProperty());
@@ -117,12 +131,10 @@ public class SalaryMonthController implements ContentCtrl, Initializable {
         FXWidgetUtil.connectDecimalColumn(tab_salary_age, SalaryDaoWrapper::ageSalaryProperty);
         FXWidgetUtil.connectDecimalColumn(tab_salary_other, SalaryDaoWrapper::otherSalaryProperty);
         FXWidgetUtil.connectDecimalColumn(tab_salary_total, SalaryDaoWrapper::totalSalaryProperty);
-        FXWidgetUtil.connectDecimalColumn(tab_salary_basic_given, SalaryDaoWrapper::fixSalaryProperty);
-        FXWidgetUtil.connectDecimalColumn(tab_will_give, SalaryDaoWrapper::willSalaryProperty);
-        FXWidgetUtil.connectObj(tab_given_date, SalaryDaoWrapper::dateProperty);
+        FXWidgetUtil.connectDecimalColumn(tab_will_give, SalaryDaoWrapper::tardySalaryProperty);
 
         FXWidgetUtil.cellMoney(tab_salary_basic, tab_salary_age, tab_salary_other,
-                tab_salary_total, tab_salary_basic_given, tab_will_give);
+                tab_salary_total, tab_will_give);
 
         table_salary.setRowFactory(tv -> {
             TableRow<SalaryDaoWrapper> row = new TableRow<>();
@@ -138,42 +150,14 @@ public class SalaryMonthController implements ContentCtrl, Initializable {
             return row;
         });
 
-
         FXWidgetUtil.calculate(table_salary.getItems(), SalaryDaoWrapper::getTotalSalary, sum_total::setText);
-        FXWidgetUtil.calculate(table_salary.getItems(), SalaryDaoWrapper::getFixSalary, sum_given::setText);
-        FXWidgetUtil.calculate(table_salary.getItems(), x -> x.getTotalSalary().subtract(x.getFixSalary()), sum_will::setText);
+        FXWidgetUtil.calculate(table_salary.getItems(), SalaryDaoWrapper::getTardySalary, sum_tardy::setText);
+        FXWidgetUtil.calculate(table_salary.getItems(), x -> x.getTotalSalary().subtract(x.getTardySalary()), sum_given::setText);
 
-        filldate.setOnAction(event -> {
-            Dialog<Date> dialog = new Dialog<>();
-            dialog.setTitle("发放日期填充");
-            dialog.setHeaderText("请选择一个日期来统一填写全部发放日期");
-            ButtonType okButtonType = new ButtonType("确定", ButtonBar.ButtonData.OK_DONE);
-            ButtonType cancelButtonType = new ButtonType("取消", ButtonBar.ButtonData.CANCEL_CLOSE);
-            dialog.getDialogPane().getButtonTypes().addAll(okButtonType, cancelButtonType);
-            DatePicker datePicker = new DatePicker();
-            datePicker.setPromptText("点击选择日期");
-            datePicker.getEditor().setDisable(true);
-            dialog.getDialogPane().lookupButton(okButtonType).disableProperty().bind(datePicker.valueProperty().isNull());
-            dialog.getDialogPane().setContent(new BorderPane(datePicker));
-            dialog.setResultConverter(dialogButton -> {
-                if (dialogButton == okButtonType) {
-                    return Date.valueOf(datePicker.getValue());
-                }
-                return null;
-            });
-
-            Optional<Date> result = dialog.showAndWait();
-
-            result.ifPresent(date -> {
-                try {
-                    SalaryServices.updateSalarysDateByMonth(data_year, data_month, date);
-                    QSApp.mainPane.refresh();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    WarningBuilder.build("更新失败，请检查网络链接是否可用");
-                }
-            });
-        });
+        btn_pay.setOnAction(event -> QSApp.mainPane.changeTo(MainPaneList.SALARY_PAY, FXUtils.ps(
+                new Pair<>("year", data_year),
+                new Pair<>("month", data_month)
+        )));
     }
 
     @Override
@@ -195,6 +179,8 @@ public class SalaryMonthController implements ContentCtrl, Initializable {
 
         p.set(new Pair<>(data_year, data_month));
         setLabel_month(data_year, data_month);
+        table_salary.getColumns().removeAll(tabs);
+        tabs.clear();
 
         // 如果不存在则提示说要不要跳转到新增
         try {
@@ -203,6 +189,15 @@ public class SalaryMonthController implements ContentCtrl, Initializable {
                     .map(SalaryDaoWrapper::new)
                     .collect(Collectors.toList());
             table_salary.getItems().setAll(ss);
+            if (ss.size() > 0) {
+                for (StuffTardyDao d : ss.get(0).get().getDetails()) {
+                    TableColumn<SalaryDaoWrapper, BigDecimal> column = new TableColumn<>(d.getYm());
+                    table_salary.getColumns().add(column);
+                    tabs.add(column);
+                    FXWidgetUtil.cellMoney(column);
+                    FXWidgetUtil.connectDecimalColumn(column, k -> new SimpleObjectProperty<>(k.get().getDetailByYM(d.getYm())));
+                }
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -217,9 +212,5 @@ public class SalaryMonthController implements ContentCtrl, Initializable {
         data_year = year;
         data_month = month;
         label_month.setText(year + "年" + month + "月");
-    }
-
-    private void setLabel_month(Pair<Long, Long> monthPair) {
-        setLabel_month(monthPair.getKey(), monthPair.getValue());
     }
 }

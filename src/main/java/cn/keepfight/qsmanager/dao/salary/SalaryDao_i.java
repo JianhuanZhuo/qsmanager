@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.sql.Date;
 
 /**
+ * 内部使用的 Dao
  * Created by tom on 2017/10/15.
  */
 public class SalaryDao_i {
@@ -14,9 +15,7 @@ public class SalaryDao_i {
     private BigDecimal basicSalary;
     private BigDecimal ageSalary;
     private BigDecimal totalSalary;
-    private BigDecimal fixSalary;
-    private int clear;
-    private Date date;
+    private BigDecimal tardySalary;//只读量
 
     public long getId() {
         return id;
@@ -81,29 +80,12 @@ public class SalaryDao_i {
         return this;
     }
 
-    public Date getDate() {
-        return date;
+    public BigDecimal getTardySalary() {
+        return tardySalary;
     }
 
-    public SalaryDao_i setDate(Date date) {
-        this.date = date;
+    public SalaryDao_i setTardySalary(BigDecimal tardySalary) {
+        this.tardySalary = tardySalary;
         return this;
-    }
-
-    public int getClear() {
-        return clear;
-    }
-
-    public SalaryDao_i setClear(int clear) {
-        this.clear = clear;
-        return this;
-    }
-
-    public BigDecimal getFixSalary() {
-        return fixSalary;
-    }
-
-    public void setFixSalary(BigDecimal fixSalary) {
-        this.fixSalary = fixSalary;
     }
 }

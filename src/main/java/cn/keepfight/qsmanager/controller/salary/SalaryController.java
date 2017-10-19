@@ -2,32 +2,28 @@ package cn.keepfight.qsmanager.controller.salary;
 
 import cn.keepfight.qsmanager.QSApp;
 import cn.keepfight.qsmanager.controller.ContentCtrl;
-import cn.keepfight.qsmanager.dao.salary.YearStaticDao;
+import cn.keepfight.qsmanager.controller.MainPaneList;
+import cn.keepfight.qsmanager.dao.salary.SalaryTardyDaoWrapper;
+import cn.keepfight.qsmanager.dao.salary.StuffTardyDao;
 import cn.keepfight.qsmanager.dao.salary.YearStaticDaoWrapper;
-import cn.keepfight.qsmanager.model.MaterialModel;
-import cn.keepfight.qsmanager.service.SalaryService;
 import cn.keepfight.qsmanager.service.SalaryServices;
-import cn.keepfight.utils.CustomDialog;
 import cn.keepfight.utils.FXUtils;
 import cn.keepfight.utils.FXWidgetUtil;
-import cn.keepfight.utils.WarningBuilder;
 import cn.keepfight.widget.TableShowGrid;
 import cn.keepfight.widget.YearScrollPicker;
 import javafx.beans.binding.StringBinding;
-import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
-import javafx.scene.control.Label;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableRow;
-import javafx.scene.control.TableView;
-import javafx.scene.layout.HBox;
+import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
+import javafx.util.Pair;
 
 import java.math.BigDecimal;
 import java.net.URL;
-import java.util.Optional;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Properties;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
@@ -50,10 +46,17 @@ public class SalaryController implements ContentCtrl, Initializable {
     public Label lab_total;
     public Label lab_given;
     public Label lab_tarby;
+    public Label lab_stuff_tardy;
 
-    public TableView table_stuff;
+
+    public Button btn_clear;
+    public TableView<SalaryTardyDaoWrapper> table_stuff;
+    public TableColumn<SalaryTardyDaoWrapper, String> tab_f_name;
+    public TableColumn<SalaryTardyDaoWrapper, BigDecimal> tab_f_total;
 
     private YearScrollPicker yearScrollPicker;
+
+    private List<TableColumn> tabs = new ArrayList<>(10);
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -72,25 +75,31 @@ public class SalaryController implements ContentCtrl, Initializable {
         FXWidgetUtil.connectDecimalColumn(tab_s_tarby, YearStaticDaoWrapper::tarbyProperty);
         FXWidgetUtil.cellMoney(tab_s_total, tab_s_given, tab_s_tarby);
 
+        FXWidgetUtil.connect(tab_f_name, SalaryTardyDaoWrapper::nameProperty);
+        FXWidgetUtil.connectDecimalColumn(tab_f_total, SalaryTardyDaoWrapper::sumProperty);
+        FXWidgetUtil.cellMoney(tab_f_total);
+
         FXWidgetUtil.calculate(table_static.getItems(), YearStaticDaoWrapper::getTotal, lab_total::setText);
         FXWidgetUtil.calculate(table_static.getItems(), YearStaticDaoWrapper::getGiven, lab_given::setText);
         FXWidgetUtil.calculate(table_static.getItems(), YearStaticDaoWrapper::getTarby, lab_tarby::setText);
-    }
 
-    private void initUI() {
+        FXWidgetUtil.calculate(table_stuff.getItems(), SalaryTardyDaoWrapper::getSum, lab_stuff_tardy::setText);
 
-    }
 
-    private void initAction() {
-//        table_static.setRowFactory(tv -> {
-//            TableRow<MaterialModel> row = new TableRow<>();
-//            row.setOnMouseClicked(event -> {
-//                if (event.getClickCount() == 2 && (!row.isEmpty())) {
-//
-//                }
-//            });
-//            return row;
-//        });
+        table_static.setRowFactory(tv -> {
+            TableRow<YearStaticDaoWrapper> row = new TableRow<>();
+            row.setOnMouseClicked(event -> {
+                if (event.getClickCount() == 2 && (!row.isEmpty())) {
+                    long month = Long.valueOf(row.getTableView().getItems().get(row.getIndex()).getMonth());
+                    long year = yearScrollPicker.get();
+                    QSApp.mainPane.changeTo(MainPaneList.SALARY_MONTH, FXUtils.ps(
+                            new Pair<>("year", year),
+                            new Pair<>("month", month)
+                    ));
+                }
+            });
+            return row;
+        });
     }
 
     @Override
@@ -114,6 +123,27 @@ public class SalaryController implements ContentCtrl, Initializable {
                     SalaryServices.staticSalaryByYear(year).stream()
                             .map(YearStaticDaoWrapper::new)
                             .collect(Collectors.toList()));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        table_stuff.getColumns().removeAll(tabs);
+        tabs.clear();
+        try {
+            List<SalaryTardyDaoWrapper> ss = SalaryServices.selectStuffSalaryTardy().stream()
+                            .map(SalaryTardyDaoWrapper::new)
+                            .collect(Collectors.toList());
+            table_stuff.getItems().setAll(ss);
+
+            if (ss.size() > 0) {
+                for (StuffTardyDao d : ss.get(0).get().getDetails()) {
+                    TableColumn<SalaryTardyDaoWrapper, BigDecimal> column = new TableColumn<>(d.getYm());
+                    table_stuff.getColumns().add(column);
+                    tabs.add(column);
+                    FXWidgetUtil.cellMoney(column);
+                    FXWidgetUtil.connectDecimalColumn(column, k -> new SimpleObjectProperty<>(k.get().getDetailByYM(d.getYm())));
+                }
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }

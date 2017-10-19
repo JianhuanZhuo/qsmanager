@@ -1,20 +1,14 @@
 package cn.keepfight.qsmanager.service;
 
-import cn.keepfight.qsmanager.Mapper.OperatorMapper;
 import cn.keepfight.qsmanager.Mapper.SalaryMapper;
 import cn.keepfight.qsmanager.Mapper.StuffMapper;
 import cn.keepfight.qsmanager.dao.StuffDao;
-import cn.keepfight.qsmanager.dao.salary.SalaryDao;
-import cn.keepfight.qsmanager.dao.salary.SalaryDao_i;
-import cn.keepfight.qsmanager.dao.salary.YearStaticDao;
+import cn.keepfight.qsmanager.dao.salary.*;
 import cn.keepfight.utils.FXUtils;
-import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 
-import java.sql.Date;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
@@ -41,7 +35,9 @@ public abstract class SalaryServices {
             List<SalaryDao> res = new ArrayList<>(12);
             // 填充
             for (SalaryDao_i e : internalRes) {
-                res.add(new SalaryDao(e, session.getMapper(StuffMapper.class).selectByID(e.getStuffDaoID())));
+                SalaryDao dao = new SalaryDao(e, session.getMapper(StuffMapper.class).selectByID(e.getStuffDaoID()));
+                dao.setDetails(session.getMapper(SalaryMapper.class).selectTardyDetailsEachDate(year, month, e.getStuffDaoID()));
+                res.add(dao);
             }
             res.sort(sortBySerial());
             return res;
@@ -62,28 +58,15 @@ public abstract class SalaryServices {
     /**
      * 修改指定年月和工人 ID 的当月工资
      */
-    public static void updateSalarysByMonthAndStuff(SalaryDao salaryDao) throws Exception{
+    public static void updateSalarysByMonthAndStuff(SalaryDao salaryDao) throws Exception {
         FXUtils.getMapper(factory, SalaryMapper.class, SalaryMapper::updateSalarysByMonthAndStuff, salaryDao);
     }
 
     /**
      * 删除指定年月和工人 ID 的当月工资
      */
-    public static void deleteByMonthAndStuff(SalaryDao salaryDao) throws Exception{
+    public static void deleteByMonthAndStuff(SalaryDao salaryDao) throws Exception {
         FXUtils.getMapper(factory, SalaryMapper.class, SalaryMapper::deleteByMonthAndStuff, salaryDao);
-    }
-
-    /**
-     * 修改指定年月的固定工资发放时间
-     */
-    public static void updateSalarysDateByMonth(
-            @Param("year") Long year,
-            @Param("month") Long month,
-            @Param("date") Date date) throws Exception{
-        try (SqlSession session = factory.openSession(true)) {
-            session.getMapper(SalaryMapper.class).updateSalarysDateByMonth(year, month, date);
-        }
-
     }
 
     /**
@@ -103,14 +86,45 @@ public abstract class SalaryServices {
         FXUtils.getMapper(factory, SalaryMapper.class, SalaryMapper::addNewSalary, salaryDao);
     }
 
-    private static Comparator<SalaryDao> sortBySerial(){
+    private static Comparator<SalaryDao> sortBySerial() {
         return (o1, o2) -> {
-            if (o1==null){
+            if (o1 == null) {
                 return 0;
-            }else if (o2==null){
+            } else if (o2 == null) {
                 return 1;
             }
             return o1.getStuffDao().getSerial().compareTo(o2.getStuffDao().getSerial());
         };
+    }
+
+
+    /**
+     * 员工工资拖欠情况
+     */
+    public static List<SalaryTardyDao> selectStuffSalaryTardy() throws Exception{
+        List<SalaryTardyDao> res = FXUtils.getMapper(factory, SalaryMapper.class, SalaryMapper::selectStuffSalaryTardy);
+        for (SalaryTardyDao d: res){
+            d.setDetails(FXUtils.getMapper(factory, SalaryMapper.class, SalaryMapper::selectTardyByStuff, d.getId()));
+        }
+        return res;
+    }
+
+
+    /**
+     * 批量插入工资发放
+     */
+    public static void insertIntoSalaryIncome(List<SalaryPayDao> list) throws Exception{
+        FXUtils.getMapper(factory, SalaryMapper.class, SalaryMapper::insertIntoSalaryIncome, list);
+    }
+
+
+
+    /**
+     * 删除指定日期下对某个月的工资发放
+     */
+    public static void deleteMonthSalaryIncomeByDate(Long year, Long month, String date) throws  Exception{
+        try (SqlSession session = factory.openSession(true)) {
+            session.getMapper(SalaryMapper.class).deleteMonthSalaryIncomeByDate(year, month, date);
+        }
     }
 }

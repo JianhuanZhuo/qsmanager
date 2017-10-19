@@ -8,12 +8,11 @@
 
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
-<?import javafx.scene.control.DatePicker?>
 <VBox fx:id="root" styleClass="content-pane, vbox-common" stylesheets="@css/common.css"
       xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1"
       fx:controller="cn.keepfight.qsmanager.controller.salary.SalaryNewController">
     <HBox styleClass="hbox-common">
-        <Label text="在下面的列表中勾选需要新增工资的员工（默认已选择全部在职员工）"/>
+        <Label text="在下面的列表中勾选需要新增工资的员工（默认已选择全部在职员工，员工应该现在建立档案）"/>
         <Pane HBox.hgrow="ALWAYS"/>
         <Label text="工资年月："/>
         <Button fx:id="yearMonth" styleClass="url" text="2017年8月"/>
@@ -22,12 +21,6 @@
     <VBox fx:id="stuffList"/>
     <HBox styleClass="hbox-common">
         <Label fx:id="spaceholder" text="暂无可新增员工"/>
-    </HBox>
-    <Separator/>
-    <HBox styleClass="hbox-common">
-        <Label text="已发工资发放日期："/>
-        <DatePicker fx:id="date"/>
-        <Pane HBox.hgrow="ALWAYS"/>
     </HBox>
     <Separator/>
     <HBox styleClass="hbox-common">

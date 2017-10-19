@@ -26,6 +26,7 @@ public enum MainPaneList {
     SALARY_MONTH,
     SALARY_NEW,
     SALARY_EDIT,
+    SALARY_PAY,
     PREDICT,
     OUTCOME_ANNUAL;
 

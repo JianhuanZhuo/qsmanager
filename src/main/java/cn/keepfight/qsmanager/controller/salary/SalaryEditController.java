@@ -37,8 +37,6 @@ public class SalaryEditController implements ContentCtrl, Initializable {
     public TextField salary_age;
     public TextField salary_other;
     public TextField salary_total;
-    public DatePicker date_picker;
-    public TextField salary_fix;
 
     private long year;
     private long month;
@@ -48,9 +46,6 @@ public class SalaryEditController implements ContentCtrl, Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
-        // 禁用手动输入
-        date_picker.getEditor().setDisable(true);
-
         FXWidgetUtil.simpleTriOper(salary_other, BigDecimal::subtract, BigDecimal::subtract, salary_total, salary_basic, salary_age);
 
         cancel.setOnAction(e -> QSApp.mainPane.backNav());
@@ -59,15 +54,6 @@ public class SalaryEditController implements ContentCtrl, Initializable {
             dao.setTotalSalary(FXUtils.getDecimal(salary_total.getText()));
             dao.setBasicSalary(FXUtils.getDecimal(salary_basic.getText()));
             dao.setAgeSalary(FXUtils.getDecimal(salary_age.getText()));
-            dao.setFixSalary(FXUtils.getDecimal(salary_fix.getText()));
-            try {
-                dao.setDate(Date.valueOf(date_picker.getValue()));
-            }catch (Exception exp){
-                dao.setDate(null);
-            }
-            if (dao.getFixSalary().compareTo(dao.getTotalSalary())>=0){
-                dao.setClear(1);
-            }
             try {
                 SalaryServices.updateSalarysByMonthAndStuff(dao);
                 QSApp.mainPane.backNav();
@@ -110,12 +96,6 @@ public class SalaryEditController implements ContentCtrl, Initializable {
             salary_basic.setText(FXUtils.deciToMoney(dao.getBasicSalary()));
             salary_age.setText(FXUtils.deciToMoney(dao.getAgeSalary()));
             salary_total.setText(FXUtils.deciToMoney(dao.getTotalSalary()));
-            salary_fix.setText(FXUtils.deciToMoney(dao.getFixSalary()));
-            if (dao.getDate() != null) {
-                date_picker.setValue(dao.getDate().toLocalDate());
-            } else {
-                date_picker.setValue(null);
-            }
         } catch (Exception e) {
             e.printStackTrace();
         }

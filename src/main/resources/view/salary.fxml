@@ -10,6 +10,7 @@
 <?import javafx.scene.layout.VBox?>
 
 <?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Button?>
 <VBox fx:id="root" stylesheets="@css/common.css" xmlns="http://javafx.com/javafx/8.0.111"
       xmlns:fx="http://javafx.com/fxml/1" fx:controller="cn.keepfight.qsmanager.controller.salary.SalaryController">
     <ScrollPane fitToWidth="true">
@@ -46,16 +47,17 @@
             <HBox styleClass="title-line">
                 <Label text="应付工资总表"/>
                 <Pane HBox.hgrow="ALWAYS"/>
+                <Button fx:id="btn_clear" text="工资结算" />
             </HBox>
             <TableView fx:id="table_stuff">
                 <columns>
-                    <TableColumn prefWidth="75.0" text="员工"/>
-                    <TableColumn prefWidth="75.0" text="应付总额"/>
+                    <TableColumn fx:id="tab_f_name" prefWidth="75.0" text="员工"/>
+                    <TableColumn fx:id="tab_f_total" prefWidth="75.0" text="应付总额"/>
                 </columns>
             </TableView>
             <HBox layoutY="343.0">
                 <Label text="应付合计：￥"/>
-                <Label text="123,233.21"/>
+                <Label fx:id="lab_stuff_tardy" text="123,233.21"/>
                 <styleClass>
                     <String fx:value="hbox-common"/>
                     <String fx:value="right-align"/>
