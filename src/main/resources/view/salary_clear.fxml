@@ -19,9 +19,6 @@
         <Pane HBox.hgrow="ALWAYS"/>
     </HBox>
     <HBox fx:id="monlist" styleClass="hbox-common, left-align">
-        <CheckBox text="2017-1"/>
-        <CheckBox text="2017-2"/>
-        <CheckBox text="2017-3"/>
     </HBox>
     <Separator/>
 

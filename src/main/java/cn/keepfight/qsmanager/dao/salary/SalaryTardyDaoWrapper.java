@@ -15,9 +15,10 @@ public class SalaryTardyDaoWrapper implements DaoWrapper<SalaryTardyDao> {
     private ObjectProperty<BigDecimal> sum = new SimpleObjectProperty<>();
     private List<StuffTardyDao> details;
 
-    public SalaryTardyDaoWrapper(){}
+    public SalaryTardyDaoWrapper() {
+    }
 
-    public SalaryTardyDaoWrapper(SalaryTardyDao data){
+    public SalaryTardyDaoWrapper(SalaryTardyDao data) {
         this();
         wrap(data);
     }
@@ -70,5 +71,28 @@ public class SalaryTardyDaoWrapper implements DaoWrapper<SalaryTardyDao> {
     public SalaryTardyDaoWrapper setDetails(List<StuffTardyDao> details) {
         this.details = details;
         return this;
+    }
+
+    public BigDecimal getDetailByYM(String ym) {
+        for (StuffTardyDao d : details) {
+            if (d.getYm().equals(ym)) {
+                return d.getSum();
+            }
+        }
+        System.out.println("ym：" + ym);
+        throw new RuntimeException("wow????");
+    }
+
+    public BigDecimal countByStatue(String selectStatue) {
+        BigDecimal res = new BigDecimal(0);
+        System.out.println("selectStatue：" + selectStatue);
+        if (selectStatue == null || selectStatue.replaceAll("null", "").trim().equals("")) {
+            return res;
+        }
+        for (String s : selectStatue.trim().split("~")) {
+            res = res.add(getDetailByYM(s));
+        }
+
+        return res;
     }
 }

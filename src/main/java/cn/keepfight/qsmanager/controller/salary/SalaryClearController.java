@@ -5,14 +5,21 @@ import cn.keepfight.qsmanager.dao.salary.SalaryTardyDaoWrapper;
 import cn.keepfight.qsmanager.dao.salary.StuffTardyDao;
 import cn.keepfight.qsmanager.dao.salary.YearStaticDaoWrapper;
 import cn.keepfight.qsmanager.service.SalaryServices;
+import cn.keepfight.utils.FXUtils;
 import cn.keepfight.utils.FXWidgetUtil;
+import javafx.beans.binding.ObjectBinding;
 import javafx.beans.binding.StringBinding;
 import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.util.Callback;
 
 import java.math.BigDecimal;
 import java.net.URL;
@@ -26,20 +33,22 @@ import java.util.stream.Collectors;
  * 工资结算
  * Created by tom on 2017/10/19.
  */
-public class SalaryClearController implements Initializable, ContentCtrl{
+public class SalaryClearController implements Initializable, ContentCtrl {
 
     public VBox root;
     public HBox monlist;
-    public TableView<SalaryTardyDaoWrapper>  table_stuff;
+    public TableView<SalaryTardyDaoWrapper> table_stuff;
     public TableColumn<SalaryTardyDaoWrapper, String> tab_f_name;
     public TableColumn<SalaryTardyDaoWrapper, BigDecimal> tab_total;
-    public TableColumn tab_clear;
-    public TableColumn tab_left;
+    public TableColumn<SalaryTardyDaoWrapper, BigDecimal> tab_clear;
+    public TableColumn<SalaryTardyDaoWrapper, BigDecimal> tab_left;
     public Label lab_total;
     public Label lab_pay;
     public Label lab_left;
     public Button ok;
     public Button cancel;
+
+    private StringProperty selectStatue = new SimpleStringProperty("");
 
     private List<TableColumn> tabs = new ArrayList<>(10);
 
@@ -47,6 +56,28 @@ public class SalaryClearController implements Initializable, ContentCtrl{
     public void initialize(URL location, ResourceBundle resources) {
         FXWidgetUtil.connect(tab_f_name, SalaryTardyDaoWrapper::nameProperty);
         FXWidgetUtil.connectDecimalColumn(tab_total, SalaryTardyDaoWrapper::sumProperty);
+
+        tab_clear.setCellValueFactory(param -> new ObjectBinding<BigDecimal>() {
+            {
+                bind(selectStatue);
+            }
+            @Override
+            protected BigDecimal computeValue() {
+                return param.getValue().countByStatue(selectStatue.get());
+            }
+        });
+        tab_left.setCellValueFactory(param -> new ObjectBinding<BigDecimal>() {
+            {
+                bind(selectStatue);
+            }
+            @Override
+            protected BigDecimal computeValue() {
+                return param.getValue().getSum().subtract(param.getValue().countByStatue(selectStatue.get()));
+            }
+        });
+
+        FXWidgetUtil.cellMoney(tab_total, tab_clear, tab_left);
+        FXWidgetUtil.calculate(table_stuff.getItems(), SalaryTardyDaoWrapper::getSum, lab_total::setText);
     }
 
     @Override
@@ -64,6 +95,7 @@ public class SalaryClearController implements Initializable, ContentCtrl{
 
         table_stuff.getColumns().removeAll(tabs);
         tabs.clear();
+        monlist.getChildren().clear();
         try {
             List<SalaryTardyDaoWrapper> kk = SalaryServices.selectStuffSalaryTardy().stream()
                     .map(SalaryTardyDaoWrapper::new)
@@ -80,9 +112,19 @@ public class SalaryClearController implements Initializable, ContentCtrl{
 
                     // 关联 checkbox
                     CheckBox ck = new CheckBox(d.getYm());
-                    column.visibleProperty().bind(ck.selectedProperty());
+                    ck.setSelected(true);
                     monlist.getChildren().add(ck);
+                    ck.selectedProperty().addListener((observable, oldValue, newValue) -> {
+                        column.setVisible(newValue);
+                        selectStatue.set(monlist.getChildren().stream()
+                                .map(x -> ((CheckBox) x))
+                                .filter(CheckBox::isSelected)
+                                .map(CheckBox::getText)
+                                .collect(Collectors.joining("~")));
+                    });
                 }
+                // 触发一波
+                selectStatue.set(selectStatue.getValue()+" ");
             }
         } catch (Exception e) {
             e.printStackTrace();
