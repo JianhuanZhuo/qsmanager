@@ -9,6 +9,7 @@ import java.math.BigDecimal;
 public class StuffTardyDao {
     private String ym;
     private BigDecimal sum;
+    private Long salary_id;// 对应月的工资记录ID
 
     public String getYm() {
         return ym;
@@ -24,5 +25,13 @@ public class StuffTardyDao {
 
     public void setSum(BigDecimal sum) {
         this.sum = sum;
+    }
+
+    public Long getSalary_id() {
+        return salary_id;
+    }
+
+    public void setSalary_id(Long salary_id) {
+        this.salary_id = salary_id;
     }
 }

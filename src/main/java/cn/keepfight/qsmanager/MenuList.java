@@ -70,13 +70,13 @@ public enum MenuList {
     }
 
     private void load(){
-        Platform.runLater(() -> {
+        new Thread(() -> {
             try {
                 controller = ViewPathUtil.loadViewForController(view);
             } catch (IOException e) {
                 e.printStackTrace();
             }
-        });
+        }).run();
     }
 
     public ContentCtrl getController() {

@@ -81,12 +81,7 @@ public class ViewPathUtilTest {
 
     @Test
     public void testOrder() throws Exception {
-//        QSApp.service.getOrderService().selectYear().forEach(System.out::println);
 
-        System.out.println( new BigDecimal("10.0000000"));
-        System.out.println( new BigDecimal("10.0000000").stripTrailingZeros());
-        System.out.println( new BigDecimal("10.0000000").stripTrailingZeros().toPlainString());
-        System.out.println( new BigDecimal("10.0000000").toPlainString());
     }
 
     @Test

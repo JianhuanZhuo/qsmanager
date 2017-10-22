@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox fx:id="root" styleClass="content-pane" stylesheets="@../css/common.css" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cn.keepfight.qsmanager.controller.annual.SupInvoiceAddController">
+    <HBox styleClass="hbox-common">
+        <Label text="发票对象：" />
+        <Label fx:id="lab_sup" text="北街陈生" />
+        <Pane HBox.hgrow="ALWAYS" />
+        <Label text="发票所属年月：" />
+        <Button fx:id="btn_month_sel" styleClass="url" text="2017年2月" />
+    </HBox>
+    <Separator />
+    <HBox styleClass="hbox-common, left-align">
+        <Label text="请在下面填写新增发票记录的具体数据，点击确定保存（点击右上↗橙色按钮可修改发票对账时所属的年月）" />
+    </HBox>
+    <GridPane>
+        <columnConstraints>
+            <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" maxWidth="284.0" minWidth="10.0" prefWidth="110.0" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="521.0" minWidth="10.0" prefWidth="159.0" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="759.0" minWidth="10.0" prefWidth="201.0" />
+         <ColumnConstraints hgrow="SOMETIMES" maxWidth="759.0" minWidth="10.0" prefWidth="151.0" />
+        </columnConstraints>
+        <rowConstraints>
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        </rowConstraints>
+        <Label text="开票单位：" />
+        <TextField fx:id="unit" promptText="请填写开票的单位" GridPane.columnIndex="1" GridPane.columnSpan="2" />
+        <Label text="开票日期：" GridPane.rowIndex="1" />
+        <DatePicker fx:id="date" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+        <Label text="开票金额：" GridPane.rowIndex="2" />
+        <TextField fx:id="total" promptText="请填写开票的金额总数" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+        <Label text="税率：" GridPane.rowIndex="3" />
+        <TextField fx:id="rate" promptText="请填写开票的税率" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+        <Label text="税金：" GridPane.rowIndex="4" />
+        <TextField fx:id="rateTotal" disable="true" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+      <Label layoutX="60.0" layoutY="18.0" prefHeight="15.0" text="（点击小图标可在日历上选择，或按 “年-月-日” 格式输入）" GridPane.columnIndex="2" GridPane.columnSpan="2" GridPane.rowIndex="1" />
+      <Label layoutX="436.0" layoutY="48.0" prefHeight="15.0" prefWidth="226.0" text="（税率支持 2%或 0.02 两种格式）" GridPane.columnIndex="2" GridPane.rowIndex="3" />
+      <Label layoutX="436.0" layoutY="108.0" prefHeight="15.0" prefWidth="226.0" text="（无法输入，自动计算）" GridPane.columnIndex="2" GridPane.rowIndex="4" />
+    </GridPane>
+    <Separator />
+    <HBox styleClass="hbox-common, right-align">
+        <Button fx:id="ok" text="确认保存" />
+        <Button fx:id="cancel" text="取消保存" />
+    </HBox>
+</VBox>

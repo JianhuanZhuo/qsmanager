@@ -193,4 +193,25 @@
         ) pay
         ON mrec.mon = pay.mon;
     </select>
+
+    <!-- ################################################################################################# -->
+    <select id="staticAnnualMonByMonAndSup" resultType="SupAnnualDao">
+        SELECT
+            mons.mon          AS month,
+            ifnull(an.sum, 0) AS tradeTotal
+        FROM
+            mons
+            LEFT JOIN
+            (
+                SELECT
+                    DATE_FORMAT(r.rdate, '%m') AS m,
+                    sum(d.num * d.price)       AS sum
+                FROM receipt r, receipt_detail d
+                WHERE r.id = d.rid AND r.sid = #{sid}
+                      AND DATE_FORMAT(r.rdate, '%Y') = #{year}
+                GROUP BY DATE_FORMAT(r.rdate, '%m')
+            ) AS an
+                ON mons.mon = an.m
+        ORDER BY mons.mon;
+    </select>
 </mapper>

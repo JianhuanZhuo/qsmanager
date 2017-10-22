@@ -46,5 +46,9 @@
 
         <!--工资表-->
         <mapper resource="mapper/SalaryMapper.xml"/>
+        <!--发票表-->
+        <mapper resource="mapper/SupInvoiceMapper.xml"/>
+        <!--汇款表-->
+        <mapper resource="mapper/SupRemitMapper.xml"/>
     </mappers>
 </configuration>

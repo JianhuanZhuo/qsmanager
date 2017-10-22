@@ -53,7 +53,17 @@ public class SalaryTardyDao {
                 return d.getSum();
             }
         }
+        System.out.println("ym:"+ym);
         throw new RuntimeException("wow????");
     }
 
+    public Long getSalaryIDByYM(String ym){
+        for (StuffTardyDao d: details){
+            if (d.getYm().equals(ym)){
+                return d.getSalary_id();
+            }
+        }
+        System.out.println("ym:"+ym);
+        throw new RuntimeException("miaomiao????");
+    }
 }

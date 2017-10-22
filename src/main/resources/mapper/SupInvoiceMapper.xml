@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.keepfight.qsmanager.Mapper.SupInvoiceMapper">
+    <select id="selectInvoiceByMonthAndSup" resultType="SupInvoiceDao">
+        SELECT *
+        FROM invoice_sup
+        WHERE sup_id = #{sup_id} AND year = #{year} AND month = #{month}
+    </select>
+
+    <insert id="insertInvoice" parameterType="SupInvoiceDao">
+        INSERT INTO invoice_sup (
+        sup_id, year, month, unit, date, total, rate
+        ) VALUES(
+        #{sup_id},
+        #{year},
+        #{month},
+        #{unit},
+        #{date},
+        #{total},
+        #{rate}
+        )
+        <selectKey keyProperty="id" order="AFTER" resultType="long">
+            SELECT last_insert_id();
+        </selectKey>
+    </insert>
+
+    <insert id="insertInvoiceList" parameterType="java.util.List">
+        INSERT INTO invoice_sup (
+        sup_id, year, month, unit, date, total, rate
+        ) VALUES
+        <foreach collection="list" item="dao" index="index" separator=",">
+            (
+            #{dao.sup_id},
+            #{dao.year},
+            #{dao.month},
+            #{dao.unit},
+            #{dao.date},
+            #{dao.total},
+            #{dao.rate}
+            )
+        </foreach>
+    </insert>
+</mapper>

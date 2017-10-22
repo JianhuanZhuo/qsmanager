@@ -1,6 +1,7 @@
 package cn.keepfight.qsmanager.dao.salary;
 
 import cn.keepfight.qsmanager.dao.DaoWrapper;
+import cn.keepfight.utils.FXReflectUtils;
 import javafx.beans.binding.ObjectBinding;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
@@ -45,17 +46,19 @@ public class YearStaticDaoWrapper implements DaoWrapper<YearStaticDao> {
 
     @Override
     public void wrap(YearStaticDao data) {
-        setMonth(data.getMonth());
-        setTotal(data.getTotal());
-        setGiven(data.getGiven());
+//        setMonth(data.getMonth());
+//        setTotal(data.getTotal());
+//        setGiven(data.getGiven());
+        FXReflectUtils.attrsCopy(data, this);
     }
 
     @Override
     public YearStaticDao get() {
         YearStaticDao dao = new YearStaticDao();
-        dao.setMonth(getMonth());
-        dao.setTotal(getTotal());
-        dao.setGiven(getGiven());
+//        dao.setMonth(getMonth());
+//        dao.setTotal(getTotal());
+//        dao.setGiven(getGiven());
+        FXReflectUtils.attrsCopy(this, dao);
         return dao;
     }
 

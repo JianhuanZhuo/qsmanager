@@ -29,17 +29,25 @@ public enum MainPaneList {
     SALARY_PAY,
     SALARY_CLEAR,
     PREDICT,
-    OUTCOME_ANNUAL;
+    OUTCOME_ANNUAL,
+    annual$SUP_ADD_INVOICE,
+    annual$SUP_ADD_REMIT
+    ;
 
     String view;
     ContentCtrl controller;
 
     MainPaneList() {
-        view = name().toLowerCase() + ".fxml";
+        if (name().contains("$")) {
+            view = name().replace("$", "/") + ".fxml";
+        } else {
+            view = name().toLowerCase() + ".fxml";
+        }
     }
 
     private static boolean loaded = false;
-    public static synchronized void loadMenuView(){
+
+    public static synchronized void loadMenuView() {
         if (loaded) return;
         loaded = true;
         for (MainPaneList m : MainPaneList.values()) {
@@ -47,21 +55,22 @@ public enum MainPaneList {
         }
     }
 
-    private void load(){
-        Platform.runLater(() -> {
+    private void load() {
+        new Thread(() -> {
             try {
                 controller = ViewPathUtil.loadViewForController(view);
             } catch (IOException e) {
                 e.printStackTrace();
             }
-        });
+        }).run();
     }
 
     /**
      * 获得控制器，这个方法应该在 runLater 里执行
+     *
      * @return 控制器实例
      */
-    public ContentCtrl getController(){
+    public ContentCtrl getController() {
         return controller;
     }
 }

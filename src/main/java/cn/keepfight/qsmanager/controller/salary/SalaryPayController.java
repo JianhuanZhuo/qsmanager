@@ -82,6 +82,7 @@ public class SalaryPayController implements ContentCtrl, Initializable {
         ok.setOnAction(event -> {
             if (date_picker.getValue() == null) {
                 WarningBuilder.build("发放日期填写错误！");
+                return;
             }
             Date date = Date.valueOf(date_picker.getValue());
             List<SalaryPayDao> res = stuffList.getChildren().stream()

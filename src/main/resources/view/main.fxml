@@ -70,7 +70,7 @@
             <ScrollPane VBox.vgrow="ALWAYS" styleClass="centerScp" fx:id="centerScp">
                 <!--<fx:include source="custom.fxml"/>-->
                 <!--<fx:include source="login.fxml"/>-->
-                <fx:include source="predict.fxml"/>
+                <!--<fx:include source="predict.fxml"/>-->
             </ScrollPane>
         </VBox>
     </center>

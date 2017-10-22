@@ -1,6 +1,8 @@
 package cn.keepfight.qsmanager.Mapper;
 
+import cn.keepfight.qsmanager.dao.annual.SupAnnualDao;
 import cn.keepfight.qsmanager.model.*;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -49,4 +51,12 @@ public interface SupAnnuMapper {
      * 更新月明细
      */
     void updateMon(SupAnnualMonModel model) throws Exception;
+
+
+    /**
+     * 指定供应商和年份选择对账表
+     */
+    List<SupAnnualDao> staticAnnualMonByMonAndSup(
+            @Param("sid") Long sid,
+            @Param("year") Long year) throws Exception;
 }

@@ -31,10 +31,6 @@ public class ProductsController implements ContentCtrl {
     private VBox root;
     @FXML
     private TableView<ProductModel> prodTable;
-    @FXML
-    private Button del;
-    @FXML
-    private Button add;
 
     @FXML
     private TableColumn<ProductModel, String> table_serial;
@@ -87,6 +83,38 @@ public class ProductsController implements ContentCtrl {
         return Arrays.asList(new BarBtn() {
             @Override
             public String getText() {
+                return "新增";
+            }
+
+            @Override
+            public String getHit() {
+                return null;
+            }
+
+            @Override
+            public String getImage() {
+                return "item-add.png";
+            }
+
+            @Override
+            public Runnable getAction() {
+                return ()-> {
+                    Optional<ProductModel> op = CustomDialog.gen().build(addController);
+                    op.ifPresent(model -> {
+                        try {
+                            QSApp.service.getProductService().insert(model);
+                            loadProducts();
+                        } catch (Exception e1) {
+                            e1.printStackTrace();
+                            WarningBuilder.build("新增产品失败", "新增客户失败，请检查网络是否通畅");
+                        }
+                    });
+                };
+            }
+        },
+                new BarBtn() {
+            @Override
+            public String getText() {
                 return "删除";
             }
 
@@ -127,22 +155,6 @@ public class ProductsController implements ContentCtrl {
 
     @FXML
     public void initialize() throws IOException {
-
-//        add.setOnAction(event -> {
-//            Optional<ProductModel> op = CustomDialog.gen().build(addController);
-//            op.ifPresent(model -> {
-//                try {
-//                    QSApp.service.getProductService().insert(model);
-//                    loadProducts();
-//                } catch (Exception e1) {
-//                    e1.printStackTrace();
-//                    WarningBuilder.build("新增产品失败", "新增客户失败，请检查网络是否通畅");
-//                }
-//            });
-//        });
-
-        // 删除客户按钮
-//        del.setOnMouseClicked(event );
 
         // 双击编辑产品
         prodTable.setRowFactory(tv -> {
@@ -201,7 +213,6 @@ public class ProductsController implements ContentCtrl {
             }
         });
     }
-
 
     // 加载产品列表
     private void loadProducts() {

@@ -10,10 +10,17 @@
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.DatePicker?>
 <VBox fx:id="root" styleClass="content-pane, vbox-common" stylesheets="@css/salary.css, @css/common.css"
       xmlns="http://javafx.com/javafx"
       xmlns:fx="http://javafx.com/fxml"
       fx:controller="cn.keepfight.qsmanager.controller.salary.SalaryClearController">
+    <HBox styleClass="hbox-common">
+        <Label text="结算记账日期：" />
+        <DatePicker fx:id="date_picker"/>
+        <Pane HBox.hgrow="ALWAYS" />
+    </HBox>
+    <Separator />
     <HBox styleClass="hbox-common">
         <Label text="选择结算的月份（默认结算全部月份，结算部分月份点击选择月份即可）"/>
         <Pane HBox.hgrow="ALWAYS"/>
@@ -21,7 +28,6 @@
     <HBox fx:id="monlist" styleClass="hbox-common, left-align">
     </HBox>
     <Separator/>
-
     <TableView fx:id="table_stuff">
         <columns>
             <TableColumn fx:id="tab_f_name" text="员工"/>

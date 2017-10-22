@@ -145,11 +145,7 @@ public class MainPane {
             return;
         }
 
-        try {
-            centerScp.setContent(MainPaneList.LOADING.getController().getRoot());
-        } catch (Exception e) {
-            //  not to do
-        }
+        Platform.runLater(() ->centerScp.setContent(MainPaneList.LOADING.getController().getRoot()));
 
         title.textProperty().bind(controller.getTitle());
         Platform.runLater(() -> btnList.getChildren().clear());
@@ -164,7 +160,6 @@ public class MainPane {
         Platform.runLater(() -> {
             List<Button> btns;
             try {
-                System.out.println("bar:" + controller.getBarBtns(params).size());
                 btns = controller.getBarBtns(params).stream()
                         .map(this::addTileBtn)
                         .collect(Collectors.toList());
@@ -236,7 +231,7 @@ public class MainPane {
     /**
      * 使用相同参数刷新当前页面
      */
-    public void refresh(){
+    public void refresh() {
         Pair<ContentCtrl, Properties> p = pop();
         changeTo(p.getKey(), p.getValue());
     }

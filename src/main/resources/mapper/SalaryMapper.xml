@@ -147,7 +147,7 @@
                 GROUP BY month
             ) x
                 ON x.month = m.mon
-        ORDER BY m.mon DESC
+        ORDER BY m.mon
     </select>
 
     <select id="selectStuffSalaryTardy" resultType="SalaryTardyDao">
@@ -179,7 +179,8 @@
     <select id="selectTardyByStuff" parameterType="long" resultType="StuffTardyDao">
         SELECT
             m.ym           AS ym,
-            ifnull(sum, 0) AS sum
+            ifnull(sum, 0) AS sum,
+            sid            AS salary_id
         FROM
             (
                 # 获得全部需要还的年月份
@@ -194,14 +195,15 @@
                                   GROUP BY i.salary_id
                               ) x
                         ON s.id = x.salary_id
-                WHERE s.salary>x.sum
+                WHERE s.salary > ifnull(x.sum, 0)
             ) AS m
             LEFT JOIN
             (
                 # 获得指定需要还的
                 SELECT
                     concat(year, '-', lpad(month, 2, '0')) AS ym,
-                    salary - ifnull(sum, 0)                AS sum
+                    salary - ifnull(sum, 0)                AS sum,
+                    s.id                                   AS sid
                 FROM
                     stuff_salary s
                     LEFT JOIN (

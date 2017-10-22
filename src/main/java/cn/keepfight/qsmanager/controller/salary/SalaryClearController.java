@@ -1,28 +1,28 @@
 package cn.keepfight.qsmanager.controller.salary;
 
+import cn.keepfight.qsmanager.QSApp;
 import cn.keepfight.qsmanager.controller.ContentCtrl;
+import cn.keepfight.qsmanager.dao.salary.SalaryPayDao;
 import cn.keepfight.qsmanager.dao.salary.SalaryTardyDaoWrapper;
 import cn.keepfight.qsmanager.dao.salary.StuffTardyDao;
-import cn.keepfight.qsmanager.dao.salary.YearStaticDaoWrapper;
 import cn.keepfight.qsmanager.service.SalaryServices;
-import cn.keepfight.utils.FXUtils;
 import cn.keepfight.utils.FXWidgetUtil;
+import cn.keepfight.utils.WarningBuilder;
 import javafx.beans.binding.ObjectBinding;
 import javafx.beans.binding.StringBinding;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
+import javafx.collections.ListChangeListener;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.util.Callback;
 
 import java.math.BigDecimal;
 import java.net.URL;
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
@@ -47,6 +47,7 @@ public class SalaryClearController implements Initializable, ContentCtrl {
     public Label lab_left;
     public Button ok;
     public Button cancel;
+    public DatePicker date_picker;
 
     private StringProperty selectStatue = new SimpleStringProperty("");
 
@@ -54,6 +55,9 @@ public class SalaryClearController implements Initializable, ContentCtrl {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+
+        date_picker.getEditor().setDisable(true);
+
         FXWidgetUtil.connect(tab_f_name, SalaryTardyDaoWrapper::nameProperty);
         FXWidgetUtil.connectDecimalColumn(tab_total, SalaryTardyDaoWrapper::sumProperty);
 
@@ -61,6 +65,7 @@ public class SalaryClearController implements Initializable, ContentCtrl {
             {
                 bind(selectStatue);
             }
+
             @Override
             protected BigDecimal computeValue() {
                 return param.getValue().countByStatue(selectStatue.get());
@@ -70,6 +75,7 @@ public class SalaryClearController implements Initializable, ContentCtrl {
             {
                 bind(selectStatue);
             }
+
             @Override
             protected BigDecimal computeValue() {
                 return param.getValue().getSum().subtract(param.getValue().countByStatue(selectStatue.get()));
@@ -78,6 +84,58 @@ public class SalaryClearController implements Initializable, ContentCtrl {
 
         FXWidgetUtil.cellMoney(tab_total, tab_clear, tab_left);
         FXWidgetUtil.calculate(table_stuff.getItems(), SalaryTardyDaoWrapper::getSum, lab_total::setText);
+        selectStatue.addListener(observable -> {
+            FXWidgetUtil.compute(table_stuff.getItems(),
+                    m -> m.countByStatue(selectStatue.get())
+                    , lab_pay::setText, BigDecimal::add);
+            FXWidgetUtil.compute(table_stuff.getItems(),
+                    m -> m.getSum().subtract(m.countByStatue(selectStatue.get()))
+                    , lab_left::setText, BigDecimal::add);
+        });
+        table_stuff.getItems().addListener((ListChangeListener<SalaryTardyDaoWrapper>) c -> {
+            FXWidgetUtil.compute(table_stuff.getItems(),
+                    m -> m.countByStatue(selectStatue.get())
+                    , lab_pay::setText, BigDecimal::add);
+            FXWidgetUtil.compute(table_stuff.getItems(),
+                    m -> m.getSum().subtract(m.countByStatue(selectStatue.get()))
+                    , lab_left::setText, BigDecimal::add);
+        });
+
+        cancel.setOnAction(event -> QSApp.mainPane.backNav());
+        ok.setOnAction(event -> {
+            if (date_picker.getValue() == null) {
+                WarningBuilder.build("发放日期填写错误！");
+                return;
+            }
+            Date date = Date.valueOf(date_picker.getValue());
+            String status = selectStatue.get() == null ? "" : selectStatue.get();
+
+            List<SalaryPayDao> incomes = table_stuff.getItems().stream()
+                    .map(SalaryTardyDaoWrapper::get)
+                    .flatMap(dao -> dao.getDetails().stream()
+                            .filter(d -> d.getSalary_id() != null && !d.getSum().equals(new BigDecimal(0)))
+                            .filter(d -> status.contains(d.getYm()))
+                            .map(d -> {
+                                SalaryPayDao res = new SalaryPayDao();
+                                res.setDate(date);
+                                res.setIncome(d.getSum());
+                                res.setSalary_id(d.getSalary_id());
+                                System.out.println("id:"+d.getSalary_id());
+                                return res;
+                            }))
+                    .collect(Collectors.toList());
+            if (incomes.size()==0){
+                WarningBuilder.build("无可更新的值");
+                return;
+            }
+            try {
+                SalaryServices.insertIntoSalaryIncome(incomes);
+                QSApp.mainPane.backNav();
+            } catch (Exception e) {
+                WarningBuilder.build("插入失败，请检查网络连接是否成功或者数据填写是否正确");
+                e.printStackTrace();
+            }
+        });
     }
 
     @Override
@@ -93,9 +151,11 @@ public class SalaryClearController implements Initializable, ContentCtrl {
     @Override
     public void showed(Properties params) {
 
+        date_picker.setValue(null);
         table_stuff.getColumns().removeAll(tabs);
         tabs.clear();
         monlist.getChildren().clear();
+        selectStatue.setValue("");
         try {
             List<SalaryTardyDaoWrapper> kk = SalaryServices.selectStuffSalaryTardy().stream()
                     .map(SalaryTardyDaoWrapper::new)
@@ -124,7 +184,7 @@ public class SalaryClearController implements Initializable, ContentCtrl {
                     });
                 }
                 // 触发一波
-                selectStatue.set(selectStatue.getValue()+" ");
+                selectStatue.set(selectStatue.getValue() + " ");
             }
         } catch (Exception e) {
             e.printStackTrace();

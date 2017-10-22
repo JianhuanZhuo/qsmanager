@@ -8,6 +8,7 @@ import cn.keepfight.widget.MenuListChecker;
 import javafx.application.Platform;
 import javafx.beans.binding.StringBinding;
 import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
@@ -152,19 +153,18 @@ public class StuffController implements ContentCtrl, Initializable {
 
     @Override
     public void loaded() {
-        Platform.runLater(() -> {
+        new Thread(() -> {
             try {
                 addController = ViewPathUtil.loadViewForController("stuff_add.fxml");
             } catch (IOException e) {
                 e.printStackTrace();
             }
-        });
+        }).run();
     }
 
     @Override
     public void showed(Properties params) {
         loadStuff();
-        System.out.println("suff show");
     }
 
     @Override
@@ -176,14 +176,14 @@ public class StuffController implements ContentCtrl, Initializable {
      * 加载全部员工信息
      */
     private void loadStuff() {
-        Platform.runLater(() -> {
+        new Thread(()->{
             try {
-                stuffList.getItems().setAll(FXCollections.observableList(StuffServices.selectAll()));
-                stuffList.getItems().forEach(x -> System.out.println(x.getOperatorDao().getLast_login_stamp()));
+                ObservableList<StuffDao> ls = FXCollections.observableList(StuffServices.selectAll());
+                Platform.runLater(()->stuffList.getItems().setAll(ls));
             } catch (Exception e) {
                 e.printStackTrace();
                 WarningBuilder.build("加载员工信息错误，请保证网络通畅再重试！");
             }
-        });
+        }).run();
     }
 }
