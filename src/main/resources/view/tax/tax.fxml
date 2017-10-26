@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox fx:id="root" styleClass="content-pane" stylesheets="@../css/common.css" xmlns="http://javafx.com/javafx/8.0.111"
+      xmlns:fx="http://javafx.com/fxml/1" fx:controller="cn.keepfight.qsmanager.controller.tax.TaxController">
+    <HBox styleClass="title-line, left-align">
+        <Label text="发票抵扣"/>
+        <Button fx:id="btn_ym" styleClass="url" text="2017年10月"/>
+    </HBox>
+    <GridPane prefHeight="60.0" prefWidth="513.0">
+        <columnConstraints>
+            <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" minWidth="10.0"
+                               prefWidth="144.0"/>
+            <ColumnConstraints hgrow="NEVER" maxWidth="100.0" minWidth="10.0" prefWidth="81.0"/>
+            <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" minWidth="10.0"
+                               prefWidth="98.0"/>
+            <ColumnConstraints hgrow="NEVER" maxWidth="123.0" minWidth="10.0" prefWidth="103.0"/>
+            <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" minWidth="10.0"
+                               prefWidth="100.0"/>
+            <ColumnConstraints hgrow="NEVER" minWidth="10.0" prefWidth="100.0"/>
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" minWidth="10.0" prefWidth="10.0"/>
+        </columnConstraints>
+        <rowConstraints>
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+        </rowConstraints>
+        <Label text="税赋线(P1)："/>
+        <TextField prefHeight="23.0" prefWidth="83.0" text="0.035" GridPane.columnIndex="1"/>
+        <Label text="税率除数(P2)：" GridPane.columnIndex="2"/>
+        <Label text="税率乘数(P3)：" GridPane.columnIndex="4"/>
+        <TextField text="1.17" GridPane.columnIndex="3"/>
+        <TextField text="0.17" GridPane.columnIndex="5"/>
+        <Label text="进项发票总额乘数(P4)：" GridPane.rowIndex="1"/>
+        <TextField prefHeight="23.0" prefWidth="83.0" text="0.794" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+        <Label text="税金乘数(P5)：" GridPane.columnIndex="2" GridPane.rowIndex="1"/>
+        <Label text="税金加数(P6)：" GridPane.columnIndex="4" GridPane.rowIndex="1"/>
+        <TextField text="0.046" GridPane.columnIndex="3" GridPane.rowIndex="1"/>
+        <TextField text="940" GridPane.columnIndex="5" GridPane.rowIndex="1"/>
+    </GridPane>
+    <Separator prefWidth="200.0"/>
+    <HBox spacing="10">
+        <VBox HBox.hgrow="ALWAYS">
+            <HBox styleClass="hbox-common">
+                <Label text="销项发票"/>
+                <Pane HBox.hgrow="ALWAYS"/>
+                <Button mnemonicParsing="false" text="加载当月发票"/>
+                <Button mnemonicParsing="false" text="添加发票"/>
+                <Button mnemonicParsing="false" text="删除发票"/>
+            </HBox>
+            <TableView prefHeight="200.0">
+                <columns>
+                    <TableColumn prefWidth="75.0" text="序号"/>
+                    <TableColumn prefWidth="75.0" text="单位"/>
+                    <TableColumn prefWidth="75.0" text=" 含税金额"/>
+                    <TableColumn prefWidth="75.0" text="备注"/>
+                </columns>
+                <columnResizePolicy>
+                    <TableView fx:constant="CONSTRAINED_RESIZE_POLICY"/>
+                </columnResizePolicy>
+            </TableView>
+            <GridPane>
+                <columnConstraints>
+                    <ColumnConstraints halignment="RIGHT" hgrow="NEVER" maxWidth="126.0" minWidth="10.0"
+                                       prefWidth="108.0"/>
+                    <ColumnConstraints hgrow="NEVER" maxWidth="117.0" minWidth="10.0" prefWidth="116.0"/>
+                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="112.0" minWidth="10.0" prefWidth="78.0"/>
+                </columnConstraints>
+                <rowConstraints>
+                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                </rowConstraints>
+                <Label text="含税金额合计(A)："/>
+                <Label text="销项税(B)：" GridPane.rowIndex="1"/>
+                <Label text="不含税额(C)：" GridPane.rowIndex="2"/>
+                <TextField editable="false" text="226396.5912" GridPane.columnIndex="1"/>
+                <TextField editable="false" text="32895.23 " GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+                <TextField editable="false" text="193501.36 " GridPane.columnIndex="1" GridPane.rowIndex="2"/>
+                <Label text="B=(A/P2)*P3" GridPane.columnIndex="2" GridPane.rowIndex="1"/>
+                <Label text="C=A-B" GridPane.columnIndex="2" GridPane.rowIndex="2"/>
+            </GridPane>
+
+        </VBox>
+        <Separator orientation="VERTICAL"/>
+        <VBox HBox.hgrow="ALWAYS">
+            <HBox styleClass="hbox-common">
+                <Label text="进项发票"/>
+                <Pane HBox.hgrow="ALWAYS"/>
+                <Button mnemonicParsing="false" text="添加发票"/>
+                <Button mnemonicParsing="false" text="删除发票"/>
+            </HBox>
+            <TableView prefHeight="200.0">
+                <columns>
+                    <TableColumn prefWidth="75.0" text="序号"/>
+                    <TableColumn prefWidth="75.0" text="单位"/>
+                    <TableColumn prefWidth="75.0" text=" 含税金额"/>
+                    <TableColumn prefWidth="75.0" text="备注"/>
+                </columns>
+                <columnResizePolicy>
+                    <TableView fx:constant="CONSTRAINED_RESIZE_POLICY"/>
+                </columnResizePolicy>
+            </TableView>
+            <GridPane>
+                <columnConstraints>
+                    <ColumnConstraints halignment="RIGHT" hgrow="NEVER" maxWidth="126.0" minWidth="10.0"
+                                       prefWidth="108.0"/>
+                    <ColumnConstraints hgrow="NEVER" maxWidth="117.0" minWidth="10.0" prefWidth="116.0"/>
+                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="112.0" minWidth="10.0" prefWidth="78.0"/>
+                </columnConstraints>
+                <rowConstraints>
+                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                </rowConstraints>
+                <Label text="含税金额合计(D)："/>
+                <Label text="进项发票总额(E)：" GridPane.rowIndex="1"/>
+                <Label text="多出部分(F)：" GridPane.rowIndex="2"/>
+                <TextField editable="false" prefHeight="23.0" prefWidth="101.0" text="180000" GridPane.columnIndex="1"/>
+                <TextField editable="false" text="179758.8934128"
+                           GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+                <TextField editable="false" text="241.11 " GridPane.columnIndex="1"
+                           GridPane.rowIndex="2"/>
+                <Label prefHeight="15.0" prefWidth="114.0" text="E=A*P4"
+                       GridPane.columnIndex="2" GridPane.rowIndex="1"/>
+                <Label prefHeight="15.0" prefWidth="114.0" text="F=D-E"
+                       GridPane.columnIndex="2" GridPane.rowIndex="2"/>
+            </GridPane>
+        </VBox>
+    </HBox>
+    <Separator/>
+    <GridPane>
+        <columnConstraints>
+            <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" maxWidth="205.0" minWidth="10.0" prefWidth="102.0"/>
+            <ColumnConstraints hgrow="NEVER" maxWidth="337.0" minWidth="10.0" prefWidth="132.0"/>
+            <ColumnConstraints hgrow="ALWAYS" maxWidth="368.0" minWidth="10.0" prefWidth="368.0"/>
+        </columnConstraints>
+        <rowConstraints>
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+        </rowConstraints>
+        <Label text="增值部分(G)："/>
+        <TextField editable="false" text="46396.5912" GridPane.columnIndex="1"/>
+        <Label text="G=A-D" GridPane.columnIndex="2"/>
+        <Label text="增值税(H)：" GridPane.rowIndex="1"/>
+        <TextField editable="false" text="6741.385046" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+        <Label text="H=(G/P2)*P3" GridPane.columnIndex="2" GridPane.rowIndex="1"/>
+        <Label text="总税金含所得(K):" GridPane.rowIndex="2"/>
+        <TextField editable="false" text="11354.2432" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
+        <Label text="K=A*P5+P6" GridPane.columnIndex="2" GridPane.rowIndex="2"/>
+        <Label text="税赋(J):" GridPane.rowIndex="3"/>
+        <TextField editable="false" text="0.034838954" GridPane.columnIndex="1" GridPane.rowIndex="3"/>
+        <Label text="K=H/C" GridPane.columnIndex="2" GridPane.rowIndex="3"/>
+    </GridPane>
+</VBox>
