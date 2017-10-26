@@ -6,15 +6,16 @@ import java.sql.Date;
 /**
  * 供应商发票存储对象
  */
-public class SupInvoiceDao {
+public class RemitDao {
     private Long id;
     private Long sup_id;
     private Long year;
     private Long month;
     private String unit;
     private Date date;
+    private String mode;
+    private String note;
     private BigDecimal total;
-    private BigDecimal rate;
 
     public Long getId() {
         return id;
@@ -72,19 +73,19 @@ public class SupInvoiceDao {
         this.total = total;
     }
 
-    public BigDecimal getRate() {
-        return rate;
+    public String getMode() {
+        return mode;
     }
 
-    public void setRate(BigDecimal rate) {
-        this.rate = rate;
+    public void setMode(String mode) {
+        this.mode = mode;
     }
 
-    public BigDecimal getRateTotal() {
-        try {
-            return rate.multiply(total);
-        } catch (Exception e) {
-            return new BigDecimal(0);
-        }
+    public String getNote() {
+        return note;
+    }
+
+    public void setNote(String note) {
+        this.note = note;
     }
 }

@@ -131,26 +131,27 @@ public class SalaryController implements ContentCtrl, Initializable {
 
         table_stuff.getColumns().removeAll(tabs);
         tabs.clear();
-        try {
-            List<SalaryTardyDaoWrapper> ss = SalaryServices.selectStuffSalaryTardy().stream()
-                            .map(SalaryTardyDaoWrapper::new)
-                            .collect(Collectors.toList());
-            table_stuff.getItems().setAll(ss);
+        new Thread(()->{
+            try {
+                List<SalaryTardyDaoWrapper> ss = SalaryServices.selectStuffSalaryTardy().stream()
+                        .map(SalaryTardyDaoWrapper::new)
+                        .collect(Collectors.toList());
+                table_stuff.getItems().setAll(ss);
 
-            if (ss.size() > 0) {
-                for (StuffTardyDao d : ss.get(0).get().getDetails()) {
-                    TableColumn<SalaryTardyDaoWrapper, BigDecimal> column = new TableColumn<>(d.getYm());
-                    table_stuff.getColumns().add(column);
-                    tabs.add(column);
-                    FXWidgetUtil.cellMoney(column);
-                    FXWidgetUtil.connectDecimalColumn(column, k -> new SimpleObjectProperty<>(k.get().getDetailByYM(d.getYm())));
+                if (ss.size() > 0) {
+                    for (StuffTardyDao d : ss.get(0).get().getDetails()) {
+                        TableColumn<SalaryTardyDaoWrapper, BigDecimal> column = new TableColumn<>(d.getYm());
+                        table_stuff.getColumns().add(column);
+                        tabs.add(column);
+                        FXWidgetUtil.cellMoney(column);
+                        FXWidgetUtil.connectDecimalColumn(column, k -> new SimpleObjectProperty<>(k.get().getDetailByYM(d.getYm())));
+                    }
                 }
+//                runnable.run();
+            } catch (Exception e) {
+                e.printStackTrace();
             }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-
+        }).start();
     }
 
     @Override

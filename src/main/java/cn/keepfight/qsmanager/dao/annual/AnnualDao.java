@@ -3,11 +3,11 @@ package cn.keepfight.qsmanager.dao.annual;
 import java.math.BigDecimal;
 import java.util.List;
 
-public class SupAnnualDao {
+public class AnnualDao {
     private Long month;
     private BigDecimal tradeTotal;
-    private List<SupInvoiceDao> invoice;
-    private List<SupRemitDao> remit;
+    private List<InvoiceDao> invoice;
+    private List<RemitDao> remit;
 
     public Long getMonth() {
         return month;
@@ -25,19 +25,19 @@ public class SupAnnualDao {
         this.tradeTotal = tradeTotal;
     }
 
-    public List<SupInvoiceDao> getInvoice() {
+    public List<InvoiceDao> getInvoice() {
         return invoice;
     }
 
-    public void setInvoice(List<SupInvoiceDao> invoice) {
+    public void setInvoice(List<InvoiceDao> invoice) {
         this.invoice = invoice;
     }
 
-    public List<SupRemitDao> getRemit() {
+    public List<RemitDao> getRemit() {
         return remit;
     }
 
-    public void setRemit(List<SupRemitDao> remit) {
+    public void setRemit(List<RemitDao> remit) {
         this.remit = remit;
     }
 }

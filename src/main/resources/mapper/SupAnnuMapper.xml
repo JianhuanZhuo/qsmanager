@@ -72,12 +72,12 @@
             #{mon},
             #{total},
             #{billunit},
-            from_unixtime(#{billdate}/1000),
+            from_unixtime(#{billdate} / 1000),
             #{billtotal},
             #{rate},
             #{remitunit},
             #{pattern},
-            from_unixtime(#{remitdate}/1000),
+            from_unixtime(#{remitdate} / 1000),
             #{paytotal},
             #{note}
         );
@@ -90,12 +90,12 @@
         SET
             total     = #{total},
             billunit  = #{billunit},
-            billdate  = from_unixtime(#{billdate}/1000),
+            billdate  = from_unixtime(#{billdate} / 1000),
             billtotal = #{billtotal},
             rate      = #{rate},
             remitunit = #{remitunit},
             pattern   = #{pattern},
-            remitdate = from_unixtime(#{remitdate}/1000),
+            remitdate = from_unixtime(#{remitdate} / 1000),
             paytotal  = #{paytotal},
             note      = #{note}
         WHERE said = #{said}
@@ -153,49 +153,49 @@
     <!--List<TPStatModel> tpStat(Long year) throws Exception;-->
     <select id="tpStat" parameterType="Long" resultType="TPStatModel">
         SELECT
-        mrec.mon AS mon,
-        mrec.rec AS rec,
-        pay.paytotal AS pay
+            mrec.mon     AS mon,
+            mrec.rec     AS rec,
+            pay.paytotal AS pay
         FROM
-        (
-        SELECT
-        m.mon AS mon,
-        rec.rec AS rec
-        FROM
-        (
-        /*月份表*/
-        SELECT mon
-        FROM mons
-        ) m
-        LEFT OUTER JOIN
-        (
-        /*采购统计*/
-        SELECT
-        date_format(r.rdate, '%m') AS mon,
-        sum(price * num) AS rec
-        FROM receipt r, receipt_detail rd
-        WHERE r.id = rd.rid AND date_format(r.rdate, '%Y') = ''||#{year}
-        GROUP BY date_format(r.rdate, '%m')
-        ) rec
-        ON m.mon = rec.mon
-        ) mrec
-        LEFT OUTER JOIN
-        (
-        /*支付统计*/
-        SELECT
-        CASE WHEN mon <![CDATA[ < 10 ]]>
+            (
+                SELECT
+                    m.mon   AS mon,
+                    rec.rec AS rec
+                FROM
+                    (
+                        /*月份表*/
+                        SELECT mon
+                        FROM mons
+                    ) m
+                    LEFT OUTER JOIN
+                    (
+                        /*采购统计*/
+                        SELECT
+                            date_format(r.rdate, '%m') AS mon,
+                            sum(price * num)           AS rec
+                        FROM receipt r, receipt_detail rd
+                        WHERE r.id = rd.rid AND date_format(r.rdate, '%Y') = '' || #{year}
+                        GROUP BY date_format(r.rdate, '%m')
+                    ) rec
+                        ON m.mon = rec.mon
+            ) mrec
+            LEFT OUTER JOIN
+            (
+                /*支付统计*/
+                SELECT
+                    CASE WHEN mon <![CDATA[ < 10 ]]>
         THEN '0' || mon
-        ELSE '' || mon END AS mon,
-        paytotal
-        FROM sup_annual s, sup_annual_mon sa
-        WHERE s.id = sa.said AND year = #{year}
-        GROUP BY mon
-        ) pay
-        ON mrec.mon = pay.mon;
+                    ELSE '' || mon END AS mon,
+                    paytotal
+                FROM sup_annual s, sup_annual_mon sa
+                WHERE s.id = sa.said AND year = #{year}
+                GROUP BY mon
+            ) pay
+                ON mrec.mon = pay.mon;
     </select>
 
     <!-- ################################################################################################# -->
-    <select id="staticAnnualMonByMonAndSup" resultType="SupAnnualDao">
+    <select id="staticAnnualMonByMonAndSup" resultType="AnnualDao">
         SELECT
             mons.mon          AS month,
             ifnull(an.sum, 0) AS tradeTotal
@@ -213,5 +213,24 @@
             ) AS an
                 ON mons.mon = an.m
         ORDER BY mons.mon;
+    </select>
+
+
+    <!--* 指定供应商和年份统计，该年份之前的-->
+    <!--BigDecimal staticAnnualLeft(@Param("sid") Long sid, @Param("year") Long year) throws Exception;-->
+    <select id="staticAnnualLeft" parameterType="long" resultType="java.math.BigDecimal">
+        SELECT ifnull(trade.m, 0) + ifnull(inv.m, 0) - ifnull(remit.m, 0) AS annualleft
+        FROM (# 发票税金
+                 SELECT sum(ifnull(inv.total * inv.rate, 0)) AS m
+                 FROM invoice_sup inv
+                 WHERE sup_id = #{sid} AND year <![CDATA[ < ]]>  #{year}) AS inv,
+            (# 付款金额
+                SELECT sum(ifnull(remit.total, 0)) AS m
+                FROM remit_sup remit
+                WHERE sup_id = #{sid} AND year <![CDATA[ < ]]> #{year}) AS remit
+            , (# 交易金额
+                  SELECT sum(ifnull(d.price * d.num, 0)) AS m
+                  FROM receipt r, receipt_detail d
+                  WHERE r.id = d.rid AND DATE_FORMAT(r.rdate, '%Y') <![CDATA[ < ]]> #{year} AND sid = #{sid}) AS trade;
     </select>
 </mapper>

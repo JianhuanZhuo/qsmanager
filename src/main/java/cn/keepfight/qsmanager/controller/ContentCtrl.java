@@ -23,22 +23,37 @@ public interface ContentCtrl {
 
     /**
      * 带参数的界面调用显示
+     *
      * @param params 调用页面前时使用
+     * @param recall 展示完后的回调，该回调会加载页面进来
      */
-    void showed(Properties params);;
+//    default void showed(Properties params, Runnable recall){
+//        showed(params);
+//        recall.run();
+//    }
 
     /**
      * 带参数的界面调用显示
+     *
+     * @param params 调用页面前时使用
+     */
+    default void showed(Properties params){}
+
+    /**
+     * 带参数的界面调用显示
+     *
      * @param params 调用页面后使用
      */
-    default void showedAfter(Properties params){
+    default void showedAfter(Properties params) {
 
     }
 
-    default<T> void updateState(T s){}
+    default <T> void updateState(T s) {
+    }
 
     /**
      * 获得页面的 title
+     *
      * @return 页面 title，将被显示页面上方
      */
     StringBinding getTitle();
@@ -46,24 +61,26 @@ public interface ContentCtrl {
     /**
      * 是否使用透明背景，是则不显示 title
      */
-    default boolean transparentBackground(){
+    default boolean transparentBackground() {
         return false;
     }
 
     /**
      * 获取按钮列表，在这个基础上会再加一个刷新按钮
+     *
      * @param params 页面打开参数
      * @return 默认返回一个空的列表
      */
-    default List<BarBtn> getBarBtns(Properties params){
+    default List<BarBtn> getBarBtns(Properties params) {
         return new ArrayList<>(1);
     }
 
     /**
      * 当页面隐藏时调用
+     *
      * @return 返回表示
      */
-    default boolean hide(){
+    default boolean hide() {
         return true;
     }
 }

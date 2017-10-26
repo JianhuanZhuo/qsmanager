@@ -4,69 +4,77 @@
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.*?>
-<?import java.lang.String?>
 <VBox fx:id="root" styleClass="content-pane,title-pane"
       stylesheets="@css/common.css"
       xmlns="http://javafx.com/javafx/8.0.111"
       xmlns:fx="http://javafx.com/fxml/1"
       fx:controller="cn.keepfight.qsmanager.controller.IncomeAnnualController">
     <HBox styleClass="hbox-common">
-        <ChoiceBox fx:id="an_cust_sel" prefWidth="130.0"/>
-        <ChoiceBox fx:id="an_year_sel" prefWidth="80.0"/>
-        <Pane HBox.hgrow="ALWAYS"/>
-        <Button text="打印年对账表" fx:id="an_print">
+        <ChoiceBox fx:id="an_cust_sel" prefWidth="130" />
+        <Button fx:id="btn_year_sel" styleClass="url" text="2017年" />
+        <Pane HBox.hgrow="ALWAYS" />
+        <Button fx:id="btn_edit" text="编辑选中" />
+        <Button fx:id="btn_add_invoice" text="添加发票" />
+        <Button fx:id="btn_add_remit" text="添加汇款" />
+        <Button fx:id="an_print" text="打印年度对账表">
             <graphic>
-                <ImageView styleClass="image-button">
-                    <Image url="@img/print.png"/>
+                <ImageView fitHeight="16" fitWidth="16" styleClass="image-button">
+                    <Image url="@img/print.png" />
                 </ImageView>
             </graphic>
         </Button>
     </HBox>
-    <ScrollPane fitToHeight="true" fitToWidth="true">
-        <TableView fx:id="anTable">
+    <Label text="（点击右边按钮直接添加发票和汇款，双击下面的表格查看和编辑该月发票和汇款）"/>
+    <ScrollPane fitToHeight="true" fitToWidth="true" VBox.vgrow="ALWAYS">
+        <TableView fx:id="anTable" prefHeight="400.0" prefWidth="1625.0">
             <columns>
-                <TableColumn fx:id="mon" text="日期"/>
-                <TableColumn fx:id="total" text="金额"/>
-                <TableColumn fx:id="billunit" text="开票单位"/>
-                <TableColumn fx:id="billdate" text="开票日期"/>
-                <TableColumn fx:id="billtotal" text="开票金额"/>
-                <TableColumn fx:id="rate" text="税率"/>
-                <TableColumn fx:id="ratetotal" text="税金"/>
-                <TableColumn fx:id="remitunit" text="汇款单位"/>
-                <TableColumn fx:id="pattern" text="汇款方式"/>
-                <TableColumn fx:id="remitdate" text="汇款日期"/>
-                <TableColumn fx:id="paytotal" text="本月付款金额"/>
-                <TableColumn fx:id="note" text="备注"/>
+                <TableColumn fx:id="mon" text="月份" />
+                <TableColumn fx:id="total" text="月份交易额" />
+                <TableColumn prefWidth="700.0" text="发票">
+                    <columns>
+                        <TableColumn fx:id="billunit" prefWidth="120.0" text="开票单位" />
+                        <TableColumn fx:id="billdate" prefWidth="98.0" text="开票日期" />
+                        <TableColumn fx:id="billtotal" prefWidth="86.0" text="开票金额" />
+                        <TableColumn fx:id="rate" prefWidth="46.0" text="税率" />
+                        <TableColumn fx:id="ratetotal" prefWidth="50.0" text="税金" />
+                    </columns>
+                </TableColumn>
+                <TableColumn prefWidth="700.0" text="汇款">
+                    <columns>
+                        <TableColumn prefWidth="120.0" fx:id="remitunit" text="汇款单位" />
+                        <TableColumn fx:id="pattern" text="汇款方式" />
+                        <TableColumn fx:id="remitdate" text="汇款日期" />
+                        <TableColumn prefWidth="120.0" fx:id="paytotal" text="本月付款金额" />
+                        <TableColumn prefWidth="150.0" fx:id="note" text="备注" />
+                    </columns>
+                </TableColumn>
             </columns>
         </TableView>
     </ScrollPane>
-    <HBox prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
-        <styleClass>
-            <String fx:value="report-bottom"/>
-        </styleClass>
+    <HBox styleClass="report-bottom">
         <GridPane styleClass="infogp">
-            <Label text="年前结余金额：￥"/>
-            <Label text="年度金额合计：￥" GridPane.rowIndex="1"/>
-            <Label text="年度税金合计：￥" GridPane.rowIndex="2"/>
-            <Label text="年度付款合计：￥" GridPane.rowIndex="3"/>
-            <Label text="实际应付合计：￥" GridPane.rowIndex="4"/>
-            <Label fx:id="an_count_bf" text="0" GridPane.columnIndex="1"/>
-            <Label fx:id="an_total_annu" text="0" GridPane.columnIndex="1" GridPane.rowIndex="3"/>
-            <Label fx:id="an_total_rate" text="0" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
-            <Label fx:id="an_total_pay" text="0" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
-            <Label fx:id="an_total_actu" text="0" GridPane.columnIndex="1" GridPane.rowIndex="4"/>
             <columnConstraints>
-                <ColumnConstraints halignment="RIGHT"/>
-                <ColumnConstraints/>
+                <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
             </columnConstraints>
+            <Label text="年前结余金额：￥" />
+            <Label text="年度金额合计：￥" GridPane.rowIndex="1" />
+            <Label text="年度税金合计：￥" GridPane.rowIndex="2" />
+            <Label text="年度付款合计：￥" GridPane.rowIndex="3" />
+            <Label text="实际应付合计：￥" GridPane.rowIndex="4" />
+            <Label fx:id="an_count_bf" text="0" GridPane.columnIndex="1" />
+            <Label fx:id="an_total_annu" text="0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+            <Label fx:id="an_total_rate" text="0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+            <Label fx:id="an_total_pay" text="0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+            <Label fx:id="an_total_actu" text="0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+            <rowConstraints>
+                <RowConstraints />
+                <RowConstraints />
+                <RowConstraints />
+                <RowConstraints />
+                <RowConstraints />
+            </rowConstraints>
         </GridPane>
-        <Pane HBox.hgrow="ALWAYS"/>
-        <Label fx:id="attach" styleClass="attach-icon" text="附件">
-            <graphic>
-                <ImageView>
-                    <Image url="@img/attachment.png"/>
-                </ImageView>
-            </graphic>
-        </Label>
+        <Pane HBox.hgrow="ALWAYS" />
     </HBox>
 </VBox>

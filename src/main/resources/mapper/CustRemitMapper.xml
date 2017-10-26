@@ -2,16 +2,25 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="cn.keepfight.qsmanager.Mapper.SupRemitMapper">
+<mapper namespace="cn.keepfight.qsmanager.Mapper.CustRemitMapper">
     <select id="selectRemitByMonthAndSup" resultType="RemitDao">
-        SELECT *
-        FROM remit_sup
-        WHERE sup_id = #{sup_id} AND year = #{year} AND month = #{month}
+        SELECT
+            id,
+            cust_id AS sup_id,
+            year,
+            month,
+            unit,
+            date,
+            total,
+            mode,
+            note
+        FROM remit_cust
+        WHERE cust_id = #{cust_id} AND year = #{year} AND month = #{month}
     </select>
 
     <insert id="insertRemit" parameterType="RemitDao">
-        INSERT INTO remit_sup (
-        sup_id, year, month, unit, date, total, mode, note
+        INSERT INTO remit_cust (
+        cust_id, year, month, unit, date, total, mode, note
         ) VALUES(
         #{sup_id},
         #{year},
@@ -28,8 +37,8 @@
     </insert>
 
     <insert id="insertRemitList" parameterType="java.util.List">
-        INSERT INTO remit_sup (
-        sup_id, year, month, unit, date, total, mode, note
+        INSERT INTO remit_cust (
+        cust_id, year, month, unit, date, total, mode, note
         ) VALUES
         <foreach collection="list" item="dao" index="index" separator=",">
             (
@@ -46,7 +55,7 @@
     </insert>
 
     <delete id="deleteRemitByID" parameterType="long">
-        DELETE FROM remit_sup
+        DELETE FROM remit_cust
         WHERE id = #{id}
     </delete>
 </mapper>

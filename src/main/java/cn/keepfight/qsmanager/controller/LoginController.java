@@ -43,13 +43,6 @@ public class LoginController implements ContentCtrl {
 
         // 图片加载测试
         noacc.setOnMouseClicked(e->{
-//            String url = "http://www.gdut.edu.cn/images/ztt/zttp170608.jpg";
-//            ObjectProperty<Image> resImage = new SimpleObjectProperty<>();
-//            Platform.runLater(()-> resImage.set(new Image(url)));
-////            ImageLoadUtil.bindImage(xx, "android-book.png");
-//            xx.imageProperty().bind(resImage);
-
-//            FXWidgetUtil.printNode(root);
         });
 
         // 登录按钮

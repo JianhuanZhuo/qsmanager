@@ -1,12 +1,12 @@
 package cn.keepfight.utils;
 
 
-import cn.keepfight.qsmanager.dao.annual.SupAnnualDaoWrapper;
 import cn.keepfight.widget.AddSalaryItem;
 import cn.keepfight.widget.MonthPicker;
 import cn.keepfight.widget.YearScrollPicker;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.application.Platform;
 import javafx.beans.Observable;
 import javafx.beans.binding.IntegerBinding;
 import javafx.beans.binding.NumberExpressionBase;
@@ -18,6 +18,7 @@ import javafx.beans.property.StringProperty;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
+import javafx.geometry.Pos;
 import javafx.print.PageLayout;
 import javafx.print.PrintQuality;
 import javafx.print.Printer;
@@ -177,12 +178,11 @@ public class FXWidgetUtil {
                 })
                 .filter(Objects::nonNull)
                 .reduce(accumulator);
-        String text = "0";
         if (t.isPresent()) {
-//            text = t.get().stripTrailingZeros().toPlainString();
-            text = FXUtils.deciToMoney(t.get());
+            Platform.runLater(() -> consumer.accept(FXUtils.deciToMoney(t.get())));
+        } else {
+            Platform.runLater(() -> consumer.accept("0"));
         }
-        consumer.accept(text);
     }
 
     /**
@@ -588,6 +588,23 @@ public class FXWidgetUtil {
     }
 
     @SafeVarargs
+    public static <T> void cellRate(TableColumn<T, BigDecimal>... cs) {
+        for (TableColumn<T, BigDecimal> c : cs) {
+            c.setCellFactory(TextFieldTableCell.forTableColumn(new StringConverter<BigDecimal>() {
+                @Override
+                public String toString(BigDecimal decimal) {
+                    return decimal == null ? "0%" : decimal.movePointRight(2).stripTrailingZeros().toPlainString() + "%";
+                }
+
+                @Override
+                public BigDecimal fromString(String s) {
+                    return s == null ? new BigDecimal(0) : new BigDecimal(s.replace("%", "")).movePointLeft(2);
+                }
+            }));
+        }
+    }
+
+    @SafeVarargs
     public static <T> void cellDecimal(TableColumn<T, BigDecimal>... cs) {
         cellDecimal(FXUtils.decimalConverter("0"), cs);
     }
@@ -621,11 +638,11 @@ public class FXWidgetUtil {
         cellLong(FXUtils.longConverter("0"), cs);
     }
 
-    public static <T, R> void cellList(TableColumn<T, List<R>> column, Function<R, String> getStr){
+    public static <T, R> void cellList(TableColumn<T, List<R>> column, Function<R, String> getStr) {
         column.setCellFactory(new Callback<TableColumn<T, List<R>>, TableCell<T, List<R>>>() {
             @Override
             public TableCell<T, List<R>> call(TableColumn<T, List<R>> param) {
-                return new TableCell<T, List<R>>(){
+                return new TableCell<T, List<R>>() {
                     @Override
                     protected void updateItem(List<R> item, boolean empty) {
                         super.updateItem(item, empty);
@@ -634,6 +651,7 @@ public class FXWidgetUtil {
                             return;
                         }
                         VBox box = new VBox(5);
+                        box.setAlignment(Pos.CENTER);
                         List<Node> ls = item.stream()
                                 .map(getStr)
                                 .map(Label::new)

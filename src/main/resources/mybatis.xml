@@ -48,7 +48,9 @@
         <mapper resource="mapper/SalaryMapper.xml"/>
         <!--发票表-->
         <mapper resource="mapper/SupInvoiceMapper.xml"/>
+        <mapper resource="mapper/CustInvoiceMapper.xml"/>
         <!--汇款表-->
         <mapper resource="mapper/SupRemitMapper.xml"/>
+        <mapper resource="mapper/CustRemitMapper.xml"/>
     </mappers>
 </configuration>

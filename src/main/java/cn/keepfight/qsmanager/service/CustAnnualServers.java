@@ -1,8 +1,6 @@
 package cn.keepfight.qsmanager.service;
 
-import cn.keepfight.qsmanager.Mapper.SupAnnuMapper;
-import cn.keepfight.qsmanager.Mapper.SupInvoiceMapper;
-import cn.keepfight.qsmanager.Mapper.SupRemitMapper;
+import cn.keepfight.qsmanager.Mapper.*;
 import cn.keepfight.qsmanager.dao.annual.AnnualDao;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
@@ -10,7 +8,7 @@ import org.apache.ibatis.session.SqlSessionFactory;
 import java.math.BigDecimal;
 import java.util.List;
 
-public class SupAnnualServers {
+public class CustAnnualServers {
 
     private static SqlSessionFactory factory = SqlSessionServices.getFactory();
 
@@ -19,10 +17,10 @@ public class SupAnnualServers {
      */
     public static List<AnnualDao> staticAnnualMonByMonAndSup(Long sid, Long year) throws Exception{
         try (SqlSession session = factory.openSession(true)) {
-            List<AnnualDao> res = session.getMapper(SupAnnuMapper.class).staticAnnualMonByMonAndSup(sid, year);
+            List<AnnualDao> res = session.getMapper(CustAnnuMapper.class).staticAnnualMonByMonAndSup(sid, year);
             for (AnnualDao d : res) {
-                d.setInvoice(session.getMapper(SupInvoiceMapper.class).selectInvoiceByMonthAndSup(sid, year, d.getMonth()));
-                d.setRemit(session.getMapper(SupRemitMapper.class).selectRemitByMonthAndSup(sid, year, d.getMonth()));
+                d.setInvoice(session.getMapper(CustInvoiceMapper.class).selectInvoiceByMonthAndSup(sid, year, d.getMonth()));
+                d.setRemit(session.getMapper(CustRemitMapper.class).selectRemitByMonthAndSup(sid, year, d.getMonth()));
             }
             return res;
         }
@@ -33,7 +31,7 @@ public class SupAnnualServers {
      */
     public static BigDecimal staticAnnualLeft(Long sid, Long year) throws Exception{
         try (SqlSession session = factory.openSession(true)) {
-            return session.getMapper(SupAnnuMapper.class).staticAnnualLeft(sid, year);
+            return session.getMapper(CustAnnuMapper.class).staticAnnualLeft(sid, year);
         }
     }
 }

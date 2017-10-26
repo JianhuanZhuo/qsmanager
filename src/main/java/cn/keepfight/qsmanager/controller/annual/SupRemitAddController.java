@@ -2,14 +2,15 @@ package cn.keepfight.qsmanager.controller.annual;
 
 import cn.keepfight.qsmanager.QSApp;
 import cn.keepfight.qsmanager.controller.ContentCtrl;
-import cn.keepfight.qsmanager.dao.annual.SupInvoiceDao;
-import cn.keepfight.qsmanager.dao.annual.SupRemitDao;
+import cn.keepfight.qsmanager.dao.annual.RemitDao;
+import cn.keepfight.qsmanager.model.CustomModel;
 import cn.keepfight.qsmanager.model.SupplyModel;
-import cn.keepfight.qsmanager.service.SupInvoiceServers;
+import cn.keepfight.qsmanager.service.CustRemitServers;
 import cn.keepfight.qsmanager.service.SupRemitServers;
 import cn.keepfight.utils.FXWidgetUtil;
 import cn.keepfight.utils.WarningBuilder;
 import cn.keepfight.widget.MonthPicker;
+import javafx.application.Platform;
 import javafx.beans.binding.StringBinding;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
@@ -43,6 +44,7 @@ public class SupRemitAddController implements Initializable, ContentCtrl {
     private Long year;
     private Long month;
     private Long sup_id;
+    private boolean sup_view = true;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -68,7 +70,7 @@ public class SupRemitAddController implements Initializable, ContentCtrl {
                 return;
             }
 
-            SupRemitDao dao = new SupRemitDao();
+            RemitDao dao = new RemitDao();
             dao.setSup_id(sup_id);
             dao.setYear(year);
             dao.setMonth(month);
@@ -79,7 +81,11 @@ public class SupRemitAddController implements Initializable, ContentCtrl {
             dao.setNote(note.getText());
             new Thread(() -> {
                 try {
-                    SupRemitServers.insertRemit(dao);
+                    if (sup_view) {
+                        SupRemitServers.insertRemit(dao);
+                    } else {
+                        CustRemitServers.insertRemit(dao);
+                    }
                     QSApp.mainPane.backNav();
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -114,6 +120,9 @@ public class SupRemitAddController implements Initializable, ContentCtrl {
 
     @Override
     public void showed(Properties params) {
+        if (params.containsKey("sup_view")) {
+            sup_view = (boolean) params.get("sup_view");
+        }
     }
 
     @Override
@@ -128,14 +137,17 @@ public class SupRemitAddController implements Initializable, ContentCtrl {
         sup_id = (Long) params.get("sup_id");
         monthPicker.set(new Pair<>(year, month));
         btn_month_sel.setText(year + "年" + month + "月");
-        new Thread(() -> {
-            try {
+        try {
+            if (sup_view) {
                 SupplyModel sup = QSApp.service.getSupplyService().selectByID(sup_id);
-                lab_sup.setText(sup.getSerial() + "-" + sup.getName());
-            } catch (Exception e) {
-                e.printStackTrace();
+                Platform.runLater(() -> lab_sup.setText(sup.getSerial() + "-" + sup.getName()));
+            } else {
+                CustomModel cust = QSApp.service.getCustomService().selectAllByID(sup_id);
+                Platform.runLater(() -> lab_sup.setText(cust.getSerial() + "-" + cust.getName()));
             }
-        }).run();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override

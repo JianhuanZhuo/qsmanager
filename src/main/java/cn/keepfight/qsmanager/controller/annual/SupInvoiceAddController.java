@@ -2,8 +2,10 @@ package cn.keepfight.qsmanager.controller.annual;
 
 import cn.keepfight.qsmanager.QSApp;
 import cn.keepfight.qsmanager.controller.ContentCtrl;
-import cn.keepfight.qsmanager.dao.annual.SupInvoiceDao;
+import cn.keepfight.qsmanager.dao.annual.InvoiceDao;
+import cn.keepfight.qsmanager.model.CustomModel;
 import cn.keepfight.qsmanager.model.SupplyModel;
+import cn.keepfight.qsmanager.service.CustInvoiceServers;
 import cn.keepfight.qsmanager.service.SupInvoiceServers;
 import cn.keepfight.utils.FXWidgetUtil;
 import cn.keepfight.utils.WarningBuilder;
@@ -45,6 +47,7 @@ public class SupInvoiceAddController implements Initializable, ContentCtrl {
     private Long year;
     private Long month;
     private Long sup_id;
+    private boolean sup_view = true;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -78,7 +81,7 @@ public class SupInvoiceAddController implements Initializable, ContentCtrl {
                 return;
             }
 
-            SupInvoiceDao dao = new SupInvoiceDao();
+            InvoiceDao dao = new InvoiceDao();
             dao.setSup_id(sup_id);
             dao.setYear(year);
             dao.setMonth(month);
@@ -88,7 +91,11 @@ public class SupInvoiceAddController implements Initializable, ContentCtrl {
             dao.setRate(r);
             new Thread(() -> {
                 try {
-                    SupInvoiceServers.insertInvoice(dao);
+                    if (sup_view) {
+                        SupInvoiceServers.insertInvoice(dao);
+                    }else {
+                        CustInvoiceServers.insertInvoice(dao);
+                    }
                     QSApp.mainPane.backNav();
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -123,12 +130,15 @@ public class SupInvoiceAddController implements Initializable, ContentCtrl {
 
     @Override
     public void showed(Properties params) {
+        if (params.containsKey("sup_view")){
+             sup_view = (boolean)params.get("sup_view");
+        }
     }
 
     @Override
     public void showedAfter(Properties params) {
         if (!params.containsKey("sup_id")) {
-            WarningBuilder.build("参数错误！无指定供应商，请刷新后再添加");
+            WarningBuilder.build("参数错误！无指定客户，请刷新后再添加");
             params.keySet().forEach(x -> System.out.print("-" + x));
             QSApp.mainPane.backNav();
         }
@@ -140,8 +150,13 @@ public class SupInvoiceAddController implements Initializable, ContentCtrl {
         btn_month_sel.setText(year + "年" + month + "月");
         new Thread(() -> {
             try {
-                SupplyModel sup = QSApp.service.getSupplyService().selectByID(sup_id);
-                lab_sup.setText(sup.getSerial() + "-" + sup.getName());
+                if (sup_view){
+                    SupplyModel sup = QSApp.service.getSupplyService().selectByID(sup_id);
+                    Platform.runLater(()->lab_sup.setText(sup.getSerial() + "-" + sup.getName()));
+                }else{
+                    CustomModel cust = QSApp.service.getCustomService().selectAllByID(sup_id);
+                    Platform.runLater(()->lab_sup.setText(cust.getSerial() + "-" + cust.getName()));
+                }
             } catch (Exception e) {
                 e.printStackTrace();
             }

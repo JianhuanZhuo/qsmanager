@@ -5,13 +5,13 @@ import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
-public interface SupRemitMapper {
+public interface CustRemitMapper {
 
     /**
      * 指定供应商 ID、年份、月份选择汇款记录
      */
     List<RemitDao> selectRemitByMonthAndSup(
-            @Param("sup_id") Long sup_id,
+            @Param("cust_id") Long cust_id,
             @Param("year") Long year,
             @Param("month") Long month) throws Exception;
 

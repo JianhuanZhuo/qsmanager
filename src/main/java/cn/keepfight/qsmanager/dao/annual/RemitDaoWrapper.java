@@ -7,7 +7,7 @@ import javafx.beans.property.*;
 import java.math.BigDecimal;
 import java.sql.Date;
 
-public class SupRemitDaoWrapper implements DaoWrapper<SupRemitDao>{
+public class RemitDaoWrapper implements DaoWrapper<RemitDao> {
 
 
     private LongProperty id = new SimpleLongProperty();
@@ -19,14 +19,19 @@ public class SupRemitDaoWrapper implements DaoWrapper<SupRemitDao>{
     private ObjectProperty<BigDecimal> total = new SimpleObjectProperty<>();
     private StringProperty mode = new SimpleStringProperty();
     private StringProperty note = new SimpleStringProperty();
+
+    public RemitDaoWrapper(RemitDao dao) {
+        wrap(dao);
+    }
+
     @Override
-    public void wrap(SupRemitDao data) {
+    public void wrap(RemitDao data) {
         FXReflectUtils.attrsCopy(data, this);
     }
 
     @Override
-    public SupRemitDao get() {
-        return FXReflectUtils.attrsCopyAndReturn(this, new SupRemitDao());
+    public RemitDao get() {
+        return FXReflectUtils.attrsCopyAndReturn(this, new RemitDao());
     }
 
     public long getId() {

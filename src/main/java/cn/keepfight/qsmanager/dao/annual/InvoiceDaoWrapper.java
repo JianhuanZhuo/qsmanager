@@ -7,7 +7,7 @@ import javafx.beans.property.*;
 import java.math.BigDecimal;
 import java.sql.Date;
 
-public class SupInvoiceDaoWrapper implements DaoWrapper<SupInvoiceDao>{
+public class InvoiceDaoWrapper implements DaoWrapper<InvoiceDao>{
 
     private LongProperty id = new SimpleLongProperty();
     private LongProperty sup_id = new SimpleLongProperty();
@@ -17,15 +17,20 @@ public class SupInvoiceDaoWrapper implements DaoWrapper<SupInvoiceDao>{
     private ObjectProperty<Date> date = new SimpleObjectProperty<>();
     private ObjectProperty<BigDecimal> total = new SimpleObjectProperty<>();
     private ObjectProperty<BigDecimal> rate = new SimpleObjectProperty<>();
+    private ObjectProperty<BigDecimal> rateTotal = new SimpleObjectProperty<>();
+
+    public InvoiceDaoWrapper(InvoiceDao dao) {
+        wrap(dao);
+    }
 
     @Override
-    public void wrap(SupInvoiceDao data) {
+    public void wrap(InvoiceDao data) {
         FXReflectUtils.attrsCopy(data, this);
     }
 
     @Override
-    public SupInvoiceDao get() {
-        return FXReflectUtils.attrsCopyAndReturn(this, new SupInvoiceDao());
+    public InvoiceDao get() {
+        return FXReflectUtils.attrsCopyAndReturn(this, new InvoiceDao());
     }
 
     public long getId() {
@@ -122,5 +127,17 @@ public class SupInvoiceDaoWrapper implements DaoWrapper<SupInvoiceDao>{
 
     public void setRate(BigDecimal rate) {
         this.rate.set(rate);
+    }
+
+    public BigDecimal getRateTotal() {
+        return rateTotal.get();
+    }
+
+    public ObjectProperty<BigDecimal> rateTotalProperty() {
+        return rateTotal;
+    }
+
+    public void setRateTotal(BigDecimal rateTotal) {
+        this.rateTotal.set(rateTotal);
     }
 }

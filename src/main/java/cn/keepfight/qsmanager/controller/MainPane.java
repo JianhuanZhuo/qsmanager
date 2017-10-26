@@ -9,6 +9,7 @@ import javafx.application.Platform;
 import javafx.beans.property.ListProperty;
 import javafx.beans.property.SimpleListProperty;
 import javafx.collections.FXCollections;
+import javafx.concurrent.Worker;
 import javafx.fxml.FXML;
 import javafx.geometry.Orientation;
 import javafx.scene.control.*;
@@ -145,19 +146,18 @@ public class MainPane {
             return;
         }
 
-        Platform.runLater(() ->centerScp.setContent(MainPaneList.LOADING.getController().getRoot()));
+        Platform.runLater(() -> centerScp.setContent(MainPaneList.LOADING.getController().getRoot()));
 
-        title.textProperty().bind(controller.getTitle());
-        Platform.runLater(() -> btnList.getChildren().clear());
-
-        // 考虑到一次切换界面的刷新意义不大
-        if (!isLoaded.getOrDefault(controller, false)) {
-            Platform.runLater(controller::loaded);
-            isLoaded.put(controller, true);
-        }
-
-        Platform.runLater(() -> controller.showed(params));
         Platform.runLater(() -> {
+            title.textProperty().bind(controller.getTitle());
+            btnList.getChildren().clear();
+
+            // 考虑到一次切换界面的刷新意义不大
+            if (!isLoaded.getOrDefault(controller, false)) {
+                Platform.runLater(controller::loaded);
+                isLoaded.put(controller, true);
+            }
+
             List<Button> btns;
             try {
                 btns = controller.getBarBtns(params).stream()
@@ -172,7 +172,6 @@ public class MainPane {
                 btnList.getChildren().setAll(btns);
                 btnList.getChildren().add(new Separator(Orientation.VERTICAL));
             }
-
             // 添加刷新按钮
             btnList.getChildren().add(addTileBtn(new BarBtn() {
                 @Override
@@ -196,15 +195,14 @@ public class MainPane {
                 }
             }));
             titleVisible(!controller.transparentBackground());
+
+            controller.showed(params);
+            // 加载至主界面
+            centerScp.setContent(controller.getRoot());
+            // 添加到队列中
+            push(controller, params);
+            controller.showedAfter(params);
         });
-
-        // 加载至主界面
-        Platform.runLater(() -> centerScp.setContent(controller.getRoot()));
-
-        // 添加到队列中
-        push(controller, params);
-
-        Platform.runLater(() -> controller.showedAfter(params));
     }
 
     /**

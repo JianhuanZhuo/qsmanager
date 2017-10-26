@@ -2,16 +2,24 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="cn.keepfight.qsmanager.Mapper.SupInvoiceMapper">
+<mapper namespace="cn.keepfight.qsmanager.Mapper.CustInvoiceMapper">
     <select id="selectInvoiceByMonthAndSup" resultType="InvoiceDao">
-        SELECT *
-        FROM invoice_sup
-        WHERE sup_id = #{sup_id} AND year = #{year} AND month = #{month}
+        SELECT
+            id,
+            cust_id AS sup_id,
+            year,
+            month,
+            unit,
+            date,
+            total,
+            rate
+        FROM invoice_cust
+        WHERE cust_id = #{cust_id} AND year = #{year} AND month = #{month}
     </select>
 
     <insert id="insertInvoice" parameterType="InvoiceDao">
-        INSERT INTO invoice_sup (
-        sup_id, year, month, unit, date, total, rate
+        INSERT INTO invoice_cust (
+        cust_id, year, month, unit, date, total, rate
         ) VALUES(
         #{sup_id},
         #{year},
@@ -27,8 +35,8 @@
     </insert>
 
     <insert id="insertInvoiceList" parameterType="java.util.List">
-        INSERT INTO invoice_sup (
-        sup_id, year, month, unit, date, total, rate
+        INSERT INTO invoice_cust (
+        cust_id, year, month, unit, date, total, rate
         ) VALUES
         <foreach collection="list" item="dao" index="index" separator=",">
             (
@@ -44,7 +52,7 @@
     </insert>
 
     <delete id="deleteInvoiceByID" parameterType="long">
-        DELETE FROM invoice_sup
+        DELETE FROM invoice_cust
         WHERE id = #{id}
     </delete>
 </mapper>

@@ -59,7 +59,7 @@ public class ViewPathUtil {
      * @return 加载器
      */
     public static FXMLLoader getLoader(String viewURL) {
-        System.out.println("View--------------------getLoader:"+viewURL);
+//        System.out.println("View--------------------getLoader:"+viewURL);
         return new FXMLLoader(ViewPathUtil.getFrameView(viewURL));
     }
 
@@ -91,7 +91,7 @@ public class ViewPathUtil {
      * @return 加载器
      */
     public static FXMLLoader getWidgetLoader(String viewURL) {
-        System.out.println("Widget--------------------getLoader:"+viewURL);
+//        System.out.println("Widget--------------------getLoader:"+viewURL);
         return new FXMLLoader(ViewPathUtil.getWidgetView(viewURL));
     }
 

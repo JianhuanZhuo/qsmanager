@@ -1,9 +1,10 @@
 package cn.keepfight.qsmanager.Mapper;
 
-import cn.keepfight.qsmanager.dao.annual.SupAnnualDao;
+import cn.keepfight.qsmanager.dao.annual.AnnualDao;
 import cn.keepfight.qsmanager.model.*;
 import org.apache.ibatis.annotations.Param;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 /**
@@ -56,7 +57,16 @@ public interface SupAnnuMapper {
     /**
      * 指定供应商和年份选择对账表
      */
-    List<SupAnnualDao> staticAnnualMonByMonAndSup(
+    List<AnnualDao> staticAnnualMonByMonAndSup(
             @Param("sid") Long sid,
             @Param("year") Long year) throws Exception;
+
+    /**
+     *
+     * 指定供应商和年份统计，该年份之前的
+     */
+    BigDecimal staticAnnualLeft(
+            @Param("sid") Long sid,
+            @Param("year") Long year) throws Exception;
+
 }
