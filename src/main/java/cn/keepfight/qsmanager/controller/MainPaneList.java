@@ -32,7 +32,8 @@ public enum MainPaneList {
     OUTCOME_ANNUAL,
     annual$SUP_ADD_INVOICE,
     annual$SUP_ADD_REMIT,
-    annual$SUP_ANNUAL_EDIT
+    annual$SUP_ANNUAL_EDIT,
+    tax$TAX
     ;
 
     String view;

@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.keepfight.qsmanager.Mapper.OperatorMapper">
+
+
+    <!--* 根据年月选择指定的税赋抵扣-->
+    <!--TaxDao selectByMonth(@Param("year") Long year,@Param("month") Long month)throws Exception;-->
+    <select id="selectByMonth" resultType="TaxDao">
+        SELECT *
+        FROM tax
+        WHERE year = #{year} AND month = #{month}
+    </select>
+
+    <!--* 插入一条新的税赋记录-->
+    <!--void insertTax(TaxDao dao) throws Exception;-->
+    <insert id="insertTax" parameterType="TaxDao">
+
+    </insert>
+
+    <!--* 更新税赋记录-->
+    <!--void updateTax(TaxDao dao) throws Exception;-->
+    <update id="updateTax" parameterType="TaxDao">
+
+    </update>
+</mapper>
