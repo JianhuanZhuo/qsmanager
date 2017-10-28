@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="cn.keepfight.qsmanager.Mapper.OperatorMapper">
-
+<mapper namespace="cn.keepfight.qsmanager.Mapper.TaxMapper">
 
     <!--* 根据年月选择指定的税赋抵扣-->
     <!--TaxDao selectByMonth(@Param("year") Long year,@Param("month") Long month)throws Exception;-->
@@ -12,15 +11,51 @@
         WHERE year = #{year} AND month = #{month}
     </select>
 
+    <select id="selectInvoiceListByTid" resultType="TaxInvoiceDao" parameterType="long">
+        SELECT *
+        FROM tax_invoice
+        WHERE tid = #{tid}
+    </select>
+
     <!--* 插入一条新的税赋记录-->
     <!--void insertTax(TaxDao dao) throws Exception;-->
     <insert id="insertTax" parameterType="TaxDao">
-
+        INSERT INTO tax (year, month, p1, p2, p3, p4, p5, p6)
+        VALUES (#{year}, #{month}, #{p1}, #{p2}, #{p3}, #{p4}, #{p5}, #{p6})
+        <selectKey keyProperty="id" order="AFTER" resultType="long">
+            SELECT last_insert_id();
+        </selectKey>
     </insert>
+
+    <insert id="insertTaxInvoice" parameterType="TaxInvoiceDao">
+        INSERT INTO tax_invoice (tid, category, unit, total, note)
+        VALUES (
+            #{tid},
+            #{category},
+            #{unit},
+            #{total},
+            #{note}
+        )
+        <selectKey keyProperty="id" order="AFTER" resultType="long">
+            SELECT last_insert_id();
+        </selectKey>
+    </insert>
+
+    <delete id="deleteTaxInvoice" parameterType="long">
+        DELETE FROM tax_invoice
+        WHERE id=#{id}
+    </delete>
+
+    <delete id="clearTaxInvoiceByTid" parameterType="long">
+        DELETE FROM tax_invoice
+        WHERE tid=#{tid}
+    </delete>
 
     <!--* 更新税赋记录-->
     <!--void updateTax(TaxDao dao) throws Exception;-->
     <update id="updateTax" parameterType="TaxDao">
-
+        UPDATE tax
+        SET p1 = #{p1}, p2 = #{p2}, p3 = #{p3}, p4 = #{p4}, p5 = #{p5}, p6 = #{p6}
+        WHERE tax.year = #{year} AND month = #{month}
     </update>
 </mapper>

@@ -52,5 +52,7 @@
         <!--汇款表-->
         <mapper resource="mapper/SupRemitMapper.xml"/>
         <mapper resource="mapper/CustRemitMapper.xml"/>
+        <!--发票抵扣表-->
+        <mapper resource="mapper/TaxMapper.xml"/>
     </mappers>
 </configuration>

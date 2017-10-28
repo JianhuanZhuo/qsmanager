@@ -9,7 +9,7 @@ import org.apache.ibatis.session.SqlSessionFactory;
 
 import java.util.List;
 
-public class SupInvoiceServers {
+public abstract class SupInvoiceServers {
 
     private static SqlSessionFactory factory = SqlSessionServices.getFactory();
 

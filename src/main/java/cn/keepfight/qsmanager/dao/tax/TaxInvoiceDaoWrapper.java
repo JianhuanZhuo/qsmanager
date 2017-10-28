@@ -12,6 +12,8 @@ import java.math.BigDecimal;
  */
 public class TaxInvoiceDaoWrapper implements DaoWrapper<TaxInvoiceDao>{
     // 类别变量，其中 0 为销项，1 为进项
+    private LongProperty id = new SimpleLongProperty();
+    private LongProperty tid = new SimpleLongProperty();
     private LongProperty category = new SimpleLongProperty();
     private StringProperty unit = new SimpleStringProperty();
     private ObjectProperty<BigDecimal> total = new SimpleObjectProperty<>();
@@ -29,6 +31,30 @@ public class TaxInvoiceDaoWrapper implements DaoWrapper<TaxInvoiceDao>{
     @Override
     public TaxInvoiceDao get() {
         return FXReflectUtils.attrsCopyAndReturn(this, new TaxInvoiceDao());
+    }
+
+    public long getId() {
+        return id.get();
+    }
+
+    public LongProperty idProperty() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id.set(id);
+    }
+
+    public long getTid() {
+        return tid.get();
+    }
+
+    public LongProperty tidProperty() {
+        return tid;
+    }
+
+    public void setTid(long tid) {
+        this.tid.set(tid);
     }
 
     public long getCategory() {

@@ -314,14 +314,16 @@ public class FXWidgetUtil {
         });
     }
 
-
     /**
      * 将 target=sa oper1 sb oper2 sc 进行绑定
      */
     public static void simpleTriOper(TextField target,
                                      BiFunction<BigDecimal, BigDecimal, BigDecimal> oper1,
                                      BiFunction<BigDecimal, BigDecimal, BigDecimal> oper2,
-                                     TextField sa, TextField sb, TextField sc) {
+                                     TextField sa, Function<TextField, BigDecimal> getSaDecimal,
+                                     TextField sb, Function<TextField, BigDecimal> getSbDecimal,
+                                     TextField sc, Function<TextField, BigDecimal> getScDecimal,
+                                     Function<BigDecimal, String> setDecimal) {
         target.textProperty().bind(new StringBinding() {
             {
                 bind(sa.textProperty(), sb.textProperty(), sc.textProperty());
@@ -330,17 +332,46 @@ public class FXWidgetUtil {
             @Override
             protected String computeValue() {
                 try {
-                    return oper2.apply(
-                            oper1.apply(
-                                    new BigDecimal(sa.getText().replace(",", "")),
-                                    new BigDecimal(sb.getText().replace(",", ""))),
-                            new BigDecimal(sc.getText())
-                    ).stripTrailingZeros().toPlainString();
+                    return setDecimal.apply(oper2.apply(
+                            oper1.apply(getSaDecimal.apply(sa), getSbDecimal.apply(sb)),
+                            getScDecimal.apply(sc)
+                    ));
                 } catch (Exception e) {
                     return "0";
                 }
             }
         });
+    }
+
+    /**
+     * 将 target=sa oper1 sb oper2 sc 进行绑定
+     */
+    public static void simpleTriOper(TextField target,
+                                     BiFunction<BigDecimal, BigDecimal, BigDecimal> oper1,
+                                     BiFunction<BigDecimal, BigDecimal, BigDecimal> oper2,
+                                     TextField sa, TextField sb, TextField sc) {
+        simpleTriOper(target, oper1, oper2,
+                sa, x -> new BigDecimal(x.getText().replace(",", "")),
+                sb, x -> new BigDecimal(x.getText().replace(",", "")),
+                sc, x -> new BigDecimal(x.getText().replace(",", "")),
+                FXUtils::deciToMoney
+        );
+    }
+
+    /**
+     * 将 target=sa oper1 sb oper2 sc 进行绑定
+     */
+    public static void simpleTriOper(TextField target,
+                                     BiFunction<BigDecimal, BigDecimal, BigDecimal> oper1,
+                                     BiFunction<BigDecimal, BigDecimal, BigDecimal> oper2,
+                                     TextField sa, TextField sb, TextField sc,
+                                     Function<BigDecimal, String> setDecimal) {
+        simpleTriOper(target, oper1, oper2,
+                sa, x -> new BigDecimal(x.getText().replace(",", "")),
+                sb, x -> new BigDecimal(x.getText().replace(",", "")),
+                sc, x -> new BigDecimal(x.getText().replace(",", "")),
+                setDecimal
+        );
     }
 
 

@@ -1,16 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
-<HBox fx:id="root" alignment="CENTER" styleClass="predict-item" stylesheets="@predict_item.css"
-      xmlns="http://javafx.com/javafx/8.0.131" xmlns:fx="http://javafx.com/fxml/1"
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.HBox?>
+
+<HBox fx:id="root" alignment="CENTER" spacing="5.0" styleClass="predict-item" stylesheets="@predict_item.css"
+      xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1"
       fx:controller="cn.keepfight.widget.PredictItem">
     <CheckBox fx:id="check" text="2017年4月"/>
     <Separator orientation="VERTICAL"/>
-    <Label>￥</Label>
-    <TextField styleClass="text_edit" fx:id="text_edit" text="822,231,00"/>
-    <Label>/￥</Label>
-    <Label fx:id="label_total">822,231,00</Label>
+    <HBox fx:id="content" alignment="CENTER" spacing="5.0">
+        <Label>￥</Label>
+        <TextField fx:id="text_edit" styleClass="text_edit" text="822,231,00"/>
+        <Label>/￥</Label>
+        <Label fx:id="label_total">822,231,00</Label>
+        <Button fx:id="btn_all" text="全部"/>
+    </HBox>
 </HBox>
-
-

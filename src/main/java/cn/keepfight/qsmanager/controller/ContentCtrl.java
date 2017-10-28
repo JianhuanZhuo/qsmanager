@@ -44,9 +44,7 @@ public interface ContentCtrl {
      *
      * @param params 调用页面后使用
      */
-    default void showedAfter(Properties params) {
-
-    }
+    default void showedAfter(Properties params){}
 
     default <T> void updateState(T s) {
     }

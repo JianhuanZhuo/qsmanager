@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.keepfight.qsmanager.Mapper.TaxMapper">
+
+    <select id="">
+        SELECT
+            t.sid     AS sid,
+            t.year    AS year,
+            t.month   AS month,
+            if(((t.count - ifnull(r.sum, 0)) <![CDATA[ < ]]> t.sum),
+               t.count - ifnull(r.sum, 0),
+               t.sum) AS leftsum
+        FROM (
+                 SELECT
+                     t.sid,
+                     t.year,
+                     t.month,
+                     t.sum,
+                     (SELECT SUM(x.sum)
+                      FROM view_sup_month_trade x
+                      WHERE concat(x.year, x.month) <![CDATA[ <= ]]> concat(t.year, t.month) AND t.sid = x.sid) AS count
+                 FROM view_sup_month_trade t
+             ) AS t LEFT JOIN (
+                                  SELECT
+                                      sup_id     AS sid,
+                                      sum(total) AS sum
+                                  FROM remit_sup
+                                  GROUP BY sup_id
+                              ) AS r
+                ON t.sid = r.sid
+        WHERE ifnull(r.sum, 0) <![CDATA[ < ]]> t.count
+        ORDER BY sid, year, month
+    </select>
+</mapper>

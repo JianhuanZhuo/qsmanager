@@ -11,6 +11,7 @@ import cn.keepfight.utils.FXUtils;
 import cn.keepfight.utils.FXWidgetUtil;
 import cn.keepfight.widget.TableShowGrid;
 import cn.keepfight.widget.YearScrollPicker;
+import javafx.application.Platform;
 import javafx.beans.binding.StringBinding;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.fxml.FXML;
@@ -141,7 +142,7 @@ public class SalaryController implements ContentCtrl, Initializable {
                 if (ss.size() > 0) {
                     for (StuffTardyDao d : ss.get(0).get().getDetails()) {
                         TableColumn<SalaryTardyDaoWrapper, BigDecimal> column = new TableColumn<>(d.getYm());
-                        table_stuff.getColumns().add(column);
+                        Platform.runLater(()->table_stuff.getColumns().add(column));
                         tabs.add(column);
                         FXWidgetUtil.cellMoney(column);
                         FXWidgetUtil.connectDecimalColumn(column, k -> new SimpleObjectProperty<>(k.get().getDetailByYM(d.getYm())));

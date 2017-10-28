@@ -46,6 +46,7 @@
             <Separator/>
             <HBox styleClass="title-line">
                 <Label text="应付工资总表"/>
+                <Label text="(工资结算按钮用于季度工资工资结算的工资计算)"/>
                 <Pane HBox.hgrow="ALWAYS"/>
                 <Button fx:id="btn_clear" text="工资结算" />
             </HBox>

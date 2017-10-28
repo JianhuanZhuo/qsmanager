@@ -147,17 +147,14 @@ public class MainPane {
         }
 
         Platform.runLater(() -> centerScp.setContent(MainPaneList.LOADING.getController().getRoot()));
-
-        Platform.runLater(() -> {
+        // 考虑到一次切换界面的刷新意义不大
+        if (!isLoaded.getOrDefault(controller, false)) {
+            Platform.runLater(controller::loaded);
+            isLoaded.put(controller, true);
+        }
+        Platform.runLater(()->{
             title.textProperty().bind(controller.getTitle());
             btnList.getChildren().clear();
-
-            // 考虑到一次切换界面的刷新意义不大
-            if (!isLoaded.getOrDefault(controller, false)) {
-                Platform.runLater(controller::loaded);
-                isLoaded.put(controller, true);
-            }
-
             List<Button> btns;
             try {
                 btns = controller.getBarBtns(params).stream()
@@ -195,14 +192,16 @@ public class MainPane {
                 }
             }));
             titleVisible(!controller.transparentBackground());
+        });
 
+        new Thread(() -> {
             controller.showed(params);
             // 加载至主界面
-            centerScp.setContent(controller.getRoot());
+            Platform.runLater(()->centerScp.setContent(controller.getRoot()));
             // 添加到队列中
             push(controller, params);
             controller.showedAfter(params);
-        });
+        }).run();
     }
 
     /**
@@ -372,5 +371,17 @@ public class MainPane {
             btn.setOnAction(event -> r.run());
         }
         return btn;
+    }
+
+    private List<Integer> example(List<Integer> aList, List<Integer> bList){
+        int sumB = bList.stream().reduce(0, Integer::sum);
+        List<Integer> res = new ArrayList<>();
+
+        int sumA = 0;
+        for (int a: aList){
+            sumA = sumA + a;
+            if (sumA>sumB) res.add(a);
+        }
+        return res;
     }
 }

@@ -15,8 +15,9 @@
 
 <VBox fx:id="root" styleClass="content-pane" stylesheets="@../css/common.css" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cn.keepfight.qsmanager.controller.tax.TaxController">
     <HBox styleClass="title-line, left-align">
-        <Label text="发票抵扣" />
+        <Label text="年月选择" />
         <Button fx:id="btn_ym" styleClass="url" text="2017年10月" />
+        <Label text="(通过增减发票使最后自动计算的税赋达标，下面的参数可修改)"/>
     </HBox>
     <GridPane prefHeight="60.0" prefWidth="513.0">
         <columnConstraints>
@@ -51,13 +52,13 @@
             <HBox styleClass="hbox-common">
                 <Label text="销项发票" />
                 <Pane HBox.hgrow="ALWAYS" />
-                <Button mnemonicParsing="false" text="加载当月发票" />
-                <Button mnemonicParsing="false" text="添加发票" />
-                <Button mnemonicParsing="false" text="删除发票" />
+                <Button fx:id="btn_out_load" mnemonicParsing="false" text="加载当月发票" />
+                <Button fx:id="btn_out_add" mnemonicParsing="false" text="添加发票" />
+                <Button fx:id="btn_out_del" mnemonicParsing="false" text="删除发票" />
             </HBox>
             <TableView fx:id="table_out" prefHeight="200.0">
                 <columns>
-                    <TableColumn fx:id="tab_out_serial" prefWidth="75.0" text="序号" />
+                    <TableColumn fx:id="tab_out_serial" prefWidth="20.0" text="序号" />
                     <TableColumn fx:id="tab_out_unit" prefWidth="75.0" text="单位" />
                     <TableColumn fx:id="tab_out_total" prefWidth="75.0" text=" 含税金额" />
                     <TableColumn fx:id="tab_out_note" prefWidth="75.0" text="备注" />
@@ -80,9 +81,9 @@
                 <Label text="含税金额合计(A)：" />
                 <Label text="销项税(B)：" GridPane.rowIndex="1" />
                 <Label text="不含税额(C)：" GridPane.rowIndex="2" />
-                <TextField fx:id="tf_a" editable="false" text="226396.5912" GridPane.columnIndex="1" />
-                <TextField fx:id="tf_b" editable="false" text="32895.23 " GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                <TextField fx:id="tf_c" editable="false" text="193501.36 " GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                <TextField fx:id="tf_a" editable="false" text="0" GridPane.columnIndex="1" />
+                <TextField fx:id="tf_b" editable="false" text="0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                <TextField fx:id="tf_c" editable="false" text="0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                 <Label text="B=(A/P2)*P3" GridPane.columnIndex="2" GridPane.rowIndex="1" />
                 <Label text="C=A-B" GridPane.columnIndex="2" GridPane.rowIndex="2" />
             </GridPane>
@@ -93,8 +94,8 @@
             <HBox styleClass="hbox-common">
                 <Label text="进项发票" />
                 <Pane HBox.hgrow="ALWAYS" />
-                <Button mnemonicParsing="false" text="添加发票" />
-                <Button mnemonicParsing="false" text="删除发票" />
+                <Button fx:id="btn_in_add" mnemonicParsing="false" text="添加发票" />
+                <Button fx:id="btn_in_del" mnemonicParsing="false" text="删除发票" />
             </HBox>
             <TableView fx:id="table_in" prefHeight="200.0">
                 <columns>
@@ -121,9 +122,9 @@
                 <Label text="含税金额合计(D)：" />
                 <Label text="进项发票总额(E)：" GridPane.rowIndex="1" />
                 <Label text="多出部分(F)：" GridPane.rowIndex="2" />
-                <TextField fx:id="tf_d" editable="false" prefHeight="23.0" prefWidth="101.0" text="180000" GridPane.columnIndex="1" />
-                <TextField fx:id="tf_e" editable="false" text="179758.8934128" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                <TextField fx:id="tf_f" editable="false" text="241.11 " GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                <TextField fx:id="tf_d" editable="false" prefHeight="23.0" prefWidth="101.0" text="0" GridPane.columnIndex="1" />
+                <TextField fx:id="tf_e" editable="false" text="0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                <TextField fx:id="tf_f" editable="false" text="0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                 <Label prefHeight="15.0" prefWidth="114.0" text="E=A*P4" GridPane.columnIndex="2" GridPane.rowIndex="1" />
                 <Label prefHeight="15.0" prefWidth="114.0" text="F=D-E" GridPane.columnIndex="2" GridPane.rowIndex="2" />
             </GridPane>
@@ -143,16 +144,20 @@
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
         </rowConstraints>
         <Label text="增值部分(G)：" />
-        <TextField fx:id="tf_g" editable="false" text="46396.5912" GridPane.columnIndex="1" />
+        <TextField fx:id="tf_g" editable="false" text="0" GridPane.columnIndex="1" />
         <Label text="G=A-D" GridPane.columnIndex="2" />
         <Label text="增值税(H)：" GridPane.rowIndex="1" />
-        <TextField fx:id="tf_h" editable="false" text="6741.385046" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+        <TextField fx:id="tf_h" editable="false" text="0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
         <Label text="H=(G/P2)*P3" GridPane.columnIndex="2" GridPane.rowIndex="1" />
         <Label text="总税金含所得(K):" GridPane.rowIndex="2" />
-        <TextField fx:id="tf_k" editable="false" text="11354.2432" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+        <TextField fx:id="tf_k" editable="false" text="0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
         <Label text="K=A*P5+P6" GridPane.columnIndex="2" GridPane.rowIndex="2" />
         <Label text="税赋(J):" GridPane.rowIndex="3" />
-        <TextField fx:id="tf_j" editable="false" text="0.034838954" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-        <Label text="J=H/C" GridPane.columnIndex="2" GridPane.rowIndex="3" />
+        <TextField fx:id="tf_j" editable="false" text="0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+        <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="2"
+              GridPane.rowIndex="3">
+            <Label text="J=H/C"/>
+            <Label fx:id="tax_warn" text="（注意：税赋已超）" textFill="RED"/>
+        </HBox>
     </GridPane>
 </VBox>

@@ -6,6 +6,7 @@ import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
+import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -24,6 +25,8 @@ public class PredictItem implements Initializable, Widget<PredictItem.PredictIte
     public Label label_total;
     public CheckBox check;
     public TextField text_edit;
+    public Button btn_all;
+    public HBox content;
 
     @Override
     public Node getRoot() {
@@ -36,6 +39,8 @@ public class PredictItem implements Initializable, Widget<PredictItem.PredictIte
                 false,
                 new BigDecimal(0),
                 new BigDecimal(0)));
+        btn_all.setOnAction(event -> text_edit.setText(label_total.getText()));
+        content.disableProperty().bind(check.selectedProperty().not());
     }
 
     @Override
