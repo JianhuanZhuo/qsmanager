@@ -14,6 +14,7 @@ import javafx.beans.binding.NumberExpressionBase;
 import javafx.beans.binding.ObjectExpression;
 import javafx.beans.binding.StringBinding;
 import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.Property;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.beans.value.ObservableValue;
@@ -233,6 +234,24 @@ public class FXWidgetUtil {
                                           Consumer<String> consumer) {
         calculate(obserList, toDecimal, consumer, BigDecimal::add);
     }
+
+    public static <T> void calculateListForStr(StringProperty sp, List<T> obserList, Function<T, Observable> toObserable, Function<T, BigDecimal> toDecimal) {
+        sp.bind(new StringBinding() {
+            {
+                obserList.forEach(item -> bind(toObserable.apply(item)));
+            }
+
+            @Override
+            protected String computeValue() {
+                BigDecimal x = new BigDecimal(0);
+                for (T item : obserList) {
+                    x = x.add(toDecimal.apply(item));
+                }
+                return FXUtils.deciToMoney(x);
+            }
+        });
+    }
+
 
     /**
      * 破解提示工具 Tooltip，修改其触发时间为 200 毫秒

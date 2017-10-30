@@ -13,4 +13,9 @@ public interface PredictMapper {
      * 选择预算中供应商可收入列表
      */
     List<PredictTradeDao> selectOutcomePredictLeft() throws Exception;
+
+    /**
+     * 选择预算中客户可收入列表
+     */
+    List<PredictTradeDao> selectIncomePredictLeft() throws Exception;
 }

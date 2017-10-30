@@ -1,8 +1,5 @@
 package cn.keepfight.qsmanager.dao.predict;
 
-import javafx.util.Pair;
-
-import java.math.BigDecimal;
 import java.util.List;
 
 /**
@@ -10,16 +7,16 @@ import java.util.List;
  * Created by 卓建欢 on 2017/10/29.
  */
 public class PredictTradeGroup {
-    private Long sid;
+    private Long uid;
     private String name;
     private List<PredictTradeItemDao> lefts;
 
-    public Long getSid() {
-        return sid;
+    public Long getUid() {
+        return uid;
     }
 
-    public void setSid(Long sid) {
-        this.sid = sid;
+    public void setUid(Long uid) {
+        this.uid = uid;
     }
 
     public String getName() {

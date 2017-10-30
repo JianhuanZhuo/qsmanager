@@ -21,4 +21,11 @@ public abstract class PredictServers {
     public static List<PredictTradeDao> selectOutcomePredictLeft() throws Exception{
         return FXUtils.getMapper(factory, PredictMapper.class, PredictMapper::selectOutcomePredictLeft);
     }
+
+    /**
+     * 选择预算中客户可收入列表
+     */
+    public static List<PredictTradeDao> selectIncomePredictLeft() throws Exception{
+        return FXUtils.getMapper(factory, PredictMapper.class, PredictMapper::selectIncomePredictLeft);
+    }
 }

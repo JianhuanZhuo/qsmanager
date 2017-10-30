@@ -9,13 +9,12 @@ import cn.keepfight.utils.FXUtils;
 import cn.keepfight.utils.FXWidgetUtil;
 import cn.keepfight.widget.PredictItem;
 import javafx.beans.binding.StringBinding;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.Labeled;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.RowConstraints;
@@ -24,11 +23,7 @@ import javafx.scene.layout.VBox;
 import java.math.BigDecimal;
 import java.net.URL;
 import java.util.*;
-import java.util.function.BiConsumer;
-import java.util.function.BinaryOperator;
-import java.util.function.Function;
-import java.util.function.Supplier;
-import java.util.stream.Collector;
+import java.util.function.*;
 import java.util.stream.Collectors;
 
 /**
@@ -48,6 +43,11 @@ public class PredictController implements Initializable, ContentCtrl {
     public TextField lab_income_total;
     public TextField lab_outcome_total;
     public TextField lab_total;
+    public GridPane grid_outcome;
+    public TextField lab_outcome_sup_total;
+
+    private List<Label> outcomeCountLabs = new ArrayList<>(10);
+    private List<Label> incomeCountLabs = new ArrayList<>(10);
 
     @Override
     public Node getRoot() {
@@ -57,30 +57,6 @@ public class PredictController implements Initializable, ContentCtrl {
     @Override
     public void loaded() {
 
-    }
-
-    @Override
-    public void showed(Properties params) {
-        try {
-            List<PredictTradeDao> list = PredictServers.selectOutcomePredictLeft();
-            clearRow(grid_income);
-            list.stream()
-                    .collect(Collectors.groupingBy(
-                            PredictTradeDao::getSid)
-                    ).values()
-                    .stream()
-                    .map(ss -> {
-                        PredictTradeGroup res = new PredictTradeGroup();
-                        res.setName(ss.get(0).getName());
-                        res.setSid(ss.get(0).getSid());
-                        res.setLefts(ss.stream()
-                                .map(s -> new PredictTradeItemDao(s.getYear(), s.getMonth(), s.getLeftsum()))
-                                .collect(Collectors.toList()));
-                        return res;
-                    }).forEach(this::incomeAddRow);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
     }
 
     @Override
@@ -97,7 +73,20 @@ public class PredictController implements Initializable, ContentCtrl {
         cb_cash_pri.selectedProperty().addListener((observable, oldValue, newValue) -> countCash());
         cb_cash_pub.selectedProperty().addListener((observable, oldValue, newValue) -> countCash());
 
-        FXWidgetUtil.simpleTriOper(lab_total, BigDecimal::add, BigDecimal::subtract, lab_cash_total, lab_income_total, lab_outcome_total);
+        lab_total.textProperty().bind(new StringBinding() {
+            {
+                bind(lab_cash_total.textProperty(), lab_income_total.textProperty(), lab_outcome_total.textProperty(), lab_outcome_sup_total.textProperty());
+            }
+
+            @Override
+            protected String computeValue() {
+                BigDecimal cash = FXUtils.getDecimal(lab_cash_total.getText(), new BigDecimal(0));
+                BigDecimal income = FXUtils.getDecimal(lab_income_total.getText(), new BigDecimal(0));
+                BigDecimal outcome = FXUtils.getDecimal(lab_outcome_total.getText(), new BigDecimal(0));
+                BigDecimal outcome_sup = FXUtils.getDecimal(lab_outcome_sup_total.getText(), new BigDecimal(0));
+                return FXUtils.deciToMoney(cash.add(income).subtract(outcome).subtract(outcome_sup));
+            }
+        });
     }
 
     private void countCash() {
@@ -122,7 +111,57 @@ public class PredictController implements Initializable, ContentCtrl {
         lab_cash_total.setText(FXUtils.deciToMoney(z));
     }
 
-    private void incomeAddRow(PredictTradeGroup dao) {
+    @Override
+    public void showed(Properties params) {
+        try {
+            clearRow(grid_outcome);
+            clearRow(grid_income);
+            groupAndSetTrade(PredictServers.selectOutcomePredictLeft(), x -> outcomeAddRow(x, outcomeCountLabs::add));
+            FXWidgetUtil.calculateListForStr(
+                    lab_outcome_sup_total.textProperty(),
+                    outcomeCountLabs,
+                    Labeled::textProperty,
+                    x -> new BigDecimal(x.getText().replace(",", ""))
+            );
+            groupAndSetTrade(PredictServers.selectIncomePredictLeft(), x -> incomeAddRow(x, incomeCountLabs::add));
+            FXWidgetUtil.calculateListForStr(
+                    lab_income_total.textProperty(),
+                    incomeCountLabs,
+                    Labeled::textProperty,
+                    x -> new BigDecimal(x.getText().replace(",", ""))
+            );
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void groupAndSetTrade(List<PredictTradeDao> list, Consumer<PredictTradeGroup> add) {
+        list.stream()
+                .collect(Collectors.groupingBy(
+                        PredictTradeDao::getUid)
+                ).values()
+                .stream()
+                .map(ss -> {
+                    PredictTradeGroup res = new PredictTradeGroup();
+                    res.setName(ss.get(0).getName());
+                    res.setUid(ss.get(0).getUid());
+                    res.setLefts(ss.stream()
+                            .map(s -> new PredictTradeItemDao(s.getYear(), s.getMonth(), s.getLeftsum()))
+                            .collect(Collectors.toList()));
+                    return res;
+                }).forEach(add);
+    }
+
+    private void incomeAddRow(PredictTradeGroup dao, Consumer<Label> counterConsumer) {
+        AddRow(grid_income, dao, counterConsumer);
+    }
+
+    private void outcomeAddRow(PredictTradeGroup dao, Consumer<Label> counterConsumer) {
+        AddRow(grid_outcome, dao, counterConsumer);
+    }
+
+    private void AddRow(GridPane grid, PredictTradeGroup dao, Consumer<Label> counterConsumer) {
+        List<PredictItem> items = new ArrayList<>(10);
         VBox vBox = new VBox(3.0);
         vBox.setPadding(new Insets(3.0));
         dao.getLefts().forEach(x -> {
@@ -135,14 +174,24 @@ public class PredictController implements Initializable, ContentCtrl {
                     x.getMonth()
             ));
             vBox.getChildren().add(item.getRoot());
+            items.add(item);
         });
         RowConstraints rowConstraints = new RowConstraints();
-        grid_income.getRowConstraints().add(rowConstraints);
-        System.out.println("grid_income.getRowConstraints().size():" + grid_income.getRowConstraints().size());
-        grid_income.addRow(grid_income.getRowConstraints().size() - 1,
+        grid.getRowConstraints().add(rowConstraints);
+        Label lab_count = new Label("");
+        FXWidgetUtil.calculateListForStr(
+                lab_count.textProperty(),
+                items,
+                PredictItem::getAccumulateProperty,
+                x -> x.getAccumulateProperty().get()
+        );
+
+        grid.addRow(grid.getRowConstraints().size() - 1,
                 new Label(dao.getName()),
                 vBox,
-                new Label("+0"));
+                lab_count);
+
+        counterConsumer.accept(lab_count);
     }
 
     private void clearRow(GridPane grid) {

@@ -1,10 +1,12 @@
 package cn.keepfight.widget;
 
 import cn.keepfight.utils.FXUtils;
-import javafx.beans.property.BooleanProperty;
-import javafx.beans.property.LongProperty;
 import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.ReadOnlyObjectProperty;
+import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
@@ -15,6 +17,8 @@ import javafx.scene.layout.HBox;
 
 import java.math.BigDecimal;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
 
 /**
@@ -30,6 +34,7 @@ public class PredictItem implements Initializable, Widget<PredictItem.PredictIte
     public HBox content;
     private Long year = 2017L;
     private Long month = 6L;
+    private ObjectProperty<BigDecimal> accumulateProperty = new SimpleObjectProperty<>(new BigDecimal(0));
 
     @Override
     public Node getRoot() {
@@ -46,7 +51,22 @@ public class PredictItem implements Initializable, Widget<PredictItem.PredictIte
                 6L));
         btn_all.setOnAction(event -> text_edit.setText(label_total.getText()));
         content.disableProperty().bind(check.selectedProperty().not());
-        check.setText(year+"年"+month+"月");
+        check.setText(year + "年" + month + "月");
+
+        check.selectedProperty().addListener((observable, oldValue, newValue) -> setAccumulate(newValue, text_edit.getText()));
+        text_edit.textProperty().addListener((observable, oldValue, newValue) -> setAccumulate(check.isSelected(), newValue));
+    }
+
+    /**
+     * 设置变数
+     */
+    private void setAccumulate(boolean selected, String edit) {
+        try {
+            accumulateProperty.set(new BigDecimal(selected ? edit.replace(",", "") : "0"));
+        } catch (Exception e) {
+            e.printStackTrace();
+            accumulateProperty.set(new BigDecimal("0"));
+        }
     }
 
     @Override
@@ -56,7 +76,7 @@ public class PredictItem implements Initializable, Widget<PredictItem.PredictIte
         label_total.setText(FXUtils.deciToMoney(data.getTotal()));
         year = data.getYear();
         month = data.getMonth();
-        check.setText(year+"年"+month+"月");
+        check.setText(year + "年" + month + "月");
     }
 
     @Override
@@ -65,6 +85,10 @@ public class PredictItem implements Initializable, Widget<PredictItem.PredictIte
                 FXUtils.getDecimal(text_edit.getText()),
                 FXUtils.getDecimal(label_total.getText()),
                 year, month);
+    }
+
+    public ReadOnlyObjectProperty<BigDecimal> getAccumulateProperty() {
+        return accumulateProperty;
     }
 
     public static class PredictItemObj {

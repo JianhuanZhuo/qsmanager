@@ -7,18 +7,18 @@ import java.math.BigDecimal;
  * Created by 卓建欢 on 2017/10/29.
  */
 public class PredictTradeDao {
-    private Long sid;
+    private Long uid;
     private String name;
     private Long year;
     private Long month;
     private BigDecimal leftsum;
 
-    public Long getSid() {
-        return sid;
+    public Long getUid() {
+        return uid;
     }
 
-    public void setSid(Long sid) {
-        this.sid = sid;
+    public void setUid(Long sid) {
+        this.uid = sid;
     }
 
     public Long getYear() {

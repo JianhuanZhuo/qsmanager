@@ -32,8 +32,8 @@ CREATE TABLE cust_annual_mon
 CREATE TABLE custom
 (
     id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
-    serial CHAR(32) DEFAULT 'н╢╠Ю╨е',
-    name CHAR(64) DEFAULT 'нч' NOT NULL,
+    serial CHAR(32) DEFAULT 'н╢О©╫О©╫О©╫',
+    name CHAR(64) DEFAULT 'О©╫О©╫' NOT NULL,
     phone CHAR(64),
     fax CHAR(64),
     accpb CHAR(64),
@@ -59,7 +59,7 @@ CREATE TABLE material
     color CHAR(32),
     spec CHAR(64),
     price DECIMAL(10,5) DEFAULT 0.0 NOT NULL,
-    unit CHAR(16) DEFAULT '╦Ж' NOT NULL,
+    unit CHAR(16) DEFAULT 'О©╫О©╫' NOT NULL,
     serial CHAR(32),
     CONSTRAINT material_supply_id_fk FOREIGN KEY (sid) REFERENCES supply (id)
 );
@@ -98,7 +98,7 @@ CREATE TABLE order_item
     pack INT DEFAULT 1 NOT NULL,
     packDefault INT DEFAULT 1 NOT NULL,
     price DECIMAL(10,5) DEFAULT 0 NOT NULL,
-    unit CHAR(16) DEFAULT '╦Ж' NOT NULL,
+    unit CHAR(16) DEFAULT 'О©╫О©╫' NOT NULL,
     picurl VCHAR(255),
     note CHAR(64),
     CONSTRAINT order_item_orders_id_fk FOREIGN KEY (oid) REFERENCES orders (id) ON DELETE CASCADE ON UPDATE CASCADE
@@ -126,7 +126,7 @@ CREATE TABLE product
     detail CHAR(32),
     pack INT,
     price DECIMAL(10,5) DEFAULT 0 NOT NULL,
-    unit CHAR(16) DEFAULT '╦Ж' NOT NULL,
+    unit CHAR(16) DEFAULT 'О©╫О©╫' NOT NULL,
     picurl VCHAR(255)
 );
 ;
@@ -147,7 +147,7 @@ CREATE TABLE receipt_detail
     name CHAR(32),
     color CHAR(32),
     price DECIMAL(10,5) DEFAULT 0 NOT NULL,
-    unit CHAR(16) DEFAULT '╦Ж' NOT NULL,
+    unit CHAR(16) DEFAULT 'О©╫О©╫' NOT NULL,
     num DECIMAL(10,5) DEFAULT 0 NOT NULL,
     spec CHAR(32),
     CONSTRAINT receipt_detail_receipt_id_fk FOREIGN KEY (rid) REFERENCES receipt (id) ON DELETE CASCADE ON UPDATE CASCADE
@@ -203,13 +203,13 @@ CREATE UNIQUE INDEX sup_annual_mon_said_mon_uindex ON sup_annual_mon (said, mon)
 CREATE TABLE supply
 (
     id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
-    serial CHAR(32) DEFAULT 'н╢╠Ю╨е',
+    serial CHAR(32) DEFAULT 'н╢О©╫О©╫О©╫',
     phone CHAR(64),
     fax CHAR(64),
     accpb CHAR(64),
     accpv CHAR(64),
     addr CHAR(128),
-    name CHAR(64) DEFAULT 'нч' NOT NULL,
+    name CHAR(64) DEFAULT 'О©╫О©╫' NOT NULL,
     note VARCHAR(255),
     namefull CHAR(128),
     bccpb CHAR(128),
