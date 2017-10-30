@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="cn.keepfight.qsmanager.Mapper.TaxMapper">
-
-    <select id="">
+<mapper namespace="cn.keepfight.qsmanager.Mapper.PredictMapper">
+    <select id="selectOutcomePredictLeft" resultType="PredictTradeDao">
         SELECT
-            t.sid     AS sid,
-            t.year    AS year,
-            t.month   AS month,
+            t.sid                         AS sid,
+            concat(s.serial, '-', s.name) AS name,
+            t.year                        AS year,
+            t.month                       AS month,
             if(((t.count - ifnull(r.sum, 0)) <![CDATA[ < ]]> t.sum),
                t.count - ifnull(r.sum, 0),
-               t.sum) AS leftsum
+               t.sum)                     AS leftsum
         FROM (
                  SELECT
                      t.sid,
@@ -29,7 +29,9 @@
                                   GROUP BY sup_id
                               ) AS r
                 ON t.sid = r.sid
+            , supply s
         WHERE ifnull(r.sum, 0) <![CDATA[ < ]]> t.count
+              AND s.id = t.sid
         ORDER BY sid, year, month
     </select>
 </mapper>

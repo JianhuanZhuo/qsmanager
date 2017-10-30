@@ -54,5 +54,7 @@
         <mapper resource="mapper/CustRemitMapper.xml"/>
         <!--发票抵扣表-->
         <mapper resource="mapper/TaxMapper.xml"/>
+        <!--预算表-->
+        <mapper resource="mapper/PredictMapper.xml"/>
     </mappers>
 </configuration>

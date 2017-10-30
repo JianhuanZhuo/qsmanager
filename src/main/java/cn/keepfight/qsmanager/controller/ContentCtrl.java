@@ -37,14 +37,16 @@ public interface ContentCtrl {
      *
      * @param params 调用页面前时使用
      */
-    default void showed(Properties params){}
+    default void showed(Properties params) {
+    }
 
     /**
      * 带参数的界面调用显示
      *
      * @param params 调用页面后使用
      */
-    default void showedAfter(Properties params){}
+    default void showedAfter(Properties params) {
+    }
 
     default <T> void updateState(T s) {
     }

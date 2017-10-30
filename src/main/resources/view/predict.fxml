@@ -46,28 +46,28 @@
                     <ColumnConstraints hgrow="SOMETIMES" />
                     <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                 </columnConstraints>
-                <rowConstraints>
-                    <RowConstraints />
-                    <RowConstraints />
-                </rowConstraints>
-                <Label text="安利" />
-                <VBox spacing="3.0" GridPane.columnIndex="1">
-                    <GridPane.margin>
-                        <Insets bottom="3.0" left="3.0" right="3.0" top="3.0" />
-                    </GridPane.margin>
-                    <fx:include source="../widget/predict/predict_item.fxml" />
-                    <fx:include source="../widget/predict/predict_item.fxml" />
-                    <fx:include source="../widget/predict/predict_item.fxml" />
-                </VBox>
-                <VBox spacing="3.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
-                    <GridPane.margin>
-                        <Insets bottom="3.0" left="3.0" right="3.0" top="3.0" />
-                    </GridPane.margin>
-                    <fx:include source="../widget/predict/predict_item.fxml" />
-                    <fx:include source="../widget/predict/predict_item.fxml" />
-                    <fx:include source="../widget/predict/predict_item.fxml" />
-                </VBox>
-                <Label text="合计：￥123,231.00" GridPane.columnIndex="2" />
+                <!--<rowConstraints>-->
+                    <!--<RowConstraints />-->
+                    <!--<RowConstraints />-->
+                <!--</rowConstraints>-->
+                <!--<Label text="安利" />-->
+                <!--<VBox spacing="3.0" GridPane.columnIndex="1">-->
+                    <!--<GridPane.margin>-->
+                        <!--<Insets bottom="3.0" left="3.0" right="3.0" top="3.0" />-->
+                    <!--</GridPane.margin>-->
+                    <!--<fx:include source="../widget/predict/predict_item.fxml" />-->
+                    <!--<fx:include source="../widget/predict/predict_item.fxml" />-->
+                    <!--<fx:include source="../widget/predict/predict_item.fxml" />-->
+                <!--</VBox>-->
+                <!--<VBox spacing="3.0" GridPane.columnIndex="1" GridPane.rowIndex="1">-->
+                    <!--<GridPane.margin>-->
+                        <!--<Insets bottom="3.0" left="3.0" right="3.0" top="3.0" />-->
+                    <!--</GridPane.margin>-->
+                    <!--<fx:include source="../widget/predict/predict_item.fxml" />-->
+                    <!--<fx:include source="../widget/predict/predict_item.fxml" />-->
+                    <!--<fx:include source="../widget/predict/predict_item.fxml" />-->
+                <!--</VBox>-->
+                <!--<Label text="合计：￥123,231.00" GridPane.columnIndex="2" />-->
             </GridPane>
             <HBox styleClass="hbox-common, left-align">
                 <Pane HBox.hgrow="ALWAYS" />

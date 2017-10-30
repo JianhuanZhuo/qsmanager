@@ -1,0 +1,986 @@
+[ERROR] 2017-10-26 12:49:36,944(1) --> [JavaFX Application Thread] cn.keepfight.qsmanager.AppLoader.lambda$main$0(AppLoader.java:22): DefaultUncaughtExceptionHandler from Thread[JavaFX Application Thread,5,main]  
+java.lang.NullPointerException
+	at cn.keepfight.qsmanager.controller.MainPane.lambda$changeTo$4(MainPane.java:149)
+	at com.sun.javafx.application.PlatformImpl.lambda$null$173(PlatformImpl.java:295)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at com.sun.javafx.application.PlatformImpl.lambda$runLater$174(PlatformImpl.java:294)
+	at com.sun.glass.ui.InvokeLaterDispatcher$Future.run(InvokeLaterDispatcher.java:95)
+	at com.sun.glass.ui.win.WinApplication._runLoop(Native Method)
+	at com.sun.glass.ui.win.WinApplication.lambda$null$148(WinApplication.java:191)
+	at java.lang.Thread.run(Thread.java:748)
+[DEBUG] 2017-10-26 12:50:09,280(32337) --> [Thread-35] org.apache.ibatis.logging.commons.JakartaCommonsLoggingImpl.debug(JakartaCommonsLoggingImpl.java:49): ==>  Preparing: SELECT * FROM custom WHERE acc = 'dengwei' AND psw = 'dengwei'   
+[DEBUG] 2017-10-26 12:50:09,337(32394) --> [Thread-35] org.apache.ibatis.logging.commons.JakartaCommonsLoggingImpl.debug(JakartaCommonsLoggingImpl.java:49): ==> Parameters:   
+[DEBUG] 2017-10-26 12:50:09,927(32984) --> [Thread-35] org.apache.ibatis.logging.commons.JakartaCommonsLoggingImpl.debug(JakartaCommonsLoggingImpl.java:49): <==      Total: 1  
+[DEBUG] 2017-10-26 12:50:14,616(37673) --> [JavaFX Application Thread] org.apache.ibatis.logging.commons.JakartaCommonsLoggingImpl.debug(JakartaCommonsLoggingImpl.java:49): ==>  Preparing: SELECT * FROM custom WHERE utype=2 ORDER BY serial   
+[DEBUG] 2017-10-26 12:50:14,617(37674) --> [JavaFX Application Thread] org.apache.ibatis.logging.commons.JakartaCommonsLoggingImpl.debug(JakartaCommonsLoggingImpl.java:49): ==> Parameters:   
+[DEBUG] 2017-10-26 12:50:14,886(37943) --> [JavaFX Application Thread] org.apache.ibatis.logging.commons.JakartaCommonsLoggingImpl.debug(JakartaCommonsLoggingImpl.java:49): <==      Total: 16  
+[DEBUG] 2017-10-26 12:50:17,456(40513) --> [JavaFX Application Thread] org.apache.ibatis.logging.commons.JakartaCommonsLoggingImpl.debug(JakartaCommonsLoggingImpl.java:49): ==>  Preparing: SELECT * FROM custom WHERE utype=2 ORDER BY serial   
+[DEBUG] 2017-10-26 12:50:17,457(40514) --> [JavaFX Application Thread] org.apache.ibatis.logging.commons.JakartaCommonsLoggingImpl.debug(JakartaCommonsLoggingImpl.java:49): ==> Parameters:   
+[DEBUG] 2017-10-26 12:50:17,720(40777) --> [JavaFX Application Thread] org.apache.ibatis.logging.commons.JakartaCommonsLoggingImpl.debug(JakartaCommonsLoggingImpl.java:49): <==      Total: 16  
+[DEBUG] 2017-10-26 12:50:21,613(44670) --> [JavaFX Application Thread] org.apache.ibatis.logging.commons.JakartaCommonsLoggingImpl.debug(JakartaCommonsLoggingImpl.java:49): ==>  Preparing: SELECT ifnull(trade.m, 0) + ifnull(inv.m, 0) - ifnull(remit.m, 0) AS annualleft FROM (# 发票税金 SELECT sum(ifnull(inv.total * inv.rate, 0)) AS m FROM invoice_sup inv WHERE sup_id = ? AND year < ?) AS inv, (# 付款金额 SELECT sum(ifnull(remit.total, 0)) AS m FROM remit_sup remit WHERE sup_id = ? AND year < ?) AS remit , (# 交易金额 SELECT sum(ifnull(d.price * d.num * d.pack, 0)) AS m FROM orders r, order_item d WHERE r.id = d.oid AND DATE_FORMAT(r.orderdate, '%Y') < ? AND r.cid = ?) AS trade;   
+[DEBUG] 2017-10-26 12:50:21,615(44672) --> [JavaFX Application Thread] org.apache.ibatis.logging.commons.JakartaCommonsLoggingImpl.debug(JakartaCommonsLoggingImpl.java:49): ==> Parameters: 14(Long), 2017(Long), 14(Long), 2017(Long), 2017(Long), 14(Long)  
+[DEBUG] 2017-10-26 12:50:22,161(45218) --> [JavaFX Application Thread] org.apache.ibatis.logging.commons.JakartaCommonsLoggingImpl.debug(JakartaCommonsLoggingImpl.java:49): <==      Total: 1  
+[DEBUG] 2017-10-26 12:50:22,165(45222) --> [JavaFX Application Thread] org.apache.ibatis.logging.commons.JakartaCommonsLoggingImpl.debug(JakartaCommonsLoggingImpl.java:49): ==>  Preparing: SELECT mons.mon AS month, ifnull(an.sum, 0) AS tradeTotal FROM mons LEFT JOIN ( SELECT DATE_FORMAT(r.orderdate, '%m') AS m, sum(d.num * d.price * d.pack) AS sum FROM orders r, order_item d WHERE r.id = d.oid AND r.cid = ? AND DATE_FORMAT(r.orderdate, '%Y') = ? GROUP BY DATE_FORMAT(r.orderdate, '%m') ) AS an ON mons.mon = an.m ORDER BY mons.mon;   
+[DEBUG] 2017-10-26 12:50:22,167(45224) --> [JavaFX Application Thread] org.apache.ibatis.logging.commons.JakartaCommonsLoggingImpl.debug(JakartaCommonsLoggingImpl.java:49): ==> Parameters: 14(Long), 2017(Long)  
+[DEBUG] 2017-10-26 12:50:22,426(45483) --> [JavaFX Application Thread] org.apache.ibatis.logging.commons.JakartaCommonsLoggingImpl.debug(JakartaCommonsLoggingImpl.java:49): <==      Total: 12  
+[DEBUG] 2017-10-26 12:50:22,435(45492) --> [JavaFX Application Thread] org.apache.ibatis.logging.commons.JakartaCommonsLoggingImpl.debug(JakartaCommonsLoggingImpl.java:49): ==>  Preparing: SELECT id, cust_id AS sup_id, year, month, unit, date, total, rate FROM invoice_cust WHERE cust_id = ? AND year = ? AND month = ?   
+[DEBUG] 2017-10-26 12:50:22,436(45493) --> [JavaFX Application Thread] org.apache.ibatis.logging.commons.JakartaCommonsLoggingImpl.debug(JakartaCommonsLoggingImpl.java:49): ==> Parameters: 14(Long), 2017(Long), 1(Long)  
+[DEBUG] 2017-10-26 12:50:22,775(45832) --> [JavaFX Application Thread] org.apache.ibatis.logging.commons.JakartaCommonsLoggingImpl.debug(JakartaCommonsLoggingImpl.java:49): <==      Total: 0  
+[DEBUG] 2017-10-26 12:50:22,780(45837) --> [JavaFX Application Thread] org.apache.ibatis.logging.commons.JakartaCommonsLoggingImpl.debug(JakartaCommonsLoggingImpl.java:49): ==>  Preparing: SELECT id, cust_id AS sup_id, year, month, unit, date, total, mode, note FROM remit_cust WHERE cust_id = ? AND year = ? AND month = ?   
+[DEBUG] 2017-10-26 12:50:22,781(45838) --> [JavaFX Application Thread] org.apache.ibatis.logging.commons.JakartaCommonsLoggingImpl.debug(JakartaCommonsLoggingImpl.java:49): ==> Parameters: 14(Long), 2017(Long), 1(Long)  
+[DEBUG] 2017-10-26 12:50:23,491(46548) --> [JavaFX Application Thread] org.apache.ibatis.logging.commons.JakartaCommonsLoggingImpl.debug(JakartaCommonsLoggingImpl.java:49): <==      Total: 0  
+[DEBUG] 2017-10-26 12:50:23,492(46549) --> [JavaFX Application Thread] org.apache.ibatis.logging.commons.JakartaCommonsLoggingImpl.debug(JakartaCommonsLoggingImpl.java:49): ==>  Preparing: SELECT id, cust_id AS sup_id, year, month, unit, date, total, rate FROM invoice_cust WHERE cust_id = ? AND year = ? AND month = ?   
+[DEBUG] 2017-10-26 12:50:23,494(46551) --> [JavaFX Application Thread] org.apache.ibatis.logging.commons.JakartaCommonsLoggingImpl.debug(JakartaCommonsLoggingImpl.java:49): ==> Parameters: 14(Long), 2017(Long), 2(Long)  
+[DEBUG] 2017-10-26 12:50:23,794(46851) --> [JavaFX Application Thread] org.apache.ibatis.logging.commons.JakartaCommonsLoggingImpl.debug(JakartaCommonsLoggingImpl.java:49): <==      Total: 0  
+[DEBUG] 2017-10-26 12:50:23,794(46851) --> [JavaFX Application Thread] org.apache.ibatis.logging.commons.JakartaCommonsLoggingImpl.debug(JakartaCommonsLoggingImpl.java:49): ==>  Preparing: SELECT id, cust_id AS sup_id, year, month, unit, date, total, mode, note FROM remit_cust WHERE cust_id = ? AND year = ? AND month = ?   
+[DEBUG] 2017-10-26 12:50:23,795(46852) --> [JavaFX Application Thread] org.apache.ibatis.logging.commons.JakartaCommonsLoggingImpl.debug(JakartaCommonsLoggingImpl.java:49): ==> Parameters: 14(Long), 2017(Long), 2(Long)  
+[DEBUG] 2017-10-26 12:50:24,203(47260) --> [JavaFX Application Thread] org.apache.ibatis.logging.commons.JakartaCommonsLoggingImpl.debug(JakartaCommonsLoggingImpl.java:49): <==      Total: 0  
+[DEBUG] 2017-10-26 12:50:24,204(47261) --> [JavaFX Application Thread] org.apache.ibatis.logging.commons.JakartaCommonsLoggingImpl.debug(JakartaCommonsLoggingImpl.java:49): ==>  Preparing: SELECT id, cust_id AS sup_id, year, month, unit, date, total, rate FROM invoice_cust WHERE cust_id = ? AND year = ? AND month = ?   
+[DEBUG] 2017-10-26 12:50:24,205(47262) --> [JavaFX Application Thread] org.apache.ibatis.logging.commons.JakartaCommonsLoggingImpl.debug(JakartaCommonsLoggingImpl.java:49): ==> Parameters: 14(Long), 2017(Long), 3(Long)  
+[DEBUG] 2017-10-26 12:50:24,614(47671) --> [JavaFX Application Thread] org.apache.ibatis.logging.commons.JakartaCommonsLoggingImpl.debug(JakartaCommonsLoggingImpl.java:49): <==      Total: 0  
+[DEBUG] 2017-10-26 12:50:24,616(47673) --> [JavaFX Application Thread] org.apache.ibatis.logging.commons.JakartaCommonsLoggingImpl.debug(JakartaCommonsLoggingImpl.java:49): ==>  Preparing: SELECT id, cust_id AS sup_id, year, month, unit, date, total, mode, note FROM remit_cust WHERE cust_id = ? AND year = ? AND month = ?   
+[DEBUG] 2017-10-26 12:50:24,617(47674) --> [JavaFX Application Thread] org.apache.ibatis.logging.commons.JakartaCommonsLoggingImpl.debug(JakartaCommonsLoggingImpl.java:49): ==> Parameters: 14(Long), 2017(Long), 3(Long)  
+[DEBUG] 2017-10-26 12:50:25,033(48090) --> [JavaFX Application Thread] org.apache.ibatis.logging.commons.JakartaCommonsLoggingImpl.debug(JakartaCommonsLoggingImpl.java:49): <==      Total: 0  
+[DEBUG] 2017-10-26 12:50:25,034(48091) --> [JavaFX Application Thread] org.apache.ibatis.logging.commons.JakartaCommonsLoggingImpl.debug(JakartaCommonsLoggingImpl.java:49): ==>  Preparing: SELECT id, cust_id AS sup_id, year, month, unit, date, total, rate FROM invoice_cust WHERE cust_id = ? AND year = ? AND month = ?   
+[DEBUG] 2017-10-26 12:50:25,035(48092) --> [JavaFX Application Thread] org.apache.ibatis.logging.commons.JakartaCommonsLoggingImpl.debug(JakartaCommonsLoggingImpl.java:49): ==> Parameters: 14(Long), 2017(Long), 4(Long)  
+[DEBUG] 2017-10-26 12:50:25,433(48490) --> [JavaFX Application Thread] org.apache.ibatis.logging.commons.JakartaCommonsLoggingImpl.debug(JakartaCommonsLoggingImpl.java:49): <==      Total: 0  
+[DEBUG] 2017-10-26 12:50:25,435(48492) --> [JavaFX Application Thread] org.apache.ibatis.logging.commons.JakartaCommonsLoggingImpl.debug(JakartaCommonsLoggingImpl.java:49): ==>  Preparing: SELECT id, cust_id AS sup_id, year, month, unit, date, total, mode, note FROM remit_cust WHERE cust_id = ? AND year = ? AND month = ?   
+[DEBUG] 2017-10-26 12:50:25,437(48494) --> [JavaFX Application Thread] org.apache.ibatis.logging.commons.JakartaCommonsLoggingImpl.debug(JakartaCommonsLoggingImpl.java:49): ==> Parameters: 14(Long), 2017(Long), 4(Long)  
+[DEBUG] 2017-10-26 12:50:25,762(48819) --> [JavaFX Application Thread] org.apache.ibatis.logging.commons.JakartaCommonsLoggingImpl.debug(JakartaCommonsLoggingImpl.java:49): <==      Total: 0  
+[DEBUG] 2017-10-26 12:50:25,763(48820) --> [JavaFX Application Thread] org.apache.ibatis.logging.commons.JakartaCommonsLoggingImpl.debug(JakartaCommonsLoggingImpl.java:49): ==>  Preparing: SELECT id, cust_id AS sup_id, year, month, unit, date, total, rate FROM invoice_cust WHERE cust_id = ? AND year = ? AND month = ?   
+[DEBUG] 2017-10-26 12:50:25,764(48821) --> [JavaFX Application Thread] org.apache.ibatis.logging.commons.JakartaCommonsLoggingImpl.debug(JakartaCommonsLoggingImpl.java:49): ==> Parameters: 14(Long), 2017(Long), 5(Long)  
+[DEBUG] 2017-10-26 12:50:26,046(49103) --> [JavaFX Application Thread] org.apache.ibatis.logging.commons.JakartaCommonsLoggingImpl.debug(JakartaCommonsLoggingImpl.java:49): <==      Total: 0  
+[DEBUG] 2017-10-26 12:50:26,049(49106) --> [JavaFX Application Thread] org.apache.ibatis.logging.commons.JakartaCommonsLoggingImpl.debug(JakartaCommonsLoggingImpl.java:49): ==>  Preparing: SELECT id, cust_id AS sup_id, year, month, unit, date, total, mode, note FROM remit_cust WHERE cust_id = ? AND year = ? AND month = ?   
+[DEBUG] 2017-10-26 12:50:26,050(49107) --> [JavaFX Application Thread] org.apache.ibatis.logging.commons.JakartaCommonsLoggingImpl.debug(JakartaCommonsLoggingImpl.java:49): ==> Parameters: 14(Long), 2017(Long), 5(Long)  
+[DEBUG] 2017-10-26 12:50:26,459(49516) --> [JavaFX Application Thread] org.apache.ibatis.logging.commons.JakartaCommonsLoggingImpl.debug(JakartaCommonsLoggingImpl.java:49): <==      Total: 0  
+[DEBUG] 2017-10-26 12:50:26,460(49517) --> [JavaFX Application Thread] org.apache.ibatis.logging.commons.JakartaCommonsLoggingImpl.debug(JakartaCommonsLoggingImpl.java:49): ==>  Preparing: SELECT id, cust_id AS sup_id, year, month, unit, date, total, rate FROM invoice_cust WHERE cust_id = ? AND year = ? AND month = ?   
+[DEBUG] 2017-10-26 12:50:26,462(49519) --> [JavaFX Application Thread] org.apache.ibatis.logging.commons.JakartaCommonsLoggingImpl.debug(JakartaCommonsLoggingImpl.java:49): ==> Parameters: 14(Long), 2017(Long), 6(Long)  
+[DEBUG] 2017-10-26 12:50:26,866(49923) --> [JavaFX Application Thread] org.apache.ibatis.logging.commons.JakartaCommonsLoggingImpl.debug(JakartaCommonsLoggingImpl.java:49): <==      Total: 0  
+[DEBUG] 2017-10-26 12:50:26,870(49927) --> [JavaFX Application Thread] org.apache.ibatis.logging.commons.JakartaCommonsLoggingImpl.debug(JakartaCommonsLoggingImpl.java:49): ==>  Preparing: SELECT id, cust_id AS sup_id, year, month, unit, date, total, mode, note FROM remit_cust WHERE cust_id = ? AND year = ? AND month = ?   
+[DEBUG] 2017-10-26 12:50:26,871(49928) --> [JavaFX Application Thread] org.apache.ibatis.logging.commons.JakartaCommonsLoggingImpl.debug(JakartaCommonsLoggingImpl.java:49): ==> Parameters: 14(Long), 2017(Long), 6(Long)  
+[DEBUG] 2017-10-26 12:50:27,276(50333) --> [JavaFX Application Thread] org.apache.ibatis.logging.commons.JakartaCommonsLoggingImpl.debug(JakartaCommonsLoggingImpl.java:49): <==      Total: 0  
+[DEBUG] 2017-10-26 12:50:27,278(50335) --> [JavaFX Application Thread] org.apache.ibatis.logging.commons.JakartaCommonsLoggingImpl.debug(JakartaCommonsLoggingImpl.java:49): ==>  Preparing: SELECT id, cust_id AS sup_id, year, month, unit, date, total, rate FROM invoice_cust WHERE cust_id = ? AND year = ? AND month = ?   
+[DEBUG] 2017-10-26 12:50:27,280(50337) --> [JavaFX Application Thread] org.apache.ibatis.logging.commons.JakartaCommonsLoggingImpl.debug(JakartaCommonsLoggingImpl.java:49): ==> Parameters: 14(Long), 2017(Long), 7(Long)  
+[DEBUG] 2017-10-26 12:50:27,685(50742) --> [JavaFX Application Thread] org.apache.ibatis.logging.commons.JakartaCommonsLoggingImpl.debug(JakartaCommonsLoggingImpl.java:49): <==      Total: 0  
+[DEBUG] 2017-10-26 12:50:27,687(50744) --> [JavaFX Application Thread] org.apache.ibatis.logging.commons.JakartaCommonsLoggingImpl.debug(JakartaCommonsLoggingImpl.java:49): ==>  Preparing: SELECT id, cust_id AS sup_id, year, month, unit, date, total, mode, note FROM remit_cust WHERE cust_id = ? AND year = ? AND month = ?   
+[DEBUG] 2017-10-26 12:50:27,688(50745) --> [JavaFX Application Thread] org.apache.ibatis.logging.commons.JakartaCommonsLoggingImpl.debug(JakartaCommonsLoggingImpl.java:49): ==> Parameters: 14(Long), 2017(Long), 7(Long)  
+[DEBUG] 2017-10-26 12:50:28,096(51153) --> [JavaFX Application Thread] org.apache.ibatis.logging.commons.JakartaCommonsLoggingImpl.debug(JakartaCommonsLoggingImpl.java:49): <==      Total: 0  
+[DEBUG] 2017-10-26 12:50:28,097(51154) --> [JavaFX Application Thread] org.apache.ibatis.logging.commons.JakartaCommonsLoggingImpl.debug(JakartaCommonsLoggingImpl.java:49): ==>  Preparing: SELECT id, cust_id AS sup_id, year, month, unit, date, total, rate FROM invoice_cust WHERE cust_id = ? AND year = ? AND month = ?   
+[DEBUG] 2017-10-26 12:50:28,098(51155) --> [JavaFX Application Thread] org.apache.ibatis.logging.commons.JakartaCommonsLoggingImpl.debug(JakartaCommonsLoggingImpl.java:49): ==> Parameters: 14(Long), 2017(Long), 8(Long)  
+[DEBUG] 2017-10-26 12:50:28,502(51559) --> [JavaFX Application Thread] org.apache.ibatis.logging.commons.JakartaCommonsLoggingImpl.debug(JakartaCommonsLoggingImpl.java:49): <==      Total: 0  
+[DEBUG] 2017-10-26 12:50:28,503(51560) --> [JavaFX Application Thread] org.apache.ibatis.logging.commons.JakartaCommonsLoggingImpl.debug(JakartaCommonsLoggingImpl.java:49): ==>  Preparing: SELECT id, cust_id AS sup_id, year, month, unit, date, total, mode, note FROM remit_cust WHERE cust_id = ? AND year = ? AND month = ?   
+[DEBUG] 2017-10-26 12:50:28,504(51561) --> [JavaFX Application Thread] org.apache.ibatis.logging.commons.JakartaCommonsLoggingImpl.debug(JakartaCommonsLoggingImpl.java:49): ==> Parameters: 14(Long), 2017(Long), 8(Long)  
+[DEBUG] 2017-10-26 12:50:28,945(52002) --> [JavaFX Application Thread] org.apache.ibatis.logging.commons.JakartaCommonsLoggingImpl.debug(JakartaCommonsLoggingImpl.java:49): <==      Total: 0  
+[DEBUG] 2017-10-26 12:50:28,947(52004) --> [JavaFX Application Thread] org.apache.ibatis.logging.commons.JakartaCommonsLoggingImpl.debug(JakartaCommonsLoggingImpl.java:49): ==>  Preparing: SELECT id, cust_id AS sup_id, year, month, unit, date, total, rate FROM invoice_cust WHERE cust_id = ? AND year = ? AND month = ?   
+[DEBUG] 2017-10-26 12:50:28,948(52005) --> [JavaFX Application Thread] org.apache.ibatis.logging.commons.JakartaCommonsLoggingImpl.debug(JakartaCommonsLoggingImpl.java:49): ==> Parameters: 14(Long), 2017(Long), 9(Long)  
+[DEBUG] 2017-10-26 12:50:29,347(52404) --> [JavaFX Application Thread] org.apache.ibatis.logging.commons.JakartaCommonsLoggingImpl.debug(JakartaCommonsLoggingImpl.java:49): <==      Total: 1  
+[DEBUG] 2017-10-26 12:50:29,348(52405) --> [JavaFX Application Thread] org.apache.ibatis.logging.commons.JakartaCommonsLoggingImpl.debug(JakartaCommonsLoggingImpl.java:49): ==>  Preparing: SELECT id, cust_id AS sup_id, year, month, unit, date, total, mode, note FROM remit_cust WHERE cust_id = ? AND year = ? AND month = ?   
+[DEBUG] 2017-10-26 12:50:29,349(52406) --> [JavaFX Application Thread] org.apache.ibatis.logging.commons.JakartaCommonsLoggingImpl.debug(JakartaCommonsLoggingImpl.java:49): ==> Parameters: 14(Long), 2017(Long), 9(Long)  
+[DEBUG] 2017-10-26 12:50:29,732(52789) --> [JavaFX Application Thread] org.apache.ibatis.logging.commons.JakartaCommonsLoggingImpl.debug(JakartaCommonsLoggingImpl.java:49): <==      Total: 1  
+[DEBUG] 2017-10-26 12:50:29,733(52790) --> [JavaFX Application Thread] org.apache.ibatis.logging.commons.JakartaCommonsLoggingImpl.debug(JakartaCommonsLoggingImpl.java:49): ==>  Preparing: SELECT id, cust_id AS sup_id, year, month, unit, date, total, rate FROM invoice_cust WHERE cust_id = ? AND year = ? AND month = ?   
+[DEBUG] 2017-10-26 12:50:29,734(52791) --> [JavaFX Application Thread] org.apache.ibatis.logging.commons.JakartaCommonsLoggingImpl.debug(JakartaCommonsLoggingImpl.java:49): ==> Parameters: 14(Long), 2017(Long), 10(Long)  
+[DEBUG] 2017-10-26 12:50:30,139(53196) --> [JavaFX Application Thread] org.apache.ibatis.logging.commons.JakartaCommonsLoggingImpl.debug(JakartaCommonsLoggingImpl.java:49): <==      Total: 0  
+[DEBUG] 2017-10-26 12:50:30,140(53197) --> [JavaFX Application Thread] org.apache.ibatis.logging.commons.JakartaCommonsLoggingImpl.debug(JakartaCommonsLoggingImpl.java:49): ==>  Preparing: SELECT id, cust_id AS sup_id, year, month, unit, date, total, mode, note FROM remit_cust WHERE cust_id = ? AND year = ? AND month = ?   
+[DEBUG] 2017-10-26 12:50:30,140(53197) --> [JavaFX Application Thread] org.apache.ibatis.logging.commons.JakartaCommonsLoggingImpl.debug(JakartaCommonsLoggingImpl.java:49): ==> Parameters: 14(Long), 2017(Long), 10(Long)  
+[DEBUG] 2017-10-26 12:50:30,658(53715) --> [JavaFX Application Thread] org.apache.ibatis.logging.commons.JakartaCommonsLoggingImpl.debug(JakartaCommonsLoggingImpl.java:49): <==      Total: 0  
+[DEBUG] 2017-10-26 12:50:30,659(53716) --> [JavaFX Application Thread] org.apache.ibatis.logging.commons.JakartaCommonsLoggingImpl.debug(JakartaCommonsLoggingImpl.java:49): ==>  Preparing: SELECT id, cust_id AS sup_id, year, month, unit, date, total, rate FROM invoice_cust WHERE cust_id = ? AND year = ? AND month = ?   
+[DEBUG] 2017-10-26 12:50:30,660(53717) --> [JavaFX Application Thread] org.apache.ibatis.logging.commons.JakartaCommonsLoggingImpl.debug(JakartaCommonsLoggingImpl.java:49): ==> Parameters: 14(Long), 2017(Long), 11(Long)  
+[DEBUG] 2017-10-26 12:50:30,962(54019) --> [JavaFX Application Thread] org.apache.ibatis.logging.commons.JakartaCommonsLoggingImpl.debug(JakartaCommonsLoggingImpl.java:49): <==      Total: 0  
+[DEBUG] 2017-10-26 12:50:30,963(54020) --> [JavaFX Application Thread] org.apache.ibatis.logging.commons.JakartaCommonsLoggingImpl.debug(JakartaCommonsLoggingImpl.java:49): ==>  Preparing: SELECT id, cust_id AS sup_id, year, month, unit, date, total, mode, note FROM remit_cust WHERE cust_id = ? AND year = ? AND month = ?   
+[DEBUG] 2017-10-26 12:50:30,964(54021) --> [JavaFX Application Thread] org.apache.ibatis.logging.commons.JakartaCommonsLoggingImpl.debug(JakartaCommonsLoggingImpl.java:49): ==> Parameters: 14(Long), 2017(Long), 11(Long)  
+[DEBUG] 2017-10-26 12:50:31,378(54435) --> [JavaFX Application Thread] org.apache.ibatis.logging.commons.JakartaCommonsLoggingImpl.debug(JakartaCommonsLoggingImpl.java:49): <==      Total: 0  
+[DEBUG] 2017-10-26 12:50:31,379(54436) --> [JavaFX Application Thread] org.apache.ibatis.logging.commons.JakartaCommonsLoggingImpl.debug(JakartaCommonsLoggingImpl.java:49): ==>  Preparing: SELECT id, cust_id AS sup_id, year, month, unit, date, total, rate FROM invoice_cust WHERE cust_id = ? AND year = ? AND month = ?   
+[DEBUG] 2017-10-26 12:50:31,380(54437) --> [JavaFX Application Thread] org.apache.ibatis.logging.commons.JakartaCommonsLoggingImpl.debug(JakartaCommonsLoggingImpl.java:49): ==> Parameters: 14(Long), 2017(Long), 12(Long)  
+[DEBUG] 2017-10-26 12:50:31,678(54735) --> [JavaFX Application Thread] org.apache.ibatis.logging.commons.JakartaCommonsLoggingImpl.debug(JakartaCommonsLoggingImpl.java:49): <==      Total: 0  
+[DEBUG] 2017-10-26 12:50:31,679(54736) --> [JavaFX Application Thread] org.apache.ibatis.logging.commons.JakartaCommonsLoggingImpl.debug(JakartaCommonsLoggingImpl.java:49): ==>  Preparing: SELECT id, cust_id AS sup_id, year, month, unit, date, total, mode, note FROM remit_cust WHERE cust_id = ? AND year = ? AND month = ?   
+[DEBUG] 2017-10-26 12:50:31,680(54737) --> [JavaFX Application Thread] org.apache.ibatis.logging.commons.JakartaCommonsLoggingImpl.debug(JakartaCommonsLoggingImpl.java:49): ==> Parameters: 14(Long), 2017(Long), 12(Long)  
+[DEBUG] 2017-10-26 12:50:31,981(55038) --> [JavaFX Application Thread] org.apache.ibatis.logging.commons.JakartaCommonsLoggingImpl.debug(JakartaCommonsLoggingImpl.java:49): <==      Total: 0  
+[DEBUG] 2017-10-26 12:57:16,937(459994) --> [JavaFX Application Thread] org.apache.ibatis.logging.commons.JakartaCommonsLoggingImpl.debug(JakartaCommonsLoggingImpl.java:49): ==>  Preparing: SELECT id AS id, ? AS year, ? AS month, stuff_id AS stuffDaoID, basic AS basicSalary, ageSalary AS ageSalary, salary AS totalSalary, salary - ifnull(x.sum, 0) AS tardySalary FROM stuff_salary AS s LEFT JOIN ( SELECT i.salary_id, sum(ifnull(i.income, 0)) sum FROM stuff_income i GROUP BY i.salary_id ) x ON s.id = x.salary_id WHERE year = ? AND month = ?;   
+[DEBUG] 2017-10-26 12:57:16,938(459995) --> [JavaFX Application Thread] org.apache.ibatis.logging.commons.JakartaCommonsLoggingImpl.debug(JakartaCommonsLoggingImpl.java:49): ==> Parameters: 2017(Long), 10(Long), 2017(Long), 10(Long)  
+[DEBUG] 2017-10-26 12:57:18,024(461081) --> [JavaFX Application Thread] org.apache.ibatis.logging.commons.JakartaCommonsLoggingImpl.debug(JakartaCommonsLoggingImpl.java:49): <==      Total: 0  
+[ERROR] 2017-10-26 15:21:55,174(0) --> [JavaFX Application Thread] cn.keepfight.qsmanager.AppLoader.lambda$main$0(AppLoader.java:22): DefaultUncaughtExceptionHandler from Thread[JavaFX Application Thread,5,main]  
+java.lang.NullPointerException
+	at cn.keepfight.qsmanager.controller.MainPane.lambda$changeTo$4(MainPane.java:149)
+	at com.sun.javafx.application.PlatformImpl.lambda$null$173(PlatformImpl.java:295)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at com.sun.javafx.application.PlatformImpl.lambda$runLater$174(PlatformImpl.java:294)
+	at com.sun.glass.ui.InvokeLaterDispatcher$Future.run(InvokeLaterDispatcher.java:95)
+	at com.sun.glass.ui.win.WinApplication._runLoop(Native Method)
+	at com.sun.glass.ui.win.WinApplication.lambda$null$148(WinApplication.java:191)
+	at java.lang.Thread.run(Thread.java:748)
+[DEBUG] 2017-10-26 15:22:18,453(23279) --> [Thread-36] org.apache.ibatis.logging.commons.JakartaCommonsLoggingImpl.debug(JakartaCommonsLoggingImpl.java:49): ==>  Preparing: SELECT * FROM custom WHERE acc = 'dengwei' AND psw = 'dengwei'   
+[DEBUG] 2017-10-26 15:22:18,488(23314) --> [Thread-36] org.apache.ibatis.logging.commons.JakartaCommonsLoggingImpl.debug(JakartaCommonsLoggingImpl.java:49): ==> Parameters:   
+[DEBUG] 2017-10-26 15:22:19,233(24059) --> [Thread-36] org.apache.ibatis.logging.commons.JakartaCommonsLoggingImpl.debug(JakartaCommonsLoggingImpl.java:49): <==      Total: 1  
+[DEBUG] 2017-10-26 15:24:49,799(174625) --> [JavaFX Application Thread] org.apache.ibatis.logging.commons.JakartaCommonsLoggingImpl.debug(JakartaCommonsLoggingImpl.java:49): ==>  Preparing: SELECT * FROM custom WHERE utype=2 ORDER BY serial   
+[DEBUG] 2017-10-26 15:24:49,800(174626) --> [JavaFX Application Thread] org.apache.ibatis.logging.commons.JakartaCommonsLoggingImpl.debug(JakartaCommonsLoggingImpl.java:49): ==> Parameters:   
+[DEBUG] 2017-10-26 15:24:50,623(175449) --> [JavaFX Application Thread] org.apache.ibatis.logging.commons.JakartaCommonsLoggingImpl.debug(JakartaCommonsLoggingImpl.java:49): <==      Total: 16  
+[DEBUG] 2017-10-26 15:24:50,813(175639) --> [JavaFX Application Thread] org.apache.ibatis.logging.commons.JakartaCommonsLoggingImpl.debug(JakartaCommonsLoggingImpl.java:49): ==>  Preparing: SELECT * FROM supply ORDER BY serial   
+[DEBUG] 2017-10-26 15:24:50,814(175640) --> [JavaFX Application Thread] org.apache.ibatis.logging.commons.JakartaCommonsLoggingImpl.debug(JakartaCommonsLoggingImpl.java:49): ==> Parameters:   
+[DEBUG] 2017-10-26 15:24:51,015(175841) --> [JavaFX Application Thread] org.apache.ibatis.logging.commons.JakartaCommonsLoggingImpl.debug(JakartaCommonsLoggingImpl.java:49): <==      Total: 9  
+[DEBUG] 2017-10-26 15:24:51,981(176807) --> [JavaFX Application Thread] org.apache.ibatis.logging.commons.JakartaCommonsLoggingImpl.debug(JakartaCommonsLoggingImpl.java:49): ==>  Preparing: SELECT * FROM product ORDER BY serial   
+[DEBUG] 2017-10-26 15:24:51,982(176808) --> [JavaFX Application Thread] org.apache.ibatis.logging.commons.JakartaCommonsLoggingImpl.debug(JakartaCommonsLoggingImpl.java:49): ==> Parameters:   
+[DEBUG] 2017-10-26 15:24:52,257(177083) --> [JavaFX Application Thread] org.apache.ibatis.logging.commons.JakartaCommonsLoggingImpl.debug(JakartaCommonsLoggingImpl.java:49): <==      Total: 21  
+[DEBUG] 2017-10-26 15:24:55,159(179985) --> [JavaFX Application Thread] org.apache.ibatis.logging.commons.JakartaCommonsLoggingImpl.debug(JakartaCommonsLoggingImpl.java:49): ==>  Preparing: SELECT stuff.id id, stuff.serial serial, stuff.name name, stuff.salary_basic salary_basic, stuff.salary_annual salary_annual, operator.id operator_id, operator.account operator_account, operator.password operator_password, operator.authority operator_authority, operator.last_login_stamp operator_last_login_stamp, user.id operator_user_id, user.nickname operator_user_nickname, user.halt operator_user_halt, user.note operator_user_note FROM stuff, operator, user WHERE stuff.operator_id = operator.id AND operator.user_id = user.id ORDER BY stuff.serial   
+[DEBUG] 2017-10-26 15:24:55,161(179987) --> [JavaFX Application Thread] org.apache.ibatis.logging.commons.JakartaCommonsLoggingImpl.debug(JakartaCommonsLoggingImpl.java:49): ==> Parameters:   
+[DEBUG] 2017-10-26 15:24:55,532(180358) --> [JavaFX Application Thread] org.apache.ibatis.logging.commons.JakartaCommonsLoggingImpl.debug(JakartaCommonsLoggingImpl.java:49): <==      Total: 11  
+[DEBUG] 2017-10-26 15:26:38,251(283077) --> [JavaFX Application Thread] org.apache.ibatis.logging.commons.JakartaCommonsLoggingImpl.debug(JakartaCommonsLoggingImpl.java:49): ==>  Preparing: SELECT m.mon AS month, ifnull(total, 0) AS total, ifnull(sum, 0) AS given FROM mons m LEFT JOIN ( SELECT month, sum(salary) AS total, sum(ifnull(sum, 0)) AS sum FROM stuff_salary s LEFT JOIN ( SELECT i.salary_id, sum(i.income) sum FROM stuff_income i GROUP BY i.salary_id ) x ON s.id = x.salary_id WHERE s.year = ? GROUP BY month ) x ON x.month = m.mon ORDER BY m.mon   
+[DEBUG] 2017-10-26 15:26:38,252(283078) --> [JavaFX Application Thread] org.apache.ibatis.logging.commons.JakartaCommonsLoggingImpl.debug(JakartaCommonsLoggingImpl.java:49): ==> Parameters: 2017(Long)  
+[DEBUG] 2017-10-26 15:26:38,742(283568) --> [JavaFX Application Thread] org.apache.ibatis.logging.commons.JakartaCommonsLoggingImpl.debug(JakartaCommonsLoggingImpl.java:49): <==      Total: 12  
+[DEBUG] 2017-10-26 15:26:38,830(283656) --> [Thread-39] org.apache.ibatis.logging.commons.JakartaCommonsLoggingImpl.debug(JakartaCommonsLoggingImpl.java:49): ==>  Preparing: # selectStuffSalaryTardy SELECT u.id AS id, u.name AS name, sum(salary - ifnull(sum, 0)) AS sum FROM stuff u, stuff_salary s LEFT JOIN ( SELECT i.salary_id, sum(i.income) sum FROM stuff_income i GROUP BY i.salary_id ) x ON s.id = x.salary_id WHERE # 检查还没还完的 (ifnull(sum, 0) < salary) AND u.id = s.stuff_id GROUP BY stuff_id;   
+[DEBUG] 2017-10-26 15:26:38,831(283657) --> [Thread-39] org.apache.ibatis.logging.commons.JakartaCommonsLoggingImpl.debug(JakartaCommonsLoggingImpl.java:49): ==> Parameters:   
+[DEBUG] 2017-10-26 15:26:39,150(283976) --> [Thread-39] org.apache.ibatis.logging.commons.JakartaCommonsLoggingImpl.debug(JakartaCommonsLoggingImpl.java:49): <==      Total: 10  
+[DEBUG] 2017-10-26 15:26:39,162(283988) --> [Thread-39] org.apache.ibatis.logging.commons.JakartaCommonsLoggingImpl.debug(JakartaCommonsLoggingImpl.java:49): ==>  Preparing: SELECT m.ym AS ym, ifnull(sum, 0) AS sum, sid AS salary_id FROM ( # 获得全部需要还的年月份 SELECT DISTINCT concat(year, '-', lpad(month, 2, '0')) AS ym FROM stuff_salary s LEFT JOIN ( SELECT i.salary_id, sum(i.income) sum FROM stuff_income i GROUP BY i.salary_id ) x ON s.id = x.salary_id WHERE s.salary > ifnull(x.sum, 0) ) AS m LEFT JOIN ( # 获得指定需要还的 SELECT concat(year, '-', lpad(month, 2, '0')) AS ym, salary - ifnull(sum, 0) AS sum, s.id AS sid FROM stuff_salary s LEFT JOIN ( SELECT i.salary_id, sum(i.income) sum FROM stuff_income i GROUP BY i.salary_id ) x ON s.id = x.salary_id WHERE s.stuff_id = ? ) AS s ON m.ym = s.ym ORDER BY m.ym DESC   
+[DEBUG] 2017-10-26 15:26:39,164(283990) --> [Thread-39] org.apache.ibatis.logging.commons.JakartaCommonsLoggingImpl.debug(JakartaCommonsLoggingImpl.java:49): ==> Parameters: 2(Long)  
+[DEBUG] 2017-10-26 15:26:39,561(284387) --> [Thread-39] org.apache.ibatis.logging.commons.JakartaCommonsLoggingImpl.debug(JakartaCommonsLoggingImpl.java:49): <==      Total: 6  
+[DEBUG] 2017-10-26 15:26:39,563(284389) --> [Thread-39] org.apache.ibatis.logging.commons.JakartaCommonsLoggingImpl.debug(JakartaCommonsLoggingImpl.java:49): ==>  Preparing: SELECT m.ym AS ym, ifnull(sum, 0) AS sum, sid AS salary_id FROM ( # 获得全部需要还的年月份 SELECT DISTINCT concat(year, '-', lpad(month, 2, '0')) AS ym FROM stuff_salary s LEFT JOIN ( SELECT i.salary_id, sum(i.income) sum FROM stuff_income i GROUP BY i.salary_id ) x ON s.id = x.salary_id WHERE s.salary > ifnull(x.sum, 0) ) AS m LEFT JOIN ( # 获得指定需要还的 SELECT concat(year, '-', lpad(month, 2, '0')) AS ym, salary - ifnull(sum, 0) AS sum, s.id AS sid FROM stuff_salary s LEFT JOIN ( SELECT i.salary_id, sum(i.income) sum FROM stuff_income i GROUP BY i.salary_id ) x ON s.id = x.salary_id WHERE s.stuff_id = ? ) AS s ON m.ym = s.ym ORDER BY m.ym DESC   
+[DEBUG] 2017-10-26 15:26:39,564(284390) --> [Thread-39] org.apache.ibatis.logging.commons.JakartaCommonsLoggingImpl.debug(JakartaCommonsLoggingImpl.java:49): ==> Parameters: 3(Long)  
+[DEBUG] 2017-10-26 15:26:39,968(284794) --> [Thread-39] org.apache.ibatis.logging.commons.JakartaCommonsLoggingImpl.debug(JakartaCommonsLoggingImpl.java:49): <==      Total: 6  
+[DEBUG] 2017-10-26 15:26:39,970(284796) --> [Thread-39] org.apache.ibatis.logging.commons.JakartaCommonsLoggingImpl.debug(JakartaCommonsLoggingImpl.java:49): ==>  Preparing: SELECT m.ym AS ym, ifnull(sum, 0) AS sum, sid AS salary_id FROM ( # 获得全部需要还的年月份 SELECT DISTINCT concat(year, '-', lpad(month, 2, '0')) AS ym FROM stuff_salary s LEFT JOIN ( SELECT i.salary_id, sum(i.income) sum FROM stuff_income i GROUP BY i.salary_id ) x ON s.id = x.salary_id WHERE s.salary > ifnull(x.sum, 0) ) AS m LEFT JOIN ( # 获得指定需要还的 SELECT concat(year, '-', lpad(month, 2, '0')) AS ym, salary - ifnull(sum, 0) AS sum, s.id AS sid FROM stuff_salary s LEFT JOIN ( SELECT i.salary_id, sum(i.income) sum FROM stuff_income i GROUP BY i.salary_id ) x ON s.id = x.salary_id WHERE s.stuff_id = ? ) AS s ON m.ym = s.ym ORDER BY m.ym DESC   
+[DEBUG] 2017-10-26 15:26:39,971(284797) --> [Thread-39] org.apache.ibatis.logging.commons.JakartaCommonsLoggingImpl.debug(JakartaCommonsLoggingImpl.java:49): ==> Parameters: 5(Long)  
+[DEBUG] 2017-10-26 15:26:40,383(285209) --> [Thread-39] org.apache.ibatis.logging.commons.JakartaCommonsLoggingImpl.debug(JakartaCommonsLoggingImpl.java:49): <==      Total: 6  
+[DEBUG] 2017-10-26 15:26:40,385(285211) --> [Thread-39] org.apache.ibatis.logging.commons.JakartaCommonsLoggingImpl.debug(JakartaCommonsLoggingImpl.java:49): ==>  Preparing: SELECT m.ym AS ym, ifnull(sum, 0) AS sum, sid AS salary_id FROM ( # 获得全部需要还的年月份 SELECT DISTINCT concat(year, '-', lpad(month, 2, '0')) AS ym FROM stuff_salary s LEFT JOIN ( SELECT i.salary_id, sum(i.income) sum FROM stuff_income i GROUP BY i.salary_id ) x ON s.id = x.salary_id WHERE s.salary > ifnull(x.sum, 0) ) AS m LEFT JOIN ( # 获得指定需要还的 SELECT concat(year, '-', lpad(month, 2, '0')) AS ym, salary - ifnull(sum, 0) AS sum, s.id AS sid FROM stuff_salary s LEFT JOIN ( SELECT i.salary_id, sum(i.income) sum FROM stuff_income i GROUP BY i.salary_id ) x ON s.id = x.salary_id WHERE s.stuff_id = ? ) AS s ON m.ym = s.ym ORDER BY m.ym DESC   
+[DEBUG] 2017-10-26 15:26:40,386(285212) --> [Thread-39] org.apache.ibatis.logging.commons.JakartaCommonsLoggingImpl.debug(JakartaCommonsLoggingImpl.java:49): ==> Parameters: 6(Long)  
+[DEBUG] 2017-10-26 15:26:40,786(285612) --> [Thread-39] org.apache.ibatis.logging.commons.JakartaCommonsLoggingImpl.debug(JakartaCommonsLoggingImpl.java:49): <==      Total: 6  
+[DEBUG] 2017-10-26 15:26:40,788(285614) --> [Thread-39] org.apache.ibatis.logging.commons.JakartaCommonsLoggingImpl.debug(JakartaCommonsLoggingImpl.java:49): ==>  Preparing: SELECT m.ym AS ym, ifnull(sum, 0) AS sum, sid AS salary_id FROM ( # 获得全部需要还的年月份 SELECT DISTINCT concat(year, '-', lpad(month, 2, '0')) AS ym FROM stuff_salary s LEFT JOIN ( SELECT i.salary_id, sum(i.income) sum FROM stuff_income i GROUP BY i.salary_id ) x ON s.id = x.salary_id WHERE s.salary > ifnull(x.sum, 0) ) AS m LEFT JOIN ( # 获得指定需要还的 SELECT concat(year, '-', lpad(month, 2, '0')) AS ym, salary - ifnull(sum, 0) AS sum, s.id AS sid FROM stuff_salary s LEFT JOIN ( SELECT i.salary_id, sum(i.income) sum FROM stuff_income i GROUP BY i.salary_id ) x ON s.id = x.salary_id WHERE s.stuff_id = ? ) AS s ON m.ym = s.ym ORDER BY m.ym DESC   
+[DEBUG] 2017-10-26 15:26:40,788(285614) --> [Thread-39] org.apache.ibatis.logging.commons.JakartaCommonsLoggingImpl.debug(JakartaCommonsLoggingImpl.java:49): ==> Parameters: 7(Long)  
+[DEBUG] 2017-10-26 15:26:41,199(286025) --> [Thread-39] org.apache.ibatis.logging.commons.JakartaCommonsLoggingImpl.debug(JakartaCommonsLoggingImpl.java:49): <==      Total: 6  
+[DEBUG] 2017-10-26 15:26:41,200(286026) --> [Thread-39] org.apache.ibatis.logging.commons.JakartaCommonsLoggingImpl.debug(JakartaCommonsLoggingImpl.java:49): ==>  Preparing: SELECT m.ym AS ym, ifnull(sum, 0) AS sum, sid AS salary_id FROM ( # 获得全部需要还的年月份 SELECT DISTINCT concat(year, '-', lpad(month, 2, '0')) AS ym FROM stuff_salary s LEFT JOIN ( SELECT i.salary_id, sum(i.income) sum FROM stuff_income i GROUP BY i.salary_id ) x ON s.id = x.salary_id WHERE s.salary > ifnull(x.sum, 0) ) AS m LEFT JOIN ( # 获得指定需要还的 SELECT concat(year, '-', lpad(month, 2, '0')) AS ym, salary - ifnull(sum, 0) AS sum, s.id AS sid FROM stuff_salary s LEFT JOIN ( SELECT i.salary_id, sum(i.income) sum FROM stuff_income i GROUP BY i.salary_id ) x ON s.id = x.salary_id WHERE s.stuff_id = ? ) AS s ON m.ym = s.ym ORDER BY m.ym DESC   
+[DEBUG] 2017-10-26 15:26:41,201(286027) --> [Thread-39] org.apache.ibatis.logging.commons.JakartaCommonsLoggingImpl.debug(JakartaCommonsLoggingImpl.java:49): ==> Parameters: 8(Long)  
+[DEBUG] 2017-10-26 15:26:41,608(286434) --> [Thread-39] org.apache.ibatis.logging.commons.JakartaCommonsLoggingImpl.debug(JakartaCommonsLoggingImpl.java:49): <==      Total: 6  
+[DEBUG] 2017-10-26 15:26:41,611(286437) --> [Thread-39] org.apache.ibatis.logging.commons.JakartaCommonsLoggingImpl.debug(JakartaCommonsLoggingImpl.java:49): ==>  Preparing: SELECT m.ym AS ym, ifnull(sum, 0) AS sum, sid AS salary_id FROM ( # 获得全部需要还的年月份 SELECT DISTINCT concat(year, '-', lpad(month, 2, '0')) AS ym FROM stuff_salary s LEFT JOIN ( SELECT i.salary_id, sum(i.income) sum FROM stuff_income i GROUP BY i.salary_id ) x ON s.id = x.salary_id WHERE s.salary > ifnull(x.sum, 0) ) AS m LEFT JOIN ( # 获得指定需要还的 SELECT concat(year, '-', lpad(month, 2, '0')) AS ym, salary - ifnull(sum, 0) AS sum, s.id AS sid FROM stuff_salary s LEFT JOIN ( SELECT i.salary_id, sum(i.income) sum FROM stuff_income i GROUP BY i.salary_id ) x ON s.id = x.salary_id WHERE s.stuff_id = ? ) AS s ON m.ym = s.ym ORDER BY m.ym DESC   
+[DEBUG] 2017-10-26 15:26:41,613(286439) --> [Thread-39] org.apache.ibatis.logging.commons.JakartaCommonsLoggingImpl.debug(JakartaCommonsLoggingImpl.java:49): ==> Parameters: 9(Long)  
+[DEBUG] 2017-10-26 15:26:42,015(286841) --> [Thread-39] org.apache.ibatis.logging.commons.JakartaCommonsLoggingImpl.debug(JakartaCommonsLoggingImpl.java:49): <==      Total: 6  
+[DEBUG] 2017-10-26 15:26:42,016(286842) --> [Thread-39] org.apache.ibatis.logging.commons.JakartaCommonsLoggingImpl.debug(JakartaCommonsLoggingImpl.java:49): ==>  Preparing: SELECT m.ym AS ym, ifnull(sum, 0) AS sum, sid AS salary_id FROM ( # 获得全部需要还的年月份 SELECT DISTINCT concat(year, '-', lpad(month, 2, '0')) AS ym FROM stuff_salary s LEFT JOIN ( SELECT i.salary_id, sum(i.income) sum FROM stuff_income i GROUP BY i.salary_id ) x ON s.id = x.salary_id WHERE s.salary > ifnull(x.sum, 0) ) AS m LEFT JOIN ( # 获得指定需要还的 SELECT concat(year, '-', lpad(month, 2, '0')) AS ym, salary - ifnull(sum, 0) AS sum, s.id AS sid FROM stuff_salary s LEFT JOIN ( SELECT i.salary_id, sum(i.income) sum FROM stuff_income i GROUP BY i.salary_id ) x ON s.id = x.salary_id WHERE s.stuff_id = ? ) AS s ON m.ym = s.ym ORDER BY m.ym DESC   
+[DEBUG] 2017-10-26 15:26:42,017(286843) --> [Thread-39] org.apache.ibatis.logging.commons.JakartaCommonsLoggingImpl.debug(JakartaCommonsLoggingImpl.java:49): ==> Parameters: 10(Long)  
+[DEBUG] 2017-10-26 15:26:42,424(287250) --> [Thread-39] org.apache.ibatis.logging.commons.JakartaCommonsLoggingImpl.debug(JakartaCommonsLoggingImpl.java:49): <==      Total: 6  
+[DEBUG] 2017-10-26 15:26:42,426(287252) --> [Thread-39] org.apache.ibatis.logging.commons.JakartaCommonsLoggingImpl.debug(JakartaCommonsLoggingImpl.java:49): ==>  Preparing: SELECT m.ym AS ym, ifnull(sum, 0) AS sum, sid AS salary_id FROM ( # 获得全部需要还的年月份 SELECT DISTINCT concat(year, '-', lpad(month, 2, '0')) AS ym FROM stuff_salary s LEFT JOIN ( SELECT i.salary_id, sum(i.income) sum FROM stuff_income i GROUP BY i.salary_id ) x ON s.id = x.salary_id WHERE s.salary > ifnull(x.sum, 0) ) AS m LEFT JOIN ( # 获得指定需要还的 SELECT concat(year, '-', lpad(month, 2, '0')) AS ym, salary - ifnull(sum, 0) AS sum, s.id AS sid FROM stuff_salary s LEFT JOIN ( SELECT i.salary_id, sum(i.income) sum FROM stuff_income i GROUP BY i.salary_id ) x ON s.id = x.salary_id WHERE s.stuff_id = ? ) AS s ON m.ym = s.ym ORDER BY m.ym DESC   
+[DEBUG] 2017-10-26 15:26:42,427(287253) --> [Thread-39] org.apache.ibatis.logging.commons.JakartaCommonsLoggingImpl.debug(JakartaCommonsLoggingImpl.java:49): ==> Parameters: 11(Long)  
+[DEBUG] 2017-10-26 15:26:42,646(287472) --> [Thread-39] org.apache.ibatis.logging.commons.JakartaCommonsLoggingImpl.debug(JakartaCommonsLoggingImpl.java:49): <==      Total: 6  
+[DEBUG] 2017-10-26 15:26:42,653(287479) --> [Thread-39] org.apache.ibatis.logging.commons.JakartaCommonsLoggingImpl.debug(JakartaCommonsLoggingImpl.java:49): ==>  Preparing: SELECT m.ym AS ym, ifnull(sum, 0) AS sum, sid AS salary_id FROM ( # 获得全部需要还的年月份 SELECT DISTINCT concat(year, '-', lpad(month, 2, '0')) AS ym FROM stuff_salary s LEFT JOIN ( SELECT i.salary_id, sum(i.income) sum FROM stuff_income i GROUP BY i.salary_id ) x ON s.id = x.salary_id WHERE s.salary > ifnull(x.sum, 0) ) AS m LEFT JOIN ( # 获得指定需要还的 SELECT concat(year, '-', lpad(month, 2, '0')) AS ym, salary - ifnull(sum, 0) AS sum, s.id AS sid FROM stuff_salary s LEFT JOIN ( SELECT i.salary_id, sum(i.income) sum FROM stuff_income i GROUP BY i.salary_id ) x ON s.id = x.salary_id WHERE s.stuff_id = ? ) AS s ON m.ym = s.ym ORDER BY m.ym DESC   
+[DEBUG] 2017-10-26 15:26:42,655(287481) --> [Thread-39] org.apache.ibatis.logging.commons.JakartaCommonsLoggingImpl.debug(JakartaCommonsLoggingImpl.java:49): ==> Parameters: 12(Long)  
+[DEBUG] 2017-10-26 15:26:42,836(287662) --> [Thread-39] org.apache.ibatis.logging.commons.JakartaCommonsLoggingImpl.debug(JakartaCommonsLoggingImpl.java:49): <==      Total: 6  
+[ERROR] 2017-10-26 15:26:42,842(287668) --> [Thread-39] cn.keepfight.qsmanager.AppLoader.lambda$main$0(AppLoader.java:22): DefaultUncaughtExceptionHandler from Thread[Thread-39,5,main]  
+java.lang.IllegalStateException: Not on FX application thread; currentThread = Thread-39
+	at com.sun.javafx.tk.Toolkit.checkFxUserThread(Toolkit.java:236)
+	at com.sun.javafx.tk.quantum.QuantumToolkit.checkFxUserThread(QuantumToolkit.java:423)
+	at javafx.scene.Parent$2.onProposedChange(Parent.java:367)
+	at com.sun.javafx.collections.VetoableListDecorator.clear(VetoableListDecorator.java:294)
+	at com.sun.javafx.scene.control.skin.TableColumnHeader.updateSortGrid(TableColumnHeader.java:544)
+	at com.sun.javafx.scene.control.skin.TableColumnHeader.updateSortPosition(TableColumnHeader.java:537)
+	at com.sun.javafx.scene.control.skin.TableColumnHeader.lambda$new$51(TableColumnHeader.java:196)
+	at javafx.collections.WeakListChangeListener.onChanged(WeakListChangeListener.java:88)
+	at com.sun.javafx.collections.ListListenerHelper$Generic.fireValueChangedEvent(ListListenerHelper.java:329)
+	at com.sun.javafx.collections.ListListenerHelper.fireValueChangedEvent(ListListenerHelper.java:73)
+	at javafx.collections.ObservableListBase.fireChange(ObservableListBase.java:233)
+	at javafx.collections.FXCollections$UnmodifiableObservableListImpl.lambda$new$52(FXCollections.java:929)
+	at javafx.collections.WeakListChangeListener.onChanged(WeakListChangeListener.java:88)
+	at com.sun.javafx.collections.ListListenerHelper$SingleChange.fireValueChangedEvent(ListListenerHelper.java:164)
+	at com.sun.javafx.collections.ListListenerHelper.fireValueChangedEvent(ListListenerHelper.java:73)
+	at javafx.collections.ObservableListBase.fireChange(ObservableListBase.java:233)
+	at javafx.collections.ListChangeBuilder.commit(ListChangeBuilder.java:482)
+	at javafx.collections.ListChangeBuilder.endChange(ListChangeBuilder.java:541)
+	at javafx.collections.ObservableListBase.endChange(ObservableListBase.java:205)
+	at javafx.collections.ModifiableObservableListBase.setAll(ModifiableObservableListBase.java:90)
+	at javafx.scene.control.TableView.updateVisibleLeafColumns(TableView.java:1634)
+	at javafx.scene.control.TableView.access$200(TableView.java:355)
+	at javafx.scene.control.TableView$5.onChanged(TableView.java:634)
+	at javafx.collections.WeakListChangeListener.onChanged(WeakListChangeListener.java:88)
+	at com.sun.javafx.collections.ListListenerHelper$Generic.fireValueChangedEvent(ListListenerHelper.java:329)
+	at com.sun.javafx.collections.ListListenerHelper.fireValueChangedEvent(ListListenerHelper.java:73)
+	at javafx.collections.ObservableListBase.fireChange(ObservableListBase.java:233)
+	at javafx.collections.ListChangeBuilder.commit(ListChangeBuilder.java:482)
+	at javafx.collections.ListChangeBuilder.endChange(ListChangeBuilder.java:541)
+	at javafx.collections.ObservableListBase.endChange(ObservableListBase.java:205)
+	at javafx.collections.ModifiableObservableListBase.add(ModifiableObservableListBase.java:155)
+	at java.util.AbstractList.add(AbstractList.java:108)
+	at cn.keepfight.qsmanager.controller.salary.SalaryController.lambda$showed$6(SalaryController.java:144)
+	at java.lang.Thread.run(Thread.java:748)
+[ERROR] 2017-10-26 15:26:42,845(287671) --> [Thread-39] cn.keepfight.qsmanager.AppLoader.lambda$main$0(AppLoader.java:22): DefaultUncaughtExceptionHandler from Thread[Thread-39,5,main]  
+java.lang.IllegalStateException: Not on FX application thread; currentThread = Thread-39
+	at com.sun.javafx.tk.Toolkit.checkFxUserThread(Toolkit.java:236)
+	at com.sun.javafx.tk.quantum.QuantumToolkit.checkFxUserThread(QuantumToolkit.java:423)
+	at javafx.scene.Parent$2.onProposedChange(Parent.java:367)
+	at com.sun.javafx.collections.VetoableListDecorator.clear(VetoableListDecorator.java:294)
+	at com.sun.javafx.scene.control.skin.TableColumnHeader.updateSortGrid(TableColumnHeader.java:544)
+	at com.sun.javafx.scene.control.skin.TableColumnHeader.updateSortPosition(TableColumnHeader.java:537)
+	at com.sun.javafx.scene.control.skin.TableColumnHeader.lambda$new$51(TableColumnHeader.java:196)
+	at javafx.collections.WeakListChangeListener.onChanged(WeakListChangeListener.java:88)
+	at com.sun.javafx.collections.ListListenerHelper$Generic.fireValueChangedEvent(ListListenerHelper.java:329)
+	at com.sun.javafx.collections.ListListenerHelper.fireValueChangedEvent(ListListenerHelper.java:73)
+	at javafx.collections.ObservableListBase.fireChange(ObservableListBase.java:233)
+	at javafx.collections.FXCollections$UnmodifiableObservableListImpl.lambda$new$52(FXCollections.java:929)
+	at javafx.collections.WeakListChangeListener.onChanged(WeakListChangeListener.java:88)
+	at com.sun.javafx.collections.ListListenerHelper$SingleChange.fireValueChangedEvent(ListListenerHelper.java:164)
+	at com.sun.javafx.collections.ListListenerHelper.fireValueChangedEvent(ListListenerHelper.java:73)
+	at javafx.collections.ObservableListBase.fireChange(ObservableListBase.java:233)
+	at javafx.collections.ListChangeBuilder.commit(ListChangeBuilder.java:482)
+	at javafx.collections.ListChangeBuilder.endChange(ListChangeBuilder.java:541)
+	at javafx.collections.ObservableListBase.endChange(ObservableListBase.java:205)
+	at javafx.collections.ModifiableObservableListBase.setAll(ModifiableObservableListBase.java:90)
+	at javafx.scene.control.TableView.updateVisibleLeafColumns(TableView.java:1634)
+	at javafx.scene.control.TableView.access$200(TableView.java:355)
+	at javafx.scene.control.TableView$5.onChanged(TableView.java:634)
+	at javafx.collections.WeakListChangeListener.onChanged(WeakListChangeListener.java:88)
+	at com.sun.javafx.collections.ListListenerHelper$Generic.fireValueChangedEvent(ListListenerHelper.java:329)
+	at com.sun.javafx.collections.ListListenerHelper.fireValueChangedEvent(ListListenerHelper.java:73)
+	at javafx.collections.ObservableListBase.fireChange(ObservableListBase.java:233)
+	at javafx.collections.ListChangeBuilder.commit(ListChangeBuilder.java:482)
+	at javafx.collections.ListChangeBuilder.endChange(ListChangeBuilder.java:541)
+	at javafx.collections.ObservableListBase.endChange(ObservableListBase.java:205)
+	at javafx.collections.ModifiableObservableListBase.add(ModifiableObservableListBase.java:155)
+	at java.util.AbstractList.add(AbstractList.java:108)
+	at cn.keepfight.qsmanager.controller.salary.SalaryController.lambda$showed$6(SalaryController.java:144)
+	at java.lang.Thread.run(Thread.java:748)
+[ERROR] 2017-10-26 15:26:42,853(287679) --> [Thread-39] cn.keepfight.qsmanager.AppLoader.lambda$main$0(AppLoader.java:22): DefaultUncaughtExceptionHandler from Thread[Thread-39,5,main]  
+java.lang.IllegalStateException: Not on FX application thread; currentThread = Thread-39
+	at com.sun.javafx.tk.Toolkit.checkFxUserThread(Toolkit.java:236)
+	at com.sun.javafx.tk.quantum.QuantumToolkit.checkFxUserThread(QuantumToolkit.java:423)
+	at javafx.scene.Parent$2.onProposedChange(Parent.java:367)
+	at com.sun.javafx.collections.VetoableListDecorator.clear(VetoableListDecorator.java:294)
+	at com.sun.javafx.scene.control.skin.TableColumnHeader.updateSortGrid(TableColumnHeader.java:544)
+	at com.sun.javafx.scene.control.skin.TableColumnHeader.updateSortPosition(TableColumnHeader.java:537)
+	at com.sun.javafx.scene.control.skin.TableColumnHeader.lambda$new$51(TableColumnHeader.java:196)
+	at javafx.collections.WeakListChangeListener.onChanged(WeakListChangeListener.java:88)
+	at com.sun.javafx.collections.ListListenerHelper$Generic.fireValueChangedEvent(ListListenerHelper.java:329)
+	at com.sun.javafx.collections.ListListenerHelper.fireValueChangedEvent(ListListenerHelper.java:73)
+	at javafx.collections.ObservableListBase.fireChange(ObservableListBase.java:233)
+	at javafx.collections.FXCollections$UnmodifiableObservableListImpl.lambda$new$52(FXCollections.java:929)
+	at javafx.collections.WeakListChangeListener.onChanged(WeakListChangeListener.java:88)
+	at com.sun.javafx.collections.ListListenerHelper$SingleChange.fireValueChangedEvent(ListListenerHelper.java:164)
+	at com.sun.javafx.collections.ListListenerHelper.fireValueChangedEvent(ListListenerHelper.java:73)
+	at javafx.collections.ObservableListBase.fireChange(ObservableListBase.java:233)
+	at javafx.collections.ListChangeBuilder.commit(ListChangeBuilder.java:482)
+	at javafx.collections.ListChangeBuilder.endChange(ListChangeBuilder.java:541)
+	at javafx.collections.ObservableListBase.endChange(ObservableListBase.java:205)
+	at javafx.collections.ModifiableObservableListBase.setAll(ModifiableObservableListBase.java:90)
+	at javafx.scene.control.TableView.updateVisibleLeafColumns(TableView.java:1634)
+	at javafx.scene.control.TableView.access$200(TableView.java:355)
+	at javafx.scene.control.TableView$5.onChanged(TableView.java:634)
+	at javafx.collections.WeakListChangeListener.onChanged(WeakListChangeListener.java:88)
+	at com.sun.javafx.collections.ListListenerHelper$Generic.fireValueChangedEvent(ListListenerHelper.java:329)
+	at com.sun.javafx.collections.ListListenerHelper.fireValueChangedEvent(ListListenerHelper.java:73)
+	at javafx.collections.ObservableListBase.fireChange(ObservableListBase.java:233)
+	at javafx.collections.ListChangeBuilder.commit(ListChangeBuilder.java:482)
+	at javafx.collections.ListChangeBuilder.endChange(ListChangeBuilder.java:541)
+	at javafx.collections.ObservableListBase.endChange(ObservableListBase.java:205)
+	at javafx.collections.ModifiableObservableListBase.add(ModifiableObservableListBase.java:155)
+	at java.util.AbstractList.add(AbstractList.java:108)
+	at cn.keepfight.qsmanager.controller.salary.SalaryController.lambda$showed$6(SalaryController.java:144)
+	at java.lang.Thread.run(Thread.java:748)
+[ERROR] 2017-10-26 15:26:42,856(287682) --> [Thread-39] cn.keepfight.qsmanager.AppLoader.lambda$main$0(AppLoader.java:22): DefaultUncaughtExceptionHandler from Thread[Thread-39,5,main]  
+java.lang.IllegalStateException: Not on FX application thread; currentThread = Thread-39
+	at com.sun.javafx.tk.Toolkit.checkFxUserThread(Toolkit.java:236)
+	at com.sun.javafx.tk.quantum.QuantumToolkit.checkFxUserThread(QuantumToolkit.java:423)
+	at javafx.scene.Parent$2.onProposedChange(Parent.java:367)
+	at com.sun.javafx.collections.VetoableListDecorator.clear(VetoableListDecorator.java:294)
+	at com.sun.javafx.scene.control.skin.TableColumnHeader.updateSortGrid(TableColumnHeader.java:544)
+	at com.sun.javafx.scene.control.skin.TableColumnHeader.updateSortPosition(TableColumnHeader.java:537)
+	at com.sun.javafx.scene.control.skin.TableColumnHeader.lambda$new$51(TableColumnHeader.java:196)
+	at javafx.collections.WeakListChangeListener.onChanged(WeakListChangeListener.java:88)
+	at com.sun.javafx.collections.ListListenerHelper$Generic.fireValueChangedEvent(ListListenerHelper.java:329)
+	at com.sun.javafx.collections.ListListenerHelper.fireValueChangedEvent(ListListenerHelper.java:73)
+	at javafx.collections.ObservableListBase.fireChange(ObservableListBase.java:233)
+	at javafx.collections.FXCollections$UnmodifiableObservableListImpl.lambda$new$52(FXCollections.java:929)
+	at javafx.collections.WeakListChangeListener.onChanged(WeakListChangeListener.java:88)
+	at com.sun.javafx.collections.ListListenerHelper$SingleChange.fireValueChangedEvent(ListListenerHelper.java:164)
+	at com.sun.javafx.collections.ListListenerHelper.fireValueChangedEvent(ListListenerHelper.java:73)
+	at javafx.collections.ObservableListBase.fireChange(ObservableListBase.java:233)
+	at javafx.collections.ListChangeBuilder.commit(ListChangeBuilder.java:482)
+	at javafx.collections.ListChangeBuilder.endChange(ListChangeBuilder.java:541)
+	at javafx.collections.ObservableListBase.endChange(ObservableListBase.java:205)
+	at javafx.collections.ModifiableObservableListBase.setAll(ModifiableObservableListBase.java:90)
+	at javafx.scene.control.TableView.updateVisibleLeafColumns(TableView.java:1634)
+	at javafx.scene.control.TableView.access$200(TableView.java:355)
+	at javafx.scene.control.TableView$5.onChanged(TableView.java:634)
+	at javafx.collections.WeakListChangeListener.onChanged(WeakListChangeListener.java:88)
+	at com.sun.javafx.collections.ListListenerHelper$Generic.fireValueChangedEvent(ListListenerHelper.java:329)
+	at com.sun.javafx.collections.ListListenerHelper.fireValueChangedEvent(ListListenerHelper.java:73)
+	at javafx.collections.ObservableListBase.fireChange(ObservableListBase.java:233)
+	at javafx.collections.ListChangeBuilder.commit(ListChangeBuilder.java:482)
+	at javafx.collections.ListChangeBuilder.endChange(ListChangeBuilder.java:541)
+	at javafx.collections.ObservableListBase.endChange(ObservableListBase.java:205)
+	at javafx.collections.ModifiableObservableListBase.add(ModifiableObservableListBase.java:155)
+	at java.util.AbstractList.add(AbstractList.java:108)
+	at cn.keepfight.qsmanager.controller.salary.SalaryController.lambda$showed$6(SalaryController.java:144)
+	at java.lang.Thread.run(Thread.java:748)
+[ERROR] 2017-10-26 15:26:42,862(287688) --> [Thread-39] cn.keepfight.qsmanager.AppLoader.lambda$main$0(AppLoader.java:22): DefaultUncaughtExceptionHandler from Thread[Thread-39,5,main]  
+java.lang.IllegalStateException: Not on FX application thread; currentThread = Thread-39
+	at com.sun.javafx.tk.Toolkit.checkFxUserThread(Toolkit.java:236)
+	at com.sun.javafx.tk.quantum.QuantumToolkit.checkFxUserThread(QuantumToolkit.java:423)
+	at javafx.scene.Parent$2.onProposedChange(Parent.java:367)
+	at com.sun.javafx.collections.VetoableListDecorator.clear(VetoableListDecorator.java:294)
+	at com.sun.javafx.scene.control.skin.TableColumnHeader.updateSortGrid(TableColumnHeader.java:544)
+	at com.sun.javafx.scene.control.skin.TableColumnHeader.updateSortPosition(TableColumnHeader.java:537)
+	at com.sun.javafx.scene.control.skin.TableColumnHeader.lambda$new$51(TableColumnHeader.java:196)
+	at javafx.collections.WeakListChangeListener.onChanged(WeakListChangeListener.java:88)
+	at com.sun.javafx.collections.ListListenerHelper$Generic.fireValueChangedEvent(ListListenerHelper.java:329)
+	at com.sun.javafx.collections.ListListenerHelper.fireValueChangedEvent(ListListenerHelper.java:73)
+	at javafx.collections.ObservableListBase.fireChange(ObservableListBase.java:233)
+	at javafx.collections.FXCollections$UnmodifiableObservableListImpl.lambda$new$52(FXCollections.java:929)
+	at javafx.collections.WeakListChangeListener.onChanged(WeakListChangeListener.java:88)
+	at com.sun.javafx.collections.ListListenerHelper$SingleChange.fireValueChangedEvent(ListListenerHelper.java:164)
+	at com.sun.javafx.collections.ListListenerHelper.fireValueChangedEvent(ListListenerHelper.java:73)
+	at javafx.collections.ObservableListBase.fireChange(ObservableListBase.java:233)
+	at javafx.collections.ListChangeBuilder.commit(ListChangeBuilder.java:482)
+	at javafx.collections.ListChangeBuilder.endChange(ListChangeBuilder.java:541)
+	at javafx.collections.ObservableListBase.endChange(ObservableListBase.java:205)
+	at javafx.collections.ModifiableObservableListBase.setAll(ModifiableObservableListBase.java:90)
+	at javafx.scene.control.TableView.updateVisibleLeafColumns(TableView.java:1634)
+	at javafx.scene.control.TableView.access$200(TableView.java:355)
+	at javafx.scene.control.TableView$5.onChanged(TableView.java:634)
+	at javafx.collections.WeakListChangeListener.onChanged(WeakListChangeListener.java:88)
+	at com.sun.javafx.collections.ListListenerHelper$Generic.fireValueChangedEvent(ListListenerHelper.java:329)
+	at com.sun.javafx.collections.ListListenerHelper.fireValueChangedEvent(ListListenerHelper.java:73)
+	at javafx.collections.ObservableListBase.fireChange(ObservableListBase.java:233)
+	at javafx.collections.ListChangeBuilder.commit(ListChangeBuilder.java:482)
+	at javafx.collections.ListChangeBuilder.endChange(ListChangeBuilder.java:541)
+	at javafx.collections.ObservableListBase.endChange(ObservableListBase.java:205)
+	at javafx.collections.ModifiableObservableListBase.add(ModifiableObservableListBase.java:155)
+	at java.util.AbstractList.add(AbstractList.java:108)
+	at cn.keepfight.qsmanager.controller.salary.SalaryController.lambda$showed$6(SalaryController.java:144)
+	at java.lang.Thread.run(Thread.java:748)
+[ERROR] 2017-10-26 15:26:42,866(287692) --> [Thread-39] cn.keepfight.qsmanager.AppLoader.lambda$main$0(AppLoader.java:22): DefaultUncaughtExceptionHandler from Thread[Thread-39,5,main]  
+java.lang.IllegalStateException: Not on FX application thread; currentThread = Thread-39
+	at com.sun.javafx.tk.Toolkit.checkFxUserThread(Toolkit.java:236)
+	at com.sun.javafx.tk.quantum.QuantumToolkit.checkFxUserThread(QuantumToolkit.java:423)
+	at javafx.scene.Parent$2.onProposedChange(Parent.java:367)
+	at com.sun.javafx.collections.VetoableListDecorator.clear(VetoableListDecorator.java:294)
+	at com.sun.javafx.scene.control.skin.TableColumnHeader.updateSortGrid(TableColumnHeader.java:544)
+	at com.sun.javafx.scene.control.skin.TableColumnHeader.updateSortPosition(TableColumnHeader.java:537)
+	at com.sun.javafx.scene.control.skin.TableColumnHeader.lambda$new$51(TableColumnHeader.java:196)
+	at javafx.collections.WeakListChangeListener.onChanged(WeakListChangeListener.java:88)
+	at com.sun.javafx.collections.ListListenerHelper$Generic.fireValueChangedEvent(ListListenerHelper.java:329)
+	at com.sun.javafx.collections.ListListenerHelper.fireValueChangedEvent(ListListenerHelper.java:73)
+	at javafx.collections.ObservableListBase.fireChange(ObservableListBase.java:233)
+	at javafx.collections.FXCollections$UnmodifiableObservableListImpl.lambda$new$52(FXCollections.java:929)
+	at javafx.collections.WeakListChangeListener.onChanged(WeakListChangeListener.java:88)
+	at com.sun.javafx.collections.ListListenerHelper$SingleChange.fireValueChangedEvent(ListListenerHelper.java:164)
+	at com.sun.javafx.collections.ListListenerHelper.fireValueChangedEvent(ListListenerHelper.java:73)
+	at javafx.collections.ObservableListBase.fireChange(ObservableListBase.java:233)
+	at javafx.collections.ListChangeBuilder.commit(ListChangeBuilder.java:482)
+	at javafx.collections.ListChangeBuilder.endChange(ListChangeBuilder.java:541)
+	at javafx.collections.ObservableListBase.endChange(ObservableListBase.java:205)
+	at javafx.collections.ModifiableObservableListBase.setAll(ModifiableObservableListBase.java:90)
+	at javafx.scene.control.TableView.updateVisibleLeafColumns(TableView.java:1634)
+	at javafx.scene.control.TableView.access$200(TableView.java:355)
+	at javafx.scene.control.TableView$5.onChanged(TableView.java:634)
+	at javafx.collections.WeakListChangeListener.onChanged(WeakListChangeListener.java:88)
+	at com.sun.javafx.collections.ListListenerHelper$Generic.fireValueChangedEvent(ListListenerHelper.java:329)
+	at com.sun.javafx.collections.ListListenerHelper.fireValueChangedEvent(ListListenerHelper.java:73)
+	at javafx.collections.ObservableListBase.fireChange(ObservableListBase.java:233)
+	at javafx.collections.ListChangeBuilder.commit(ListChangeBuilder.java:482)
+	at javafx.collections.ListChangeBuilder.endChange(ListChangeBuilder.java:541)
+	at javafx.collections.ObservableListBase.endChange(ObservableListBase.java:205)
+	at javafx.collections.ModifiableObservableListBase.add(ModifiableObservableListBase.java:155)
+	at java.util.AbstractList.add(AbstractList.java:108)
+	at cn.keepfight.qsmanager.controller.salary.SalaryController.lambda$showed$6(SalaryController.java:144)
+	at java.lang.Thread.run(Thread.java:748)
+[ERROR] 2017-10-26 15:26:42,869(287695) --> [Thread-39] cn.keepfight.qsmanager.AppLoader.lambda$main$0(AppLoader.java:22): DefaultUncaughtExceptionHandler from Thread[Thread-39,5,main]  
+java.lang.IllegalStateException: Not on FX application thread; currentThread = Thread-39
+	at com.sun.javafx.tk.Toolkit.checkFxUserThread(Toolkit.java:236)
+	at com.sun.javafx.tk.quantum.QuantumToolkit.checkFxUserThread(QuantumToolkit.java:423)
+	at javafx.scene.Parent$2.onProposedChange(Parent.java:367)
+	at com.sun.javafx.collections.VetoableListDecorator.clear(VetoableListDecorator.java:294)
+	at com.sun.javafx.scene.control.skin.TableColumnHeader.updateSortGrid(TableColumnHeader.java:544)
+	at com.sun.javafx.scene.control.skin.TableColumnHeader.updateSortPosition(TableColumnHeader.java:537)
+	at com.sun.javafx.scene.control.skin.TableColumnHeader.lambda$new$51(TableColumnHeader.java:196)
+	at javafx.collections.WeakListChangeListener.onChanged(WeakListChangeListener.java:88)
+	at com.sun.javafx.collections.ListListenerHelper$Generic.fireValueChangedEvent(ListListenerHelper.java:329)
+	at com.sun.javafx.collections.ListListenerHelper.fireValueChangedEvent(ListListenerHelper.java:73)
+	at javafx.collections.ObservableListBase.fireChange(ObservableListBase.java:233)
+	at javafx.collections.FXCollections$UnmodifiableObservableListImpl.lambda$new$52(FXCollections.java:929)
+	at javafx.collections.WeakListChangeListener.onChanged(WeakListChangeListener.java:88)
+	at com.sun.javafx.collections.ListListenerHelper$SingleChange.fireValueChangedEvent(ListListenerHelper.java:164)
+	at com.sun.javafx.collections.ListListenerHelper.fireValueChangedEvent(ListListenerHelper.java:73)
+	at javafx.collections.ObservableListBase.fireChange(ObservableListBase.java:233)
+	at javafx.collections.ListChangeBuilder.commit(ListChangeBuilder.java:482)
+	at javafx.collections.ListChangeBuilder.endChange(ListChangeBuilder.java:541)
+	at javafx.collections.ObservableListBase.endChange(ObservableListBase.java:205)
+	at javafx.collections.ModifiableObservableListBase.setAll(ModifiableObservableListBase.java:90)
+	at javafx.scene.control.TableView.updateVisibleLeafColumns(TableView.java:1634)
+	at javafx.scene.control.TableView.access$200(TableView.java:355)
+	at javafx.scene.control.TableView$5.onChanged(TableView.java:634)
+	at javafx.collections.WeakListChangeListener.onChanged(WeakListChangeListener.java:88)
+	at com.sun.javafx.collections.ListListenerHelper$Generic.fireValueChangedEvent(ListListenerHelper.java:329)
+	at com.sun.javafx.collections.ListListenerHelper.fireValueChangedEvent(ListListenerHelper.java:73)
+	at javafx.collections.ObservableListBase.fireChange(ObservableListBase.java:233)
+	at javafx.collections.ListChangeBuilder.commit(ListChangeBuilder.java:482)
+	at javafx.collections.ListChangeBuilder.endChange(ListChangeBuilder.java:541)
+	at javafx.collections.ObservableListBase.endChange(ObservableListBase.java:205)
+	at javafx.collections.ModifiableObservableListBase.add(ModifiableObservableListBase.java:155)
+	at java.util.AbstractList.add(AbstractList.java:108)
+	at cn.keepfight.qsmanager.controller.salary.SalaryController.lambda$showed$6(SalaryController.java:144)
+	at java.lang.Thread.run(Thread.java:748)
+[ERROR] 2017-10-26 15:26:42,873(287699) --> [Thread-39] cn.keepfight.qsmanager.AppLoader.lambda$main$0(AppLoader.java:22): DefaultUncaughtExceptionHandler from Thread[Thread-39,5,main]  
+java.lang.IllegalStateException: Not on FX application thread; currentThread = Thread-39
+	at com.sun.javafx.tk.Toolkit.checkFxUserThread(Toolkit.java:236)
+	at com.sun.javafx.tk.quantum.QuantumToolkit.checkFxUserThread(QuantumToolkit.java:423)
+	at javafx.scene.Parent$2.onProposedChange(Parent.java:367)
+	at com.sun.javafx.collections.VetoableListDecorator.clear(VetoableListDecorator.java:294)
+	at com.sun.javafx.scene.control.skin.TableColumnHeader.updateSortGrid(TableColumnHeader.java:544)
+	at com.sun.javafx.scene.control.skin.TableColumnHeader.updateSortPosition(TableColumnHeader.java:537)
+	at com.sun.javafx.scene.control.skin.TableColumnHeader.lambda$new$51(TableColumnHeader.java:196)
+	at javafx.collections.WeakListChangeListener.onChanged(WeakListChangeListener.java:88)
+	at com.sun.javafx.collections.ListListenerHelper$Generic.fireValueChangedEvent(ListListenerHelper.java:329)
+	at com.sun.javafx.collections.ListListenerHelper.fireValueChangedEvent(ListListenerHelper.java:73)
+	at javafx.collections.ObservableListBase.fireChange(ObservableListBase.java:233)
+	at javafx.collections.FXCollections$UnmodifiableObservableListImpl.lambda$new$52(FXCollections.java:929)
+	at javafx.collections.WeakListChangeListener.onChanged(WeakListChangeListener.java:88)
+	at com.sun.javafx.collections.ListListenerHelper$SingleChange.fireValueChangedEvent(ListListenerHelper.java:164)
+	at com.sun.javafx.collections.ListListenerHelper.fireValueChangedEvent(ListListenerHelper.java:73)
+	at javafx.collections.ObservableListBase.fireChange(ObservableListBase.java:233)
+	at javafx.collections.ListChangeBuilder.commit(ListChangeBuilder.java:482)
+	at javafx.collections.ListChangeBuilder.endChange(ListChangeBuilder.java:541)
+	at javafx.collections.ObservableListBase.endChange(ObservableListBase.java:205)
+	at javafx.collections.ModifiableObservableListBase.setAll(ModifiableObservableListBase.java:90)
+	at javafx.scene.control.TableView.updateVisibleLeafColumns(TableView.java:1634)
+	at javafx.scene.control.TableView.access$200(TableView.java:355)
+	at javafx.scene.control.TableView$5.onChanged(TableView.java:634)
+	at javafx.collections.WeakListChangeListener.onChanged(WeakListChangeListener.java:88)
+	at com.sun.javafx.collections.ListListenerHelper$Generic.fireValueChangedEvent(ListListenerHelper.java:329)
+	at com.sun.javafx.collections.ListListenerHelper.fireValueChangedEvent(ListListenerHelper.java:73)
+	at javafx.collections.ObservableListBase.fireChange(ObservableListBase.java:233)
+	at javafx.collections.ListChangeBuilder.commit(ListChangeBuilder.java:482)
+	at javafx.collections.ListChangeBuilder.endChange(ListChangeBuilder.java:541)
+	at javafx.collections.ObservableListBase.endChange(ObservableListBase.java:205)
+	at javafx.collections.ModifiableObservableListBase.add(ModifiableObservableListBase.java:155)
+	at java.util.AbstractList.add(AbstractList.java:108)
+	at cn.keepfight.qsmanager.controller.salary.SalaryController.lambda$showed$6(SalaryController.java:144)
+	at java.lang.Thread.run(Thread.java:748)
+[ERROR] 2017-10-26 15:26:42,890(287716) --> [Thread-39] cn.keepfight.qsmanager.AppLoader.lambda$main$0(AppLoader.java:22): DefaultUncaughtExceptionHandler from Thread[Thread-39,5,main]  
+java.lang.IllegalStateException: Not on FX application thread; currentThread = Thread-39
+	at com.sun.javafx.tk.Toolkit.checkFxUserThread(Toolkit.java:236)
+	at com.sun.javafx.tk.quantum.QuantumToolkit.checkFxUserThread(QuantumToolkit.java:423)
+	at javafx.scene.Parent$2.onProposedChange(Parent.java:367)
+	at com.sun.javafx.collections.VetoableListDecorator.clear(VetoableListDecorator.java:294)
+	at com.sun.javafx.scene.control.skin.TableColumnHeader.updateSortGrid(TableColumnHeader.java:544)
+	at com.sun.javafx.scene.control.skin.TableColumnHeader.updateSortPosition(TableColumnHeader.java:537)
+	at com.sun.javafx.scene.control.skin.TableColumnHeader.lambda$new$51(TableColumnHeader.java:196)
+	at javafx.collections.WeakListChangeListener.onChanged(WeakListChangeListener.java:88)
+	at com.sun.javafx.collections.ListListenerHelper$Generic.fireValueChangedEvent(ListListenerHelper.java:329)
+	at com.sun.javafx.collections.ListListenerHelper.fireValueChangedEvent(ListListenerHelper.java:73)
+	at javafx.collections.ObservableListBase.fireChange(ObservableListBase.java:233)
+	at javafx.collections.FXCollections$UnmodifiableObservableListImpl.lambda$new$52(FXCollections.java:929)
+	at javafx.collections.WeakListChangeListener.onChanged(WeakListChangeListener.java:88)
+	at com.sun.javafx.collections.ListListenerHelper$SingleChange.fireValueChangedEvent(ListListenerHelper.java:164)
+	at com.sun.javafx.collections.ListListenerHelper.fireValueChangedEvent(ListListenerHelper.java:73)
+	at javafx.collections.ObservableListBase.fireChange(ObservableListBase.java:233)
+	at javafx.collections.ListChangeBuilder.commit(ListChangeBuilder.java:482)
+	at javafx.collections.ListChangeBuilder.endChange(ListChangeBuilder.java:541)
+	at javafx.collections.ObservableListBase.endChange(ObservableListBase.java:205)
+	at javafx.collections.ModifiableObservableListBase.setAll(ModifiableObservableListBase.java:90)
+	at javafx.scene.control.TableView.updateVisibleLeafColumns(TableView.java:1634)
+	at javafx.scene.control.TableView.access$200(TableView.java:355)
+	at javafx.scene.control.TableView$5.onChanged(TableView.java:634)
+	at javafx.collections.WeakListChangeListener.onChanged(WeakListChangeListener.java:88)
+	at com.sun.javafx.collections.ListListenerHelper$Generic.fireValueChangedEvent(ListListenerHelper.java:329)
+	at com.sun.javafx.collections.ListListenerHelper.fireValueChangedEvent(ListListenerHelper.java:73)
+	at javafx.collections.ObservableListBase.fireChange(ObservableListBase.java:233)
+	at javafx.collections.ListChangeBuilder.commit(ListChangeBuilder.java:482)
+	at javafx.collections.ListChangeBuilder.endChange(ListChangeBuilder.java:541)
+	at javafx.collections.ObservableListBase.endChange(ObservableListBase.java:205)
+	at javafx.collections.ModifiableObservableListBase.add(ModifiableObservableListBase.java:155)
+	at java.util.AbstractList.add(AbstractList.java:108)
+	at cn.keepfight.qsmanager.controller.salary.SalaryController.lambda$showed$6(SalaryController.java:144)
+	at java.lang.Thread.run(Thread.java:748)
+[ERROR] 2017-10-26 15:26:42,893(287719) --> [Thread-39] cn.keepfight.qsmanager.AppLoader.lambda$main$0(AppLoader.java:22): DefaultUncaughtExceptionHandler from Thread[Thread-39,5,main]  
+java.lang.IllegalStateException: Not on FX application thread; currentThread = Thread-39
+	at com.sun.javafx.tk.Toolkit.checkFxUserThread(Toolkit.java:236)
+	at com.sun.javafx.tk.quantum.QuantumToolkit.checkFxUserThread(QuantumToolkit.java:423)
+	at javafx.scene.Parent$2.onProposedChange(Parent.java:367)
+	at com.sun.javafx.collections.VetoableListDecorator.clear(VetoableListDecorator.java:294)
+	at com.sun.javafx.scene.control.skin.TableColumnHeader.updateSortGrid(TableColumnHeader.java:544)
+	at com.sun.javafx.scene.control.skin.TableColumnHeader.updateSortPosition(TableColumnHeader.java:537)
+	at com.sun.javafx.scene.control.skin.TableColumnHeader.lambda$new$51(TableColumnHeader.java:196)
+	at javafx.collections.WeakListChangeListener.onChanged(WeakListChangeListener.java:88)
+	at com.sun.javafx.collections.ListListenerHelper$Generic.fireValueChangedEvent(ListListenerHelper.java:329)
+	at com.sun.javafx.collections.ListListenerHelper.fireValueChangedEvent(ListListenerHelper.java:73)
+	at javafx.collections.ObservableListBase.fireChange(ObservableListBase.java:233)
+	at javafx.collections.FXCollections$UnmodifiableObservableListImpl.lambda$new$52(FXCollections.java:929)
+	at javafx.collections.WeakListChangeListener.onChanged(WeakListChangeListener.java:88)
+	at com.sun.javafx.collections.ListListenerHelper$SingleChange.fireValueChangedEvent(ListListenerHelper.java:164)
+	at com.sun.javafx.collections.ListListenerHelper.fireValueChangedEvent(ListListenerHelper.java:73)
+	at javafx.collections.ObservableListBase.fireChange(ObservableListBase.java:233)
+	at javafx.collections.ListChangeBuilder.commit(ListChangeBuilder.java:482)
+	at javafx.collections.ListChangeBuilder.endChange(ListChangeBuilder.java:541)
+	at javafx.collections.ObservableListBase.endChange(ObservableListBase.java:205)
+	at javafx.collections.ModifiableObservableListBase.setAll(ModifiableObservableListBase.java:90)
+	at javafx.scene.control.TableView.updateVisibleLeafColumns(TableView.java:1634)
+	at javafx.scene.control.TableView.access$200(TableView.java:355)
+	at javafx.scene.control.TableView$5.onChanged(TableView.java:634)
+	at javafx.collections.WeakListChangeListener.onChanged(WeakListChangeListener.java:88)
+	at com.sun.javafx.collections.ListListenerHelper$Generic.fireValueChangedEvent(ListListenerHelper.java:329)
+	at com.sun.javafx.collections.ListListenerHelper.fireValueChangedEvent(ListListenerHelper.java:73)
+	at javafx.collections.ObservableListBase.fireChange(ObservableListBase.java:233)
+	at javafx.collections.ListChangeBuilder.commit(ListChangeBuilder.java:482)
+	at javafx.collections.ListChangeBuilder.endChange(ListChangeBuilder.java:541)
+	at javafx.collections.ObservableListBase.endChange(ObservableListBase.java:205)
+	at javafx.collections.ModifiableObservableListBase.add(ModifiableObservableListBase.java:155)
+	at java.util.AbstractList.add(AbstractList.java:108)
+	at cn.keepfight.qsmanager.controller.salary.SalaryController.lambda$showed$6(SalaryController.java:144)
+	at java.lang.Thread.run(Thread.java:748)
+[ERROR] 2017-10-26 15:26:42,940(287766) --> [Thread-39] cn.keepfight.qsmanager.AppLoader.lambda$main$0(AppLoader.java:22): DefaultUncaughtExceptionHandler from Thread[Thread-39,5,main]  
+java.lang.IllegalStateException: Not on FX application thread; currentThread = Thread-39
+	at com.sun.javafx.tk.Toolkit.checkFxUserThread(Toolkit.java:236)
+	at com.sun.javafx.tk.quantum.QuantumToolkit.checkFxUserThread(QuantumToolkit.java:423)
+	at javafx.scene.Parent$2.onProposedChange(Parent.java:367)
+	at com.sun.javafx.collections.VetoableListDecorator.clear(VetoableListDecorator.java:294)
+	at com.sun.javafx.scene.control.skin.TableColumnHeader.updateSortGrid(TableColumnHeader.java:544)
+	at com.sun.javafx.scene.control.skin.TableColumnHeader.updateSortPosition(TableColumnHeader.java:537)
+	at com.sun.javafx.scene.control.skin.TableColumnHeader.lambda$new$51(TableColumnHeader.java:196)
+	at javafx.collections.WeakListChangeListener.onChanged(WeakListChangeListener.java:88)
+	at com.sun.javafx.collections.ListListenerHelper$Generic.fireValueChangedEvent(ListListenerHelper.java:329)
+	at com.sun.javafx.collections.ListListenerHelper.fireValueChangedEvent(ListListenerHelper.java:73)
+	at javafx.collections.ObservableListBase.fireChange(ObservableListBase.java:233)
+	at javafx.collections.FXCollections$UnmodifiableObservableListImpl.lambda$new$52(FXCollections.java:929)
+	at javafx.collections.WeakListChangeListener.onChanged(WeakListChangeListener.java:88)
+	at com.sun.javafx.collections.ListListenerHelper$SingleChange.fireValueChangedEvent(ListListenerHelper.java:164)
+	at com.sun.javafx.collections.ListListenerHelper.fireValueChangedEvent(ListListenerHelper.java:73)
+	at javafx.collections.ObservableListBase.fireChange(ObservableListBase.java:233)
+	at javafx.collections.ListChangeBuilder.commit(ListChangeBuilder.java:482)
+	at javafx.collections.ListChangeBuilder.endChange(ListChangeBuilder.java:541)
+	at javafx.collections.ObservableListBase.endChange(ObservableListBase.java:205)
+	at javafx.collections.ModifiableObservableListBase.setAll(ModifiableObservableListBase.java:90)
+	at javafx.scene.control.TableView.updateVisibleLeafColumns(TableView.java:1634)
+	at javafx.scene.control.TableView.access$200(TableView.java:355)
+	at javafx.scene.control.TableView$5.onChanged(TableView.java:634)
+	at javafx.collections.WeakListChangeListener.onChanged(WeakListChangeListener.java:88)
+	at com.sun.javafx.collections.ListListenerHelper$Generic.fireValueChangedEvent(ListListenerHelper.java:329)
+	at com.sun.javafx.collections.ListListenerHelper.fireValueChangedEvent(ListListenerHelper.java:73)
+	at javafx.collections.ObservableListBase.fireChange(ObservableListBase.java:233)
+	at javafx.collections.ListChangeBuilder.commit(ListChangeBuilder.java:482)
+	at javafx.collections.ListChangeBuilder.endChange(ListChangeBuilder.java:541)
+	at javafx.collections.ObservableListBase.endChange(ObservableListBase.java:205)
+	at javafx.collections.ModifiableObservableListBase.add(ModifiableObservableListBase.java:155)
+	at java.util.AbstractList.add(AbstractList.java:108)
+	at cn.keepfight.qsmanager.controller.salary.SalaryController.lambda$showed$6(SalaryController.java:144)
+	at java.lang.Thread.run(Thread.java:748)
+[ERROR] 2017-10-26 15:26:42,941(287767) --> [Thread-39] cn.keepfight.qsmanager.AppLoader.lambda$main$0(AppLoader.java:22): DefaultUncaughtExceptionHandler from Thread[Thread-39,5,main]  
+java.lang.IllegalStateException: Not on FX application thread; currentThread = Thread-39
+	at com.sun.javafx.tk.Toolkit.checkFxUserThread(Toolkit.java:236)
+	at com.sun.javafx.tk.quantum.QuantumToolkit.checkFxUserThread(QuantumToolkit.java:423)
+	at javafx.scene.Parent$2.onProposedChange(Parent.java:367)
+	at com.sun.javafx.collections.VetoableListDecorator.clear(VetoableListDecorator.java:294)
+	at com.sun.javafx.scene.control.skin.TableColumnHeader.updateSortGrid(TableColumnHeader.java:544)
+	at com.sun.javafx.scene.control.skin.TableColumnHeader.updateSortPosition(TableColumnHeader.java:537)
+	at com.sun.javafx.scene.control.skin.TableColumnHeader.lambda$new$51(TableColumnHeader.java:196)
+	at javafx.collections.WeakListChangeListener.onChanged(WeakListChangeListener.java:88)
+	at com.sun.javafx.collections.ListListenerHelper$Generic.fireValueChangedEvent(ListListenerHelper.java:329)
+	at com.sun.javafx.collections.ListListenerHelper.fireValueChangedEvent(ListListenerHelper.java:73)
+	at javafx.collections.ObservableListBase.fireChange(ObservableListBase.java:233)
+	at javafx.collections.FXCollections$UnmodifiableObservableListImpl.lambda$new$52(FXCollections.java:929)
+	at javafx.collections.WeakListChangeListener.onChanged(WeakListChangeListener.java:88)
+	at com.sun.javafx.collections.ListListenerHelper$SingleChange.fireValueChangedEvent(ListListenerHelper.java:164)
+	at com.sun.javafx.collections.ListListenerHelper.fireValueChangedEvent(ListListenerHelper.java:73)
+	at javafx.collections.ObservableListBase.fireChange(ObservableListBase.java:233)
+	at javafx.collections.ListChangeBuilder.commit(ListChangeBuilder.java:482)
+	at javafx.collections.ListChangeBuilder.endChange(ListChangeBuilder.java:541)
+	at javafx.collections.ObservableListBase.endChange(ObservableListBase.java:205)
+	at javafx.collections.ModifiableObservableListBase.setAll(ModifiableObservableListBase.java:90)
+	at javafx.scene.control.TableView.updateVisibleLeafColumns(TableView.java:1634)
+	at javafx.scene.control.TableView.access$200(TableView.java:355)
+	at javafx.scene.control.TableView$5.onChanged(TableView.java:634)
+	at javafx.collections.WeakListChangeListener.onChanged(WeakListChangeListener.java:88)
+	at com.sun.javafx.collections.ListListenerHelper$Generic.fireValueChangedEvent(ListListenerHelper.java:329)
+	at com.sun.javafx.collections.ListListenerHelper.fireValueChangedEvent(ListListenerHelper.java:73)
+	at javafx.collections.ObservableListBase.fireChange(ObservableListBase.java:233)
+	at javafx.collections.ListChangeBuilder.commit(ListChangeBuilder.java:482)
+	at javafx.collections.ListChangeBuilder.endChange(ListChangeBuilder.java:541)
+	at javafx.collections.ObservableListBase.endChange(ObservableListBase.java:205)
+	at javafx.collections.ModifiableObservableListBase.add(ModifiableObservableListBase.java:155)
+	at java.util.AbstractList.add(AbstractList.java:108)
+	at cn.keepfight.qsmanager.controller.salary.SalaryController.lambda$showed$6(SalaryController.java:144)
+	at java.lang.Thread.run(Thread.java:748)
+[ERROR] 2017-10-26 15:26:43,019(287845) --> [Thread-39] cn.keepfight.qsmanager.AppLoader.lambda$main$0(AppLoader.java:22): DefaultUncaughtExceptionHandler from Thread[Thread-39,5,main]  
+java.lang.IllegalStateException: Not on FX application thread; currentThread = Thread-39
+	at com.sun.javafx.tk.Toolkit.checkFxUserThread(Toolkit.java:236)
+	at com.sun.javafx.tk.quantum.QuantumToolkit.checkFxUserThread(QuantumToolkit.java:423)
+	at javafx.scene.Parent$2.onProposedChange(Parent.java:367)
+	at com.sun.javafx.collections.VetoableListDecorator.clear(VetoableListDecorator.java:294)
+	at com.sun.javafx.scene.control.skin.TableColumnHeader.updateSortGrid(TableColumnHeader.java:544)
+	at com.sun.javafx.scene.control.skin.TableColumnHeader.updateSortPosition(TableColumnHeader.java:537)
+	at com.sun.javafx.scene.control.skin.TableColumnHeader.lambda$new$51(TableColumnHeader.java:196)
+	at javafx.collections.WeakListChangeListener.onChanged(WeakListChangeListener.java:88)
+	at com.sun.javafx.collections.ListListenerHelper$Generic.fireValueChangedEvent(ListListenerHelper.java:329)
+	at com.sun.javafx.collections.ListListenerHelper.fireValueChangedEvent(ListListenerHelper.java:73)
+	at javafx.collections.ObservableListBase.fireChange(ObservableListBase.java:233)
+	at javafx.collections.FXCollections$UnmodifiableObservableListImpl.lambda$new$52(FXCollections.java:929)
+	at javafx.collections.WeakListChangeListener.onChanged(WeakListChangeListener.java:88)
+	at com.sun.javafx.collections.ListListenerHelper$SingleChange.fireValueChangedEvent(ListListenerHelper.java:164)
+	at com.sun.javafx.collections.ListListenerHelper.fireValueChangedEvent(ListListenerHelper.java:73)
+	at javafx.collections.ObservableListBase.fireChange(ObservableListBase.java:233)
+	at javafx.collections.ListChangeBuilder.commit(ListChangeBuilder.java:482)
+	at javafx.collections.ListChangeBuilder.endChange(ListChangeBuilder.java:541)
+	at javafx.collections.ObservableListBase.endChange(ObservableListBase.java:205)
+	at javafx.collections.ModifiableObservableListBase.setAll(ModifiableObservableListBase.java:90)
+	at javafx.scene.control.TableView.updateVisibleLeafColumns(TableView.java:1634)
+	at javafx.scene.control.TableView.access$200(TableView.java:355)
+	at javafx.scene.control.TableView$5.onChanged(TableView.java:634)
+	at javafx.collections.WeakListChangeListener.onChanged(WeakListChangeListener.java:88)
+	at com.sun.javafx.collections.ListListenerHelper$Generic.fireValueChangedEvent(ListListenerHelper.java:329)
+	at com.sun.javafx.collections.ListListenerHelper.fireValueChangedEvent(ListListenerHelper.java:73)
+	at javafx.collections.ObservableListBase.fireChange(ObservableListBase.java:233)
+	at javafx.collections.ListChangeBuilder.commit(ListChangeBuilder.java:482)
+	at javafx.collections.ListChangeBuilder.endChange(ListChangeBuilder.java:541)
+	at javafx.collections.ObservableListBase.endChange(ObservableListBase.java:205)
+	at javafx.collections.ModifiableObservableListBase.add(ModifiableObservableListBase.java:155)
+	at java.util.AbstractList.add(AbstractList.java:108)
+	at cn.keepfight.qsmanager.controller.salary.SalaryController.lambda$showed$6(SalaryController.java:144)
+	at java.lang.Thread.run(Thread.java:748)
+[ERROR] 2017-10-26 15:26:43,020(287846) --> [Thread-39] cn.keepfight.qsmanager.AppLoader.lambda$main$0(AppLoader.java:22): DefaultUncaughtExceptionHandler from Thread[Thread-39,5,main]  
+java.lang.IllegalStateException: Not on FX application thread; currentThread = Thread-39
+	at com.sun.javafx.tk.Toolkit.checkFxUserThread(Toolkit.java:236)
+	at com.sun.javafx.tk.quantum.QuantumToolkit.checkFxUserThread(QuantumToolkit.java:423)
+	at javafx.scene.Parent$2.onProposedChange(Parent.java:367)
+	at com.sun.javafx.collections.VetoableListDecorator.clear(VetoableListDecorator.java:294)
+	at com.sun.javafx.scene.control.skin.TableColumnHeader.updateSortGrid(TableColumnHeader.java:544)
+	at com.sun.javafx.scene.control.skin.TableColumnHeader.updateSortPosition(TableColumnHeader.java:537)
+	at com.sun.javafx.scene.control.skin.TableColumnHeader.lambda$new$51(TableColumnHeader.java:196)
+	at javafx.collections.WeakListChangeListener.onChanged(WeakListChangeListener.java:88)
+	at com.sun.javafx.collections.ListListenerHelper$Generic.fireValueChangedEvent(ListListenerHelper.java:329)
+	at com.sun.javafx.collections.ListListenerHelper.fireValueChangedEvent(ListListenerHelper.java:73)
+	at javafx.collections.ObservableListBase.fireChange(ObservableListBase.java:233)
+	at javafx.collections.FXCollections$UnmodifiableObservableListImpl.lambda$new$52(FXCollections.java:929)
+	at javafx.collections.WeakListChangeListener.onChanged(WeakListChangeListener.java:88)
+	at com.sun.javafx.collections.ListListenerHelper$SingleChange.fireValueChangedEvent(ListListenerHelper.java:164)
+	at com.sun.javafx.collections.ListListenerHelper.fireValueChangedEvent(ListListenerHelper.java:73)
+	at javafx.collections.ObservableListBase.fireChange(ObservableListBase.java:233)
+	at javafx.collections.ListChangeBuilder.commit(ListChangeBuilder.java:482)
+	at javafx.collections.ListChangeBuilder.endChange(ListChangeBuilder.java:541)
+	at javafx.collections.ObservableListBase.endChange(ObservableListBase.java:205)
+	at javafx.collections.ModifiableObservableListBase.setAll(ModifiableObservableListBase.java:90)
+	at javafx.scene.control.TableView.updateVisibleLeafColumns(TableView.java:1634)
+	at javafx.scene.control.TableView.access$200(TableView.java:355)
+	at javafx.scene.control.TableView$5.onChanged(TableView.java:634)
+	at javafx.collections.WeakListChangeListener.onChanged(WeakListChangeListener.java:88)
+	at com.sun.javafx.collections.ListListenerHelper$Generic.fireValueChangedEvent(ListListenerHelper.java:329)
+	at com.sun.javafx.collections.ListListenerHelper.fireValueChangedEvent(ListListenerHelper.java:73)
+	at javafx.collections.ObservableListBase.fireChange(ObservableListBase.java:233)
+	at javafx.collections.ListChangeBuilder.commit(ListChangeBuilder.java:482)
+	at javafx.collections.ListChangeBuilder.endChange(ListChangeBuilder.java:541)
+	at javafx.collections.ObservableListBase.endChange(ObservableListBase.java:205)
+	at javafx.collections.ModifiableObservableListBase.add(ModifiableObservableListBase.java:155)
+	at java.util.AbstractList.add(AbstractList.java:108)
+	at cn.keepfight.qsmanager.controller.salary.SalaryController.lambda$showed$6(SalaryController.java:144)
+	at java.lang.Thread.run(Thread.java:748)
+[ERROR] 2017-10-26 15:26:43,022(287848) --> [Thread-39] cn.keepfight.qsmanager.AppLoader.lambda$main$0(AppLoader.java:22): DefaultUncaughtExceptionHandler from Thread[Thread-39,5,main]  
+java.lang.IllegalStateException: Not on FX application thread; currentThread = Thread-39
+	at com.sun.javafx.tk.Toolkit.checkFxUserThread(Toolkit.java:236)
+	at com.sun.javafx.tk.quantum.QuantumToolkit.checkFxUserThread(QuantumToolkit.java:423)
+	at javafx.scene.Parent$2.onProposedChange(Parent.java:367)
+	at com.sun.javafx.collections.VetoableListDecorator.clear(VetoableListDecorator.java:294)
+	at com.sun.javafx.scene.control.skin.TableColumnHeader.updateSortGrid(TableColumnHeader.java:544)
+	at com.sun.javafx.scene.control.skin.TableColumnHeader.updateSortPosition(TableColumnHeader.java:537)
+	at com.sun.javafx.scene.control.skin.TableColumnHeader.lambda$new$51(TableColumnHeader.java:196)
+	at javafx.collections.WeakListChangeListener.onChanged(WeakListChangeListener.java:88)
+	at com.sun.javafx.collections.ListListenerHelper$Generic.fireValueChangedEvent(ListListenerHelper.java:329)
+	at com.sun.javafx.collections.ListListenerHelper.fireValueChangedEvent(ListListenerHelper.java:73)
+	at javafx.collections.ObservableListBase.fireChange(ObservableListBase.java:233)
+	at javafx.collections.FXCollections$UnmodifiableObservableListImpl.lambda$new$52(FXCollections.java:929)
+	at javafx.collections.WeakListChangeListener.onChanged(WeakListChangeListener.java:88)
+	at com.sun.javafx.collections.ListListenerHelper$SingleChange.fireValueChangedEvent(ListListenerHelper.java:164)
+	at com.sun.javafx.collections.ListListenerHelper.fireValueChangedEvent(ListListenerHelper.java:73)
+	at javafx.collections.ObservableListBase.fireChange(ObservableListBase.java:233)
+	at javafx.collections.ListChangeBuilder.commit(ListChangeBuilder.java:482)
+	at javafx.collections.ListChangeBuilder.endChange(ListChangeBuilder.java:541)
+	at javafx.collections.ObservableListBase.endChange(ObservableListBase.java:205)
+	at javafx.collections.ModifiableObservableListBase.setAll(ModifiableObservableListBase.java:90)
+	at javafx.scene.control.TableView.updateVisibleLeafColumns(TableView.java:1634)
+	at javafx.scene.control.TableView.access$200(TableView.java:355)
+	at javafx.scene.control.TableView$5.onChanged(TableView.java:634)
+	at javafx.collections.WeakListChangeListener.onChanged(WeakListChangeListener.java:88)
+	at com.sun.javafx.collections.ListListenerHelper$Generic.fireValueChangedEvent(ListListenerHelper.java:329)
+	at com.sun.javafx.collections.ListListenerHelper.fireValueChangedEvent(ListListenerHelper.java:73)
+	at javafx.collections.ObservableListBase.fireChange(ObservableListBase.java:233)
+	at javafx.collections.ListChangeBuilder.commit(ListChangeBuilder.java:482)
+	at javafx.collections.ListChangeBuilder.endChange(ListChangeBuilder.java:541)
+	at javafx.collections.ObservableListBase.endChange(ObservableListBase.java:205)
+	at javafx.collections.ModifiableObservableListBase.add(ModifiableObservableListBase.java:155)
+	at java.util.AbstractList.add(AbstractList.java:108)
+	at cn.keepfight.qsmanager.controller.salary.SalaryController.lambda$showed$6(SalaryController.java:144)
+	at java.lang.Thread.run(Thread.java:748)
+[ERROR] 2017-10-26 15:26:43,024(287850) --> [Thread-39] cn.keepfight.qsmanager.AppLoader.lambda$main$0(AppLoader.java:22): DefaultUncaughtExceptionHandler from Thread[Thread-39,5,main]  
+java.lang.IllegalStateException: Not on FX application thread; currentThread = Thread-39
+	at com.sun.javafx.tk.Toolkit.checkFxUserThread(Toolkit.java:236)
+	at com.sun.javafx.tk.quantum.QuantumToolkit.checkFxUserThread(QuantumToolkit.java:423)
+	at javafx.scene.Parent$2.onProposedChange(Parent.java:367)
+	at com.sun.javafx.collections.VetoableListDecorator.clear(VetoableListDecorator.java:294)
+	at com.sun.javafx.scene.control.skin.TableColumnHeader.updateSortGrid(TableColumnHeader.java:544)
+	at com.sun.javafx.scene.control.skin.TableColumnHeader.updateSortPosition(TableColumnHeader.java:537)
+	at com.sun.javafx.scene.control.skin.TableColumnHeader.lambda$new$51(TableColumnHeader.java:196)
+	at javafx.collections.WeakListChangeListener.onChanged(WeakListChangeListener.java:88)
+	at com.sun.javafx.collections.ListListenerHelper$Generic.fireValueChangedEvent(ListListenerHelper.java:329)
+	at com.sun.javafx.collections.ListListenerHelper.fireValueChangedEvent(ListListenerHelper.java:73)
+	at javafx.collections.ObservableListBase.fireChange(ObservableListBase.java:233)
+	at javafx.collections.FXCollections$UnmodifiableObservableListImpl.lambda$new$52(FXCollections.java:929)
+	at javafx.collections.WeakListChangeListener.onChanged(WeakListChangeListener.java:88)
+	at com.sun.javafx.collections.ListListenerHelper$SingleChange.fireValueChangedEvent(ListListenerHelper.java:164)
+	at com.sun.javafx.collections.ListListenerHelper.fireValueChangedEvent(ListListenerHelper.java:73)
+	at javafx.collections.ObservableListBase.fireChange(ObservableListBase.java:233)
+	at javafx.collections.ListChangeBuilder.commit(ListChangeBuilder.java:482)
+	at javafx.collections.ListChangeBuilder.endChange(ListChangeBuilder.java:541)
+	at javafx.collections.ObservableListBase.endChange(ObservableListBase.java:205)
+	at javafx.collections.ModifiableObservableListBase.setAll(ModifiableObservableListBase.java:90)
+	at javafx.scene.control.TableView.updateVisibleLeafColumns(TableView.java:1634)
+	at javafx.scene.control.TableView.access$200(TableView.java:355)
+	at javafx.scene.control.TableView$5.onChanged(TableView.java:634)
+	at javafx.collections.WeakListChangeListener.onChanged(WeakListChangeListener.java:88)
+	at com.sun.javafx.collections.ListListenerHelper$Generic.fireValueChangedEvent(ListListenerHelper.java:329)
+	at com.sun.javafx.collections.ListListenerHelper.fireValueChangedEvent(ListListenerHelper.java:73)
+	at javafx.collections.ObservableListBase.fireChange(ObservableListBase.java:233)
+	at javafx.collections.ListChangeBuilder.commit(ListChangeBuilder.java:482)
+	at javafx.collections.ListChangeBuilder.endChange(ListChangeBuilder.java:541)
+	at javafx.collections.ObservableListBase.endChange(ObservableListBase.java:205)
+	at javafx.collections.ModifiableObservableListBase.add(ModifiableObservableListBase.java:155)
+	at java.util.AbstractList.add(AbstractList.java:108)
+	at cn.keepfight.qsmanager.controller.salary.SalaryController.lambda$showed$6(SalaryController.java:144)
+	at java.lang.Thread.run(Thread.java:748)
+[ERROR] 2017-10-26 15:26:43,029(287855) --> [Thread-39] cn.keepfight.qsmanager.AppLoader.lambda$main$0(AppLoader.java:22): DefaultUncaughtExceptionHandler from Thread[Thread-39,5,main]  
+java.lang.IllegalStateException: Not on FX application thread; currentThread = Thread-39
+	at com.sun.javafx.tk.Toolkit.checkFxUserThread(Toolkit.java:236)
+	at com.sun.javafx.tk.quantum.QuantumToolkit.checkFxUserThread(QuantumToolkit.java:423)
+	at javafx.scene.Parent$2.onProposedChange(Parent.java:367)
+	at com.sun.javafx.collections.VetoableListDecorator.clear(VetoableListDecorator.java:294)
+	at com.sun.javafx.scene.control.skin.TableColumnHeader.updateSortGrid(TableColumnHeader.java:544)
+	at com.sun.javafx.scene.control.skin.TableColumnHeader.updateSortPosition(TableColumnHeader.java:537)
+	at com.sun.javafx.scene.control.skin.TableColumnHeader.lambda$new$51(TableColumnHeader.java:196)
+	at javafx.collections.WeakListChangeListener.onChanged(WeakListChangeListener.java:88)
+	at com.sun.javafx.collections.ListListenerHelper$Generic.fireValueChangedEvent(ListListenerHelper.java:329)
+	at com.sun.javafx.collections.ListListenerHelper.fireValueChangedEvent(ListListenerHelper.java:73)
+	at javafx.collections.ObservableListBase.fireChange(ObservableListBase.java:233)
+	at javafx.collections.FXCollections$UnmodifiableObservableListImpl.lambda$new$52(FXCollections.java:929)
+	at javafx.collections.WeakListChangeListener.onChanged(WeakListChangeListener.java:88)
+	at com.sun.javafx.collections.ListListenerHelper$SingleChange.fireValueChangedEvent(ListListenerHelper.java:164)
+	at com.sun.javafx.collections.ListListenerHelper.fireValueChangedEvent(ListListenerHelper.java:73)
+	at javafx.collections.ObservableListBase.fireChange(ObservableListBase.java:233)
+	at javafx.collections.ListChangeBuilder.commit(ListChangeBuilder.java:482)
+	at javafx.collections.ListChangeBuilder.endChange(ListChangeBuilder.java:541)
+	at javafx.collections.ObservableListBase.endChange(ObservableListBase.java:205)
+	at javafx.collections.ModifiableObservableListBase.setAll(ModifiableObservableListBase.java:90)
+	at javafx.scene.control.TableView.updateVisibleLeafColumns(TableView.java:1634)
+	at javafx.scene.control.TableView.access$200(TableView.java:355)
+	at javafx.scene.control.TableView$5.onChanged(TableView.java:634)
+	at javafx.collections.WeakListChangeListener.onChanged(WeakListChangeListener.java:88)
+	at com.sun.javafx.collections.ListListenerHelper$Generic.fireValueChangedEvent(ListListenerHelper.java:329)
+	at com.sun.javafx.collections.ListListenerHelper.fireValueChangedEvent(ListListenerHelper.java:73)
+	at javafx.collections.ObservableListBase.fireChange(ObservableListBase.java:233)
+	at javafx.collections.ListChangeBuilder.commit(ListChangeBuilder.java:482)
+	at javafx.collections.ListChangeBuilder.endChange(ListChangeBuilder.java:541)
+	at javafx.collections.ObservableListBase.endChange(ObservableListBase.java:205)
+	at javafx.collections.ModifiableObservableListBase.add(ModifiableObservableListBase.java:155)
+	at java.util.AbstractList.add(AbstractList.java:108)
+	at cn.keepfight.qsmanager.controller.salary.SalaryController.lambda$showed$6(SalaryController.java:144)
+	at java.lang.Thread.run(Thread.java:748)
+[ERROR] 2017-10-26 15:26:43,031(287857) --> [Thread-39] cn.keepfight.qsmanager.AppLoader.lambda$main$0(AppLoader.java:22): DefaultUncaughtExceptionHandler from Thread[Thread-39,5,main]  
+java.lang.IllegalStateException: Not on FX application thread; currentThread = Thread-39
+	at com.sun.javafx.tk.Toolkit.checkFxUserThread(Toolkit.java:236)
+	at com.sun.javafx.tk.quantum.QuantumToolkit.checkFxUserThread(QuantumToolkit.java:423)
+	at javafx.scene.Parent$2.onProposedChange(Parent.java:367)
+	at com.sun.javafx.collections.VetoableListDecorator.clear(VetoableListDecorator.java:294)
+	at com.sun.javafx.scene.control.skin.TableColumnHeader.updateSortGrid(TableColumnHeader.java:544)
+	at com.sun.javafx.scene.control.skin.TableColumnHeader.updateSortPosition(TableColumnHeader.java:537)
+	at com.sun.javafx.scene.control.skin.TableColumnHeader.lambda$new$51(TableColumnHeader.java:196)
+	at javafx.collections.WeakListChangeListener.onChanged(WeakListChangeListener.java:88)
+	at com.sun.javafx.collections.ListListenerHelper$Generic.fireValueChangedEvent(ListListenerHelper.java:329)
+	at com.sun.javafx.collections.ListListenerHelper.fireValueChangedEvent(ListListenerHelper.java:73)
+	at javafx.collections.ObservableListBase.fireChange(ObservableListBase.java:233)
+	at javafx.collections.FXCollections$UnmodifiableObservableListImpl.lambda$new$52(FXCollections.java:929)
+	at javafx.collections.WeakListChangeListener.onChanged(WeakListChangeListener.java:88)
+	at com.sun.javafx.collections.ListListenerHelper$SingleChange.fireValueChangedEvent(ListListenerHelper.java:164)
+	at com.sun.javafx.collections.ListListenerHelper.fireValueChangedEvent(ListListenerHelper.java:73)
+	at javafx.collections.ObservableListBase.fireChange(ObservableListBase.java:233)
+	at javafx.collections.ListChangeBuilder.commit(ListChangeBuilder.java:482)
+	at javafx.collections.ListChangeBuilder.endChange(ListChangeBuilder.java:541)
+	at javafx.collections.ObservableListBase.endChange(ObservableListBase.java:205)
+	at javafx.collections.ModifiableObservableListBase.setAll(ModifiableObservableListBase.java:90)
+	at javafx.scene.control.TableView.updateVisibleLeafColumns(TableView.java:1634)
+	at javafx.scene.control.TableView.access$200(TableView.java:355)
+	at javafx.scene.control.TableView$5.onChanged(TableView.java:634)
+	at javafx.collections.WeakListChangeListener.onChanged(WeakListChangeListener.java:88)
+	at com.sun.javafx.collections.ListListenerHelper$Generic.fireValueChangedEvent(ListListenerHelper.java:329)
+	at com.sun.javafx.collections.ListListenerHelper.fireValueChangedEvent(ListListenerHelper.java:73)
+	at javafx.collections.ObservableListBase.fireChange(ObservableListBase.java:233)
+	at javafx.collections.ListChangeBuilder.commit(ListChangeBuilder.java:482)
+	at javafx.collections.ListChangeBuilder.endChange(ListChangeBuilder.java:541)
+	at javafx.collections.ObservableListBase.endChange(ObservableListBase.java:205)
+	at javafx.collections.ModifiableObservableListBase.add(ModifiableObservableListBase.java:155)
+	at java.util.AbstractList.add(AbstractList.java:108)
+	at cn.keepfight.qsmanager.controller.salary.SalaryController.lambda$showed$6(SalaryController.java:144)
+	at java.lang.Thread.run(Thread.java:748)
+[ERROR] 2017-10-26 15:26:43,032(287858) --> [Thread-39] cn.keepfight.qsmanager.AppLoader.lambda$main$0(AppLoader.java:22): DefaultUncaughtExceptionHandler from Thread[Thread-39,5,main]  
+java.lang.IllegalStateException: Not on FX application thread; currentThread = Thread-39
+	at com.sun.javafx.tk.Toolkit.checkFxUserThread(Toolkit.java:236)
+	at com.sun.javafx.tk.quantum.QuantumToolkit.checkFxUserThread(QuantumToolkit.java:423)
+	at javafx.scene.Parent$2.onProposedChange(Parent.java:367)
+	at com.sun.javafx.collections.VetoableListDecorator.clear(VetoableListDecorator.java:294)
+	at com.sun.javafx.scene.control.skin.TableColumnHeader.updateSortGrid(TableColumnHeader.java:544)
+	at com.sun.javafx.scene.control.skin.TableColumnHeader.updateSortPosition(TableColumnHeader.java:537)
+	at com.sun.javafx.scene.control.skin.TableColumnHeader.lambda$new$51(TableColumnHeader.java:196)
+	at javafx.collections.WeakListChangeListener.onChanged(WeakListChangeListener.java:88)
+	at com.sun.javafx.collections.ListListenerHelper$Generic.fireValueChangedEvent(ListListenerHelper.java:329)
+	at com.sun.javafx.collections.ListListenerHelper.fireValueChangedEvent(ListListenerHelper.java:73)
+	at javafx.collections.ObservableListBase.fireChange(ObservableListBase.java:233)
+	at javafx.collections.FXCollections$UnmodifiableObservableListImpl.lambda$new$52(FXCollections.java:929)
+	at javafx.collections.WeakListChangeListener.onChanged(WeakListChangeListener.java:88)
+	at com.sun.javafx.collections.ListListenerHelper$SingleChange.fireValueChangedEvent(ListListenerHelper.java:164)
+	at com.sun.javafx.collections.ListListenerHelper.fireValueChangedEvent(ListListenerHelper.java:73)
+	at javafx.collections.ObservableListBase.fireChange(ObservableListBase.java:233)
+	at javafx.collections.ListChangeBuilder.commit(ListChangeBuilder.java:482)
+	at javafx.collections.ListChangeBuilder.endChange(ListChangeBuilder.java:541)
+	at javafx.collections.ObservableListBase.endChange(ObservableListBase.java:205)
+	at javafx.collections.ModifiableObservableListBase.setAll(ModifiableObservableListBase.java:90)
+	at javafx.scene.control.TableView.updateVisibleLeafColumns(TableView.java:1634)
+	at javafx.scene.control.TableView.access$200(TableView.java:355)
+	at javafx.scene.control.TableView$5.onChanged(TableView.java:634)
+	at javafx.collections.WeakListChangeListener.onChanged(WeakListChangeListener.java:88)
+	at com.sun.javafx.collections.ListListenerHelper$Generic.fireValueChangedEvent(ListListenerHelper.java:329)
+	at com.sun.javafx.collections.ListListenerHelper.fireValueChangedEvent(ListListenerHelper.java:73)
+	at javafx.collections.ObservableListBase.fireChange(ObservableListBase.java:233)
+	at javafx.collections.ListChangeBuilder.commit(ListChangeBuilder.java:482)
+	at javafx.collections.ListChangeBuilder.endChange(ListChangeBuilder.java:541)
+	at javafx.collections.ObservableListBase.endChange(ObservableListBase.java:205)
+	at javafx.collections.ModifiableObservableListBase.add(ModifiableObservableListBase.java:155)
+	at java.util.AbstractList.add(AbstractList.java:108)
+	at cn.keepfight.qsmanager.controller.salary.SalaryController.lambda$showed$6(SalaryController.java:144)
+	at java.lang.Thread.run(Thread.java:748)
+[ERROR] 2017-10-26 15:26:43,033(287859) --> [Thread-39] cn.keepfight.qsmanager.AppLoader.lambda$main$0(AppLoader.java:22): DefaultUncaughtExceptionHandler from Thread[Thread-39,5,main]  
+java.lang.IllegalStateException: Not on FX application thread; currentThread = Thread-39
+	at com.sun.javafx.tk.Toolkit.checkFxUserThread(Toolkit.java:236)
+	at com.sun.javafx.tk.quantum.QuantumToolkit.checkFxUserThread(QuantumToolkit.java:423)
+	at javafx.scene.Parent$2.onProposedChange(Parent.java:367)
+	at com.sun.javafx.collections.VetoableListDecorator.clear(VetoableListDecorator.java:294)
+	at com.sun.javafx.scene.control.skin.TableColumnHeader.updateSortGrid(TableColumnHeader.java:544)
+	at com.sun.javafx.scene.control.skin.TableColumnHeader.updateSortPosition(TableColumnHeader.java:537)
+	at com.sun.javafx.scene.control.skin.TableColumnHeader.lambda$new$51(TableColumnHeader.java:196)
+	at javafx.collections.WeakListChangeListener.onChanged(WeakListChangeListener.java:88)
+	at com.sun.javafx.collections.ListListenerHelper$Generic.fireValueChangedEvent(ListListenerHelper.java:329)
+	at com.sun.javafx.collections.ListListenerHelper.fireValueChangedEvent(ListListenerHelper.java:73)
+	at javafx.collections.ObservableListBase.fireChange(ObservableListBase.java:233)
+	at javafx.collections.FXCollections$UnmodifiableObservableListImpl.lambda$new$52(FXCollections.java:929)
+	at javafx.collections.WeakListChangeListener.onChanged(WeakListChangeListener.java:88)
+	at com.sun.javafx.collections.ListListenerHelper$SingleChange.fireValueChangedEvent(ListListenerHelper.java:164)
+	at com.sun.javafx.collections.ListListenerHelper.fireValueChangedEvent(ListListenerHelper.java:73)
+	at javafx.collections.ObservableListBase.fireChange(ObservableListBase.java:233)
+	at javafx.collections.ListChangeBuilder.commit(ListChangeBuilder.java:482)
+	at javafx.collections.ListChangeBuilder.endChange(ListChangeBuilder.java:541)
+	at javafx.collections.ObservableListBase.endChange(ObservableListBase.java:205)
+	at javafx.collections.ModifiableObservableListBase.setAll(ModifiableObservableListBase.java:90)
+	at javafx.scene.control.TableView.updateVisibleLeafColumns(TableView.java:1634)
+	at javafx.scene.control.TableView.access$200(TableView.java:355)
+	at javafx.scene.control.TableView$5.onChanged(TableView.java:634)
+	at javafx.collections.WeakListChangeListener.onChanged(WeakListChangeListener.java:88)
+	at com.sun.javafx.collections.ListListenerHelper$Generic.fireValueChangedEvent(ListListenerHelper.java:329)
+	at com.sun.javafx.collections.ListListenerHelper.fireValueChangedEvent(ListListenerHelper.java:73)
+	at javafx.collections.ObservableListBase.fireChange(ObservableListBase.java:233)
+	at javafx.collections.ListChangeBuilder.commit(ListChangeBuilder.java:482)
+	at javafx.collections.ListChangeBuilder.endChange(ListChangeBuilder.java:541)
+	at javafx.collections.ObservableListBase.endChange(ObservableListBase.java:205)
+	at javafx.collections.ModifiableObservableListBase.add(ModifiableObservableListBase.java:155)
+	at java.util.AbstractList.add(AbstractList.java:108)
+	at cn.keepfight.qsmanager.controller.salary.SalaryController.lambda$showed$6(SalaryController.java:144)
+	at java.lang.Thread.run(Thread.java:748)
+[ERROR] 2017-10-26 15:26:43,034(287860) --> [Thread-39] cn.keepfight.qsmanager.AppLoader.lambda$main$0(AppLoader.java:22): DefaultUncaughtExceptionHandler from Thread[Thread-39,5,main]  
+java.lang.IllegalStateException: Not on FX application thread; currentThread = Thread-39
+	at com.sun.javafx.tk.Toolkit.checkFxUserThread(Toolkit.java:236)
+	at com.sun.javafx.tk.quantum.QuantumToolkit.checkFxUserThread(QuantumToolkit.java:423)
+	at javafx.scene.Parent$2.onProposedChange(Parent.java:367)
+	at com.sun.javafx.collections.VetoableListDecorator.clear(VetoableListDecorator.java:294)
+	at com.sun.javafx.scene.control.skin.TableColumnHeader.updateSortGrid(TableColumnHeader.java:544)
+	at com.sun.javafx.scene.control.skin.TableColumnHeader.updateSortPosition(TableColumnHeader.java:537)
+	at com.sun.javafx.scene.control.skin.TableColumnHeader.lambda$new$51(TableColumnHeader.java:196)
+	at javafx.collections.WeakListChangeListener.onChanged(WeakListChangeListener.java:88)
+	at com.sun.javafx.collections.ListListenerHelper$Generic.fireValueChangedEvent(ListListenerHelper.java:329)
+	at com.sun.javafx.collections.ListListenerHelper.fireValueChangedEvent(ListListenerHelper.java:73)
+	at javafx.collections.ObservableListBase.fireChange(ObservableListBase.java:233)
+	at javafx.collections.FXCollections$UnmodifiableObservableListImpl.lambda$new$52(FXCollections.java:929)
+	at javafx.collections.WeakListChangeListener.onChanged(WeakListChangeListener.java:88)
+	at com.sun.javafx.collections.ListListenerHelper$SingleChange.fireValueChangedEvent(ListListenerHelper.java:164)
+	at com.sun.javafx.collections.ListListenerHelper.fireValueChangedEvent(ListListenerHelper.java:73)
+	at javafx.collections.ObservableListBase.fireChange(ObservableListBase.java:233)
+	at javafx.collections.ListChangeBuilder.commit(ListChangeBuilder.java:482)
+	at javafx.collections.ListChangeBuilder.endChange(ListChangeBuilder.java:541)
+	at javafx.collections.ObservableListBase.endChange(ObservableListBase.java:205)
+	at javafx.collections.ModifiableObservableListBase.setAll(ModifiableObservableListBase.java:90)
+	at javafx.scene.control.TableView.updateVisibleLeafColumns(TableView.java:1634)
+	at javafx.scene.control.TableView.access$200(TableView.java:355)
+	at javafx.scene.control.TableView$5.onChanged(TableView.java:634)
+	at javafx.collections.WeakListChangeListener.onChanged(WeakListChangeListener.java:88)
+	at com.sun.javafx.collections.ListListenerHelper$Generic.fireValueChangedEvent(ListListenerHelper.java:329)
+	at com.sun.javafx.collections.ListListenerHelper.fireValueChangedEvent(ListListenerHelper.java:73)
+	at javafx.collections.ObservableListBase.fireChange(ObservableListBase.java:233)
+	at javafx.collections.ListChangeBuilder.commit(ListChangeBuilder.java:482)
+	at javafx.collections.ListChangeBuilder.endChange(ListChangeBuilder.java:541)
+	at javafx.collections.ObservableListBase.endChange(ObservableListBase.java:205)
+	at javafx.collections.ModifiableObservableListBase.add(ModifiableObservableListBase.java:155)
+	at java.util.AbstractList.add(AbstractList.java:108)
+	at cn.keepfight.qsmanager.controller.salary.SalaryController.lambda$showed$6(SalaryController.java:144)
+	at java.lang.Thread.run(Thread.java:748)
+[DEBUG] 2017-10-26 15:27:12,652(317478) --> [JavaFX Application Thread] org.apache.ibatis.logging.commons.JakartaCommonsLoggingImpl.debug(JakartaCommonsLoggingImpl.java:49): ==>  Preparing: # selectStuffSalaryTardy SELECT u.id AS id, u.name AS name, sum(salary - ifnull(sum, 0)) AS sum FROM stuff u, stuff_salary s LEFT JOIN ( SELECT i.salary_id, sum(i.income) sum FROM stuff_income i GROUP BY i.salary_id ) x ON s.id = x.salary_id WHERE # 检查还没还完的 (ifnull(sum, 0) < salary) AND u.id = s.stuff_id GROUP BY stuff_id;   
+[DEBUG] 2017-10-26 15:27:12,652(317478) --> [JavaFX Application Thread] org.apache.ibatis.logging.commons.JakartaCommonsLoggingImpl.debug(JakartaCommonsLoggingImpl.java:49): ==> Parameters:   
+[DEBUG] 2017-10-26 15:27:13,149(317975) --> [JavaFX Application Thread] org.apache.ibatis.logging.commons.JakartaCommonsLoggingImpl.debug(JakartaCommonsLoggingImpl.java:49): <==      Total: 10  
+[DEBUG] 2017-10-26 15:27:13,151(317977) --> [JavaFX Application Thread] org.apache.ibatis.logging.commons.JakartaCommonsLoggingImpl.debug(JakartaCommonsLoggingImpl.java:49): ==>  Preparing: SELECT m.ym AS ym, ifnull(sum, 0) AS sum, sid AS salary_id FROM ( # 获得全部需要还的年月份 SELECT DISTINCT concat(year, '-', lpad(month, 2, '0')) AS ym FROM stuff_salary s LEFT JOIN ( SELECT i.salary_id, sum(i.income) sum FROM stuff_income i GROUP BY i.salary_id ) x ON s.id = x.salary_id WHERE s.salary > ifnull(x.sum, 0) ) AS m LEFT JOIN ( # 获得指定需要还的 SELECT concat(year, '-', lpad(month, 2, '0')) AS ym, salary - ifnull(sum, 0) AS sum, s.id AS sid FROM stuff_salary s LEFT JOIN ( SELECT i.salary_id, sum(i.income) sum FROM stuff_income i GROUP BY i.salary_id ) x ON s.id = x.salary_id WHERE s.stuff_id = ? ) AS s ON m.ym = s.ym ORDER BY m.ym DESC   
+[DEBUG] 2017-10-26 15:27:13,152(317978) --> [JavaFX Application Thread] org.apache.ibatis.logging.commons.JakartaCommonsLoggingImpl.debug(JakartaCommonsLoggingImpl.java:49): ==> Parameters: 2(Long)  
+[DEBUG] 2017-10-26 15:27:13,557(318383) --> [JavaFX Application Thread] org.apache.ibatis.logging.commons.JakartaCommonsLoggingImpl.debug(JakartaCommonsLoggingImpl.java:49): <==      Total: 6  
+[DEBUG] 2017-10-26 15:27:13,558(318384) --> [JavaFX Application Thread] org.apache.ibatis.logging.commons.JakartaCommonsLoggingImpl.debug(JakartaCommonsLoggingImpl.java:49): ==>  Preparing: SELECT m.ym AS ym, ifnull(sum, 0) AS sum, sid AS salary_id FROM ( # 获得全部需要还的年月份 SELECT DISTINCT concat(year, '-', lpad(month, 2, '0')) AS ym FROM stuff_salary s LEFT JOIN ( SELECT i.salary_id, sum(i.income) sum FROM stuff_income i GROUP BY i.salary_id ) x ON s.id = x.salary_id WHERE s.salary > ifnull(x.sum, 0) ) AS m LEFT JOIN ( # 获得指定需要还的 SELECT concat(year, '-', lpad(month, 2, '0')) AS ym, salary - ifnull(sum, 0) AS sum, s.id AS sid FROM stuff_salary s LEFT JOIN ( SELECT i.salary_id, sum(i.income) sum FROM stuff_income i GROUP BY i.salary_id ) x ON s.id = x.salary_id WHERE s.stuff_id = ? ) AS s ON m.ym = s.ym ORDER BY m.ym DESC   
+[DEBUG] 2017-10-26 15:27:13,560(318386) --> [JavaFX Application Thread] org.apache.ibatis.logging.commons.JakartaCommonsLoggingImpl.debug(JakartaCommonsLoggingImpl.java:49): ==> Parameters: 3(Long)  
+[DEBUG] 2017-10-26 15:27:13,969(318795) --> [JavaFX Application Thread] org.apache.ibatis.logging.commons.JakartaCommonsLoggingImpl.debug(JakartaCommonsLoggingImpl.java:49): <==      Total: 6  
+[DEBUG] 2017-10-26 15:27:13,972(318798) --> [JavaFX Application Thread] org.apache.ibatis.logging.commons.JakartaCommonsLoggingImpl.debug(JakartaCommonsLoggingImpl.java:49): ==>  Preparing: SELECT m.ym AS ym, ifnull(sum, 0) AS sum, sid AS salary_id FROM ( # 获得全部需要还的年月份 SELECT DISTINCT concat(year, '-', lpad(month, 2, '0')) AS ym FROM stuff_salary s LEFT JOIN ( SELECT i.salary_id, sum(i.income) sum FROM stuff_income i GROUP BY i.salary_id ) x ON s.id = x.salary_id WHERE s.salary > ifnull(x.sum, 0) ) AS m LEFT JOIN ( # 获得指定需要还的 SELECT concat(year, '-', lpad(month, 2, '0')) AS ym, salary - ifnull(sum, 0) AS sum, s.id AS sid FROM stuff_salary s LEFT JOIN ( SELECT i.salary_id, sum(i.income) sum FROM stuff_income i GROUP BY i.salary_id ) x ON s.id = x.salary_id WHERE s.stuff_id = ? ) AS s ON m.ym = s.ym ORDER BY m.ym DESC   
+[DEBUG] 2017-10-26 15:27:13,972(318798) --> [JavaFX Application Thread] org.apache.ibatis.logging.commons.JakartaCommonsLoggingImpl.debug(JakartaCommonsLoggingImpl.java:49): ==> Parameters: 5(Long)  
+[DEBUG] 2017-10-26 15:27:14,379(319205) --> [JavaFX Application Thread] org.apache.ibatis.logging.commons.JakartaCommonsLoggingImpl.debug(JakartaCommonsLoggingImpl.java:49): <==      Total: 6  
+[DEBUG] 2017-10-26 15:27:14,381(319207) --> [JavaFX Application Thread] org.apache.ibatis.logging.commons.JakartaCommonsLoggingImpl.debug(JakartaCommonsLoggingImpl.java:49): ==>  Preparing: SELECT m.ym AS ym, ifnull(sum, 0) AS sum, sid AS salary_id FROM ( # 获得全部需要还的年月份 SELECT DISTINCT concat(year, '-', lpad(month, 2, '0')) AS ym FROM stuff_salary s LEFT JOIN ( SELECT i.salary_id, sum(i.income) sum FROM stuff_income i GROUP BY i.salary_id ) x ON s.id = x.salary_id WHERE s.salary > ifnull(x.sum, 0) ) AS m LEFT JOIN ( # 获得指定需要还的 SELECT concat(year, '-', lpad(month, 2, '0')) AS ym, salary - ifnull(sum, 0) AS sum, s.id AS sid FROM stuff_salary s LEFT JOIN ( SELECT i.salary_id, sum(i.income) sum FROM stuff_income i GROUP BY i.salary_id ) x ON s.id = x.salary_id WHERE s.stuff_id = ? ) AS s ON m.ym = s.ym ORDER BY m.ym DESC   
+[DEBUG] 2017-10-26 15:27:14,382(319208) --> [JavaFX Application Thread] org.apache.ibatis.logging.commons.JakartaCommonsLoggingImpl.debug(JakartaCommonsLoggingImpl.java:49): ==> Parameters: 6(Long)  
+[DEBUG] 2017-10-26 15:27:14,784(319610) --> [JavaFX Application Thread] org.apache.ibatis.logging.commons.JakartaCommonsLoggingImpl.debug(JakartaCommonsLoggingImpl.java:49): <==      Total: 6  
+[DEBUG] 2017-10-26 15:27:14,785(319611) --> [JavaFX Application Thread] org.apache.ibatis.logging.commons.JakartaCommonsLoggingImpl.debug(JakartaCommonsLoggingImpl.java:49): ==>  Preparing: SELECT m.ym AS ym, ifnull(sum, 0) AS sum, sid AS salary_id FROM ( # 获得全部需要还的年月份 SELECT DISTINCT concat(year, '-', lpad(month, 2, '0')) AS ym FROM stuff_salary s LEFT JOIN ( SELECT i.salary_id, sum(i.income) sum FROM stuff_income i GROUP BY i.salary_id ) x ON s.id = x.salary_id WHERE s.salary > ifnull(x.sum, 0) ) AS m LEFT JOIN ( # 获得指定需要还的 SELECT concat(year, '-', lpad(month, 2, '0')) AS ym, salary - ifnull(sum, 0) AS sum, s.id AS sid FROM stuff_salary s LEFT JOIN ( SELECT i.salary_id, sum(i.income) sum FROM stuff_income i GROUP BY i.salary_id ) x ON s.id = x.salary_id WHERE s.stuff_id = ? ) AS s ON m.ym = s.ym ORDER BY m.ym DESC   
+[DEBUG] 2017-10-26 15:27:14,787(319613) --> [JavaFX Application Thread] org.apache.ibatis.logging.commons.JakartaCommonsLoggingImpl.debug(JakartaCommonsLoggingImpl.java:49): ==> Parameters: 7(Long)  
+[DEBUG] 2017-10-26 15:27:15,433(320259) --> [JavaFX Application Thread] org.apache.ibatis.logging.commons.JakartaCommonsLoggingImpl.debug(JakartaCommonsLoggingImpl.java:49): <==      Total: 6  
+[DEBUG] 2017-10-26 15:27:15,434(320260) --> [JavaFX Application Thread] org.apache.ibatis.logging.commons.JakartaCommonsLoggingImpl.debug(JakartaCommonsLoggingImpl.java:49): ==>  Preparing: SELECT m.ym AS ym, ifnull(sum, 0) AS sum, sid AS salary_id FROM ( # 获得全部需要还的年月份 SELECT DISTINCT concat(year, '-', lpad(month, 2, '0')) AS ym FROM stuff_salary s LEFT JOIN ( SELECT i.salary_id, sum(i.income) sum FROM stuff_income i GROUP BY i.salary_id ) x ON s.id = x.salary_id WHERE s.salary > ifnull(x.sum, 0) ) AS m LEFT JOIN ( # 获得指定需要还的 SELECT concat(year, '-', lpad(month, 2, '0')) AS ym, salary - ifnull(sum, 0) AS sum, s.id AS sid FROM stuff_salary s LEFT JOIN ( SELECT i.salary_id, sum(i.income) sum FROM stuff_income i GROUP BY i.salary_id ) x ON s.id = x.salary_id WHERE s.stuff_id = ? ) AS s ON m.ym = s.ym ORDER BY m.ym DESC   
+[DEBUG] 2017-10-26 15:27:15,435(320261) --> [JavaFX Application Thread] org.apache.ibatis.logging.commons.JakartaCommonsLoggingImpl.debug(JakartaCommonsLoggingImpl.java:49): ==> Parameters: 8(Long)  
+[DEBUG] 2017-10-26 15:27:16,055(320881) --> [JavaFX Application Thread] org.apache.ibatis.logging.commons.JakartaCommonsLoggingImpl.debug(JakartaCommonsLoggingImpl.java:49): <==      Total: 6  
+[DEBUG] 2017-10-26 15:27:16,057(320883) --> [JavaFX Application Thread] org.apache.ibatis.logging.commons.JakartaCommonsLoggingImpl.debug(JakartaCommonsLoggingImpl.java:49): ==>  Preparing: SELECT m.ym AS ym, ifnull(sum, 0) AS sum, sid AS salary_id FROM ( # 获得全部需要还的年月份 SELECT DISTINCT concat(year, '-', lpad(month, 2, '0')) AS ym FROM stuff_salary s LEFT JOIN ( SELECT i.salary_id, sum(i.income) sum FROM stuff_income i GROUP BY i.salary_id ) x ON s.id = x.salary_id WHERE s.salary > ifnull(x.sum, 0) ) AS m LEFT JOIN ( # 获得指定需要还的 SELECT concat(year, '-', lpad(month, 2, '0')) AS ym, salary - ifnull(sum, 0) AS sum, s.id AS sid FROM stuff_salary s LEFT JOIN ( SELECT i.salary_id, sum(i.income) sum FROM stuff_income i GROUP BY i.salary_id ) x ON s.id = x.salary_id WHERE s.stuff_id = ? ) AS s ON m.ym = s.ym ORDER BY m.ym DESC   
+[DEBUG] 2017-10-26 15:27:16,057(320883) --> [JavaFX Application Thread] org.apache.ibatis.logging.commons.JakartaCommonsLoggingImpl.debug(JakartaCommonsLoggingImpl.java:49): ==> Parameters: 9(Long)  
+[DEBUG] 2017-10-26 15:27:16,422(321248) --> [JavaFX Application Thread] org.apache.ibatis.logging.commons.JakartaCommonsLoggingImpl.debug(JakartaCommonsLoggingImpl.java:49): <==      Total: 6  
+[DEBUG] 2017-10-26 15:27:16,423(321249) --> [JavaFX Application Thread] org.apache.ibatis.logging.commons.JakartaCommonsLoggingImpl.debug(JakartaCommonsLoggingImpl.java:49): ==>  Preparing: SELECT m.ym AS ym, ifnull(sum, 0) AS sum, sid AS salary_id FROM ( # 获得全部需要还的年月份 SELECT DISTINCT concat(year, '-', lpad(month, 2, '0')) AS ym FROM stuff_salary s LEFT JOIN ( SELECT i.salary_id, sum(i.income) sum FROM stuff_income i GROUP BY i.salary_id ) x ON s.id = x.salary_id WHERE s.salary > ifnull(x.sum, 0) ) AS m LEFT JOIN ( # 获得指定需要还的 SELECT concat(year, '-', lpad(month, 2, '0')) AS ym, salary - ifnull(sum, 0) AS sum, s.id AS sid FROM stuff_salary s LEFT JOIN ( SELECT i.salary_id, sum(i.income) sum FROM stuff_income i GROUP BY i.salary_id ) x ON s.id = x.salary_id WHERE s.stuff_id = ? ) AS s ON m.ym = s.ym ORDER BY m.ym DESC   
+[DEBUG] 2017-10-26 15:27:16,424(321250) --> [JavaFX Application Thread] org.apache.ibatis.logging.commons.JakartaCommonsLoggingImpl.debug(JakartaCommonsLoggingImpl.java:49): ==> Parameters: 10(Long)  
+[DEBUG] 2017-10-26 15:27:16,627(321453) --> [JavaFX Application Thread] org.apache.ibatis.logging.commons.JakartaCommonsLoggingImpl.debug(JakartaCommonsLoggingImpl.java:49): <==      Total: 6  
+[DEBUG] 2017-10-26 15:27:16,628(321454) --> [JavaFX Application Thread] org.apache.ibatis.logging.commons.JakartaCommonsLoggingImpl.debug(JakartaCommonsLoggingImpl.java:49): ==>  Preparing: SELECT m.ym AS ym, ifnull(sum, 0) AS sum, sid AS salary_id FROM ( # 获得全部需要还的年月份 SELECT DISTINCT concat(year, '-', lpad(month, 2, '0')) AS ym FROM stuff_salary s LEFT JOIN ( SELECT i.salary_id, sum(i.income) sum FROM stuff_income i GROUP BY i.salary_id ) x ON s.id = x.salary_id WHERE s.salary > ifnull(x.sum, 0) ) AS m LEFT JOIN ( # 获得指定需要还的 SELECT concat(year, '-', lpad(month, 2, '0')) AS ym, salary - ifnull(sum, 0) AS sum, s.id AS sid FROM stuff_salary s LEFT JOIN ( SELECT i.salary_id, sum(i.income) sum FROM stuff_income i GROUP BY i.salary_id ) x ON s.id = x.salary_id WHERE s.stuff_id = ? ) AS s ON m.ym = s.ym ORDER BY m.ym DESC   
+[DEBUG] 2017-10-26 15:27:16,629(321455) --> [JavaFX Application Thread] org.apache.ibatis.logging.commons.JakartaCommonsLoggingImpl.debug(JakartaCommonsLoggingImpl.java:49): ==> Parameters: 11(Long)  
+[DEBUG] 2017-10-26 15:27:16,836(321662) --> [JavaFX Application Thread] org.apache.ibatis.logging.commons.JakartaCommonsLoggingImpl.debug(JakartaCommonsLoggingImpl.java:49): <==      Total: 6  
+[DEBUG] 2017-10-26 15:27:16,837(321663) --> [JavaFX Application Thread] org.apache.ibatis.logging.commons.JakartaCommonsLoggingImpl.debug(JakartaCommonsLoggingImpl.java:49): ==>  Preparing: SELECT m.ym AS ym, ifnull(sum, 0) AS sum, sid AS salary_id FROM ( # 获得全部需要还的年月份 SELECT DISTINCT concat(year, '-', lpad(month, 2, '0')) AS ym FROM stuff_salary s LEFT JOIN ( SELECT i.salary_id, sum(i.income) sum FROM stuff_income i GROUP BY i.salary_id ) x ON s.id = x.salary_id WHERE s.salary > ifnull(x.sum, 0) ) AS m LEFT JOIN ( # 获得指定需要还的 SELECT concat(year, '-', lpad(month, 2, '0')) AS ym, salary - ifnull(sum, 0) AS sum, s.id AS sid FROM stuff_salary s LEFT JOIN ( SELECT i.salary_id, sum(i.income) sum FROM stuff_income i GROUP BY i.salary_id ) x ON s.id = x.salary_id WHERE s.stuff_id = ? ) AS s ON m.ym = s.ym ORDER BY m.ym DESC   
+[DEBUG] 2017-10-26 15:27:16,838(321664) --> [JavaFX Application Thread] org.apache.ibatis.logging.commons.JakartaCommonsLoggingImpl.debug(JakartaCommonsLoggingImpl.java:49): ==> Parameters: 12(Long)  
+[DEBUG] 2017-10-26 15:27:17,036(321862) --> [JavaFX Application Thread] org.apache.ibatis.logging.commons.JakartaCommonsLoggingImpl.debug(JakartaCommonsLoggingImpl.java:49): <==      Total: 6  
+[DEBUG] 2017-10-26 15:27:41,690(346516) --> [JavaFX Application Thread] org.apache.ibatis.logging.commons.JakartaCommonsLoggingImpl.debug(JakartaCommonsLoggingImpl.java:49): ==>  Preparing: SELECT m.mon AS month, ifnull(total, 0) AS total, ifnull(sum, 0) AS given FROM mons m LEFT JOIN ( SELECT month, sum(salary) AS total, sum(ifnull(sum, 0)) AS sum FROM stuff_salary s LEFT JOIN ( SELECT i.salary_id, sum(i.income) sum FROM stuff_income i GROUP BY i.salary_id ) x ON s.id = x.salary_id WHERE s.year = ? GROUP BY month ) x ON x.month = m.mon ORDER BY m.mon   
+[DEBUG] 2017-10-26 15:27:41,690(346516) --> [JavaFX Application Thread] org.apache.ibatis.logging.commons.JakartaCommonsLoggingImpl.debug(JakartaCommonsLoggingImpl.java:49): ==> Parameters: 2017(Long)  
+[DEBUG] 2017-10-26 15:27:42,053(346879) --> [JavaFX Application Thread] org.apache.ibatis.logging.commons.JakartaCommonsLoggingImpl.debug(JakartaCommonsLoggingImpl.java:49): <==      Total: 12  
+[DEBUG] 2017-10-26 15:27:42,071(346897) --> [Thread-40] org.apache.ibatis.logging.commons.JakartaCommonsLoggingImpl.debug(JakartaCommonsLoggingImpl.java:49): ==>  Preparing: # selectStuffSalaryTardy SELECT u.id AS id, u.name AS name, sum(salary - ifnull(sum, 0)) AS sum FROM stuff u, stuff_salary s LEFT JOIN ( SELECT i.salary_id, sum(i.income) sum FROM stuff_income i GROUP BY i.salary_id ) x ON s.id = x.salary_id WHERE # 检查还没还完的 (ifnull(sum, 0) < salary) AND u.id = s.stuff_id GROUP BY stuff_id;   
+[DEBUG] 2017-10-26 15:27:42,074(346900) --> [Thread-40] org.apache.ibatis.logging.commons.JakartaCommonsLoggingImpl.debug(JakartaCommonsLoggingImpl.java:49): ==> Parameters:   
+[DEBUG] 2017-10-26 15:27:42,436(347262) --> [Thread-40] org.apache.ibatis.logging.commons.JakartaCommonsLoggingImpl.debug(JakartaCommonsLoggingImpl.java:49): <==      Total: 10  
+[DEBUG] 2017-10-26 15:27:42,437(347263) --> [Thread-40] org.apache.ibatis.logging.commons.JakartaCommonsLoggingImpl.debug(JakartaCommonsLoggingImpl.java:49): ==>  Preparing: SELECT m.ym AS ym, ifnull(sum, 0) AS sum, sid AS salary_id FROM ( # 获得全部需要还的年月份 SELECT DISTINCT concat(year, '-', lpad(month, 2, '0')) AS ym FROM stuff_salary s LEFT JOIN ( SELECT i.salary_id, sum(i.income) sum FROM stuff_income i GROUP BY i.salary_id ) x ON s.id = x.salary_id WHERE s.salary > ifnull(x.sum, 0) ) AS m LEFT JOIN ( # 获得指定需要还的 SELECT concat(year, '-', lpad(month, 2, '0')) AS ym, salary - ifnull(sum, 0) AS sum, s.id AS sid FROM stuff_salary s LEFT JOIN ( SELECT i.salary_id, sum(i.income) sum FROM stuff_income i GROUP BY i.salary_id ) x ON s.id = x.salary_id WHERE s.stuff_id = ? ) AS s ON m.ym = s.ym ORDER BY m.ym DESC   
+[DEBUG] 2017-10-26 15:27:42,438(347264) --> [Thread-40] org.apache.ibatis.logging.commons.JakartaCommonsLoggingImpl.debug(JakartaCommonsLoggingImpl.java:49): ==> Parameters: 2(Long)  
+[DEBUG] 2017-10-26 15:27:43,255(348081) --> [Thread-40] org.apache.ibatis.logging.commons.JakartaCommonsLoggingImpl.debug(JakartaCommonsLoggingImpl.java:49): <==      Total: 6  
+[DEBUG] 2017-10-26 15:27:43,256(348082) --> [Thread-40] org.apache.ibatis.logging.commons.JakartaCommonsLoggingImpl.debug(JakartaCommonsLoggingImpl.java:49): ==>  Preparing: SELECT m.ym AS ym, ifnull(sum, 0) AS sum, sid AS salary_id FROM ( # 获得全部需要还的年月份 SELECT DISTINCT concat(year, '-', lpad(month, 2, '0')) AS ym FROM stuff_salary s LEFT JOIN ( SELECT i.salary_id, sum(i.income) sum FROM stuff_income i GROUP BY i.salary_id ) x ON s.id = x.salary_id WHERE s.salary > ifnull(x.sum, 0) ) AS m LEFT JOIN ( # 获得指定需要还的 SELECT concat(year, '-', lpad(month, 2, '0')) AS ym, salary - ifnull(sum, 0) AS sum, s.id AS sid FROM stuff_salary s LEFT JOIN ( SELECT i.salary_id, sum(i.income) sum FROM stuff_income i GROUP BY i.salary_id ) x ON s.id = x.salary_id WHERE s.stuff_id = ? ) AS s ON m.ym = s.ym ORDER BY m.ym DESC   
+[DEBUG] 2017-10-26 15:27:43,257(348083) --> [Thread-40] org.apache.ibatis.logging.commons.JakartaCommonsLoggingImpl.debug(JakartaCommonsLoggingImpl.java:49): ==> Parameters: 3(Long)  
+[DEBUG] 2017-10-26 15:27:43,499(348325) --> [Thread-40] org.apache.ibatis.logging.commons.JakartaCommonsLoggingImpl.debug(JakartaCommonsLoggingImpl.java:49): <==      Total: 6  
+[DEBUG] 2017-10-26 15:27:43,501(348327) --> [Thread-40] org.apache.ibatis.logging.commons.JakartaCommonsLoggingImpl.debug(JakartaCommonsLoggingImpl.java:49): ==>  Preparing: SELECT m.ym AS ym, ifnull(sum, 0) AS sum, sid AS salary_id FROM ( # 获得全部需要还的年月份 SELECT DISTINCT concat(year, '-', lpad(month, 2, '0')) AS ym FROM stuff_salary s LEFT JOIN ( SELECT i.salary_id, sum(i.income) sum FROM stuff_income i GROUP BY i.salary_id ) x ON s.id = x.salary_id WHERE s.salary > ifnull(x.sum, 0) ) AS m LEFT JOIN ( # 获得指定需要还的 SELECT concat(year, '-', lpad(month, 2, '0')) AS ym, salary - ifnull(sum, 0) AS sum, s.id AS sid FROM stuff_salary s LEFT JOIN ( SELECT i.salary_id, sum(i.income) sum FROM stuff_income i GROUP BY i.salary_id ) x ON s.id = x.salary_id WHERE s.stuff_id = ? ) AS s ON m.ym = s.ym ORDER BY m.ym DESC   
+[DEBUG] 2017-10-26 15:27:43,503(348329) --> [Thread-40] org.apache.ibatis.logging.commons.JakartaCommonsLoggingImpl.debug(JakartaCommonsLoggingImpl.java:49): ==> Parameters: 5(Long)  
+[DEBUG] 2017-10-26 15:27:43,866(348692) --> [Thread-40] org.apache.ibatis.logging.commons.JakartaCommonsLoggingImpl.debug(JakartaCommonsLoggingImpl.java:49): <==      Total: 6  
+[DEBUG] 2017-10-26 15:27:43,867(348693) --> [Thread-40] org.apache.ibatis.logging.commons.JakartaCommonsLoggingImpl.debug(JakartaCommonsLoggingImpl.java:49): ==>  Preparing: SELECT m.ym AS ym, ifnull(sum, 0) AS sum, sid AS salary_id FROM ( # 获得全部需要还的年月份 SELECT DISTINCT concat(year, '-', lpad(month, 2, '0')) AS ym FROM stuff_salary s LEFT JOIN ( SELECT i.salary_id, sum(i.income) sum FROM stuff_income i GROUP BY i.salary_id ) x ON s.id = x.salary_id WHERE s.salary > ifnull(x.sum, 0) ) AS m LEFT JOIN ( # 获得指定需要还的 SELECT concat(year, '-', lpad(month, 2, '0')) AS ym, salary - ifnull(sum, 0) AS sum, s.id AS sid FROM stuff_salary s LEFT JOIN ( SELECT i.salary_id, sum(i.income) sum FROM stuff_income i GROUP BY i.salary_id ) x ON s.id = x.salary_id WHERE s.stuff_id = ? ) AS s ON m.ym = s.ym ORDER BY m.ym DESC   
+[DEBUG] 2017-10-26 15:27:43,868(348694) --> [Thread-40] org.apache.ibatis.logging.commons.JakartaCommonsLoggingImpl.debug(JakartaCommonsLoggingImpl.java:49): ==> Parameters: 6(Long)  
+[DEBUG] 2017-10-26 15:27:44,317(349143) --> [Thread-40] org.apache.ibatis.logging.commons.JakartaCommonsLoggingImpl.debug(JakartaCommonsLoggingImpl.java:49): <==      Total: 6  
+[DEBUG] 2017-10-26 15:27:44,318(349144) --> [Thread-40] org.apache.ibatis.logging.commons.JakartaCommonsLoggingImpl.debug(JakartaCommonsLoggingImpl.java:49): ==>  Preparing: SELECT m.ym AS ym, ifnull(sum, 0) AS sum, sid AS salary_id FROM ( # 获得全部需要还的年月份 SELECT DISTINCT concat(year, '-', lpad(month, 2, '0')) AS ym FROM stuff_salary s LEFT JOIN ( SELECT i.salary_id, sum(i.income) sum FROM stuff_income i GROUP BY i.salary_id ) x ON s.id = x.salary_id WHERE s.salary > ifnull(x.sum, 0) ) AS m LEFT JOIN ( # 获得指定需要还的 SELECT concat(year, '-', lpad(month, 2, '0')) AS ym, salary - ifnull(sum, 0) AS sum, s.id AS sid FROM stuff_salary s LEFT JOIN ( SELECT i.salary_id, sum(i.income) sum FROM stuff_income i GROUP BY i.salary_id ) x ON s.id = x.salary_id WHERE s.stuff_id = ? ) AS s ON m.ym = s.ym ORDER BY m.ym DESC   
+[DEBUG] 2017-10-26 15:27:44,319(349145) --> [Thread-40] org.apache.ibatis.logging.commons.JakartaCommonsLoggingImpl.debug(JakartaCommonsLoggingImpl.java:49): ==> Parameters: 7(Long)  
+[DEBUG] 2017-10-26 15:27:44,699(349525) --> [Thread-40] org.apache.ibatis.logging.commons.JakartaCommonsLoggingImpl.debug(JakartaCommonsLoggingImpl.java:49): <==      Total: 6  
+[DEBUG] 2017-10-26 15:27:44,700(349526) --> [Thread-40] org.apache.ibatis.logging.commons.JakartaCommonsLoggingImpl.debug(JakartaCommonsLoggingImpl.java:49): ==>  Preparing: SELECT m.ym AS ym, ifnull(sum, 0) AS sum, sid AS salary_id FROM ( # 获得全部需要还的年月份 SELECT DISTINCT concat(year, '-', lpad(month, 2, '0')) AS ym FROM stuff_salary s LEFT JOIN ( SELECT i.salary_id, sum(i.income) sum FROM stuff_income i GROUP BY i.salary_id ) x ON s.id = x.salary_id WHERE s.salary > ifnull(x.sum, 0) ) AS m LEFT JOIN ( # 获得指定需要还的 SELECT concat(year, '-', lpad(month, 2, '0')) AS ym, salary - ifnull(sum, 0) AS sum, s.id AS sid FROM stuff_salary s LEFT JOIN ( SELECT i.salary_id, sum(i.income) sum FROM stuff_income i GROUP BY i.salary_id ) x ON s.id = x.salary_id WHERE s.stuff_id = ? ) AS s ON m.ym = s.ym ORDER BY m.ym DESC   
+[DEBUG] 2017-10-26 15:27:44,701(349527) --> [Thread-40] org.apache.ibatis.logging.commons.JakartaCommonsLoggingImpl.debug(JakartaCommonsLoggingImpl.java:49): ==> Parameters: 8(Long)  
+[DEBUG] 2017-10-26 15:27:45,097(349923) --> [Thread-40] org.apache.ibatis.logging.commons.JakartaCommonsLoggingImpl.debug(JakartaCommonsLoggingImpl.java:49): <==      Total: 6  
+[DEBUG] 2017-10-26 15:27:45,098(349924) --> [Thread-40] org.apache.ibatis.logging.commons.JakartaCommonsLoggingImpl.debug(JakartaCommonsLoggingImpl.java:49): ==>  Preparing: SELECT m.ym AS ym, ifnull(sum, 0) AS sum, sid AS salary_id FROM ( # 获得全部需要还的年月份 SELECT DISTINCT concat(year, '-', lpad(month, 2, '0')) AS ym FROM stuff_salary s LEFT JOIN ( SELECT i.salary_id, sum(i.income) sum FROM stuff_income i GROUP BY i.salary_id ) x ON s.id = x.salary_id WHERE s.salary > ifnull(x.sum, 0) ) AS m LEFT JOIN ( # 获得指定需要还的 SELECT concat(year, '-', lpad(month, 2, '0')) AS ym, salary - ifnull(sum, 0) AS sum, s.id AS sid FROM stuff_salary s LEFT JOIN ( SELECT i.salary_id, sum(i.income) sum FROM stuff_income i GROUP BY i.salary_id ) x ON s.id = x.salary_id WHERE s.stuff_id = ? ) AS s ON m.ym = s.ym ORDER BY m.ym DESC   
+[DEBUG] 2017-10-26 15:27:45,099(349925) --> [Thread-40] org.apache.ibatis.logging.commons.JakartaCommonsLoggingImpl.debug(JakartaCommonsLoggingImpl.java:49): ==> Parameters: 9(Long)  
+[DEBUG] 2017-10-26 15:27:45,506(350332) --> [Thread-40] org.apache.ibatis.logging.commons.JakartaCommonsLoggingImpl.debug(JakartaCommonsLoggingImpl.java:49): <==      Total: 6  
+[DEBUG] 2017-10-26 15:27:45,507(350333) --> [Thread-40] org.apache.ibatis.logging.commons.JakartaCommonsLoggingImpl.debug(JakartaCommonsLoggingImpl.java:49): ==>  Preparing: SELECT m.ym AS ym, ifnull(sum, 0) AS sum, sid AS salary_id FROM ( # 获得全部需要还的年月份 SELECT DISTINCT concat(year, '-', lpad(month, 2, '0')) AS ym FROM stuff_salary s LEFT JOIN ( SELECT i.salary_id, sum(i.income) sum FROM stuff_income i GROUP BY i.salary_id ) x ON s.id = x.salary_id WHERE s.salary > ifnull(x.sum, 0) ) AS m LEFT JOIN ( # 获得指定需要还的 SELECT concat(year, '-', lpad(month, 2, '0')) AS ym, salary - ifnull(sum, 0) AS sum, s.id AS sid FROM stuff_salary s LEFT JOIN ( SELECT i.salary_id, sum(i.income) sum FROM stuff_income i GROUP BY i.salary_id ) x ON s.id = x.salary_id WHERE s.stuff_id = ? ) AS s ON m.ym = s.ym ORDER BY m.ym DESC   
+[DEBUG] 2017-10-26 15:27:45,508(350334) --> [Thread-40] org.apache.ibatis.logging.commons.JakartaCommonsLoggingImpl.debug(JakartaCommonsLoggingImpl.java:49): ==> Parameters: 10(Long)  
+[DEBUG] 2017-10-26 15:27:45,713(350539) --> [Thread-40] org.apache.ibatis.logging.commons.JakartaCommonsLoggingImpl.debug(JakartaCommonsLoggingImpl.java:49): <==      Total: 6  
+[DEBUG] 2017-10-26 15:27:45,714(350540) --> [Thread-40] org.apache.ibatis.logging.commons.JakartaCommonsLoggingImpl.debug(JakartaCommonsLoggingImpl.java:49): ==>  Preparing: SELECT m.ym AS ym, ifnull(sum, 0) AS sum, sid AS salary_id FROM ( # 获得全部需要还的年月份 SELECT DISTINCT concat(year, '-', lpad(month, 2, '0')) AS ym FROM stuff_salary s LEFT JOIN ( SELECT i.salary_id, sum(i.income) sum FROM stuff_income i GROUP BY i.salary_id ) x ON s.id = x.salary_id WHERE s.salary > ifnull(x.sum, 0) ) AS m LEFT JOIN ( # 获得指定需要还的 SELECT concat(year, '-', lpad(month, 2, '0')) AS ym, salary - ifnull(sum, 0) AS sum, s.id AS sid FROM stuff_salary s LEFT JOIN ( SELECT i.salary_id, sum(i.income) sum FROM stuff_income i GROUP BY i.salary_id ) x ON s.id = x.salary_id WHERE s.stuff_id = ? ) AS s ON m.ym = s.ym ORDER BY m.ym DESC   
+[DEBUG] 2017-10-26 15:27:45,715(350541) --> [Thread-40] org.apache.ibatis.logging.commons.JakartaCommonsLoggingImpl.debug(JakartaCommonsLoggingImpl.java:49): ==> Parameters: 11(Long)  
+[DEBUG] 2017-10-26 15:27:46,120(350946) --> [Thread-40] org.apache.ibatis.logging.commons.JakartaCommonsLoggingImpl.debug(JakartaCommonsLoggingImpl.java:49): <==      Total: 6  
+[DEBUG] 2017-10-26 15:27:46,121(350947) --> [Thread-40] org.apache.ibatis.logging.commons.JakartaCommonsLoggingImpl.debug(JakartaCommonsLoggingImpl.java:49): ==>  Preparing: SELECT m.ym AS ym, ifnull(sum, 0) AS sum, sid AS salary_id FROM ( # 获得全部需要还的年月份 SELECT DISTINCT concat(year, '-', lpad(month, 2, '0')) AS ym FROM stuff_salary s LEFT JOIN ( SELECT i.salary_id, sum(i.income) sum FROM stuff_income i GROUP BY i.salary_id ) x ON s.id = x.salary_id WHERE s.salary > ifnull(x.sum, 0) ) AS m LEFT JOIN ( # 获得指定需要还的 SELECT concat(year, '-', lpad(month, 2, '0')) AS ym, salary - ifnull(sum, 0) AS sum, s.id AS sid FROM stuff_salary s LEFT JOIN ( SELECT i.salary_id, sum(i.income) sum FROM stuff_income i GROUP BY i.salary_id ) x ON s.id = x.salary_id WHERE s.stuff_id = ? ) AS s ON m.ym = s.ym ORDER BY m.ym DESC   
+[DEBUG] 2017-10-26 15:27:46,122(350948) --> [Thread-40] org.apache.ibatis.logging.commons.JakartaCommonsLoggingImpl.debug(JakartaCommonsLoggingImpl.java:49): ==> Parameters: 12(Long)  
+[DEBUG] 2017-10-26 15:27:46,530(351356) --> [Thread-40] org.apache.ibatis.logging.commons.JakartaCommonsLoggingImpl.debug(JakartaCommonsLoggingImpl.java:49): <==      Total: 6  

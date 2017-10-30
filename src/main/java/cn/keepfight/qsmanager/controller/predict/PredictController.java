@@ -1,23 +1,35 @@
 package cn.keepfight.qsmanager.controller.predict;
 
 import cn.keepfight.qsmanager.controller.ContentCtrl;
+import cn.keepfight.qsmanager.dao.predict.PredictTradeDao;
+import cn.keepfight.qsmanager.dao.predict.PredictTradeGroup;
+import cn.keepfight.qsmanager.dao.predict.PredictTradeItemDao;
+import cn.keepfight.qsmanager.service.PredictServers;
 import cn.keepfight.utils.FXUtils;
 import cn.keepfight.utils.FXWidgetUtil;
+import cn.keepfight.widget.PredictItem;
 import javafx.beans.binding.StringBinding;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.fxml.Initializable;
+import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.RowConstraints;
 import javafx.scene.layout.VBox;
 
 import java.math.BigDecimal;
 import java.net.URL;
-import java.util.Properties;
-import java.util.ResourceBundle;
+import java.util.*;
+import java.util.function.BiConsumer;
+import java.util.function.BinaryOperator;
+import java.util.function.Function;
+import java.util.function.Supplier;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 /**
  * 预算表
@@ -49,7 +61,26 @@ public class PredictController implements Initializable, ContentCtrl {
 
     @Override
     public void showed(Properties params) {
-
+        try {
+            List<PredictTradeDao> list = PredictServers.selectOutcomePredictLeft();
+            clearRow(grid_income);
+            list.stream()
+                    .collect(Collectors.groupingBy(
+                            PredictTradeDao::getSid)
+                    ).values()
+                    .stream()
+                    .map(ss -> {
+                        PredictTradeGroup res = new PredictTradeGroup();
+                        res.setName(ss.get(0).getName());
+                        res.setSid(ss.get(0).getSid());
+                        res.setLefts(ss.stream()
+                                .map(s -> new PredictTradeItemDao(s.getYear(), s.getMonth(), s.getLeftsum()))
+                                .collect(Collectors.toList()));
+                        return res;
+                    }).forEach(this::incomeAddRow);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -68,7 +99,6 @@ public class PredictController implements Initializable, ContentCtrl {
 
         FXWidgetUtil.simpleTriOper(lab_total, BigDecimal::add, BigDecimal::subtract, lab_cash_total, lab_income_total, lab_outcome_total);
     }
-
 
     private void countCash() {
         BigDecimal z = new BigDecimal(0);
@@ -92,7 +122,37 @@ public class PredictController implements Initializable, ContentCtrl {
         lab_cash_total.setText(FXUtils.deciToMoney(z));
     }
 
-    private void incomeAddRow(){
-        grid_income.getRowConstraints().size();
+    private void incomeAddRow(PredictTradeGroup dao) {
+        VBox vBox = new VBox(3.0);
+        vBox.setPadding(new Insets(3.0));
+        dao.getLefts().forEach(x -> {
+            PredictItem item = FXWidgetUtil.getPredictItem();
+            item.set(new PredictItem.PredictItemObj(
+                    false,
+                    new BigDecimal(0),
+                    x.getTotal(),
+                    x.getYear(),
+                    x.getMonth()
+            ));
+            vBox.getChildren().add(item.getRoot());
+        });
+        RowConstraints rowConstraints = new RowConstraints();
+        grid_income.getRowConstraints().add(rowConstraints);
+        System.out.println("grid_income.getRowConstraints().size():" + grid_income.getRowConstraints().size());
+        grid_income.addRow(grid_income.getRowConstraints().size() - 1,
+                new Label(dao.getName()),
+                vBox,
+                new Label("+0"));
+    }
+
+    private void clearRow(GridPane grid) {
+        Set<Node> deleteNodes = new HashSet<>();
+        for (Node child : grid.getChildren()) {
+            if (!(child instanceof Label) && !(child instanceof VBox)) {
+                continue;
+            }
+            deleteNodes.add(child);
+        }
+        grid.getChildren().removeAll(deleteNodes);
     }
 }

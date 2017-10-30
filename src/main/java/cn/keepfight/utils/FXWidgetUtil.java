@@ -3,6 +3,7 @@ package cn.keepfight.utils;
 
 import cn.keepfight.widget.AddSalaryItem;
 import cn.keepfight.widget.MonthPicker;
+import cn.keepfight.widget.PredictItem;
 import cn.keepfight.widget.YearScrollPicker;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -125,6 +126,15 @@ public class FXWidgetUtil {
     public static AddSalaryItem getSalaryNewItem() {
         try {
             return ViewPathUtil.loadWidgetForController("add_salary/add_salary.fxml");
+        } catch (IOException e) {
+            e.printStackTrace();
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static PredictItem getPredictItem() {
+        try {
+            return ViewPathUtil.loadWidgetForController("predict/predict_item.fxml");
         } catch (IOException e) {
             e.printStackTrace();
             throw new RuntimeException(e);

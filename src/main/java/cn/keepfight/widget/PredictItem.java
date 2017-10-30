@@ -2,6 +2,7 @@ package cn.keepfight.widget;
 
 import cn.keepfight.utils.FXUtils;
 import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.LongProperty;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.fxml.Initializable;
@@ -27,6 +28,8 @@ public class PredictItem implements Initializable, Widget<PredictItem.PredictIte
     public TextField text_edit;
     public Button btn_all;
     public HBox content;
+    private Long year = 2017L;
+    private Long month = 6L;
 
     @Override
     public Node getRoot() {
@@ -38,9 +41,12 @@ public class PredictItem implements Initializable, Widget<PredictItem.PredictIte
         set(new PredictItemObj(
                 false,
                 new BigDecimal(0),
-                new BigDecimal(0)));
+                new BigDecimal(0),
+                2017L,
+                6L));
         btn_all.setOnAction(event -> text_edit.setText(label_total.getText()));
         content.disableProperty().bind(check.selectedProperty().not());
+        check.setText(year+"年"+month+"月");
     }
 
     @Override
@@ -48,25 +54,32 @@ public class PredictItem implements Initializable, Widget<PredictItem.PredictIte
         check.selectedProperty().set(data.getSelect());
         text_edit.setText(FXUtils.deciToMoney(data.getEdit()));
         label_total.setText(FXUtils.deciToMoney(data.getTotal()));
+        year = data.getYear();
+        month = data.getMonth();
+        check.setText(year+"年"+month+"月");
     }
 
     @Override
     public PredictItemObj get() {
-
         return new PredictItemObj(check.isSelected(),
                 FXUtils.getDecimal(text_edit.getText()),
-                FXUtils.getDecimal(label_total.getText()));
+                FXUtils.getDecimal(label_total.getText()),
+                year, month);
     }
 
     public static class PredictItemObj {
         private Boolean select = false;
         private BigDecimal edit = new BigDecimal(0);
         private BigDecimal total = new BigDecimal(0);
+        private Long year = 2017L;
+        private Long month = 6L;
 
-        public PredictItemObj(Boolean select, BigDecimal edit, BigDecimal total) {
+        public PredictItemObj(Boolean select, BigDecimal edit, BigDecimal total, Long year, Long month) {
             this.select = select;
             this.edit = edit;
             this.total = total;
+            this.year = year;
+            this.month = month;
         }
 
         public Boolean getSelect() {
@@ -94,6 +107,22 @@ public class PredictItem implements Initializable, Widget<PredictItem.PredictIte
         public PredictItemObj setTotal(BigDecimal total) {
             this.total = total;
             return this;
+        }
+
+        public Long getYear() {
+            return year;
+        }
+
+        public void setYear(Long year) {
+            this.year = year;
+        }
+
+        public Long getMonth() {
+            return month;
+        }
+
+        public void setMonth(Long month) {
+            this.month = month;
         }
     }
 }
