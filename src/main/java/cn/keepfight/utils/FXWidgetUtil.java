@@ -169,7 +169,7 @@ public class FXWidgetUtil {
                         .collect(Collectors.joining(SPLITER)));
             }
             ConfigUtil.store(PROPERTIES_FILE, ps);
-        }).run();
+        }).start();
     }
 
     public static <T> void compute(List<T> list, Function<T, BigDecimal> toDecimal,

@@ -140,19 +140,27 @@ public class MainPane {
      */
     public void changeTo(ContentCtrl controller, Properties params) {
 
+        Long a = System.currentTimeMillis();
         if (controller == null) {
             // 如果为 NULL，这提示错误
             changeTo(MainPaneList.LOADING_ERROR);
             return;
         }
+        Platform.runLater(() -> {
+            try {
+                centerScp.setContent(MainPaneList.LOADING.getController().getRoot());
+            }catch (Exception e){
+                //
+                e.printStackTrace();
+            }
 
-        Platform.runLater(() -> centerScp.setContent(MainPaneList.LOADING.getController().getRoot()));
-        // 考虑到一次切换界面的刷新意义不大
-        if (!isLoaded.getOrDefault(controller, false)) {
-            Platform.runLater(controller::loaded);
-            isLoaded.put(controller, true);
-        }
-        Platform.runLater(()->{
+            System.out.println("changeTo-"+controller.getTitle().get()+"LOADING:"+(System.currentTimeMillis()-a));
+
+            // 考虑到一次切换界面的刷新意义不大
+            if (!isLoaded.getOrDefault(controller, false)) {
+                controller.loaded();
+                isLoaded.put(controller, true);
+            }
             title.textProperty().bind(controller.getTitle());
             btnList.getChildren().clear();
             List<Button> btns;
@@ -192,16 +200,21 @@ public class MainPane {
                 }
             }));
             titleVisible(!controller.transparentBackground());
-        });
 
-        new Thread(() -> {
-            controller.showed(params);
-            // 加载至主界面
-            Platform.runLater(()->centerScp.setContent(controller.getRoot()));
-            // 添加到队列中
-            push(controller, params);
-            controller.showedAfter(params);
-        }).run();
+            System.out.println("changeTo-"+controller.getTitle().get()+"-titleVisible:"+(System.currentTimeMillis()-a));
+
+            new Thread(() -> {
+                System.out.println("changeTo-"+controller.getTitle().get()+"showed-before:"+(System.currentTimeMillis()-a));
+                controller.showed(params);
+                System.out.println("changeTo-"+controller.getTitle().get()+"showed-after:"+(System.currentTimeMillis()-a));
+                // 加载至主界面
+                Platform.runLater(() -> centerScp.setContent(controller.getRoot()));
+                // 添加到队列中
+                push(controller, params);
+                System.out.println("changeTo-"+controller.getTitle().get()+"showedAfter:"+(System.currentTimeMillis()-a));
+                controller.showedAfter(params);
+            }).start();
+        });
     }
 
     /**
@@ -373,14 +386,14 @@ public class MainPane {
         return btn;
     }
 
-    private List<Integer> example(List<Integer> aList, List<Integer> bList){
+    private List<Integer> example(List<Integer> aList, List<Integer> bList) {
         int sumB = bList.stream().reduce(0, Integer::sum);
         List<Integer> res = new ArrayList<>();
 
         int sumA = 0;
-        for (int a: aList){
+        for (int a : aList) {
             sumA = sumA + a;
-            if (sumA>sumB) res.add(a);
+            if (sumA > sumB) res.add(a);
         }
         return res;
     }

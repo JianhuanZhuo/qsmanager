@@ -1,10 +1,13 @@
 package cn.keepfight.qsmanager.controller.predict;
 
+import cn.keepfight.qsmanager.QSApp;
 import cn.keepfight.qsmanager.controller.ContentCtrl;
+import cn.keepfight.qsmanager.controller.MainPaneList;
 import cn.keepfight.qsmanager.dao.predict.PredictTradeDao;
 import cn.keepfight.qsmanager.dao.predict.PredictTradeGroup;
 import cn.keepfight.qsmanager.dao.predict.PredictTradeItemDao;
 import cn.keepfight.qsmanager.service.PredictServers;
+import cn.keepfight.qsmanager.service.SalaryServices;
 import cn.keepfight.utils.FXUtils;
 import cn.keepfight.utils.FXWidgetUtil;
 import cn.keepfight.utils.function.TripPair;
@@ -70,13 +73,16 @@ public class PredictController implements Initializable, ContentCtrl {
     public TextField tf_outcome_other;
 
     public CheckBox ck_outcome_salary_left;
-    public Label lab_outcome_salary_left;
+    public TextField tf_outcome_salary_left;
     public Label lab_outcome_salary_left_all;
     public Button btn_outcome_salary_left;
 
     public CheckBox ck_outcome_salary_fix;
-    public Label lab_outcome_salary_fix;
+    public TextField tf_outcome_salary_fix;
     public Button btn_outcome_salary_fix;
+
+    public Button btn_save;
+    public Button btn_list;
 
     private List<Label> outcomeCountLabs = new ArrayList<>(10);
     private List<Label> incomeCountLabs = new ArrayList<>(10);
@@ -124,8 +130,8 @@ public class PredictController implements Initializable, ContentCtrl {
         accumulateLabelList.addAll(
                 Arrays.asList(
                         new TripPair<>(ck_outcome_tax, lab_outcome_tax, Label.class),
-                        new TripPair<>(ck_outcome_salary_fix, lab_outcome_salary_fix, Label.class),
-                        new TripPair<>(ck_outcome_salary_left, lab_outcome_salary_left, Label.class),
+                        new TripPair<>(ck_outcome_salary_fix, tf_outcome_salary_fix, TextField.class),
+                        new TripPair<>(ck_outcome_salary_left, tf_outcome_salary_left, TextField.class),
                         new TripPair<>(ck_outcome_factory, tf_outcome_factory, TextField.class),
                         new TripPair<>(ck_outcome_fee, tf_outcome_fee, TextField.class),
                         new TripPair<>(ck_outcome_water, tf_outcome_water, TextField.class),
@@ -150,7 +156,7 @@ public class PredictController implements Initializable, ContentCtrl {
             protected String computeValue() {
                 BigDecimal res = new BigDecimal(0);
                 for (TripPair<CheckBox, Node, Class> trip : accumulateLabelList) {
-                    if (trip.getA().isSelected()){;
+                    if (trip.getA().isSelected()) {
                         if (trip.getC().equals(Label.class)) {
                             res = res.add(FXUtils.getDecimal((((Label) trip.getB()).getText())));
                         } else if (trip.getC().equals(TextField.class)) {
@@ -161,6 +167,24 @@ public class PredictController implements Initializable, ContentCtrl {
                 return FXUtils.deciToMoney(res);
             }
         });
+
+        btn_save.setOnAction(event -> {
+            // 记录填写记录
+            FXWidgetUtil.addDefaultList(
+                    new Pair<>("prefer.predict.tf_cash_pri", tf_cash_pri.getText()),
+                    new Pair<>("prefer.predict.tf_cash_pub", tf_cash_pub.getText()),
+
+                    new Pair<>("prefer.predict.tf_outcome_factory", tf_outcome_factory.getText()),
+                    new Pair<>("prefer.predict.tf_outcome_fee", tf_outcome_fee.getText()),
+                    new Pair<>("prefer.predict.tf_outcome_water", tf_outcome_water.getText()),
+                    new Pair<>("prefer.predict.tf_outcome_elect", tf_outcome_elect.getText()),
+                    new Pair<>("prefer.predict.tf_outcome_eng", tf_outcome_eng.getText()),
+                    new Pair<>("prefer.predict.tf_outcome_other", tf_outcome_other.getText())
+            );
+        });
+
+        btn_outcome_salary_left.setOnAction(event -> QSApp.mainPane.changeTo(MainPaneList.SALARY));
+        btn_outcome_tax.setOnAction(event -> QSApp.mainPane.changeTo(MainPaneList.tax$TAX));
     }
 
     private void countCash() {
@@ -187,26 +211,44 @@ public class PredictController implements Initializable, ContentCtrl {
 
     @Override
     public void showed(Properties params) {
+        clearRow(grid_outcome);
+        clearRow(grid_income);
         try {
-            clearRow(grid_outcome);
-            clearRow(grid_income);
-            groupAndSetTrade(PredictServers.selectOutcomePredictLeft(), x -> outcomeAddRow(x, outcomeCountLabs::add));
+            List<PredictTradeDao> outcomes = PredictServers.selectOutcomePredictLeft();
+            groupAndSetTrade(outcomes, x -> outcomeAddRow(x, outcomeCountLabs::add));
             FXWidgetUtil.calculateListForStr(
                     lab_outcome_sup_total.textProperty(),
                     outcomeCountLabs,
                     Labeled::textProperty,
                     x -> new BigDecimal(x.getText().replace(",", ""))
             );
-            groupAndSetTrade(PredictServers.selectIncomePredictLeft(), x -> incomeAddRow(x, incomeCountLabs::add));
+            List<PredictTradeDao> income = PredictServers.selectIncomePredictLeft();
+            groupAndSetTrade(income, x -> incomeAddRow(x, incomeCountLabs::add));
             FXWidgetUtil.calculateListForStr(
                     lab_income_total.textProperty(),
                     incomeCountLabs,
                     Labeled::textProperty,
                     x -> new BigDecimal(x.getText().replace(",", ""))
             );
+
+            lab_outcome_salary_left_all.setText(FXUtils.deciToMoney(SalaryServices.staticTardyAllInOneNumber()));
+            tf_outcome_salary_left.setText(lab_outcome_salary_left_all.getText());
         } catch (Exception e) {
             e.printStackTrace();
         }
+
+        // 加载默认记忆选项并添加默认下拉
+        FXWidgetUtil.defaultList(
+                new Pair<>(tf_outcome_factory, "prefer.predict.tf_outcome_factory"),
+                new Pair<>(tf_outcome_fee, "prefer.predict.tf_outcome_fee"),
+                new Pair<>(tf_outcome_water, "prefer.predict.tf_outcome_water"),
+                new Pair<>(tf_outcome_elect, "prefer.predict.tf_outcome_elect"),
+                new Pair<>(tf_outcome_eng, "prefer.predict.tf_outcome_eng"),
+                new Pair<>(tf_outcome_other, "prefer.predict.tf_outcome_other"),
+
+                new Pair<>(tf_cash_pri, "prefer.predict.tf_cash_pri"),
+                new Pair<>(tf_cash_pub, "prefer.predict.tf_cash_pub")
+        );
     }
 
     private void groupAndSetTrade(List<PredictTradeDao> list, Consumer<PredictTradeGroup> add) {

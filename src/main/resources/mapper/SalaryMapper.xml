@@ -274,4 +274,12 @@
             WHERE s.year = #{year} AND s.month = #{month}
         )
     </delete>
+
+    <!--查看拖欠工资总数-->
+    <select id="staticTardyAllInOneNumber" resultType="java.math.BigDecimal">
+        SELECT ifnull((SELECT sum(s.salary)
+                       FROM stuff_salary s
+                      ), 0) - ifnull((SELECT sum(i.income)
+                                      FROM stuff_income i), 0) AS totoal
+    </select>
 </mapper>

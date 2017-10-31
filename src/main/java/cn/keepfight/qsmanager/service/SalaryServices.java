@@ -9,6 +9,7 @@ import cn.keepfight.utils.SQLUtils;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -128,5 +129,13 @@ public abstract class SalaryServices {
         try (SqlSession session = factory.openSession(true)) {
             session.getMapper(SalaryMapper.class).deleteMonthSalaryIncomeByDate(year, month, date);
         }
+    }
+
+
+    /**
+     * 查看拖欠工资总数
+     */
+    public static BigDecimal staticTardyAllInOneNumber() throws  Exception{
+        return FXUtils.getMapper(factory, SalaryMapper.class, SalaryMapper::staticTardyAllInOneNumber);
     }
 }

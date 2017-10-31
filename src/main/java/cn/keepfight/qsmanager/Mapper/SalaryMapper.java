@@ -4,6 +4,7 @@ import cn.keepfight.qsmanager.dao.StuffDao;
 import cn.keepfight.qsmanager.dao.salary.*;
 import org.apache.ibatis.annotations.Param;
 
+import java.math.BigDecimal;
 import java.sql.Date;
 import java.util.List;
 
@@ -89,4 +90,9 @@ public interface SalaryMapper extends Mapper {
             @Param("year") Long year,
             @Param("month") Long month,
             @Param("date") String date) throws  Exception;
+
+    /**
+     * 查看拖欠工资总数
+     */
+    BigDecimal staticTardyAllInOneNumber() throws  Exception;
 }
