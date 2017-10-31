@@ -7,18 +7,18 @@ import cn.keepfight.qsmanager.dao.predict.PredictTradeItemDao;
 import cn.keepfight.qsmanager.service.PredictServers;
 import cn.keepfight.utils.FXUtils;
 import cn.keepfight.utils.FXWidgetUtil;
+import cn.keepfight.utils.function.TripPair;
 import cn.keepfight.widget.PredictItem;
+import com.sun.deploy.uitoolkit.impl.fx.ui.FXUIFactory;
 import javafx.beans.binding.StringBinding;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
-import javafx.scene.control.CheckBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.Labeled;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.RowConstraints;
 import javafx.scene.layout.VBox;
+import javafx.util.Pair;
 
 import java.math.BigDecimal;
 import java.net.URL;
@@ -46,8 +46,41 @@ public class PredictController implements Initializable, ContentCtrl {
     public GridPane grid_outcome;
     public TextField lab_outcome_sup_total;
 
+    public CheckBox ck_outcome_tax;
+    public Label lab_outcome_tax;
+    public Button btn_outcome_tax;
+    public Label lab_warn_tax;
+
+    public CheckBox ck_outcome_factory;
+    public TextField tf_outcome_factory;
+
+    public CheckBox ck_outcome_fee;
+    public TextField tf_outcome_fee;
+
+    public CheckBox ck_outcome_water;
+    public TextField tf_outcome_water;
+
+    public CheckBox ck_outcome_elect;
+    public TextField tf_outcome_elect;
+
+    public CheckBox ck_outcome_eng;
+    public TextField tf_outcome_eng;
+
+    public CheckBox ck_outcome_other;
+    public TextField tf_outcome_other;
+
+    public CheckBox ck_outcome_salary_left;
+    public Label lab_outcome_salary_left;
+    public Label lab_outcome_salary_left_all;
+    public Button btn_outcome_salary_left;
+
+    public CheckBox ck_outcome_salary_fix;
+    public Label lab_outcome_salary_fix;
+    public Button btn_outcome_salary_fix;
+
     private List<Label> outcomeCountLabs = new ArrayList<>(10);
     private List<Label> incomeCountLabs = new ArrayList<>(10);
+    private List<TripPair<CheckBox, Node, Class>> accumulateLabelList = new ArrayList<>(12);
 
     @Override
     public Node getRoot() {
@@ -85,6 +118,47 @@ public class PredictController implements Initializable, ContentCtrl {
                 BigDecimal outcome = FXUtils.getDecimal(lab_outcome_total.getText(), new BigDecimal(0));
                 BigDecimal outcome_sup = FXUtils.getDecimal(lab_outcome_sup_total.getText(), new BigDecimal(0));
                 return FXUtils.deciToMoney(cash.add(income).subtract(outcome).subtract(outcome_sup));
+            }
+        });
+
+        accumulateLabelList.addAll(
+                Arrays.asList(
+                        new TripPair<>(ck_outcome_tax, lab_outcome_tax, Label.class),
+                        new TripPair<>(ck_outcome_salary_fix, lab_outcome_salary_fix, Label.class),
+                        new TripPair<>(ck_outcome_salary_left, lab_outcome_salary_left, Label.class),
+                        new TripPair<>(ck_outcome_factory, tf_outcome_factory, TextField.class),
+                        new TripPair<>(ck_outcome_fee, tf_outcome_fee, TextField.class),
+                        new TripPair<>(ck_outcome_water, tf_outcome_water, TextField.class),
+                        new TripPair<>(ck_outcome_elect, tf_outcome_elect, TextField.class),
+                        new TripPair<>(ck_outcome_eng, tf_outcome_eng, TextField.class),
+                        new TripPair<>(ck_outcome_other, tf_outcome_other, TextField.class)
+                ));
+
+        lab_outcome_total.textProperty().bind(new StringBinding() {
+            {
+                accumulateLabelList.forEach(trip -> {
+                    bind(trip.getA().selectedProperty());
+                    if (trip.getC().equals(Label.class)) {
+                        bind(((Label) trip.getB()).textProperty());
+                    } else if (trip.getC().equals(TextField.class)) {
+                        bind(((TextField) trip.getB()).textProperty());
+                    }
+                });
+            }
+
+            @Override
+            protected String computeValue() {
+                BigDecimal res = new BigDecimal(0);
+                for (TripPair<CheckBox, Node, Class> trip : accumulateLabelList) {
+                    if (trip.getA().isSelected()){;
+                        if (trip.getC().equals(Label.class)) {
+                            res = res.add(FXUtils.getDecimal((((Label) trip.getB()).getText())));
+                        } else if (trip.getC().equals(TextField.class)) {
+                            res = res.add(FXUtils.getDecimal((((TextField) trip.getB()).getText())));
+                        }
+                    }
+                }
+                return FXUtils.deciToMoney(res);
             }
         });
     }
