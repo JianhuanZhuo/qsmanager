@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.chart.CategoryAxis?>
+<?import javafx.scene.chart.LineChart?>
+<?import javafx.scene.chart.NumberAxis?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox fx:id="root" styleClass="content-pane" stylesheets="@css/common.css" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cn.keepfight.qsmanager.controller.predict.PredictListController">
+    <HBox styleClass="hbox-common, hbox-title, left-align">
+        <Label text="预算统计" />
+        <Pane HBox.hgrow="ALWAYS" />
+        <Button text="删除选择年月记录" />
+    </HBox>
+    <TableView fx:id="table">
+        <columns>
+            <TableColumn fx:id="tab_ym" text="记录年月" />
+            <TableColumn fx:id="tab_out_pri" text="私账现金存帐" />
+            <TableColumn fx:id="tab_out_pub" text="c" />
+            <TableColumn fx:id="tab_income" text="xx" />
+            <TableColumn fx:id="tab_outcome" text="xx" />
+            <TableColumn fx:id="tab_outcome_sup" text="xx" />
+            <TableColumn fx:id="tab_out_tax" text="xx" />
+            <TableColumn fx:id="tab_out_fix" text="xx" />
+            <TableColumn fx:id="tab_out_salary" text="xx" />
+            <TableColumn fx:id="tab_out_salary_lef" text="xx" />
+            <TableColumn fx:id="tab_out_factory" text="xx" />
+            <TableColumn fx:id="tab_out_fee" text="xx" />
+            <TableColumn fx:id="tab_out_water" text="xx" />
+            <TableColumn fx:id="tab_out_elect" text="xx" />
+            <TableColumn fx:id="tab_out_eng" text="xx" />
+            <TableColumn fx:id="tab_out_other" text="xx" />
+        </columns>
+    </TableView>
+   <LineChart fx:id="chart" title="预算历史记录统计">
+     <xAxis>
+       <CategoryAxis side="BOTTOM" />
+     </xAxis>
+     <yAxis>
+       <NumberAxis side="LEFT" />
+     </yAxis>
+   </LineChart>
+    
+</VBox>

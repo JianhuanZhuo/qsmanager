@@ -18,6 +18,7 @@
         <Label text="年月选择" />
         <Button fx:id="btn_ym" styleClass="url" text="2017年10月" />
         <Label text="(通过增减发票使最后自动计算的税赋达标，下面的参数可修改)"/>
+        <Button fx:id="btn_save_param" text="参数保存" />
     </HBox>
     <GridPane prefHeight="60.0" prefWidth="513.0">
         <columnConstraints>

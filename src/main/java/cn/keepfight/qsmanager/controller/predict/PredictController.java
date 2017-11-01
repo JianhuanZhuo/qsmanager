@@ -3,13 +3,17 @@ package cn.keepfight.qsmanager.controller.predict;
 import cn.keepfight.qsmanager.QSApp;
 import cn.keepfight.qsmanager.controller.ContentCtrl;
 import cn.keepfight.qsmanager.controller.MainPaneList;
+import cn.keepfight.qsmanager.dao.predict.PredictHistoryDao;
 import cn.keepfight.qsmanager.dao.predict.PredictTradeDao;
 import cn.keepfight.qsmanager.dao.predict.PredictTradeGroup;
 import cn.keepfight.qsmanager.dao.predict.PredictTradeItemDao;
+import cn.keepfight.qsmanager.dao.tax.TaxDao;
 import cn.keepfight.qsmanager.service.PredictServers;
 import cn.keepfight.qsmanager.service.SalaryServices;
+import cn.keepfight.qsmanager.service.TaxServers;
 import cn.keepfight.utils.FXUtils;
 import cn.keepfight.utils.FXWidgetUtil;
+import cn.keepfight.utils.WarningBuilder;
 import cn.keepfight.utils.function.TripPair;
 import cn.keepfight.widget.PredictItem;
 import com.sun.deploy.uitoolkit.impl.fx.ui.FXUIFactory;
@@ -25,6 +29,7 @@ import javafx.util.Pair;
 
 import java.math.BigDecimal;
 import java.net.URL;
+import java.time.LocalDate;
 import java.util.*;
 import java.util.function.*;
 import java.util.stream.Collectors;
@@ -87,6 +92,8 @@ public class PredictController implements Initializable, ContentCtrl {
     private List<Label> outcomeCountLabs = new ArrayList<>(10);
     private List<Label> incomeCountLabs = new ArrayList<>(10);
     private List<TripPair<CheckBox, Node, Class>> accumulateLabelList = new ArrayList<>(12);
+
+    private PredictHistoryDao dao;
 
     @Override
     public Node getRoot() {
@@ -168,6 +175,7 @@ public class PredictController implements Initializable, ContentCtrl {
             }
         });
 
+        btn_list.setOnAction(event -> QSApp.mainPane.changeTo(MainPaneList.PREDICT_LIST));
         btn_save.setOnAction(event -> {
             // 记录填写记录
             FXWidgetUtil.addDefaultList(
@@ -181,6 +189,9 @@ public class PredictController implements Initializable, ContentCtrl {
                     new Pair<>("prefer.predict.tf_outcome_eng", tf_outcome_eng.getText()),
                     new Pair<>("prefer.predict.tf_outcome_other", tf_outcome_other.getText())
             );
+
+            System.out.println("?");
+            saveParam();
         });
 
         btn_outcome_salary_left.setOnAction(event -> QSApp.mainPane.changeTo(MainPaneList.SALARY));
@@ -211,6 +222,20 @@ public class PredictController implements Initializable, ContentCtrl {
 
     @Override
     public void showed(Properties params) {
+        try {
+            dao = PredictServers.selectPredictHistory(FXUtils.getYearNow(), FXUtils.getMonthNow());
+            if (dao==null){
+                dao = new PredictHistoryDao();
+                dao.setYear(FXUtils.getYearNow());
+                dao.setMonth(FXUtils.getMonthNow());
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            dao = new PredictHistoryDao();
+            dao.setYear(FXUtils.getYearNow());
+            dao.setMonth(FXUtils.getMonthNow());
+        }
+
         clearRow(grid_outcome);
         clearRow(grid_income);
         try {
@@ -233,6 +258,15 @@ public class PredictController implements Initializable, ContentCtrl {
 
             lab_outcome_salary_left_all.setText(FXUtils.deciToMoney(SalaryServices.staticTardyAllInOneNumber()));
             tf_outcome_salary_left.setText(lab_outcome_salary_left_all.getText());
+
+            try{
+                lab_outcome_tax.setText(FXUtils.deciToMoney(getTaxTotal()));
+                lab_warn_tax.setText("");
+            }catch (Exception e){
+                lab_outcome_tax.setText("0");
+                lab_warn_tax.setText("税金获取失败");
+            }
+
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -249,6 +283,7 @@ public class PredictController implements Initializable, ContentCtrl {
                 new Pair<>(tf_cash_pri, "prefer.predict.tf_cash_pri"),
                 new Pair<>(tf_cash_pub, "prefer.predict.tf_cash_pub")
         );
+
     }
 
     private void groupAndSetTrade(List<PredictTradeDao> list, Consumer<PredictTradeGroup> add) {
@@ -319,5 +354,38 @@ public class PredictController implements Initializable, ContentCtrl {
             deleteNodes.add(child);
         }
         grid.getChildren().removeAll(deleteNodes);
+    }
+
+    private BigDecimal getTaxTotal() throws Exception {
+        LocalDate now = FXUtils.stampToLocalDate();
+        Long year = (long) now.getYear();
+        Long month = (long) now.getMonthValue();
+        return TaxServers.selectByMonth(year, month).getTotal();
+    }
+
+    private void saveParam(){
+        new Thread(()->{
+            dao.setOut_pri(FXUtils.getDecimal(tf_cash_pri));
+            dao.setOut_pub(FXUtils.getDecimal(tf_cash_pub));
+            dao.setIncome(FXUtils.getDecimal(lab_income_total));
+            dao.setOutcome(FXUtils.getDecimal(lab_outcome_sup_total));
+            dao.setOutcome_sup(FXUtils.getDecimal(lab_outcome_total));
+            dao.setOut_tax(FXUtils.getDecimal(lab_outcome_tax.getText()));
+            dao.setOut_fix(FXUtils.getDecimal(tf_outcome_salary_fix));
+            dao.setOut_salary(FXUtils.getDecimal(tf_outcome_salary_left));
+            dao.setOut_salary_lef(FXUtils.getDecimal(lab_outcome_salary_left_all.getText()));
+            dao.setOut_factory(FXUtils.getDecimal(tf_outcome_factory));
+            dao.setOut_fee(FXUtils.getDecimal(tf_outcome_fee));
+            dao.setOut_water(FXUtils.getDecimal(tf_outcome_water));
+            dao.setOut_elect(FXUtils.getDecimal(tf_outcome_elect));
+            dao.setOut_eng(FXUtils.getDecimal(tf_outcome_eng));
+            dao.setOut_other(FXUtils.getDecimal(tf_outcome_other));
+            try {
+                PredictServers.replaceHistory(dao);
+            } catch (Exception e) {
+                e.printStackTrace();
+                WarningBuilder.build("保存失败，请检查网络是否可用");
+            }
+        }).start();
     }
 }

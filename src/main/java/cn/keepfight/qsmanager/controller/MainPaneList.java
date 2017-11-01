@@ -29,6 +29,7 @@ public enum MainPaneList {
     SALARY_PAY,
     SALARY_CLEAR,
     PREDICT,
+    PREDICT_LIST,
     OUTCOME_ANNUAL,
     annual$SUP_ADD_INVOICE,
     annual$SUP_ADD_REMIT,
@@ -64,7 +65,7 @@ public enum MainPaneList {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-        }).run();
+        }).start();
     }
 
     /**

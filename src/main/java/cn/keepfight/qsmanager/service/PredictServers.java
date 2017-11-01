@@ -1,8 +1,12 @@
 package cn.keepfight.qsmanager.service;
 
 import cn.keepfight.qsmanager.Mapper.PredictMapper;
+import cn.keepfight.qsmanager.Mapper.SalaryMapper;
+import cn.keepfight.qsmanager.dao.predict.PredictHistoryDao;
 import cn.keepfight.qsmanager.dao.predict.PredictTradeDao;
 import cn.keepfight.utils.FXUtils;
+import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 
 import java.util.List;
@@ -27,5 +31,28 @@ public abstract class PredictServers {
      */
     public static List<PredictTradeDao> selectIncomePredictLeft() throws Exception{
         return FXUtils.getMapper(factory, PredictMapper.class, PredictMapper::selectIncomePredictLeft);
+    }
+
+    /**
+     * 选择指定年月的预算历史
+     */
+    public static PredictHistoryDao selectPredictHistory(Long year,  Long month) throws Exception{
+        try (SqlSession session = factory.openSession(true)) {
+            return session.getMapper(PredictMapper.class).selectPredictHistory(year, month);
+        }
+    }
+
+    /**
+     * 选择全部的预算历史
+     */
+    public static List<PredictHistoryDao> selectAllPredictHistory() throws Exception{
+        return FXUtils.getMapper(factory, PredictMapper.class, PredictMapper::selectAllPredictHistory);
+    }
+
+    /**
+     * 替换历史
+     */
+    public static void replaceHistory(PredictHistoryDao dao)throws Exception{
+        FXUtils.getMapper(factory, PredictMapper.class, PredictMapper::replaceHistory, dao);
     }
 }

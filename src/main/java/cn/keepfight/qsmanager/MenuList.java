@@ -76,7 +76,7 @@ public enum MenuList {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-        }).run();
+        }).start();
     }
 
     public ContentCtrl getController() {

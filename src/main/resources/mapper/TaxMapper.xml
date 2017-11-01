@@ -20,8 +20,8 @@
     <!--* 插入一条新的税赋记录-->
     <!--void insertTax(TaxDao dao) throws Exception;-->
     <insert id="insertTax" parameterType="TaxDao">
-        INSERT INTO tax (year, month, p1, p2, p3, p4, p5, p6)
-        VALUES (#{year}, #{month}, #{p1}, #{p2}, #{p3}, #{p4}, #{p5}, #{p6})
+        INSERT INTO tax (year, month, p1, p2, p3, p4, p5, p6, total)
+        VALUES (#{year}, #{month}, #{p1}, #{p2}, #{p3}, #{p4}, #{p5}, #{p6}, #{total})
         <selectKey keyProperty="id" order="AFTER" resultType="long">
             SELECT last_insert_id();
         </selectKey>
@@ -30,11 +30,11 @@
     <insert id="insertTaxInvoice" parameterType="TaxInvoiceDao">
         INSERT INTO tax_invoice (tid, category, unit, total, note)
         VALUES (
-            #{tid},
-            #{category},
-            #{unit},
-            #{total},
-            #{note}
+        #{tid},
+        #{category},
+        #{unit},
+        #{total},
+        #{note}
         )
         <selectKey keyProperty="id" order="AFTER" resultType="long">
             SELECT last_insert_id();
@@ -43,19 +43,19 @@
 
     <delete id="deleteTaxInvoice" parameterType="long">
         DELETE FROM tax_invoice
-        WHERE id=#{id}
+        WHERE id = #{id}
     </delete>
 
     <delete id="clearTaxInvoiceByTid" parameterType="long">
         DELETE FROM tax_invoice
-        WHERE tid=#{tid}
+        WHERE tid = #{tid}
     </delete>
 
     <!--* 更新税赋记录-->
     <!--void updateTax(TaxDao dao) throws Exception;-->
     <update id="updateTax" parameterType="TaxDao">
         UPDATE tax
-        SET p1 = #{p1}, p2 = #{p2}, p3 = #{p3}, p4 = #{p4}, p5 = #{p5}, p6 = #{p6}
+        SET p1 = #{p1}, p2 = #{p2}, p3 = #{p3}, p4 = #{p4}, p5 = #{p5}, p6 = #{p6}, total = #{total}
         WHERE tax.year = #{year} AND month = #{month}
     </update>
 </mapper>

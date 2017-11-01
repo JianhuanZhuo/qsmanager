@@ -213,6 +213,14 @@ public class FXUtils {
         return stampToLocalDate(null);
     }
 
+    public static long getYearNow(){
+        return stampToLocalDate().getYear();
+    }
+
+    public static long getMonthNow(){
+        return stampToLocalDate().getMonthValue();
+    }
+
     /**
      * 转时间戳为本地时间对象
      */

@@ -68,4 +68,42 @@
               AND cust.id = t.cid
         ORDER BY uid, year, month
     </select>
+
+
+    <!--* 选择全部的预算历史-->
+    <select id="selectPredictHistory" resultType="PredictHistoryDao">
+        SELECT *
+        FROM predict_history
+        WHERE year = #{year} AND month = #{month}
+        LIMIT 1
+    </select>
+
+    <!--* 选择全部的预算历史-->
+    <select id="selectAllPredictHistory" resultType="PredictHistoryDao">
+        SELECT *
+        FROM predict_history
+    </select>
+
+    <insert id="replaceHistory" parameterType="PredictHistoryDao">
+        REPLACE INTO predict_history
+        VALUES (
+            #{year},
+            #{month},
+            #{out_pri},
+            #{out_pub},
+            #{income},
+            #{outcome},
+            #{out_tax},
+            #{out_fix},
+            #{out_salary},
+            #{out_salary_lef},
+            #{out_factory},
+            #{out_fee},
+            #{out_water},
+            #{out_elect},
+            #{out_eng},
+            #{out_other},
+            #{outcome_sup}
+        )
+    </insert>
 </mapper>

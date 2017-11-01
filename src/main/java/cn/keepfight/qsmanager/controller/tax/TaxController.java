@@ -14,6 +14,8 @@ import javafx.application.Platform;
 import javafx.beans.binding.BooleanBinding;
 import javafx.beans.binding.StringBinding;
 import javafx.beans.property.ReadOnlyObjectWrapper;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
@@ -21,6 +23,7 @@ import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.util.Pair;
+import sun.awt.windows.ThemeReader;
 
 import java.math.BigDecimal;
 import java.net.URL;
@@ -31,6 +34,7 @@ import java.util.stream.Collectors;
 public class TaxController implements ContentCtrl, Initializable {
     public VBox root;
     public Button btn_ym;
+    public Button btn_save_param;
     public TextField tf_p1;
     public TextField tf_p2;
     public TextField tf_p3;
@@ -105,6 +109,7 @@ public class TaxController implements ContentCtrl, Initializable {
                 dao.setP4(new BigDecimal(794).movePointLeft(3));
                 dao.setP5(new BigDecimal(46).movePointLeft(3));
                 dao.setP6(new BigDecimal(940));
+                dao.setTotal(new BigDecimal(0));
                 TaxServers.insertTax(dao);
             }
             Platform.runLater(() -> {
@@ -212,6 +217,9 @@ public class TaxController implements ContentCtrl, Initializable {
             }
         });
 
+        btn_save_param.setOnAction(event -> saveParam(tf_k.getText()));
+        tf_k.textProperty().addListener((observable, oldValue, newValue) -> saveParam(newValue));
+
         FXWidgetUtil.calculate(table_out.getItems(), TaxInvoiceDaoWrapper::getTotal, tf_a::setText);
         FXWidgetUtil.simpleTriOper(tf_b, (x, y) -> x.divide(y, 2, BigDecimal.ROUND_UP), BigDecimal::multiply, tf_a, tf_p2, tf_p3, FXUtils::deciToMoney);
         FXWidgetUtil.simpleBiSub(tf_c, tf_a, tf_b);
@@ -308,5 +316,25 @@ public class TaxController implements ContentCtrl, Initializable {
         });
 
         return dialog.showAndWait();
+    }
+
+    private void saveParam(String k){
+        new Thread(()->{
+            dao.setYear(data_year);
+            dao.setMonth(data_month);
+            dao.setP1(FXUtils.getDecimal(tf_p1));
+            dao.setP2(FXUtils.getDecimal(tf_p2));
+            dao.setP3(FXUtils.getDecimal(tf_p3));
+            dao.setP4(FXUtils.getDecimal(tf_p4));
+            dao.setP5(FXUtils.getDecimal(tf_p5));
+            dao.setP6(FXUtils.getDecimal(tf_p6));
+            dao.setTotal(FXUtils.getDecimal(k));
+            try {
+                TaxServers.updateTax(dao);
+            } catch (Exception e) {
+                e.printStackTrace();
+                WarningBuilder.build("保存失败，请检查网络是否可用");
+            }
+        }).start();
     }
 }

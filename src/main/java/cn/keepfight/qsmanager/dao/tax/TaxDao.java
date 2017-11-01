@@ -17,6 +17,7 @@ public class TaxDao {
     private BigDecimal p4;
     private BigDecimal p5;
     private BigDecimal p6;
+    private BigDecimal total;
     private List<TaxInvoiceDao> invoices;
 
     public Long getId() {
@@ -89,6 +90,14 @@ public class TaxDao {
 
     public void setP6(BigDecimal p6) {
         this.p6 = p6;
+    }
+
+    public BigDecimal getTotal() {
+        return total;
+    }
+
+    public void setTotal(BigDecimal total) {
+        this.total = total;
     }
 
     public List<TaxInvoiceDao> getInvoices() {
