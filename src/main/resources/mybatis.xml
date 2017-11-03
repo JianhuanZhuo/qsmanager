@@ -56,5 +56,7 @@
         <mapper resource="mapper/TaxMapper.xml"/>
         <!--预算表-->
         <mapper resource="mapper/PredictMapper.xml"/>
+        <!--分析表-->
+        <mapper resource="mapper/AnalysisMapper.xml"/>
     </mappers>
 </configuration>

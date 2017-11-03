@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.Pane?>
+<VBox fx:id="root" styleClass="content-pane" stylesheets="@../css/common.css"
+      xmlns="http://javafx.com/javafx/8.0.111"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="cn.keepfight.qsmanager.controller.analysis.AnalysisSellController">
+    <HBox styleClass="title-line, left-align">
+        <Button fx:id="btn_ym" styleClass="url" text="2017年9月"/>
+        <Label text="客户每月销售情况分析"/>
+        <Pane HBox.hgrow="ALWAYS"/>
+        <Button visible="false" fx:id="btn_custom" text="客户销售分析柱状图"/>
+    </HBox>
+    <TableView fx:id="table_detail" VBox.vgrow="ALWAYS">
+        <columns>
+            <TableColumn fx:id="custom" prefWidth="130" text="客户"/>
+            <TableColumn fx:id="sum" text="合计总数"/>
+        </columns>
+    </TableView>
+</VBox>

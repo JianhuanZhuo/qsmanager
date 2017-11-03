@@ -58,7 +58,7 @@ public class StuffController implements ContentCtrl, Initializable {
     private VBox menuSelect;
     private MenuListChecker menuListChecker = new MenuListChecker();
 
-    private StuffAddController addController;
+    private StuffAddController addController = ViewPathUtil.loadViewForController("stuff_add.fxml");
 
     private StuffWrapper currentStuff = new StuffWrapper();
 
@@ -153,13 +153,6 @@ public class StuffController implements ContentCtrl, Initializable {
 
     @Override
     public void loaded() {
-        new Thread(() -> {
-            try {
-                addController = ViewPathUtil.loadViewForController("stuff_add.fxml");
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }).run();
     }
 
     @Override

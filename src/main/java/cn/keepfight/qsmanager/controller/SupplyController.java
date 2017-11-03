@@ -96,9 +96,9 @@ public class SupplyController implements ContentCtrl {
     private TableColumn<MaterialModel, String> mat_unit;
 
     // 子界面
-    private SupplyAddController addController;
+    private SupplyAddController addController= ViewPathUtil.loadViewForController("supply_add.fxml");
     private SupplyModel currentModel;
-    private MaterialAddController addMaterialController;
+    private MaterialAddController addMaterialController = ViewPathUtil.loadViewForController("material_add.fxml");;
 
     @FXML
     public void initialize() throws Exception {
@@ -115,14 +115,6 @@ public class SupplyController implements ContentCtrl {
     @Override
     public void loaded() {
         loadSupply();
-        Platform.runLater(() -> {
-            try {
-                addController = ViewPathUtil.loadViewForController("supply_add.fxml");
-                addMaterialController = ViewPathUtil.loadViewForController("material_add.fxml");
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        });
     }
 
     @Override

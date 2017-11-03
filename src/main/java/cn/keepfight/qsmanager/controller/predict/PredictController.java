@@ -196,6 +196,8 @@ public class PredictController implements Initializable, ContentCtrl {
 
         btn_outcome_salary_left.setOnAction(event -> QSApp.mainPane.changeTo(MainPaneList.SALARY));
         btn_outcome_tax.setOnAction(event -> QSApp.mainPane.changeTo(MainPaneList.tax$TAX));
+
+
     }
 
     private void countCash() {

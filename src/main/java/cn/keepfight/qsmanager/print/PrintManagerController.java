@@ -93,9 +93,14 @@ public class PrintManagerController implements ContentCtrl, Initializable {
         this.selection = s;
         switch (s.getType()) {
             case DELIVERY:
+            case DELIVERY_SIMPLE:
             case RECEIPT:
             case DELIVERY_ANLI:
-                type_sel.getItems().setAll(Arrays.asList(QSPrintType.DELIVERY, QSPrintType.RECEIPT, QSPrintType.DELIVERY_ANLI));
+                type_sel.getItems().setAll(Arrays.asList(
+                        QSPrintType.DELIVERY,
+                        QSPrintType.DELIVERY_SIMPLE,
+                        QSPrintType.RECEIPT,
+                        QSPrintType.DELIVERY_ANLI));
                 break;
             case MON_CUST_RATE:
             case MON_CUST:

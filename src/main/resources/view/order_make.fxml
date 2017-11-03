@@ -110,26 +110,6 @@
         <Label text="实际应收金额：￥"/>
         <Label fx:id="s_total" text="0"/>
     </HBox>
-    <VBox fx:id="pay">
-        <Separator/>
-        <HBox styleClass="hbox-common">
-            <Label text="付款方式："/>
-            <Pane HBox.hgrow="ALWAYS"/>
-        </HBox>
-        <HBox styleClass="hbox-common">
-            <Label text="一次付清，2017年7月付完：￥23211.00。"/>
-            <Pane HBox.hgrow="ALWAYS"/>
-            <Label text="待收账"/>
-            <Pane HBox.hgrow="ALWAYS"/>
-            <Button fx:id="item_edit" styleClass="btnable" text="编辑">
-                <graphic>
-                    <ImageView fitHeight="16" fitWidth="16">
-                        <Image url="@img/edit.png"/>
-                    </ImageView>
-                </graphic>
-            </Button>
-        </HBox>
-    </VBox>
     <Separator/>
     <HBox styleClass="hbox-common">
         <Pane HBox.hgrow="ALWAYS"/>

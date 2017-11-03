@@ -30,19 +30,22 @@ public enum MainPaneList {
     SALARY_CLEAR,
     PREDICT,
     PREDICT_LIST,
+    PREDICT_ADD,
     OUTCOME_ANNUAL,
     annual$SUP_ADD_INVOICE,
     annual$SUP_ADD_REMIT,
     annual$SUP_ANNUAL_EDIT,
-    tax$TAX
-    ;
+    analysis$SELL,
+    analysis$CUSTOM,
+    analysis$PRODUCTS,
+    tax$TAX;
 
     String view;
     ContentCtrl controller;
 
     MainPaneList() {
         if (name().contains("$")) {
-            view = name().replace("$", "/") + ".fxml";
+            view = name().replace("$", "/").toLowerCase() + ".fxml";
         } else {
             view = name().toLowerCase() + ".fxml";
         }
@@ -59,13 +62,7 @@ public enum MainPaneList {
     }
 
     private void load() {
-        new Thread(() -> {
-            try {
-                controller = ViewPathUtil.loadViewForController(view);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }).start();
+        new Thread(() -> controller = ViewPathUtil.loadViewForController(view)).start();
     }
 
     /**

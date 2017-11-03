@@ -22,6 +22,8 @@ public class IncomeManagerController implements ContentCtrl{
     private Button annuBtn;
     @FXML
     private Button predBtn;
+    public Button graphBtn;
+    public Button profitBtn;
     @FXML
     private HBox root;
 
@@ -36,6 +38,9 @@ public class IncomeManagerController implements ContentCtrl{
         ps.put("mode", OrderPaneController.USING_IN_INCOME);
         orderBtn.setOnAction(event -> QSApp.mainPane.changeTo(MainPaneList.ORDER_PANE, ps));
         annuBtn.setOnAction(event -> QSApp.mainPane.changeTo(MainPaneList.INCOME_ANNUAL));
+        predBtn.setOnAction(event -> QSApp.mainPane.changeTo(MainPaneList.analysis$SELL));
+        graphBtn.setOnAction(event -> QSApp.mainPane.changeTo(MainPaneList.analysis$CUSTOM));
+        profitBtn.setOnAction(event -> QSApp.mainPane.changeTo(MainPaneList.analysis$PRODUCTS));
     }
 
     @Override

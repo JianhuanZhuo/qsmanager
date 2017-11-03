@@ -104,12 +104,8 @@ public class CustomController implements ContentCtrl {
     public void loaded() {
         loadCustom();
         Platform.runLater(() -> {
-            try {
-                addController = ViewPathUtil.loadViewForController("custom_add.fxml");
-                addOrderFavor = ViewPathUtil.loadViewForController("order_favor_add.fxml");
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            addController = ViewPathUtil.loadViewForController("custom_add.fxml");
+            addOrderFavor = ViewPathUtil.loadViewForController("order_favor_add.fxml");
         });
     }
 

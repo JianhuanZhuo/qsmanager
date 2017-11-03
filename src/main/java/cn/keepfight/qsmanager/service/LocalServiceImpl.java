@@ -5,6 +5,7 @@ import cn.keepfight.qsmanager.model.*;
 import cn.keepfight.utils.FXUtils;
 import cn.keepfight.utils.QSUtil;
 import org.apache.ibatis.io.Resources;
+import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 
@@ -99,7 +100,7 @@ public class LocalServiceImpl implements ServerService {
 
     @Override
     public StuffService getStuffService() {
-        return new StuffService(){
+        return new StuffService() {
             @Override
             public List<CustomModel> selectAll() throws Exception {
                 return FXUtils.getMapper(factory, CustomMapper.class, CustomMapper::selectAllStuff);
@@ -209,7 +210,7 @@ public class LocalServiceImpl implements ServerService {
 
     @Override
     public OrderFavorService getOrderFavorService() {
-        return new OrderFavorService(){
+        return new OrderFavorService() {
 
             @Override
             public List<ProductModel> selectAll(Long cid) throws Exception {
@@ -418,14 +419,11 @@ public class LocalServiceImpl implements ServerService {
                 LocalDate d = FXUtils.stampToLocalDate(model.getOrderdate());
 
                 // 获得唯一序列号
-                List<OrderModelFull> res = FXUtils.getMapper(factory, OrderMapper.class, OrderMapper::selectAll,
-                        new OrderSelection(null, (long) d.getYear(), (long) d.getMonthValue(), null));
-                OptionalLong m = res.stream().mapToLong(x -> Long.valueOf(x.getSerial())).max();
-                if (m.isPresent()) {
-                    model.setSerial("" + (m.getAsLong() + 1));
-                } else {
-                    model.setSerial(QSUtil.orderSerial(model.getOrderdate(), 1L));
+                String id;
+                try (SqlSession session = factory.openSession(true)) {
+                    id = session.getMapper(OrderMapper.class).getUniSerial( (long) d.getYear(), (long) d.getMonthValue());
                 }
+                model.setSerial(id);
                 OrderModel orderModel = model.get();
                 FXUtils.getMapper(factory, OrderMapper.class, OrderMapper::insert, orderModel);
 
@@ -591,7 +589,7 @@ public class LocalServiceImpl implements ServerService {
             }
 
             @Override
-            public List<AnnualTotalModel> supAnnualTotal(DeliverySelection selection) throws Exception  {
+            public List<AnnualTotalModel> supAnnualTotal(DeliverySelection selection) throws Exception {
                 return FXUtils.getMapper(factory, CustAnnuMapper.class, CustAnnuMapper::supAnnualTotal, selection);
             }
         };

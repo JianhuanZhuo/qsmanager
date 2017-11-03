@@ -6,7 +6,7 @@
 
     <!--List<ReceiptModel> selectAll(Long sid, Long year, Long month) throws Exception;-->
     <select id="selectAll" parameterType="ReceiptSelection" resultType="ReceiptModelFull">
-        SELECT r.id AS id, r.sid AS sid, r.serial AS serial, date_format(r.rdate, '%s')||'000' AS rdate,
+        SELECT r.id AS id, r.sid AS sid, r.serial AS serial, concat(UNIX_TIMESTAMP(r.rdate), '000') AS rdate,
         s.serial || '-' || s.name AS supply
         FROM receipt r, supply s
         WHERE r.sid = #{sid}
@@ -15,7 +15,7 @@
         <if test="month!=null">
             AND date_format(r.rdate, '%m') = #{month}
         </if>
-        ORDER BY rdate
+        ORDER BY rdate DESC
     </select>
 
     <!--查询指定供应商和年份的全部月份的供应总额-->

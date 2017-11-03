@@ -22,15 +22,16 @@ public class ReceiptDetailModel {
     private ObjectProperty<BigDecimal> num = new SimpleObjectProperty<>();
 
     // 辅助属性
-    private ObjectProperty<BigDecimal> totalProperty= new SimpleObjectProperty<>();
+    private ObjectProperty<BigDecimal> totalProperty = new SimpleObjectProperty<>();
 
     {
         FXUtils.bindProperties(totalProperty, this::getTotal, price, num);
     }
 
-    public ReceiptDetailModel(){}
+    public ReceiptDetailModel() {
+    }
 
-    public ReceiptDetailModel(ReceiptDetailModel m){
+    public ReceiptDetailModel(ReceiptDetailModel m) {
         setId(m.getId());
         setRid(m.getRid());
         setSerial(m.getSerial());
@@ -151,22 +152,23 @@ public class ReceiptDetailModel {
     }
 
 
-    public BigDecimal getTotal(){
+    public BigDecimal getTotal() {
         try {
             return getPrice().multiply(getNum());
-        }catch (Exception e){
+        } catch (Exception e) {
             return new BigDecimal(0);
         }
 
     }
 
-    public ObjectProperty<BigDecimal> totalProperty(){
-        if (totalProperty==null){
+    public ObjectProperty<BigDecimal> totalProperty() {
+        if (totalProperty == null) {
             totalProperty = new SimpleObjectProperty<>();
             totalProperty.bind(new ObjectBinding<BigDecimal>() {
                 {
                     bind(price, num);
                 }
+
                 @Override
                 protected BigDecimal computeValue() {
                     return getTotal();
@@ -176,7 +178,7 @@ public class ReceiptDetailModel {
         return totalProperty;
     }
 
-    public void update(ReceiptDetailModel model){
+    public void update(ReceiptDetailModel model) {
         setRid(model.getRid());
         setSerial(model.getSerial());
         setName(model.getName());
@@ -185,5 +187,21 @@ public class ReceiptDetailModel {
         setPrice(model.getPrice());
         setUnit(model.getUnit());
         setNum(model.getNum());
+    }
+
+    @Override
+    public String toString() {
+        return "ReceiptDetailModel{" +
+                "id=" + id +
+                ", rid=" + rid +
+                ", serial=" + serial +
+                ", name=" + name +
+                ", color=" + color +
+                ", spec=" + spec +
+                ", price=" + price +
+                ", unit=" + unit +
+                ", num=" + num +
+                ", totalProperty=" + totalProperty +
+                '}';
     }
 }

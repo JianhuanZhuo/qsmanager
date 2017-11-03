@@ -49,8 +49,8 @@ public class QSApp extends Application {
         primaryStage.show();
         mainPane.logout();
 
-        Platform.runLater(MenuList::loadMenuView);
-        Platform.runLater(MainPaneList::loadMenuView);
+        new Thread(MenuList::loadMenuView).start();
+        new Thread(MainPaneList::loadMenuView).start();
     }
 
     @Override

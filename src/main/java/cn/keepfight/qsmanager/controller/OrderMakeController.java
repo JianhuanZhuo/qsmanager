@@ -11,12 +11,15 @@ import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
+import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
+import javafx.util.Callback;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.sql.Date;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
@@ -55,27 +58,27 @@ public class OrderMakeController implements ContentCtrl {
     @FXML
     private TableColumn<OrderItemModel, String> tab_detail;
     @FXML
-    private TableColumn<OrderItemModel, String> tab_price;
+    private TableColumn<OrderItemModel, BigDecimal> tab_price;
     @FXML
-    private TableColumn<OrderItemModel, String> tab_pack;
+    private TableColumn<OrderItemModel, Long> tab_pack;
     @FXML
-    private TableColumn<OrderItemModel, String> tab_num;
+    private TableColumn<OrderItemModel, BigDecimal> tab_num;
     @FXML
-    private TableColumn<OrderItemModel, String> tab_total;
+    private TableColumn<OrderItemModel, BigDecimal> tab_total;
     @FXML
-    private TableColumn<OrderItemModel, String> tab_rate;
+    private TableColumn<OrderItemModel, BigDecimal> tab_rate;
     @FXML
-    private TableColumn<OrderItemModel, String> tab_ratetotal;
+    private TableColumn<OrderItemModel, BigDecimal> tab_ratetotal;
     @FXML
-    private TableColumn<OrderItemModel, String> tab_totallWithRate;
+    private TableColumn<OrderItemModel, BigDecimal> tab_totallWithRate;
     @FXML
-    private TableColumn<OrderItemModel, String> tab_rebate;
+    private TableColumn<OrderItemModel, BigDecimal> tab_rebate;
     @FXML
-    private TableColumn<OrderItemModel, String> tab_allrebate;
+    private TableColumn<OrderItemModel, BigDecimal> tab_allrebate;
     @FXML
-    private TableColumn<OrderItemModel, String> tab_delifee;
+    private TableColumn<OrderItemModel, BigDecimal> tab_delifee;
     @FXML
-    private TableColumn<OrderItemModel, String> tab_actPay;
+    private TableColumn<OrderItemModel, BigDecimal> tab_actPay;
     @FXML
     private Label s_num;
     @FXML
@@ -86,11 +89,6 @@ public class OrderMakeController implements ContentCtrl {
     private Label s_total;
 
     @FXML
-    private VBox pay;
-    @FXML
-    private Button item_edit;
-
-    @FXML
     private Button item_ok;
     @FXML
     private Button item_cancel;
@@ -99,10 +97,11 @@ public class OrderMakeController implements ContentCtrl {
     @FXML
     private Button item_rebate;
 
+    private OrderModelFull model;
 
     public static final String NO_SERIAL = "订单号待生成";
     // 子界面
-    private OrderItemAddController addController;
+    private OrderItemAddController addController = ViewPathUtil.loadViewForController("order_item_add.fxml");
 
     private StringProperty titlePropert = new SimpleStringProperty("订单信息");
 
@@ -117,21 +116,23 @@ public class OrderMakeController implements ContentCtrl {
         LocalDate localDate = LocalDate.parse(date, formatter);
         rdate.setValue(localDate);
 
-        FXWidgetUtil.connect(tab_name, OrderItemModel::nameProperty);
-        FXWidgetUtil.connect(tab_serial, OrderItemModel::serialProperty);
-        FXWidgetUtil.connect(tab_detail, OrderItemModel::detailProperty);
-        FXWidgetUtil.connectDecimalObj(tab_price, OrderItemModel::priceProperty);
-        FXWidgetUtil.connectNum(tab_pack, OrderItemModel::packProperty);
-        FXWidgetUtil.connectDecimalObj(tab_num, OrderItemModel::numProperty);
-        FXWidgetUtil.connectDecimalObj(tab_total, OrderItemModel::takeTotalProperty);
-        FXWidgetUtil.connectDecimalObj(tab_rate, OrderItemModel::rateProperty);
-        FXWidgetUtil.connectDecimalObj(tab_ratetotal, OrderItemModel::rateProperty);
-        FXWidgetUtil.connectDecimalObj(tab_totallWithRate, OrderItemModel::totalWithRateProperty);
-        FXWidgetUtil.connectDecimalObj(tab_rebate, OrderItemModel::rebateProperty);
-        FXWidgetUtil.connectDecimalObj(tab_allrebate, OrderItemModel::rebateTotalProperty);
-        FXWidgetUtil.connectDecimalObj(tab_delifee, OrderItemModel::delifeeProperty);
-        FXWidgetUtil.connectDecimalObj(tab_actPay, OrderItemModel::actPayTotalProperty);
-
+        FXWidgetUtil.connectStrColumn(tab_name, OrderItemModel::nameProperty);
+        FXWidgetUtil.connectStrColumn(tab_serial, OrderItemModel::serialProperty);
+        FXWidgetUtil.connectStrColumn(tab_detail, OrderItemModel::detailProperty);
+        FXWidgetUtil.connectDecimalColumn(tab_price, OrderItemModel::priceProperty);
+        FXWidgetUtil.connectDecimalColumn(tab_num, OrderItemModel::numProperty);
+        FXWidgetUtil.connectDecimalColumn(tab_total, OrderItemModel::takeTotalProperty);
+        FXWidgetUtil.connectDecimalColumn(tab_rate, OrderItemModel::rateProperty);
+        FXWidgetUtil.connectDecimalColumn(tab_ratetotal, OrderItemModel::rateProperty);
+        FXWidgetUtil.connectDecimalColumn(tab_totallWithRate, OrderItemModel::totalWithRateProperty);
+        FXWidgetUtil.connectDecimalColumn(tab_rebate, OrderItemModel::rebateProperty);
+        FXWidgetUtil.connectDecimalColumn(tab_allrebate, OrderItemModel::rebateTotalProperty);
+        FXWidgetUtil.connectDecimalColumn(tab_delifee, OrderItemModel::delifeeProperty);
+        FXWidgetUtil.connectDecimalColumn(tab_actPay, OrderItemModel::actPayTotalProperty);
+        tab_pack.setCellValueFactory(param -> param.getValue().packProperty().asObject());
+        FXWidgetUtil.cellMoney(tab_price, tab_num, tab_total, tab_ratetotal, tab_totallWithRate,
+                tab_rebate, tab_allrebate, tab_delifee, tab_actPay);
+        FXWidgetUtil.cellRate(tab_rate);
 
         FXWidgetUtil.calculate(table.getItems(), OrderItemModel::getNum, s_num::setText);
         FXWidgetUtil.calculate(table.getItems(), OrderItemModel::getRateTotal, s_rate::setText);
@@ -160,63 +161,38 @@ public class OrderMakeController implements ContentCtrl {
         // 双击原料表进行编辑
         FXWidgetUtil.doubleToEdit(table, () -> addController, OrderItemModel::update);
 
-        tab_rate.visibleProperty().bind(pay.visibleProperty());
-        tab_ratetotal.visibleProperty().bind(pay.visibleProperty());
-        tab_totallWithRate.visibleProperty().bind(pay.visibleProperty());
-        tab_rebate.visibleProperty().bind(pay.visibleProperty());
-        tab_allrebate.visibleProperty().bind(pay.visibleProperty());
-        tab_delifee.visibleProperty().bind(pay.visibleProperty());
-        tab_actPay.visibleProperty().bind(pay.visibleProperty());
-        pay.managedProperty().bind(pay.visibleProperty());
-        item_rate.visibleProperty().bind(pay.visibleProperty());
-        item_rebate.visibleProperty().bind(pay.visibleProperty());
+        tab_ratetotal.visibleProperty().bind(tab_rate.visibleProperty());
+        tab_totallWithRate.visibleProperty().bind(tab_rate.visibleProperty());
+        tab_rebate.visibleProperty().bind(tab_rate.visibleProperty());
+        tab_allrebate.visibleProperty().bind(tab_rate.visibleProperty());
+        tab_delifee.visibleProperty().bind(tab_rate.visibleProperty());
+        tab_actPay.visibleProperty().bind(tab_rate.visibleProperty());
+//        item_rate.visibleProperty().bind(tab_rate.visibleProperty());
+//        item_rebate.visibleProperty().bind(tab_rate.visibleProperty());
+        item_rate.setVisible(false);
+        item_rebate.setVisible(false);
+
+        item_ok.setOnAction(event -> {
+            model.getOrderItemModels().clear();
+            model.getOrderItemModels().addAll(table.getItems());
+            model.setOrderdate(Date.valueOf(rdate.getValue()).getTime());
+            model.setCid(cid.getSelectionModel().getSelectedItem().getId());
+            model.setCust(cid.getSelectionModel().getSelectedItem().getSerial()
+                    + "-" + cid.getSelectionModel().getSelectedItem().getName());
+            try {
+                QSApp.service.getOrderService().update(model);
+                QSApp.mainPane.backNav();
+            } catch (Exception e) {
+                e.printStackTrace();
+                WarningBuilder.build("更新失败，请检查网络是否可用");
+            }
+        });
+
+        item_cancel.setOnAction(event -> {
+            // @TODO 取消时需要消除新建插入的东西
+            QSApp.mainPane.backNav();
+        });
     }
-
-//    @Override
-//    public void init() {
-//        serial.setText(NO_SERIAL);
-//        cid.getSelectionModel().clearSelection();
-//        table.getItems().clear();
-//        // 加载列表
-//        loadCust();
-//
-//        // 加载 FXML
-//        if(addController==null){
-//            Platform.runLater(() -> {
-//                try {
-//                    addController = ViewPathUtil.loadViewForController("order_item_add.fxml");
-//                } catch (IOException e) {
-//                    e.printStackTrace();
-//                }
-//            });
-//        }
-//    }
-
-//    @Override
-//    public void fill(OrderModelFull receiptModelFull) {
-//        serial.setText(receiptModelFull.getSerial());
-//        Platform.runLater(()->{
-//            for (CustomModel cust : cid.getItems()) {
-//                if (cust.getId().equals(receiptModelFull.getCid())){
-//                    cid.getSelectionModel().select(cust);
-//                    break;
-//                }
-//            }
-//        });
-//        rdate.setValue(FXUtils.stampToLocalDate(receiptModelFull.getOrderdate()));
-//        table.getItems().setAll(receiptModelFull.getOrderItemModels());
-//    }
-
-//    @Override
-//    public OrderModelFull pack() {
-//        OrderModelFull res = new OrderModelFull();
-//        res.setSerial(serial.getText().equals(NO_SERIAL)?null:serial.getText());
-//        res.setOrderdate(Date.valueOf(rdate.getValue()).getTime());
-//        res.setCid(cid.getSelectionModel().getSelectedItem().getId());
-//        res.setOrderItemModels(table.getItems());
-//        return res;
-//    }
-
 
     private void loadCust() {
         Platform.runLater(() -> {
@@ -235,21 +211,6 @@ public class OrderMakeController implements ContentCtrl {
 
     @Override
     public void loaded() {
-        // 加载 FXML
-        if (addController == null) {
-            Platform.runLater(() -> {
-                try {
-                    addController = ViewPathUtil.loadViewForController("order_item_add.fxml");
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            });
-        }
-
-        item_cancel.setOnAction(event -> {
-            // @TODO 取消时需要消除新建插入的东西
-            QSApp.mainPane.backNav();
-        });
     }
 
     @Override
@@ -262,8 +223,9 @@ public class OrderMakeController implements ContentCtrl {
         Long id = (Long) params.get("id");
         if (id == null) {
             // @TODO 插入一个新的空的
-        } else {
-            OrderModelFull model;
+            throw new RuntimeException("id can't be empty!");
+        }
+        new Thread(() -> {
             try {
                 model = QSApp.service.getOrderService().selectById(id);
                 serial.setText(model.getSerial());
@@ -281,19 +243,10 @@ public class OrderMakeController implements ContentCtrl {
                 // @TODO 这里需要做出警告
                 e.printStackTrace();
             }
-        }
+        }).start();
 
-        // 是否显示支付方式东西
-//        switch (QSApp.mainPane.getUserModel().getUtype().intValue()) {
-//            case 0:
-//            case 1:
-//                pay.setVisible(true);
-//                break;
-//            default:
-//                pay.setVisible(false);
-//        }
-
-        pay.setVisible(false);
+        Boolean more = (Boolean) params.getOrDefault("more", false);
+        tab_rate.setVisible(true);
     }
 
     @Override

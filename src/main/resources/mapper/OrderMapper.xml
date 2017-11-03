@@ -23,7 +23,13 @@
         <!--<if test="s!=null">-->
         <!--AND date_format(orderdate, '%m') = #{month}-->
         <!--</if>-->
-        ORDER BY orderdate
+        ORDER BY orderdate DESC
+    </select>
+
+    <select id="getUniSerial" resultType="String">
+        SELECT ifnull(max(serial), 0)+1
+        FROM orders
+        WHERE serial LIKE concat(right(#{year}, 2), lpad(#{month}, 2, '0'),'%')
     </select>
 
 

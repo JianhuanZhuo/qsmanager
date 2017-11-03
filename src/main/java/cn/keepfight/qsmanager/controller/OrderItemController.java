@@ -124,6 +124,7 @@ public class OrderItemController implements ContentCtrl, Initializable {
         a_alter.setOnAction(event -> {
             Properties ps = new Properties();
             ps.put("id", modelFull.getId());
+            ps.put("more", false);
             QSApp.mainPane.changeTo(MainPaneList.ORDER_MAKE, ps);
 //            ordersController.updateOrder(modelFull);
         });

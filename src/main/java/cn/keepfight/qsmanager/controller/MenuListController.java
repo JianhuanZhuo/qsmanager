@@ -24,20 +24,15 @@ public class MenuListController {
             MenuList m = legalList.get(i);
             //加载并添加到菜单列表中
             Platform.runLater(() -> {
-                try {
-                    MenuController c = ViewPathUtil.loadViewForController("menuitem.fxml");
-                    c.setup(m);
-                    root.getChildren().add(c.getRoot());
-
-                    c.getRoot().setOnMouseClicked(event -> QSApp.mainPane.switchMenu(m));
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+                MenuController c = ViewPathUtil.loadViewForController("menuitem.fxml");
+                c.setup(m);
+                root.getChildren().add(c.getRoot());
+                c.getRoot().setOnMouseClicked(event -> QSApp.mainPane.switchMenu(m));
             });
         }
     }
 
-    public void unloadMenuList(){
+    public void unloadMenuList() {
         root.getChildren().clear();
     }
 }

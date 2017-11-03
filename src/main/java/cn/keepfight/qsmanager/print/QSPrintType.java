@@ -24,6 +24,7 @@ import java.util.function.Consumer;
  */
 public enum QSPrintType {
     DELIVERY("普通送货单 二分联", Paper.A4, PageOrientation.PORTRAIT, 25, "print_delivery.fxml", new PrintLocateDelivery(), 2),
+    DELIVERY_SIMPLE("普通送货单(无金额) 二分联", Paper.A4, PageOrientation.PORTRAIT, 25, "print_delivery_simple.fxml", new PrintLocateDelivery(), 2),
     RECEIPT("普通收据单 二分联", Paper.A4, PageOrientation.PORTRAIT, 25, "print_receipt.fxml", new PrintLocateDelivery(), 2),
     DELIVERY_ANLI("安利专用送货单 二分联", Paper.A4, PageOrientation.PORTRAIT, 25, "print_anli.fxml", new PrintLocateDelivery(), 2),
     MON_CUST("客户月对账单 A4横向", Paper.A4, "print_mon_cust.fxml", new PrintLocateMonCust(), 1),
@@ -83,12 +84,9 @@ public enum QSPrintType {
         }
         if (!viewPath.equals("")) {
             Platform.runLater(() -> {
-                try {
-                    controller = ViewPathUtil.loadViewForController(viewPath);
-                    action.accept(controller);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+                controller = ViewPathUtil.loadViewForController(viewPath);
+                action.accept(controller);
+
             });
         }
     }

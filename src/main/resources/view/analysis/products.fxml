@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.Pane?>
+<VBox fx:id="root" styleClass="content-pane" stylesheets="@../css/common.css"
+      xmlns="http://javafx.com/javafx/8.0.111"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="cn.keepfight.qsmanager.controller.analysis.AnalysisProductController">
+    <HBox styleClass="title-line, left-align">
+        <Button fx:id="btn_year" styleClass="url" text="2017年"/>
+        <Label text="销售利润成本分析"/>
+        <Pane HBox.hgrow="ALWAYS"/>
+        <Label text="（双击成本列输入成本，回车完成数据输入）"/>
+    </HBox>
+    <TableView fx:id="table_detail" VBox.vgrow="ALWAYS">
+        <columns>
+            <TableColumn fx:id="product" prefWidth="130" text="产品"/>
+            <TableColumn fx:id="cost" text="平均单件成本"/>
+            <TableColumn fx:id="price" text="平均单件单价"/>
+            <TableColumn fx:id="profit" text="单件利润"/>
+            <TableColumn fx:id="totalProfit" text="总利润"/>
+            <TableColumn fx:id="profitRate" text="利润率"/>
+            <TableColumn fx:id="sum" text="年度销量合计"/>
+            <TableColumn fx:id="mon01" text="1 月"/>
+            <TableColumn fx:id="mon02" text="2 月"/>
+            <TableColumn fx:id="mon03" text="3 月"/>
+            <TableColumn fx:id="mon04" text="4 月"/>
+            <TableColumn fx:id="mon05" text="5 月"/>
+            <TableColumn fx:id="mon06" text="6 月"/>
+            <TableColumn fx:id="mon07" text="7 月"/>
+            <TableColumn fx:id="mon08" text="8 月"/>
+            <TableColumn fx:id="mon09" text="9 月"/>
+            <TableColumn fx:id="mon10" text="10月"/>
+            <TableColumn fx:id="mon11" text="11月"/>
+            <TableColumn fx:id="mon12" text="12月"/>
+        </columns>
+    </TableView>
+    <HBox styleClass="hbox-common, left-align">
+        <Label text="注：这里考虑每笔交易中每箱的装数、单价都可能不一样，所以使用了平均单价、数量按件计算"/>
+    </HBox>
+</VBox>

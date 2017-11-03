@@ -23,9 +23,16 @@ public interface PredictMapper {
     List<PredictTradeDao> selectIncomePredictLeft() throws Exception;
 
     /**
-     * 选择全部的预算历史
+     * 选择指定年月的预算历史
      */
     PredictHistoryDao selectPredictHistory(
+            @Param("year") Long year,
+            @Param("month") Long month) throws Exception;
+
+    /**
+     * 删除指定年月的预算历史
+     */
+    void delPredictHistory(
             @Param("year") Long year,
             @Param("month") Long month) throws Exception;
 

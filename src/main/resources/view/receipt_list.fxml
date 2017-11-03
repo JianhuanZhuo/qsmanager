@@ -11,32 +11,31 @@
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.ListView?>
-<VBox fx:id="root" styleClass="content-pane" stylesheets="@css/common.css" xmlns="http://javafx.com/javafx/8.0.111"
+<VBox fx:id="root" styleClass="content-pane, vbox-common" stylesheets="@css/common.css"
+      xmlns="http://javafx.com/javafx/8.0.111"
       xmlns:fx="http://javafx.com/fxml/1"
       fx:controller="cn.keepfight.qsmanager.controller.ReceiptListController">
-    <VBox styleClass="vbox-common">
-        <HBox styleClass="hbox-common">
-            <ChoiceBox fx:id="rec_sup_sel" prefWidth="130"/>
-            <ChoiceBox fx:id="rec_year_sel" prefWidth="80"/>
-            <ChoiceBox fx:id="rec_mon_sel" prefWidth="80"/>
-            <Pane HBox.hgrow="ALWAYS"/>
-            <Button fx:id="rec_add" text="添加送货单">
-                <graphic>
-                    <ImageView fitWidth="16" fitHeight="16">
-                        <Image url="@img/item-add.png"/>
-                    </ImageView>
-                </graphic>
-            </Button>
-            <Button fx:id="rec_print_mon" text="打印月明细表">
-                <graphic>
-                    <ImageView fitWidth="16" fitHeight="16">
-                        <Image url="@img/print.png"/>
-                    </ImageView>
-                </graphic>
-            </Button>
-        </HBox>
-        <ScrollPane fitToHeight="true" fitToWidth="true" VBox.vgrow="ALWAYS">
-            <ListView fx:id="receiptFullList" styleClass="itemlist"/>
-        </ScrollPane>
-    </VBox>
+    <HBox styleClass="hbox-common">
+        <ChoiceBox fx:id="rec_sup_sel" prefWidth="130"/>
+        <ChoiceBox fx:id="rec_year_sel" prefWidth="80"/>
+        <ChoiceBox fx:id="rec_mon_sel" prefWidth="80"/>
+        <Pane HBox.hgrow="ALWAYS"/>
+        <Button fx:id="rec_add" text="添加送货单">
+            <graphic>
+                <ImageView fitWidth="16" fitHeight="16">
+                    <Image url="@img/item-add.png"/>
+                </ImageView>
+            </graphic>
+        </Button>
+        <Button fx:id="rec_print_mon" text="打印月明细表">
+            <graphic>
+                <ImageView fitWidth="16" fitHeight="16">
+                    <Image url="@img/print.png"/>
+                </ImageView>
+            </graphic>
+        </Button>
+    </HBox>
+    <ScrollPane fitToHeight="true" fitToWidth="true" VBox.vgrow="ALWAYS">
+        <ListView fx:id="receiptFullList" styleClass="itemlist"/>
+    </ScrollPane>
 </VBox>

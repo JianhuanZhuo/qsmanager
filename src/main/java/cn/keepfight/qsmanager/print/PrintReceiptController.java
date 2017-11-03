@@ -232,7 +232,7 @@ public class PrintReceiptController extends PrintTemplate<OrderModelFull> implem
         Item(){}
         Item(OrderItemModel m) {
             FXReflectUtils.attrAssign(m, this,
-                    "note", "detail", "did", "id", "name", "num", "pack", "price", "serial", "unit");
+                    "note", "detail", "id", "name", "num", "pack", "price", "serial", "unit");
             nameItem.set(getSerial() + "-" + getName());
         }
 

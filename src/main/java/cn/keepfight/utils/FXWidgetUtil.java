@@ -1,10 +1,7 @@
 package cn.keepfight.utils;
 
 
-import cn.keepfight.widget.AddSalaryItem;
-import cn.keepfight.widget.MonthPicker;
-import cn.keepfight.widget.PredictItem;
-import cn.keepfight.widget.YearScrollPicker;
+import cn.keepfight.widget.*;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Platform;
@@ -118,6 +115,15 @@ public class FXWidgetUtil {
     public static YearScrollPicker getYearPicker() {
         try {
             return ViewPathUtil.loadWidgetForController("yearPicker/year_picker.fxml");
+        } catch (IOException e) {
+            e.printStackTrace();
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static<T> UnitScrollPicker<T> getUnitPicker() {
+        try {
+            return ViewPathUtil.loadWidgetForController("unitPicker/unit_Picker.fxml");
         } catch (IOException e) {
             e.printStackTrace();
             throw new RuntimeException(e);
@@ -436,6 +442,13 @@ public class FXWidgetUtil {
     }
 
     /**
+     * 以字符串的转换方式连接表格列
+     */
+    public static <T> void connectStrColumn(TableColumn<T, String> tab_col, Function<T, StringProperty> x) {
+        tab_col.setCellValueFactory(data->x.apply(data.getValue()));
+    }
+
+    /**
      * 以指定的转换方式连接表格列
      */
     public static <T> void connectObj(TableColumn<T, String> tab_col, Function<T, ObjectExpression> x) {
@@ -503,8 +516,7 @@ public class FXWidgetUtil {
     public static <T> void doubleToEdit(TableView<T> tab,
                                         Supplier<DialogContent<T>> getcontroller,
                                         BiConsumer<T, T> resHandler) {
-        doubleToEdit(tab, getcontroller, resHandler, () -> {
-        });
+        doubleToEdit(tab, getcontroller, resHandler, () -> {});
     }
 
 
