@@ -58,5 +58,6 @@
         <mapper resource="mapper/PredictMapper.xml"/>
         <!--分析表-->
         <mapper resource="mapper/AnalysisMapper.xml"/>
+        <mapper resource="mapper/StaticTotalMapper.xml"/>
     </mappers>
 </configuration>

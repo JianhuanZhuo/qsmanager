@@ -164,8 +164,8 @@ GridPane.fitpack TextField {
 
 /*底部盖章的样式*/
 .stamp {
-    -fx-min-height: 25px;
-    -fx-max-height: 25px;
+    -fx-min-height: 20px;
+    -fx-max-height: 20px;
     -fx-font: normal normal 12px "宋体";
     -fx-alignment: bottom-left;
 }

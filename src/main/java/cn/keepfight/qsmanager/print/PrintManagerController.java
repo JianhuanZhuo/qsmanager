@@ -59,6 +59,7 @@ public class PrintManagerController implements ContentCtrl, Initializable {
     private Button action;
     @FXML
     private Button compute;
+    public Button save;
     @FXML
     private ScrollPane printScrollPane;
 
@@ -84,9 +85,11 @@ public class PrintManagerController implements ContentCtrl, Initializable {
                 .or(type_sel.getSelectionModel().selectedItemProperty().isNull())
                 .or(printHit.textProperty().isNotEqualTo(""))
                 .or(printing));
+        save.disableProperty().bind(action.disableProperty());
 
         // 打印动作
         action.setOnAction(event -> printAction());
+        save.setOnAction(event -> saveActoion());
     }
 
     public void fill(PrintSelection s) {
@@ -158,6 +161,12 @@ public class PrintManagerController implements ContentCtrl, Initializable {
             }
         });
         compute.disableProperty().unbind();
+    }
+
+    private void saveActoion(){
+        QSPrintType type = type_sel.getValue();
+        type.getController(PrintTemplate::printBefore);
+        type.getController(PrintTemplate::printAfter);
     }
 
     private void printAction() {
@@ -294,6 +303,7 @@ public class PrintManagerController implements ContentCtrl, Initializable {
         checkSupport();
 
         PrintSelection s = (PrintSelection) params.get("selection");
+        System.out.println("s:"+s.getPrintSource().getCust());
         fill(s);
     }
 

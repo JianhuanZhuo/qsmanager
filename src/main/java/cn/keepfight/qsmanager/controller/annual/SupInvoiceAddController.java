@@ -7,6 +7,7 @@ import cn.keepfight.qsmanager.model.CustomModel;
 import cn.keepfight.qsmanager.model.SupplyModel;
 import cn.keepfight.qsmanager.service.CustInvoiceServers;
 import cn.keepfight.qsmanager.service.SupInvoiceServers;
+import cn.keepfight.utils.FXUtils;
 import cn.keepfight.utils.FXWidgetUtil;
 import cn.keepfight.utils.WarningBuilder;
 import cn.keepfight.widget.MonthPicker;
@@ -71,11 +72,11 @@ public class SupInvoiceAddController implements Initializable, ContentCtrl {
             BigDecimal r;
             BigDecimal t;
             try {
-                r = new BigDecimal(rate.getText().replace("%", "").replace(",", ""));
+                r = new BigDecimal(rate.getText().trim().replace("%", "").replace(",", ""));
                 if (rate.getText().contains("%")) {
                     r = r.movePointLeft(2);
                 }
-                t = new BigDecimal(total.getText().replace(",", ""));
+                t = FXUtils.getDecimal(total);
             } catch (Exception e) {
                 WarningBuilder.build("金额或税率数据填写错误，无法添加记录！");
                 return;

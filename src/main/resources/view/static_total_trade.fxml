@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<VBox fx:id="root" styleClass="content-pane,hbox-common" stylesheets="@css/common.css"
+      xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="cn.keepfight.qsmanager.controller.analysis.StaticTotalTradeController">
+    <ScrollPane VBox.vgrow="ALWAYS">
+        <VBox styleClass="vbox-common">
+            <HBox fx:id="income"/>
+        </VBox>
+    </ScrollPane>
+</VBox>

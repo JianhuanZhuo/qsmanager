@@ -1,6 +1,9 @@
 package cn.keepfight.utils;
 
 
+import cn.keepfight.qsmanager.MenuList;
+import cn.keepfight.qsmanager.QSApp;
+import cn.keepfight.qsmanager.controller.MainPaneList;
 import cn.keepfight.widget.*;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -25,7 +28,7 @@ import javafx.print.PrinterJob;
 import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.TextFieldTableCell;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 import javafx.scene.transform.Scale;
 import javafx.util.Callback;
 import javafx.util.Duration;
@@ -121,7 +124,7 @@ public class FXWidgetUtil {
         }
     }
 
-    public static<T> UnitScrollPicker<T> getUnitPicker() {
+    public static <T> UnitScrollPicker<T> getUnitPicker() {
         try {
             return ViewPathUtil.loadWidgetForController("unitPicker/unit_Picker.fxml");
         } catch (IOException e) {
@@ -445,7 +448,7 @@ public class FXWidgetUtil {
      * 以字符串的转换方式连接表格列
      */
     public static <T> void connectStrColumn(TableColumn<T, String> tab_col, Function<T, StringProperty> x) {
-        tab_col.setCellValueFactory(data->x.apply(data.getValue()));
+        tab_col.setCellValueFactory(data -> x.apply(data.getValue()));
     }
 
     /**
@@ -516,7 +519,8 @@ public class FXWidgetUtil {
     public static <T> void doubleToEdit(TableView<T> tab,
                                         Supplier<DialogContent<T>> getcontroller,
                                         BiConsumer<T, T> resHandler) {
-        doubleToEdit(tab, getcontroller, resHandler, () -> {});
+        doubleToEdit(tab, getcontroller, resHandler, () -> {
+        });
     }
 
 
@@ -763,5 +767,62 @@ public class FXWidgetUtil {
                 return s.get();
             }
         };
+    }
+
+    public static void setConstraints(GridPane gridPane) {
+        setRowConstraints(gridPane);
+        setColumnConstraints(gridPane);
+    }
+
+    public static void setRowConstraints(GridPane gridPane) {
+        int maxRow = gridPane.getChildren().stream().mapToInt(GridPane::getRowIndex).filter(Objects::nonNull).max().orElse(0) + 1;
+        List<RowConstraints> rows = gridPane.getRowConstraints();
+        rows.clear();
+        for (int i = 0; i < maxRow; i++) {
+            rows.add(new RowConstraints(30));
+        }
+    }
+
+    public static void setColumnConstraints(GridPane gridPane) {
+        setColumnConstraints(gridPane, 80);
+    }
+
+    public static void setColumnConstraints(GridPane gridPane, double width) {
+        int maxCol = gridPane.getChildren().stream().mapToInt(GridPane::getColumnIndex).filter(Objects::nonNull).max().orElse(0) + 1;
+        List<ColumnConstraints> cols = gridPane.getColumnConstraints();
+        cols.clear();
+        for (int i = 0; i < maxCol; i++) {
+            cols.add(new ColumnConstraints(80, width, 130));
+        }
+    }
+
+
+    public static void addToGridPaneLink(GridPane gridPane, String nodeStr, String styleStr, int colIndex, int rowIndex, MainPaneList menuList, Properties params) {
+        Button button = new Button(nodeStr);
+        FXUtils.addStyle("url", button);
+        button.setBackground(Background.EMPTY);
+        button.setOnAction(event->QSApp.mainPane.changeTo(menuList, params));
+        HBox hBox3 = new HBox(button);
+        if (styleStr != null && !styleStr.equals("")) {
+            FXUtils.addStyle(styleStr, hBox3);
+        }
+        gridPane.add(hBox3, colIndex, rowIndex);
+    }
+
+
+    public static void addToGridPane(GridPane gridPane, String nodeStr, String styleStr, int colIndex, int rowIndex) {
+        HBox hBox3 = new HBox(new Label(nodeStr));
+        if (styleStr != null && !styleStr.equals("")) {
+            FXUtils.addStyle(styleStr, hBox3);
+        }
+        gridPane.add(hBox3, colIndex, rowIndex);
+    }
+
+    public static void addToGridPane(GridPane gridPane, String nodeStr, String styleStr, int colIndex, int rowIndex, int colspan, int rowspan) {
+        HBox hBox3 = new HBox(new Label(nodeStr));
+        if (styleStr != null && !styleStr.equals("")) {
+            FXUtils.addStyle(styleStr, hBox3);
+        }
+        gridPane.add(hBox3, colIndex, rowIndex, colspan, rowspan);
     }
 }

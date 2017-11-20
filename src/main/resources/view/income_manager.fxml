@@ -26,6 +26,22 @@
         </graphic>
     </Button>
     <Pane HBox.hgrow="ALWAYS"/>
+    <Button fx:id="tradeBtn" contentDisplay="TOP" styleClass="btn-common" text="交易额总表">
+        <graphic>
+            <ImageView >
+                <Image url="@img/10.png"/>
+            </ImageView>
+        </graphic>
+    </Button>
+    <Pane HBox.hgrow="ALWAYS"/>
+    <Button fx:id="staticBtn" contentDisplay="TOP" styleClass="btn-common" text="销售总表">
+        <graphic>
+            <ImageView >
+                <Image url="@img/10.png"/>
+            </ImageView>
+        </graphic>
+    </Button>
+    <Pane HBox.hgrow="ALWAYS"/>
     <Button fx:id="predBtn" contentDisplay="TOP" styleClass="btn-common" text="客户销售分析">
         <graphic>
             <ImageView >
@@ -35,6 +51,14 @@
     </Button>
     <Pane HBox.hgrow="ALWAYS"/>
     <Button fx:id="graphBtn" contentDisplay="TOP" styleClass="btn-common" text="销售柱状图">
+        <graphic>
+            <ImageView >
+                <Image url="@img/10.png"/>
+            </ImageView>
+        </graphic>
+    </Button>
+    <Pane HBox.hgrow="ALWAYS"/>
+    <Button fx:id="pieBtn" contentDisplay="TOP" styleClass="btn-common" text="占款比例图">
         <graphic>
             <ImageView >
                 <Image url="@img/10.png"/>

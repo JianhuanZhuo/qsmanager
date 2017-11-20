@@ -213,7 +213,7 @@ public class MainPane {
                     // 添加到队列中
                     push(controller, params);
                     System.out.println("changeTo-"+controller.getTitle().get()+"showedAfter:"+(System.currentTimeMillis()-a));
-                    new Thread(()-> controller.showedAfter(params)).start();
+                    controller.showedAfter(params);
                 });
             }).start();
         });

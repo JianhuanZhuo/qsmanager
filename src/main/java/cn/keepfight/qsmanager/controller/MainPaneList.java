@@ -38,6 +38,12 @@ public enum MainPaneList {
     analysis$SELL,
     analysis$CUSTOM,
     analysis$PRODUCTS,
+    analysis$PIE,
+    analysis$OUTCOME_STATIC,
+    STATIC_TOTAL,
+    STATIC_MATERIAL,
+    STATIC_TOTAL_PAY,
+    STATIC_TOTAL_TRADE,
     tax$TAX;
 
     String view;

@@ -6,6 +6,7 @@ import cn.keepfight.qsmanager.model.OrderModelFull;
 import cn.keepfight.utils.FXUtils;
 import cn.keepfight.utils.FXWidgetUtil;
 import cn.keepfight.utils.QSUtil;
+import javafx.application.Platform;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.ReadOnlyBooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
@@ -22,6 +23,7 @@ import javafx.util.Pair;
 
 import java.math.BigDecimal;
 import java.net.URL;
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -78,6 +80,8 @@ public class PrintAnliController extends PrintTemplate<OrderModelFull> implement
     @FXML
     private TextField item_num3;
 
+    private List<BigDecimal> prices = Arrays.asList(new BigDecimal(0), new BigDecimal(0), new BigDecimal(0));
+
     @FXML
     private Label total_all;
 
@@ -103,7 +107,6 @@ public class PrintAnliController extends PrintTemplate<OrderModelFull> implement
         anliPacks = Arrays.asList(QSUtil.setAnliPack(item_detail1), QSUtil.setAnliPack(item_detail2), QSUtil.setAnliPack(item_detail3));
 
         names.forEach(x -> x.setItems(FXCollections.observableArrayList("不锈钢软丝刷", null)));
-
         for (int i = 0; i < names.size(); i++) {
             final int j = i;
             names.get(i).setOnAction(event -> {
@@ -150,7 +153,7 @@ public class PrintAnliController extends PrintTemplate<OrderModelFull> implement
         deliveryItemModels.setAll(datas.getOrderItemModels());
 
         serial.setText(datas.getSerial());
-        mdate.setText(FXUtils.stampToDate(System.currentTimeMillis()));
+        mdate.setText(FXUtils.stampToDate(datas.getOrderdate()));
 
         // 加载默认记忆选项并添加默认下拉
         FXWidgetUtil.defaultList(
@@ -166,15 +169,23 @@ public class PrintAnliController extends PrintTemplate<OrderModelFull> implement
                 new Pair<>(item_num3, "prefer.delivery.anli.num")
         );
 
-        List<OrderItemModel> os = deliveryItemModels.stream().filter(x -> x.getName().equals("不锈钢软丝刷")).limit(3).collect(Collectors.toList());
+        List<OrderItemModel> os = deliveryItemModels
+                .stream()
+                .filter(x -> x.getName().contains("不锈钢软丝刷"))
+                .limit(3)
+                .collect(Collectors.toList());
         for (int i = 0; i < os.size(); i++) {
             OrderItemModel x = os.get(i);
             names.get(i).getSelectionModel().select(x.getName());
-            serials.get(i).setText(x.getSerial());
-            units.get(i).setText(x.getUnit());
-            nums.get(i).setText("1960盒/板");
-            packs.get(i).setText("4个/盒");
-            details.get(i).setText(x.getDetail());
+            final int j = i;
+            Platform.runLater(() -> {
+                serials.get(j).setText(x.getSerial());
+                units.get(j).setText(x.getUnit());
+                nums.get(j).setText("1960盒/板");
+                packs.get(j).setText("4个/盒");
+                details.get(j).setText(x.getDetail());
+            });
+            prices.set(i, x.getPrice());
         }
     }
 
@@ -211,9 +222,13 @@ public class PrintAnliController extends PrintTemplate<OrderModelFull> implement
                 model.setPack(1);
                 model.setPackDefault(1);
                 model.setSerial(serials.get(i).getText());
+                model.setPrice(prices.get(i));
                 is.add(model);
             }
         }
+        datas.setOrderdate(
+                Date.valueOf(FXUtils.getDate("yyyy-M-d", mdate.getText())).getTime()
+        );
         datas.setOrderItemModels(is);
         try {
             // 修改为 false

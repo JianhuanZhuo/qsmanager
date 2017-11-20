@@ -132,7 +132,7 @@ public class ReceiptListController implements ContentCtrl, Initializable {
 
     @Override
     public void showed(Properties params) {
-
+        loadSelection();
     }
 
     @Override

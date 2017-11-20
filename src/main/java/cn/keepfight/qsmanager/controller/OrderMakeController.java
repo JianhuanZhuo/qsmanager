@@ -143,6 +143,7 @@ public class OrderMakeController implements ContentCtrl {
         item_add.setOnMouseClicked(e -> {
             addController.setCid(cid.getSelectionModel().getSelectedItem().getId());
             CustomDialog.gen().build(addController).ifPresent(table.getItems()::add);
+            FXWidgetUtil.compute(table.getItems(), OrderItemModel::getActualPayTotal, s_total::setText);
         });
 
         // 删除明细按钮
@@ -159,22 +160,24 @@ public class OrderMakeController implements ContentCtrl {
         rdate.getEditor().setDisable(true);
 
         // 双击原料表进行编辑
-        FXWidgetUtil.doubleToEdit(table, () -> addController, OrderItemModel::update);
+        FXWidgetUtil.doubleToEdit(table, () -> addController, (x, y) -> {
+            x.update(y);
+            FXWidgetUtil.compute(table.getItems(), OrderItemModel::getActualPayTotal, s_total::setText);
+        });
 
-        tab_ratetotal.visibleProperty().bind(tab_rate.visibleProperty());
-        tab_totallWithRate.visibleProperty().bind(tab_rate.visibleProperty());
-        tab_rebate.visibleProperty().bind(tab_rate.visibleProperty());
-        tab_allrebate.visibleProperty().bind(tab_rate.visibleProperty());
-        tab_delifee.visibleProperty().bind(tab_rate.visibleProperty());
-        tab_actPay.visibleProperty().bind(tab_rate.visibleProperty());
+//        tab_ratetotal.visibleProperty().bind(tab_rate.visibleProperty());
+//        tab_totallWithRate.visibleProperty().bind(tab_rate.visibleProperty());
+//        tab_rebate.visibleProperty().bind(tab_rate.visibleProperty());
+//        tab_allrebate.visibleProperty().bind(tab_rate.visibleProperty());
+//        tab_delifee.visibleProperty().bind(tab_rate.visibleProperty());
+//        tab_actPay.visibleProperty().bind(tab_rate.visibleProperty());
 //        item_rate.visibleProperty().bind(tab_rate.visibleProperty());
 //        item_rebate.visibleProperty().bind(tab_rate.visibleProperty());
-        item_rate.setVisible(false);
-        item_rebate.setVisible(false);
+//        item_rate.setVisible(false);
+//        item_rebate.setVisible(false);
 
         item_ok.setOnAction(event -> {
-            model.getOrderItemModels().clear();
-            model.getOrderItemModels().addAll(table.getItems());
+            model.setOrderItemModels(table.getItems());
             model.setOrderdate(Date.valueOf(rdate.getValue()).getTime());
             model.setCid(cid.getSelectionModel().getSelectedItem().getId());
             model.setCust(cid.getSelectionModel().getSelectedItem().getSerial()
@@ -246,7 +249,7 @@ public class OrderMakeController implements ContentCtrl {
         }).start();
 
         Boolean more = (Boolean) params.getOrDefault("more", false);
-        tab_rate.setVisible(true);
+//        tab_rate.setVisible(true);
     }
 
     @Override

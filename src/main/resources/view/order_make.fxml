@@ -59,7 +59,7 @@
             </graphic>
         </Button>
         <Pane HBox.hgrow="ALWAYS"/>
-        <Button fx:id="item_rate" styleClass="btnable" text="统一税率">
+        <Button managed="false" visible="false" fx:id="item_rate" styleClass="btnable" text="统一税率">
             <graphic>
                 <ImageView fitHeight="16" fitWidth="16">
                     <Image url="@img/reset.png"/>
@@ -67,7 +67,7 @@
             </graphic>
         </Button>
         <Separator orientation="VERTICAL"/>
-        <Button fx:id="item_rebate" styleClass="btnable" text="统一返点">
+        <Button managed="false" visible="false"  fx:id="item_rebate" styleClass="btnable" text="统一返点">
             <graphic>
                 <ImageView fitHeight="16" fitWidth="16">
                     <Image url="@img/reset.png"/>
@@ -86,11 +86,11 @@
                 <TableColumn fx:id="tab_pack" text="产品装数"/>
                 <TableColumn fx:id="tab_num" text="订购数量"/>
                 <TableColumn fx:id="tab_total" text="合计金额"/>
-                <TableColumn fx:id="tab_rate" text="税率"/>
-                <TableColumn fx:id="tab_ratetotal" text="税金"/>
-                <TableColumn fx:id="tab_totallWithRate" text="税后金额"/>
-                <TableColumn fx:id="tab_rebate" text="返点数"/>
-                <TableColumn fx:id="tab_allrebate" text="总共返点数"/>
+                <TableColumn visible="false" fx:id="tab_rate" text="税率"/>
+                <TableColumn visible="false" fx:id="tab_ratetotal" text="税金"/>
+                <TableColumn visible="false" fx:id="tab_totallWithRate" text="税后金额"/>
+                <TableColumn visible="false" fx:id="tab_rebate" text="返点数"/>
+                <TableColumn visible="false" fx:id="tab_allrebate" text="总共返点数"/>
                 <TableColumn fx:id="tab_delifee" text="运费"/>
                 <TableColumn fx:id="tab_actPay" text="实际支付"/>
             </columns>
@@ -101,11 +101,11 @@
     </ScrollPane>
     <HBox styleClass="hbox-common">
         <Label text="箱数统计："/>
-        <Label fx:id="s_num" text="180"/>
-        <Label text="税金统计："/>
-        <Label fx:id="s_rate" text="180"/>
-        <Label text="返点统计："/>
-        <Label fx:id="s_rebate" text="1080.00"/>
+        <Label fx:id="s_num" text="0"/>
+        <Label visible="false" text="税金统计："/>
+        <Label visible="false" fx:id="s_rate" text="180"/>
+        <Label visible="false" text="返点统计："/>
+        <Label visible="false" fx:id="s_rebate" text="1080.00"/>
         <Pane HBox.hgrow="ALWAYS"/>
         <Label text="实际应收金额：￥"/>
         <Label fx:id="s_total" text="0"/>

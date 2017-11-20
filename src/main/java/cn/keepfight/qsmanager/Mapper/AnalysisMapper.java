@@ -1,8 +1,10 @@
 package cn.keepfight.qsmanager.Mapper;
 
+import cn.keepfight.qsmanager.dao.TupleDao;
 import cn.keepfight.qsmanager.dao.analysis.PriceAnalysisDao;
 import cn.keepfight.qsmanager.dao.analysis.SellAnalysisDao;
 import cn.keepfight.qsmanager.dao.analysis.SellSumDao;
+import cn.keepfight.qsmanager.dao.analysis.UnitMonthDao_i;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -25,4 +27,14 @@ public interface AnalysisMapper {
      * 选择指定年份的产品分月销售数和利润
      */
     List<PriceAnalysisDao> staticPriceByYear(Long year) throws Exception;
+
+    /**
+     * 查询指定年份的交易总量
+     */
+    List<TupleDao> staticTradeByYear(Long year) throws Exception;
+
+    /**
+     * 指定年统计每个月的供应金额
+     */
+    List<UnitMonthDao_i> staticTakeTradeByYear(Long year) throws Exception;
 }

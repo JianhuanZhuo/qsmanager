@@ -540,6 +540,8 @@ public class LocalServiceImpl implements ServerService {
                     annualModel.setYear(year);
                     FXUtils.getMapper(factory, CustAnnuMapper.class, CustAnnuMapper::insertAnnual, annualModel);
                 }
+                annualModel.setCid(cid);
+                annualModel.setYear(year);
                 modelFull.set(annualModel);
 
                 // 查询月份的原有记录，并使用 Map 作为存储

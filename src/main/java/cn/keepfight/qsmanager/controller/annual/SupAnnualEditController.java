@@ -102,6 +102,7 @@ public class SupAnnualEditController implements ContentCtrl, Initializable {
                         new Pair<>("sup_view", sup_view)
                 )
         ));
+        btn_invoice_del.disableProperty().bind(table_bill.getSelectionModel().selectedItemProperty().isNull());
         btn_invoice_del.setOnAction(event -> {
             InvoiceDaoWrapper x = table_bill.getSelectionModel().getSelectedItem();
             try {
@@ -125,6 +126,7 @@ public class SupAnnualEditController implements ContentCtrl, Initializable {
                         new Pair<>("sup_view", sup_view)
                 )
         ));
+        btn_remit_del.disableProperty().bind(table_remit.getSelectionModel().selectedItemProperty().isNull());
         btn_remit_del.setOnAction(event -> {
             RemitDaoWrapper x = table_remit.getSelectionModel().getSelectedItem();
             try {

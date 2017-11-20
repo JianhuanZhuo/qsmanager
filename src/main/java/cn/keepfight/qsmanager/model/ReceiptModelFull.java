@@ -55,8 +55,10 @@ public class ReceiptModelFull {
     public void setDetailList(List<ReceiptDetailModel> dList) {
         this.detailList.clear();
         this.detailList.addAll(dList);
-        for (ReceiptDetailModel d : detailList) {
-            d.setRid(this.id);
+        if (this.id!=null) {
+            for (ReceiptDetailModel d : detailList) {
+                d.setRid(this.id);
+            }
         }
     }
 

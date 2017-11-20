@@ -77,7 +77,7 @@ public class ReceiptItemAddController implements DialogContent<ReceiptDetailMode
         serial_c.setConverter(new StringConverter<MaterialModel>() {
             @Override
             public String toString(MaterialModel model) {
-                return model.getSerial() + "-" + model.getName();
+                return model.getSerial() + "-" + model.getName()+"-"+model.getColor()+"-"+model.getSpec()+"-"+model.getPrice()+"-"+model.getUnit();
             }
 
             @Override
@@ -145,6 +145,8 @@ public class ReceiptItemAddController implements DialogContent<ReceiptDetailMode
     @Override
     public ReceiptDetailModel pack() {
         ReceiptDetailModel res = new ReceiptDetailModel();
+        res.setId(0L);
+        res.setRid(0L);
         res.setName(name.getText());
         res.setSerial(serial.getText());
         res.setSpec(spec.getText());

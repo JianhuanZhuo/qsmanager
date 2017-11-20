@@ -38,6 +38,30 @@
             </graphic>
         </Button>
         <Pane HBox.hgrow="ALWAYS"/>
+        <Button fx:id="payTotalBtn" contentDisplay="TOP" styleClass="btn-common" text="应付总表">
+            <graphic>
+                <ImageView>
+                    <Image url="@img/10.png"/>
+                </ImageView>
+            </graphic>
+        </Button>
+        <Pane HBox.hgrow="ALWAYS"/>
+        <Button fx:id="takeBtn" contentDisplay="TOP" styleClass="btn-common" text="采购分析表">
+            <graphic>
+                <ImageView>
+                    <Image url="@img/10.png"/>
+                </ImageView>
+            </graphic>
+        </Button>
+        <Pane HBox.hgrow="ALWAYS"/>
+        <Button fx:id="materialBtn" contentDisplay="TOP" styleClass="btn-common" text="原料分析表">
+            <graphic>
+                <ImageView>
+                    <Image url="@img/10.png"/>
+                </ImageView>
+            </graphic>
+        </Button>
+        <Pane HBox.hgrow="ALWAYS"/>
         <Button fx:id="predBtn" contentDisplay="TOP" styleClass="btn-common" text="付款预算表">
             <graphic>
                 <ImageView>

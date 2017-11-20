@@ -98,10 +98,10 @@ public class IncomeAnnualController implements ContentCtrl, Initializable {
         an_cust_sel.setConverter(FXUtils.converter(x -> x.getSerial() + "-" + x.getName(), ""));
 
         an_print.disableProperty().bind(an_cust_sel.getSelectionModel().selectedItemProperty().isNull());
-        btn_add_invoice.disableProperty().bind(an_cust_sel.getSelectionModel().selectedItemProperty().isNull());
-        btn_add_remit.disableProperty().bind(an_cust_sel.getSelectionModel().selectedItemProperty().isNull());
         btn_edit.disableProperty().bind(an_cust_sel.getSelectionModel().selectedItemProperty().isNull()
                 .or(anTable.getSelectionModel().selectedItemProperty().isNull()));
+        btn_add_remit.disableProperty().bind(btn_edit.disableProperty());
+        btn_add_invoice.disableProperty().bind(btn_edit.disableProperty());
 
         yearScrollPicker = FXWidgetUtil.getYearPicker();
         yearScrollPicker.setOnClose(year -> {
@@ -243,12 +243,13 @@ public class IncomeAnnualController implements ContentCtrl, Initializable {
 
         // 打印支持
         an_print.setOnAction(event -> {
-            CustomModel customModel = an_cust_sel.getSelectionModel().getSelectedItem();
-            Long year = yearScrollPicker.get();
-
+            long year = yearScrollPicker.get();
+            long sid = an_cust_sel.getSelectionModel().getSelectedItem().getId();
+            System.out.println("an_cust_sel.getSelectionModel().getSelectedItem().getId():"
+                    + an_cust_sel.getSelectionModel().getSelectedItem().getId());
             PrintSource source = new PrintSource();
-            Long sid = customModel == null ? null : customModel.getId();
             source.setSup(sid);
+            source.setCust(sid);
             source.setYear(year);
 
             QSApp.mainPane.changeTo(

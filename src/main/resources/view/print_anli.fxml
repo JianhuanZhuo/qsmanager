@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.control.ChoiceBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.ColumnConstraints?>
@@ -9,7 +10,6 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<?import javafx.scene.control.ChoiceBox?>
 <VBox fx:id="root" styleClass="layout_holder" stylesheets="@css/print.css" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cn.keepfight.qsmanager.print.PrintAnliController">
     <VBox styleClass="print_layout,layout_A5H">
         <HBox VBox.vgrow="ALWAYS">
@@ -34,17 +34,17 @@
                 <Pane style="-fx-pref-height: 10px;" />
                 <GridPane styleClass="print_font, my_grid, fitpack" VBox.vgrow="ALWAYS">
                     <columnConstraints>
-                        <ColumnConstraints prefWidth="120.0" />
-                        <ColumnConstraints prefWidth="110.0" />
+                        <ColumnConstraints maxWidth="114.0" minWidth="108.0" prefWidth="114.0" />
+                        <ColumnConstraints maxWidth="120.0" minWidth="114.0" prefWidth="114.0" />
                         <ColumnConstraints prefWidth="50.0" />
                         <ColumnConstraints prefWidth="30.0" />
-                        <ColumnConstraints prefWidth="60.0" />
-                        <ColumnConstraints prefWidth="170.0" />
+                        <ColumnConstraints maxWidth="66.0" minWidth="64.0" prefWidth="66.0" />
+                        <ColumnConstraints maxWidth="165.0" minWidth="163.0" prefWidth="163.0" />
                     </columnConstraints>
                     <rowConstraints>
-                        <RowConstraints prefHeight="30.0" />
+                        <RowConstraints />
                         <RowConstraints prefHeight="25.0" />
-                        <RowConstraints prefHeight="55.0" />
+                        <RowConstraints />
                         <RowConstraints prefHeight="25.0" />
                         <RowConstraints prefHeight="25.0" />
                         <RowConstraints prefHeight="25.0" />
@@ -55,7 +55,7 @@
                         <Label text="客户姓名" />
                     </HBox>
                     <HBox styleClass="gp-centerleft" GridPane.columnIndex="1" GridPane.rowIndex="0">
-                        <Label styleClass="smallfont" text="安利（中国）日用品有限公司" wrapText="true" />
+                        <Label prefHeight="33.0" prefWidth="107.0" styleClass="smallfont" text="广州捷通日化制造有限公司" wrapText="true" />
                     </HBox>
                     <HBox styleClass="gp-centerleft,bolder" GridPane.columnIndex="2" GridPane.columnSpan="4" GridPane.rowIndex="0">
                         <Label text=" 送货编号：" />
@@ -75,7 +75,7 @@
                         <Label text="送货地址" />
                     </HBox>
                     <VBox styleClass="gp-centerleft" GridPane.columnIndex="1" GridPane.rowIndex="2">
-                        <Label styleClass="smallfont" text="安利（中国）物流中心广州经济技术开发区永和经济区永和大道11号" wrapText="true" />
+                        <Label styleClass="smallfont" text="广州经济技术开发区永和经济区永和大道11号" wrapText="true" />
                     </VBox>
                     <HBox styleClass="gp-centerleft,bolder" GridPane.columnIndex="2" GridPane.columnSpan="4" GridPane.rowIndex="2">
                         <Label text=" 贵公司订货单编号：" />
@@ -103,7 +103,7 @@
                         <TextField fx:id="item_serial1" text="112563CH1*OP10" />
                     </HBox>
                     <HBox styleClass="gp-center,contentfont" GridPane.columnIndex="1" GridPane.rowIndex="4">
-                        <ChoiceBox fx:id="item_name1" styleClass="drop"/>
+                        <ChoiceBox fx:id="item_name1" styleClass="drop" />
                     </HBox>
                     <HBox styleClass="gp-center,contentfont" GridPane.columnIndex="2" GridPane.rowIndex="4">
                         <TextField fx:id="item_pack1" text="4个/盒" />
@@ -121,7 +121,7 @@
                         <TextField fx:id="item_serial2" text="112563CH1*OP10" />
                     </HBox>
                     <HBox styleClass="gp-center,contentfont" GridPane.columnIndex="1" GridPane.rowIndex="5">
-                        <ChoiceBox fx:id="item_name2" styleClass="drop"/>
+                        <ChoiceBox fx:id="item_name2" styleClass="drop" />
                     </HBox>
                     <HBox styleClass="gp-center,contentfont" GridPane.columnIndex="2" GridPane.rowIndex="5">
                         <TextField fx:id="item_pack2" text="4个/盒" />
@@ -139,7 +139,7 @@
                         <TextField fx:id="item_serial3" text="112563CH1*OP10" />
                     </HBox>
                     <HBox styleClass="gp-center,contentfont" GridPane.columnIndex="1" GridPane.rowIndex="6">
-                        <ChoiceBox fx:id="item_name3" styleClass="drop"/>
+                        <ChoiceBox fx:id="item_name3" styleClass="drop" />
                     </HBox>
                     <HBox styleClass="gp-center,contentfont" GridPane.columnIndex="2" GridPane.rowIndex="6">
                         <TextField fx:id="item_pack3" text="4个/盒" />

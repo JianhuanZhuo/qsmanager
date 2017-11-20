@@ -1,6 +1,5 @@
 package cn.keepfight.utils;
 
-import cn.keepfight.qsmanager.MenuList;
 import javafx.beans.Observable;
 import javafx.beans.binding.ObjectBinding;
 import javafx.beans.property.ObjectProperty;
@@ -23,12 +22,8 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.sql.Timestamp;
 import java.text.DecimalFormat;
-import java.text.NumberFormat;
-import java.text.SimpleDateFormat;
-import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.function.Function;
@@ -279,7 +274,6 @@ public class FXUtils {
         return getDecimal(text.getText(), new BigDecimal(0));
     }
 
-
     /**
      * 带默认值的长整形数字符串转换，若转换错误则返回默认值
      *
@@ -302,6 +296,11 @@ public class FXUtils {
      */
     public static long getLong(String str) {
         return getLong(str, 0);
+    }
+
+
+    public static LocalDate getDate(String pattern, String date){
+        return LocalDate.parse(date, DateTimeFormatter.ofPattern(pattern, Locale.CHINESE));
     }
 
     public static String decimalStr(BigDecimal d) {

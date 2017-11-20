@@ -121,7 +121,7 @@ public class PrintDeliverySimpleController extends PrintTemplate<OrderModelFull>
 
         // 填写其他信息
         maker.setText(ConfigUtil.load("fxapp.properties").getProperty("print.maker"));
-        ddate.setText(FXUtils.stampToDate(System.currentTimeMillis()));
+        ddate.setText(FXUtils.stampToDate(datas.getOrderdate()));
 
         // 添加为表格
         List<Item> items = datas.getOrderItemModels().stream().map(Item::new).collect(Collectors.toList());

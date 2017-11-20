@@ -81,6 +81,7 @@ public class SupplyController implements ContentCtrl {
     private TableView<MaterialModel> matTable;
     @FXML
     private Button addMat;
+    public Button dupMat;
 
     @FXML
     private TableColumn<MaterialModel, String> mat_serial;
@@ -229,7 +230,17 @@ public class SupplyController implements ContentCtrl {
                 },
                 () -> currentModel != null
                 ));
-
+        dupMat.disableProperty().bind(matTable.getSelectionModel().selectedItemProperty().isNull());
+        dupMat.setOnAction(event -> {
+            try {
+                QSApp.service.getMaterialService().insert(matTable.getSelectionModel().getSelectedItem());
+                loadMaterial();
+            } catch (Exception e) {
+                e.printStackTrace();
+                WarningBuilder.build("新增失败", "新增条目失败，请检查网络是否通畅！");
+            }
+        });
+        delMat.disableProperty().bind(dupMat.disableProperty());
         delMat.setOnAction(event ->
                 QSUtil.del(() -> matTable.getSelectionModel(), (model) -> {
                     QSApp.service.getMaterialService().delete(model);

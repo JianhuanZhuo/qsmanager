@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.keepfight.qsmanager.Mapper.StaticTotalMapper">
+    <!--统计总表-->
+    <select id="staticSellAll" resultType="StaticTotalSellDao_i" parameterType="long">
+        SELECT
+            vt.cid                                            AS uid,
+            concat(c.serial, '-', c.name)                     AS uname,
+            concat('trade_', TRIM(LEADING '0' FROM vt.month)) AS unit,
+            vt.sum                                            AS sum
+        FROM view_cust_month_trade vt, custom c
+        WHERE vt.cid = c.id AND vt.year = #{year}
+
+        UNION ALL
+        SELECT
+            t.cid                               AS uid,
+            concat(cust.serial, '-', cust.name) AS uname,
+            'actual'                            AS unit,
+            sum(t.count - ifnull(r.sum, 0))     AS sum
+        FROM (
+                 SELECT
+                     t.cid,
+                     t.year,
+                     t.month,
+                     t.sum,
+                     (SELECT SUM(x.sum)
+                      FROM view_cust_month_trade x
+                      WHERE concat(x.year, x.month) <![CDATA[ <= ]]> concat(t.year, t.month) AND t.cid = x.cid) AS count
+                 FROM view_cust_month_trade t
+             ) AS t LEFT JOIN (
+                                  SELECT
+                                      cust_id    AS cid,
+                                      sum(total) AS sum
+                                  FROM remit_cust
+                                  GROUP BY cust_id
+                              ) AS r
+                ON t.cid = r.cid
+            , custom cust
+        WHERE ifnull(r.sum, 0) <![CDATA[ < ]]> t.count
+              AND cust.id = t.cid
+        GROUP BY uid
+
+        UNION ALL
+        SELECT
+            r.cust_id                     AS uid,
+            concat(c.serial, '-', c.name) AS uname,
+            concat('remit_', month)       AS unit,
+            sum(r.total)                  AS sum
+        FROM remit_cust r, custom c
+        WHERE year = #{year}
+              AND r.cust_id = c.id
+        GROUP BY r.cust_id, r.month
+
+        ORDER BY uid, unit
+    </select>
+
+
+    <select id="staticReceiptAll" resultType="StaticTotalSellDao_i" parameterType="long">
+        SELECT
+            v.sid                                            AS uid,
+            concat(s.serial, '-', s.name)                    AS uname,
+            concat('trade_', TRIM(LEADING '0' FROM v.month)) AS unit,
+            v.sum                                            AS sum
+        FROM view_sup_month_trade v, supply s
+        WHERE v.sid = s.id AND v.year = #{year}
+
+        UNION ALL
+
+        SELECT
+            res.sid                       AS uid,
+            concat(s.serial, '-', s.name) AS uname,
+            'actual'                      AS unit,
+            sum(res.sum)                  AS sum
+        FROM (
+                 SELECT
+                     t.sid      AS sid,
+                     sum(t.sum) AS sum
+                 FROM view_sup_month_trade t
+                 WHERE t.year <![CDATA[ <= ]]> #{year}
+                 GROUP BY t.sid
+
+                 UNION ALL
+                 SELECT
+                     r.sup_id      AS sid,
+                     sum(-r.total) AS sum
+                 FROM remit_sup r
+                 WHERE r.year <![CDATA[ <= ]]> #{year}
+                 GROUP BY r.sup_id
+             ) AS res, supply s
+        WHERE res.sid = s.id
+        GROUP BY res.sid
+
+        UNION ALL
+        SELECT
+            r.sup_id                      AS uid,
+            concat(s.serial, '-', s.name) AS uname,
+            concat('remit_', month)       AS unit,
+            sum(r.total)                  AS sum
+        FROM remit_sup r, supply s
+        WHERE year = #{year}
+              AND r.sup_id = s.id
+        GROUP BY r.sup_id, r.month
+
+        ORDER BY uid, unit;
+    </select>
+
+    <select id="staticTradeAllByYear" parameterType="long" resultType="TupleDao">
+        SELECT
+            concat('sup_trade_', TRIM(LEADING '0' FROM v.month)) AS k,
+            sum(v.sum)                                           AS v
+        FROM view_sup_month_trade v
+        WHERE v.year = #{year}
+        GROUP BY v.month
+        UNION ALL SELECT
+                      concat('sup_remit_', month) AS k,
+                      sum(r.total)                AS v
+                  FROM remit_sup r
+                  WHERE year = #{year}
+                  GROUP BY r.month
+
+        UNION ALL
+        SELECT
+            concat('cust_trade_', TRIM(LEADING '0' FROM v.month)) AS k,
+            sum(v.sum)                                            AS v
+        FROM view_cust_month_trade v
+        WHERE v.year = #{year}
+        GROUP BY v.month
+        UNION ALL
+        SELECT
+            concat('cust_remit_', month) AS k,
+            sum(r.total)                 AS v
+        FROM remit_cust r
+        WHERE year = #{year}
+        GROUP BY r.month
+    </select>
+
+    <select id="staticMaterialByYear" parameterType="long" resultType="MaterialAnalysisDao_i">
+        SELECT
+            TRIM(LEADING '0' FROM date_format(r.rdate, '%m')) AS month,
+            concat(d.serial, '-', d.name, '-', d.color)       AS name,
+            sum(d.price * d.num)                              AS sum
+        FROM receipt r, receipt_detail d
+        WHERE r.id = d.rid
+              AND date_format(r.rdate, '%Y') = #{year}
+        GROUP BY TRIM(LEADING '0' FROM date_format(r.rdate, '%m')), d.serial, d.name, d.color
+    </select>
+</mapper>

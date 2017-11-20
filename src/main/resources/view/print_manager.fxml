@@ -24,6 +24,7 @@
     <HBox styleClass="hbox-common">
         <Label fx:id="printHit" styleClass="print_hit" HBox.hgrow="ALWAYS" text="打印不兼容！"/>
         <Pane HBox.hgrow="ALWAYS"/>
+        <Button fx:id="save" text="保存订单"/>
         <Button fx:id="action" text="执行打印"/>
         <Button fx:id="compute" text="自动计算"/>
     </HBox>

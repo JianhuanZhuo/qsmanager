@@ -267,3 +267,35 @@ GridPane.infogp {
     -fx-underline: true;
     -fx-text-fill: #ff6600;
 }
+
+
+
+.game-grid {
+    /* 1 pixel border around the top and right of the grid: */
+    -fx-background-color: black, white;
+    -fx-background-insets: 0, 1 1 0 0;
+    -fx-padding: 1 1 0 0;
+}
+
+.game-grid>HBox, .game-grid>VBox{
+    /* 1 pixel border around the left and bottom of each cell: */
+    -fx-background-color: black, white;
+    -fx-background-insets: 0, 0 0 1 1;
+    -fx-alignment: center;
+}
+
+.game-grid .yellow{
+    -fx-background-color: black, yellow;
+}
+.game-grid .pink-yellow{
+    -fx-background-color: black, #FFFF99;
+}
+.game-grid .grey{
+    -fx-background-color: black, #C0C0C0;
+}
+.game-grid .orange{
+    -fx-background-color: black,  #FFCC99;
+}
+.game-grid .green{
+    -fx-background-color: black, #00FF00;
+}
