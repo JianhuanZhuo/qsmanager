@@ -20,12 +20,9 @@ public class PrintService {
     private PrintController controller;
 
     // 私有化实例，表示单例模式
-    private PrintService(){
-        try {
-            controller = ViewPathUtil.loadViewForController("print.fxml");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    private PrintService() {
+        controller = ViewPathUtil.loadViewForController("print.fxml");
+
     }
 
     public static PrintService getInstance() {
@@ -36,11 +33,11 @@ public class PrintService {
         return controller;
     }
 
-    public Optional<PrintSelection> build(){
+    public Optional<PrintSelection> build() {
         return CustomDialog.gen().build(controller);
     }
 
-    public Optional<PrintSelection> build(PrintSelection s){
+    public Optional<PrintSelection> build(PrintSelection s) {
         return CustomDialog.gen().build(controller, s);
     }
 }

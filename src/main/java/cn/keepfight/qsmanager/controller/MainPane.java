@@ -208,11 +208,13 @@ public class MainPane {
                 controller.showed(params);
                 System.out.println("changeTo-"+controller.getTitle().get()+"showed-after:"+(System.currentTimeMillis()-a));
                 // 加载至主界面
-                Platform.runLater(() -> centerScp.setContent(controller.getRoot()));
-                // 添加到队列中
-                push(controller, params);
-                System.out.println("changeTo-"+controller.getTitle().get()+"showedAfter:"+(System.currentTimeMillis()-a));
-                controller.showedAfter(params);
+                Platform.runLater(() -> {
+                    centerScp.setContent(controller.getRoot());
+                    // 添加到队列中
+                    push(controller, params);
+                    System.out.println("changeTo-"+controller.getTitle().get()+"showedAfter:"+(System.currentTimeMillis()-a));
+                    controller.showedAfter(params);
+                });
             }).start();
         });
     }

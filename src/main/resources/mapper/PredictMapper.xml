@@ -70,13 +70,19 @@
     </select>
 
 
-    <!--* 选择全部的预算历史-->
+    <!--* 选择指定年月的预算历史-->
     <select id="selectPredictHistory" resultType="PredictHistoryDao">
         SELECT *
         FROM predict_history
         WHERE year = #{year} AND month = #{month}
         LIMIT 1
     </select>
+
+    <!--* 删除指定年月的预算历史-->
+    <delete id="delPredictHistory">
+        DELETE FROM predict_history
+        WHERE year = #{year} AND month = #{month}
+    </delete>
 
     <!--* 选择全部的预算历史-->
     <select id="selectAllPredictHistory" resultType="PredictHistoryDao">

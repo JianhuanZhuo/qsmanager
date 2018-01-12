@@ -33,7 +33,7 @@ import java.util.stream.LongStream;
  * 供应商送货列表控制器
  * Created by tom on 2017/9/4.
  */
-public class ReceiptListController implements ContentCtrl,Initializable {
+public class ReceiptListController implements ContentCtrl, Initializable {
 
     @FXML
     private VBox root;
@@ -52,7 +52,7 @@ public class ReceiptListController implements ContentCtrl,Initializable {
     @FXML
     private ListView<ReceiptModelFull> receiptFullList;
 
-    private ReceiptAddController receiptAddController;
+    private ReceiptAddController receiptAddController = ViewPathUtil.loadViewForController("receipt_add.fxml");
 
     @Override
     public Node getRoot() {
@@ -61,31 +61,27 @@ public class ReceiptListController implements ContentCtrl,Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        receiptFullList.setCellFactory(param->new ListCell<ReceiptModelFull>() {
+        receiptFullList.setCellFactory(param -> new ListCell<ReceiptModelFull>() {
             @Override
             protected void updateItem(ReceiptModelFull item, boolean empty) {
                 super.updateItem(item, empty);
                 if (empty || item == null) {
                     setGraphic(null);
                 } else {
-                    try {
-                        ReceiptController controller = ViewPathUtil.loadViewForController("receipt.fxml");
-                        controller.fill(item, ReceiptListController.this);
-                        setGraphic(controller.getRoot());
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
+                    ReceiptController controller = ViewPathUtil.loadViewForController("receipt.fxml");
+                    controller.fill(item, ReceiptListController.this);
+                    setGraphic(controller.getRoot());
                 }
             }
         });
 
         // 设置供应商下拉转换器、年转换器
-        rec_sup_sel.setConverter(FXUtils.converter(x->x.getSerial()+"-"+x.getName(), "全部供应商"));
-        rec_year_sel.setConverter(FXUtils.converter(x->x+"年", "全部年份"));
+        rec_sup_sel.setConverter(FXUtils.converter(x -> x.getSerial() + "-" + x.getName(), "全部供应商"));
+        rec_year_sel.setConverter(FXUtils.converter(x -> x + "年", "全部年份"));
 
         rec_mon_sel.setItems(FXCollections.observableList(LongStream.range(1, 13).boxed().collect(Collectors.toList())));
         rec_mon_sel.getItems().add(null);
-        rec_mon_sel.setConverter(FXUtils.converter(x->x+"月", "全部月份"));
+        rec_mon_sel.setConverter(FXUtils.converter(x -> x + "月", "全部月份"));
 
         // 打印按钮使能
         rec_print_mon.disableProperty().bind(rec_mon_sel.getSelectionModel().selectedItemProperty().isNotNull()
@@ -132,18 +128,11 @@ public class ReceiptListController implements ContentCtrl,Initializable {
     @Override
     public void loaded() {
         loadSelection();
-        Platform.runLater(() -> {
-            try {
-                receiptAddController = ViewPathUtil.loadViewForController("receipt_add.fxml");
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        });
     }
 
     @Override
     public void showed(Properties params) {
-
+        loadSelection();
     }
 
     @Override

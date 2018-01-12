@@ -15,28 +15,31 @@
     <HBox styleClass="hbox-common, hbox-title, left-align">
         <Label text="预算统计" />
         <Pane HBox.hgrow="ALWAYS" />
-        <Button text="删除选择年月记录" />
+        <Button fx:id="btn_add" text="添加记录" />
+        <Button fx:id="btn_del" text="删除选择年月记录" />
     </HBox>
     <TableView fx:id="table">
         <columns>
             <TableColumn fx:id="tab_ym" text="记录年月" />
             <TableColumn fx:id="tab_out_pri" text="私账现金存帐" />
-            <TableColumn fx:id="tab_out_pub" text="c" />
-            <TableColumn fx:id="tab_income" text="xx" />
-            <TableColumn fx:id="tab_outcome" text="xx" />
-            <TableColumn fx:id="tab_outcome_sup" text="xx" />
-            <TableColumn fx:id="tab_out_tax" text="xx" />
-            <TableColumn fx:id="tab_out_fix" text="xx" />
-            <TableColumn fx:id="tab_out_salary" text="xx" />
-            <TableColumn fx:id="tab_out_salary_lef" text="xx" />
-            <TableColumn fx:id="tab_out_factory" text="xx" />
-            <TableColumn fx:id="tab_out_fee" text="xx" />
-            <TableColumn fx:id="tab_out_water" text="xx" />
-            <TableColumn fx:id="tab_out_elect" text="xx" />
-            <TableColumn fx:id="tab_out_eng" text="xx" />
-            <TableColumn fx:id="tab_out_other" text="xx" />
+            <TableColumn fx:id="tab_out_pub" text="公账现金存帐" />
+            <TableColumn fx:id="tab_income" text="销售收入" />
+            <TableColumn fx:id="tab_outcome_sup" text="采购支出" />
+            <TableColumn fx:id="tab_outcome" text="其他支出" />
+            <TableColumn fx:id="tab_out_tax" text="税务支出" />
+            <TableColumn fx:id="tab_out_fix" text="固定工资发放支出" />
+            <TableColumn fx:id="tab_out_salary" text="季度工资发放支出" />
+            <TableColumn visible="false" fx:id="tab_out_salary_lef" text="xx" />
+            <TableColumn fx:id="tab_out_factory" text="厂租支出" />
+            <TableColumn fx:id="tab_out_fee" text="运费支出" />
+            <TableColumn fx:id="tab_out_water" text="水费支出" />
+            <TableColumn fx:id="tab_out_elect" text="电费支出" />
+            <TableColumn fx:id="tab_out_eng" text="机械支出" />
+            <TableColumn fx:id="tab_out_other" text="杂项支出" />
         </columns>
     </TableView>
+    <HBox fx:id="chart_container">
+    </HBox>
    <LineChart fx:id="chart" title="预算历史记录统计">
      <xAxis>
        <CategoryAxis side="BOTTOM" />
@@ -45,5 +48,4 @@
        <NumberAxis side="LEFT" />
      </yAxis>
    </LineChart>
-    
 </VBox>

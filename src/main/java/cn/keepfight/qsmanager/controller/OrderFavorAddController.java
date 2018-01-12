@@ -30,7 +30,13 @@ public class OrderFavorAddController implements DialogContent<ProductModel>, Ini
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        ps.setConverter(FXUtils.converter(x->x.getSerial()+"-"+x.getName()));
+        ps.setConverter(FXUtils.converter(x -> x.getSerial()
+                + "-" + x.getName()
+                + "-" + x.getDetail()
+                + "-" + x.getUnit()
+                + "-" + x.getPack()
+                + "-" + x.getPrice()
+        ));
     }
 
     @Override

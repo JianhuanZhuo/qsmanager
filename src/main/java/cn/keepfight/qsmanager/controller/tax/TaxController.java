@@ -319,6 +319,9 @@ public class TaxController implements ContentCtrl, Initializable {
     }
 
     private void saveParam(String k){
+        if (dao==null){
+            return;
+        }
         new Thread(()->{
             dao.setYear(data_year);
             dao.setMonth(data_month);

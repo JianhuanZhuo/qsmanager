@@ -34,7 +34,7 @@
         bccpv,
         addr,
         note)
-        VALUES (#{item},
+        VALUES (#{serial},
         #{name},
         #{namefull},
         #{phone},

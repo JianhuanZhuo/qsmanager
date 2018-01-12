@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox fx:id="root" styleClass="content-pane" stylesheets="@../css/common.css" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cn.keepfight.qsmanager.controller.analysis.OutcomeStaticController">
+    <HBox styleClass="hbox-common">
+        <Label text="供应商采购分析（单位：元）" />
+        <Pane HBox.hgrow="ALWAYS" />
+        <Button fx:id="btn_year" styleClass="url" text="请选择年份" />
+    </HBox>
+    <TableView fx:id="table" VBox.vgrow="ALWAYS">
+        <columns>
+            <TableColumn fx:id="supply" prefWidth="100.0" text="客户" />
+            <TableColumn fx:id="count" prefWidth="100.0" text="合计" />
+            <TableColumn fx:id="month1" prefWidth="100.0" text="一月" />
+            <TableColumn fx:id="month2" prefWidth="100.0" text="二月" />
+            <TableColumn fx:id="month3" prefWidth="100.0" text="三月" />
+            <TableColumn fx:id="month4" prefWidth="100.0" text="四月" />
+            <TableColumn fx:id="month5" prefWidth="100.0" text="五月" />
+            <TableColumn fx:id="month6" prefWidth="100.0" text="六月" />
+            <TableColumn fx:id="month7" prefWidth="100.0" text="七月" />
+            <TableColumn fx:id="month8" prefWidth="100.0" text="八月" />
+            <TableColumn fx:id="month9" prefWidth="100.0" text="九月" />
+            <TableColumn fx:id="month10" prefWidth="100.0" text="十月" />
+            <TableColumn fx:id="month11" prefWidth="100.0" text="十一月" />
+            <TableColumn fx:id="month12" prefWidth="100.0" text="十二月" />
+        </columns>
+    </TableView>
+</VBox>

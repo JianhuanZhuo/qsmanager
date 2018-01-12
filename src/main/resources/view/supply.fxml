@@ -103,6 +103,13 @@
                         </ImageView>
                     </graphic>
                 </Button>
+                <Button fx:id="dupMat" styleClass="btnable" text="复制选中">
+                    <graphic>
+                        <ImageView>
+                            <Image url="@img/item-add.png" />
+                        </ImageView>
+                    </graphic>
+                </Button>
             </HBox>
             <ScrollPane fitToHeight="true" fitToWidth="true">
                 <TableView fx:id="matTable" prefHeight="400.0">

@@ -1,6 +1,7 @@
 package cn.keepfight.qsmanager.Mapper;
 
 import cn.keepfight.qsmanager.model.*;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -8,10 +9,11 @@ import java.util.List;
  * 订单映射器
  * Created by tom on 2017/6/20.
  */
-public interface OrderMapper extends Mapper{
+public interface OrderMapper extends Mapper {
 
     /**
      * 选择指定条件的全部订单，其中客户、年份、月份、选择状态可以为空，表示忽视该条件
+     *
      * @param selection 指定条件选择器，包括时间、客户、订单状态，
      */
     List<OrderModelFull> selectAll(OrderSelection selection) throws Exception;
@@ -29,6 +31,7 @@ public interface OrderMapper extends Mapper{
 
     /**
      * 新增订单，订单号为，YY-MM-DD-NUM 当天的全部订单序号
+     *
      * @param order 订单模型全，其中订单号由 SQL 语句搞定，可以吗？
      */
     void insert(OrderModel order) throws Exception;
@@ -52,4 +55,12 @@ public interface OrderMapper extends Mapper{
      * 设置已投递标志
      */
     void deliOrder(Long oid) throws Exception;
+
+
+    /**
+     * 获得唯一标识
+     */
+    String getUniSerial(
+            @Param("year") Long year,
+            @Param("month") Long month) throws Exception;
 }

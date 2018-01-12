@@ -133,13 +133,13 @@ public class OrderAddController implements DialogContent<OrderModelFull> {
         item_add.disableProperty().bind(cid.getSelectionModel().selectedItemProperty().isNull());
 
         // 设置SID下来文字转换
-        cid.setConverter(FXUtils.converter(x->x.getSerial()+"-"+x.getName()));
+        cid.setConverter(FXUtils.converter(x -> x.getSerial() + "-" + x.getName()));
 
         // 禁用手动输入
         rdate.getEditor().setDisable(true);
 
         // 双击原料表进行编辑
-        FXWidgetUtil.doubleToEdit(table, ()->addController, OrderItemModel::update);
+        FXWidgetUtil.doubleToEdit(table, () -> addController, OrderItemModel::update);
     }
 
     @Override
@@ -151,13 +151,10 @@ public class OrderAddController implements DialogContent<OrderModelFull> {
         loadCust();
 
         // 加载 FXML
-        if(addController==null){
+        if (addController == null) {
             Platform.runLater(() -> {
-                try {
-                    addController = ViewPathUtil.loadViewForController("order_item_add.fxml");
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+                addController = ViewPathUtil.loadViewForController("order_item_add.fxml");
+
             });
         }
     }
@@ -165,9 +162,9 @@ public class OrderAddController implements DialogContent<OrderModelFull> {
     @Override
     public void fill(OrderModelFull receiptModelFull) {
         serial.setText(receiptModelFull.getSerial());
-        Platform.runLater(()->{
+        Platform.runLater(() -> {
             for (CustomModel cust : cid.getItems()) {
-                if (cust.getId().equals(receiptModelFull.getCid())){
+                if (cust.getId().equals(receiptModelFull.getCid())) {
                     cid.getSelectionModel().select(cust);
                     break;
                 }
@@ -194,7 +191,7 @@ public class OrderAddController implements DialogContent<OrderModelFull> {
     @Override
     public OrderModelFull pack() {
         OrderModelFull res = new OrderModelFull();
-        res.setSerial(serial.getText().equals(NO_SERIAL)?null:serial.getText());
+        res.setSerial(serial.getText().equals(NO_SERIAL) ? null : serial.getText());
         res.setOrderdate(Date.valueOf(rdate.getValue()).getTime());
         res.setCid(cid.getSelectionModel().getSelectedItem().getId());
         res.setOrderItemModels(table.getItems());

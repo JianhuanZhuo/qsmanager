@@ -115,7 +115,7 @@ public class OrderItemAddController implements DialogContent<OrderItemModel> {
         FXWidgetUtil.simpleBiMultiply(tab_allrebate, tab_rebate, tab_num);
         FXWidgetUtil.simpleTriOper(tab_actPay,
                 BigDecimal::subtract,
-                BigDecimal::add,
+                BigDecimal::subtract,
                 tab_totallWithRate, tab_allrebate, tab_delifee);
 
         FXUtils.limitLength(tab_serial, 30);
@@ -202,9 +202,13 @@ public class OrderItemAddController implements DialogContent<OrderItemModel> {
         res.setSerial(tab_serial.getText());
         res.setDetail(tab_detail.getText());
         res.setPrice(FXUtils.getDecimal(tab_price));
-        if (tab_pack.getItems().size()<3){
-            res.setPackDefault(tab_pack.getItems().get(0));
-        }else{
+        try {
+            if (tab_pack.getItems().size()<3){
+                res.setPackDefault(tab_pack.getItems().get(0));
+            }else{
+                res.setPackDefault(FXUtils.getLong(tab_packNum.getText(), 1));
+            }
+        }catch (Exception e){
             res.setPackDefault(FXUtils.getLong(tab_packNum.getText(), 1));
         }
         res.setPack(FXUtils.getLong(tab_packNum.getText(), 1));

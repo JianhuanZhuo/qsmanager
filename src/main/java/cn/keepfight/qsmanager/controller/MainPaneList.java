@@ -31,19 +31,28 @@ public enum MainPaneList {
     SALARY_CLEAR,
     PREDICT,
     PREDICT_LIST,
+    PREDICT_ADD,
     OUTCOME_ANNUAL,
     annual$SUP_ADD_INVOICE,
     annual$SUP_ADD_REMIT,
     annual$SUP_ANNUAL_EDIT,
-    tax$TAX
-    ;
+    analysis$SELL,
+    analysis$CUSTOM,
+    analysis$PRODUCTS,
+    analysis$PIE,
+    analysis$OUTCOME_STATIC,
+    STATIC_TOTAL,
+    STATIC_MATERIAL,
+    STATIC_TOTAL_PAY,
+    STATIC_TOTAL_TRADE,
+    tax$TAX;
 
     String view;
     ContentCtrl controller;
 
     MainPaneList() {
         if (name().contains("$")) {
-            view = name().replace("$", "/") + ".fxml";
+            view = name().replace("$", "/").toLowerCase() + ".fxml";
         } else {
             view = name().toLowerCase() + ".fxml";
         }

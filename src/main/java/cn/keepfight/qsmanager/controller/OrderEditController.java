@@ -177,13 +177,7 @@ public class OrderEditController implements ContentCtrl {
     public void loaded() {
         // 加载 FXML
         if (addController == null) {
-            Platform.runLater(() -> {
-                try {
-                    addController = ViewPathUtil.loadViewForController("order_item_add.fxml");
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            });
+            Platform.runLater(() -> addController = ViewPathUtil.loadViewForController("order_item_add.fxml"));
         }
 
         item_cancel.setOnAction(event -> {

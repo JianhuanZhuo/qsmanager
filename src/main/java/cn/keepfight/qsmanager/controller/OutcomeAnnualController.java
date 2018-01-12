@@ -105,10 +105,10 @@ public class OutcomeAnnualController implements ContentCtrl, Initializable {
         an_sup_sel.setConverter(FXUtils.converter(x -> x.getSerial() + "-" + x.getName(), "全部供应商"));
 
         an_print.disableProperty().bind(an_sup_sel.getSelectionModel().selectedItemProperty().isNull());
-        btn_add_invoice.disableProperty().bind(an_sup_sel.getSelectionModel().selectedItemProperty().isNull());
-        btn_add_remit.disableProperty().bind(an_sup_sel.getSelectionModel().selectedItemProperty().isNull());
         btn_edit.disableProperty().bind(an_sup_sel.getSelectionModel().selectedItemProperty().isNull()
                 .or(anTable.getSelectionModel().selectedItemProperty().isNull()));
+        btn_add_remit.disableProperty().bind(btn_edit.disableProperty());
+        btn_add_invoice.disableProperty().bind(btn_edit.disableProperty());
 
         yearScrollPicker = FXWidgetUtil.getYearPicker();
         yearScrollPicker.setOnClose(year -> {

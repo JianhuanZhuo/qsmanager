@@ -2,6 +2,7 @@ package cn.keepfight.qsmanager.model;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * 供应商送货表模型
@@ -51,10 +52,14 @@ public class ReceiptModelFull {
         return detailList;
     }
 
-    public void setDetailList(List<ReceiptDetailModel> detailList) {
-        this.detailList = detailList;
-        if (detailList != null)
-            detailList.forEach(d -> d.setRid(id));
+    public void setDetailList(List<ReceiptDetailModel> dList) {
+        this.detailList.clear();
+        this.detailList.addAll(dList);
+        if (this.id!=null) {
+            for (ReceiptDetailModel d : detailList) {
+                d.setRid(this.id);
+            }
+        }
     }
 
     public void addDetail(ReceiptDetailModel detailModel) {

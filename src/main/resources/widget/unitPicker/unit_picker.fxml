@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<HBox fx:id="root" styleClass="picker-item" stylesheets="@kk.css" xmlns="http://javafx.com/javafx/8.0.111"
+      xmlns:fx="http://javafx.com/fxml/1" fx:controller="cn.keepfight.widget.UnitScrollPicker">
+    <VBox fx:id="year_list" styleClass="year_list">
+        <Button fx:id="year_uu" styleClass="uu" text="2015"/>
+        <Button fx:id="year_u" styleClass="u" text="2016"/>
+        <Button fx:id="year_c" styleClass="center" text="12313-1231231231"/>
+        <Button fx:id="year_d" styleClass="d" text="2018"/>
+        <Button fx:id="year_dd" styleClass="dd" text="2019"/>
+    </VBox>
+</HBox>

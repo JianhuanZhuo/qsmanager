@@ -305,7 +305,7 @@ public class OrderItemModel implements ModelFull<ProductModel> {
         if (delifee == null){
             delifee = new BigDecimal(0);
         }
-        return getTotalWithRate().subtract(getRebateTotal()).add(delifee);
+        return getTotalWithRate().subtract(getRebateTotal()).subtract(delifee);
     }
 
     public ObjectProperty<BigDecimal> actPayTotalProperty(){
@@ -315,6 +315,7 @@ public class OrderItemModel implements ModelFull<ProductModel> {
     public void update(OrderItemModel model) {
         setPicurl(model.getPicurl());
         setName(model.getName());
+        setNum(model.getNum());
         setSerial(model.getSerial());
         setDetail(model.getDetail());
         setPrice(model.getPrice());

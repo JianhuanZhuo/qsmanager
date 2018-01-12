@@ -47,7 +47,7 @@ public class ShopController implements ContentCtrl, Initializable {
     @FXML
     private ListView<OrderItemModel> proList;
 
-    private SumupController sumupController;
+    private SumupController sumupController = ViewPathUtil.loadViewForController("prod_sumup.fxml");
 
     // 全部产品列表
     private ObservableList<OrderItemModel> plist = FXCollections.observableArrayList();
@@ -60,13 +60,6 @@ public class ShopController implements ContentCtrl, Initializable {
     @Override
     public void loaded() {
         loadProducts();
-        Platform.runLater(() -> {
-            try {
-                sumupController = ViewPathUtil.loadViewForController("prod_sumup.fxml");
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        });
     }
 
     @Override
@@ -148,15 +141,7 @@ public class ShopController implements ContentCtrl, Initializable {
      * 产品列表条目
      */
     private static class ProdListCell extends ListCell<OrderItemModel> {
-        ShopItemController controller;
-
-        ProdListCell() {
-            try {
-                controller = ViewPathUtil.loadViewForController("shop_item.fxml");
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
+        ShopItemController controller = ViewPathUtil.loadViewForController("shop_item.fxml");
 
         @Override
         public void updateItem(OrderItemModel item, boolean empty) {

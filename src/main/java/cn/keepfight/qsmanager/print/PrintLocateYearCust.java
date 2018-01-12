@@ -18,6 +18,7 @@ public class PrintLocateYearCust implements PrintSourceLocate {
 
     @Override
     public <T> T query(PrintSource source) throws Exception {
+        System.out.println("source.getCust(), source.getYear():"+source.getCust()+"--"+source.getYear());
         return (T) QSApp.service.getCustAnnualService().selectAnnual(source.getCust(), source.getYear());
     }
 }

@@ -48,6 +48,8 @@ public class OrderItemController implements ContentCtrl, Initializable {
     private TableColumn<OrderItemModel, String> tab_num;
     @FXML
     private TableColumn<OrderItemModel, String> tab_total;
+    public TableColumn<OrderItemModel, BigDecimal> tab_delifee;
+    public TableColumn<OrderItemModel, BigDecimal> tab_actPay;
     @FXML
     private Label o_serial;
     @FXML
@@ -103,6 +105,9 @@ public class OrderItemController implements ContentCtrl, Initializable {
         tab_serial.setCellValueFactory(param -> new SimpleStringProperty(param.getValue().getSerial()));
         tab_detail.setCellValueFactory(param -> new SimpleStringProperty(param.getValue().getDetail()));
 
+        FXWidgetUtil.connectDecimalColumn(tab_delifee, OrderItemModel::delifeeProperty);
+        FXWidgetUtil.connectDecimalColumn(tab_actPay, OrderItemModel::actPayTotalProperty);
+
         FXWidgetUtil.connectDecimal(tab_price, OrderItemModel::getPrice);
         FXWidgetUtil.connectDecimal(tab_total, x->x.getNum().multiply(x.getPrice()).multiply(new BigDecimal(x.getPack())));
         tab_pack.setCellValueFactory(param ->
@@ -110,6 +115,7 @@ public class OrderItemController implements ContentCtrl, Initializable {
         tab_num.setCellValueFactory(param -> new SimpleStringProperty(param.getValue().getNum().stripTrailingZeros().toPlainString()
                 + (param.getValue().getPack() == 1L ? "个" : param.getValue().getUnit())));
 
+        FXWidgetUtil.cellMoney(tab_delifee, tab_actPay);
 
         a_del.setOnAction(event -> {
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
@@ -124,6 +130,7 @@ public class OrderItemController implements ContentCtrl, Initializable {
         a_alter.setOnAction(event -> {
             Properties ps = new Properties();
             ps.put("id", modelFull.getId());
+            ps.put("more", false);
             QSApp.mainPane.changeTo(MainPaneList.ORDER_MAKE, ps);
 //            ordersController.updateOrder(modelFull);
         });

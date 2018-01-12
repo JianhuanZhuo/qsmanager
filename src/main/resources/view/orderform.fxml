@@ -48,8 +48,8 @@
                 <!--<TableColumn fx:id="tab_totallWithRate" text="税后金额"/>-->
                 <!--<TableColumn fx:id="tab_rebate" text="返点数"/>-->
                 <!--<TableColumn fx:id="tab_allrebate" text="总共返点数"/>-->
-                <!--<TableColumn fx:id="tab_delifee" text="运费"/>-->
-                <!--<TableColumn fx:id="tab_actPay" text="实际支付"/>-->
+                <TableColumn fx:id="tab_delifee" text="运费"/>
+                <TableColumn fx:id="tab_actPay" text="实际支付"/>
             </columns>
          <columnResizePolicy>
             <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />

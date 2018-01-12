@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.keepfight.qsmanager.Mapper.AnalysisMapper">
+    <select id="staticSellByMonth" resultType="SellAnalysisDao">
+        SELECT
+            o.cid                 AS      cid,
+            concat(c.serial, '-', c.name) cname,
+            sum(num)              AS      sum,
+            ifnull(i.serial, '无') AS      item_serial
+        FROM orders o, order_item i, custom c
+        WHERE o.id = i.oid
+              AND c.id = o.cid
+              AND DATE_FORMAT(o.orderdate, '%Y') = #{year}
+              AND DATE_FORMAT(o.orderdate, '%m') = #{month}
+        GROUP BY o.cid, i.serial;
+    </select>
+
+    <select id="staticSellSumByCust" parameterType="long" resultType="SellSumDao">
+        SELECT
+            date_format(o.orderdate, '%Y-%m') AS ym,
+            sum(num)                          AS sum
+        FROM orders o, order_item i
+        WHERE o.id = i.oid
+              AND o.cid = #{cid}
+        GROUP BY o.cid, date_format(o.orderdate, '%Y-%m');
+    </select>
+
+    <select id="staticPriceByYear" parameterType="long" resultType="PriceAnalysisDao">
+        # 选择指定年份的产品分月销售数和利润
+        SELECT
+            ifnull(i.serial, '无编号')                              AS serial,
+            date_format(o.orderdate, '%Y-%m')                    AS ym,
+            sum(i.num * i.pack)                                  AS num,
+            sum(i.price * i.num * i.pack - ifnull(i.delifee, 0)) AS price
+        FROM orders o, order_item i
+        WHERE o.id = i.oid
+              AND date_format(o.orderdate, '%Y') = #{year}
+        GROUP BY ifnull(i.serial, '无编号'), date_format(o.orderdate, '%Y-%m');
+    </select>
+
+    <select id="staticTradeByYear" parameterType="long" resultType="TupleDao">
+        SELECT
+            concat(c.serial, '-', c.name) AS k,
+            sum(vc.sum)                   AS v
+        FROM view_cust_month_trade vc, custom c
+        WHERE vc.year = #{year} AND vc.cid = c.id
+        GROUP BY vc.cid
+    </select>
+
+    <select id="staticTakeTradeByYear" parameterType="long" resultType="UnitMonthDao_i">
+        SELECT
+            v.sid                         AS uid,
+            concat(s.serial, '-', s.name) AS uname,
+            v.month                       AS month,
+            v.sum                         AS sum
+        FROM view_sup_month_trade v, supply s
+        WHERE v.sid = s.id AND year = #{year}
+    </select>
+</mapper>

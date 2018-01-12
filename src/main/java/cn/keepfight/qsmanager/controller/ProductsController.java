@@ -59,12 +59,8 @@ public class ProductsController implements ContentCtrl {
     public void loaded() {
         loadProducts();
         Platform.runLater(() -> {
-            try {
-                addController = ViewPathUtil.loadViewForController("product_add.fxml");
-                picViewer = ViewPathUtil.loadViewForController("pic_viewer.fxml");
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            addController = ViewPathUtil.loadViewForController("product_add.fxml");
+            picViewer = ViewPathUtil.loadViewForController("pic_viewer.fxml");
         });
     }
 
@@ -81,76 +77,76 @@ public class ProductsController implements ContentCtrl {
     @Override
     public List<BarBtn> getBarBtns(Properties params) {
         return Arrays.asList(new BarBtn() {
-            @Override
-            public String getText() {
-                return "新增";
-            }
+                                 @Override
+                                 public String getText() {
+                                     return "新增";
+                                 }
 
-            @Override
-            public String getHit() {
-                return null;
-            }
+                                 @Override
+                                 public String getHit() {
+                                     return null;
+                                 }
 
-            @Override
-            public String getImage() {
-                return "item-add.png";
-            }
+                                 @Override
+                                 public String getImage() {
+                                     return "item-add.png";
+                                 }
 
-            @Override
-            public Runnable getAction() {
-                return ()-> {
-                    Optional<ProductModel> op = CustomDialog.gen().build(addController);
-                    op.ifPresent(model -> {
-                        try {
-                            QSApp.service.getProductService().insert(model);
-                            loadProducts();
-                        } catch (Exception e1) {
-                            e1.printStackTrace();
-                            WarningBuilder.build("新增产品失败", "新增客户失败，请检查网络是否通畅");
-                        }
-                    });
-                };
-            }
-        },
+                                 @Override
+                                 public Runnable getAction() {
+                                     return () -> {
+                                         Optional<ProductModel> op = CustomDialog.gen().build(addController);
+                                         op.ifPresent(model -> {
+                                             try {
+                                                 QSApp.service.getProductService().insert(model);
+                                                 loadProducts();
+                                             } catch (Exception e1) {
+                                                 e1.printStackTrace();
+                                                 WarningBuilder.build("新增产品失败", "新增客户失败，请检查网络是否通畅");
+                                             }
+                                         });
+                                     };
+                                 }
+                             },
                 new BarBtn() {
-            @Override
-            public String getText() {
-                return "删除";
-            }
-
-            @Override
-            public String getHit() {
-                return null;
-            }
-
-            @Override
-            public String getImage() {
-                return "item-del.png";
-            }
-
-            @Override
-            public Runnable getAction() {
-                return ()-> {
-                    ProductModel model = prodTable.getSelectionModel().getSelectedItem();
-                    if (model == null) {
-                        WarningBuilder.build("删除产品失败", "请先选中指定产品后再进行删除！");
-                    } else {
-                        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-                        alert.setHeaderText("是否要删除这个产品？");
-                        alert.setContentText("系统为了账目安全，你必须先删除和该产品相关的交易记录！");
-                        Optional<ButtonType> result = alert.showAndWait();
-                        if (result.isPresent() && result.get() == ButtonType.OK) {
-                            try {
-                                QSApp.service.getProductService().delete(model);
-                                loadProducts();
-                            } catch (Exception e) {
-                                WarningBuilder.build("删除产品失败", "请先清空该产品相关的交易记录，再进行删除！");
-                            }
-                        }
+                    @Override
+                    public String getText() {
+                        return "删除";
                     }
-                };
-            }
-        });
+
+                    @Override
+                    public String getHit() {
+                        return null;
+                    }
+
+                    @Override
+                    public String getImage() {
+                        return "item-del.png";
+                    }
+
+                    @Override
+                    public Runnable getAction() {
+                        return () -> {
+                            ProductModel model = prodTable.getSelectionModel().getSelectedItem();
+                            if (model == null) {
+                                WarningBuilder.build("删除产品失败", "请先选中指定产品后再进行删除！");
+                            } else {
+                                Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                                alert.setHeaderText("是否要删除这个产品？");
+                                alert.setContentText("系统为了账目安全，你必须先删除和该产品相关的交易记录！");
+                                Optional<ButtonType> result = alert.showAndWait();
+                                if (result.isPresent() && result.get() == ButtonType.OK) {
+                                    try {
+                                        QSApp.service.getProductService().delete(model);
+                                        loadProducts();
+                                    } catch (Exception e) {
+                                        WarningBuilder.build("删除产品失败", "请先清空该产品相关的交易记录，再进行删除！");
+                                    }
+                                }
+                            }
+                        };
+                    }
+                });
     }
 
     @FXML

@@ -43,6 +43,15 @@ public abstract class PredictServers {
     }
 
     /**
+     * 删除指定年月的预算历史
+     */
+    public static void delPredictHistory(Long year,  Long month) throws Exception{
+        try (SqlSession session = factory.openSession(true)) {
+            session.getMapper(PredictMapper.class).delPredictHistory(year, month);
+        }
+    }
+
+    /**
      * 选择全部的预算历史
      */
     public static List<PredictHistoryDao> selectAllPredictHistory() throws Exception{

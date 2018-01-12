@@ -20,8 +20,8 @@
         <Label text="送货单号："/>
         <Label fx:id="serial"/>
         <Pane HBox.hgrow="ALWAYS"/>
-        <Label text="供应商："/>
-        <Label fx:id="supply"/>
+        <Label visible="false" text="供应商："/>
+        <Label visible="false" fx:id="supply"/>
     </HBox>
     <ScrollPane fitToHeight="true" fitToWidth="true" prefHeight="120" VBox.vgrow="ALWAYS">
         <TableView fx:id="table">
@@ -49,6 +49,6 @@
         <Button fx:id="del" text="删除送货记录"/>
         <Pane HBox.hgrow="ALWAYS"/>
         <Button fx:id="update" text="修改"/>
-        <Button fx:id="attach" text="查看附件"/>
+        <Button visible="false" fx:id="attach" text="查看附件"/>
     </HBox>
 </VBox>

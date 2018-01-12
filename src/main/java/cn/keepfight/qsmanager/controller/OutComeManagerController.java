@@ -31,6 +31,9 @@ public class OutComeManagerController implements ContentCtrl {
     private Button salaryBtn;
     @FXML
     private Button rayBtn;
+    public Button takeBtn;
+    public Button materialBtn;
+    public Button payTotalBtn;
 
     @Override
     public Node getRoot() {
@@ -45,6 +48,9 @@ public class OutComeManagerController implements ContentCtrl {
         salaryBtn.setOnAction(event -> QSApp.mainPane.changeTo(MainPaneList.SALARY));
         rayBtn.setOnAction(event -> QSApp.mainPane.changeTo(MainPaneList.tax$TAX));
         predBtn.setOnAction(event -> QSApp.mainPane.changeTo(MainPaneList.PREDICT));
+        takeBtn.setOnAction(event -> QSApp.mainPane.changeTo(MainPaneList.analysis$OUTCOME_STATIC));
+        materialBtn.setOnAction(event -> QSApp.mainPane.changeTo(MainPaneList.STATIC_MATERIAL));
+        payTotalBtn.setOnAction(event -> QSApp.mainPane.changeTo(MainPaneList.STATIC_TOTAL_PAY));
         testBtn.setOnAction(event -> QSApp.mainPane.changeTo(MainPaneList.SALARY_TEST));
     }
 

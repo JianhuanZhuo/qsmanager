@@ -17,7 +17,7 @@
 
 .year_list>Button{
     -fx-min-width: 60px;
-    -fx-max-width: 90px;
+    -fx-max-width: 150px;
     -fx-min-height: 30px;
     -fx-alignment: center;
     -fx-padding: 0 10px;

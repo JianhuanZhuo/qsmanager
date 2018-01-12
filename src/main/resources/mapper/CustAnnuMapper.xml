@@ -108,7 +108,7 @@
     <select id="supAnnualTotal" parameterType="DeliverySelection" resultType="AnnualTotalModel">
         SELECT
             date_format(d.orderdate, '%m')   AS mon,
-            sum(di.price * di.num * di.pack) AS total
+            sum(di.price * di.num * di.pack-ifnull(di.delifee,0)) AS total
         FROM order_item di, orders d
         WHERE
             cid = #{cid}
@@ -136,7 +136,7 @@
             (
                 SELECT
                     DATE_FORMAT(r.orderdate, '%m') AS m,
-                    sum(d.num * d.price * d.pack)  AS sum
+                    sum(d.num * d.price * d.pack-ifnull(d.delifee,0))  AS sum
                 FROM orders r, order_item d
                 WHERE r.id = d.oid AND r.cid = #{sid}
                       AND DATE_FORMAT(r.orderdate, '%Y') = #{year}
@@ -153,14 +153,14 @@
         SELECT ifnull(trade.m, 0) + ifnull(inv.m, 0) - ifnull(remit.m, 0) AS annualleft
         FROM (# 发票税金
                  SELECT sum(ifnull(inv.total * inv.rate, 0)) AS m
-                 FROM invoice_sup inv
-                 WHERE sup_id = #{sid} AND year <![CDATA[ < ]]>  #{year}) AS inv,
+                 FROM invoice_cust inv
+                 WHERE cust_id = #{sid} AND year <![CDATA[ < ]]>  #{year}) AS inv,
             (# 付款金额
                 SELECT sum(ifnull(remit.total, 0)) AS m
-                FROM remit_sup remit
-                WHERE sup_id = #{sid} AND year <![CDATA[ < ]]> #{year}) AS remit
+                FROM remit_cust remit
+                WHERE cust_id = #{sid} AND year <![CDATA[ < ]]> #{year}) AS remit
             , (# 交易金额
-                  SELECT sum(ifnull(d.price * d.num * d.pack, 0)) AS m
+                  SELECT sum(ifnull(d.price * d.num * d.pack-ifnull(d.delifee,0), 0)) AS m
                   FROM orders r, order_item d
                   WHERE r.id = d.oid AND DATE_FORMAT(r.orderdate, '%Y') <![CDATA[ < ]]> #{year} AND r.cid = #{sid}) AS trade;
     </select>

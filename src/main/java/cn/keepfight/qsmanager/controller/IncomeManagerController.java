@@ -16,12 +16,17 @@ import java.util.Properties;
  */
 public class IncomeManagerController implements ContentCtrl{
 
+    public Button tradeBtn;
     @FXML
     private Button orderBtn;
     @FXML
     private Button annuBtn;
     @FXML
     private Button predBtn;
+    public Button graphBtn;
+    public Button profitBtn;
+    public Button staticBtn;
+    public Button pieBtn;
     @FXML
     private HBox root;
 
@@ -36,6 +41,12 @@ public class IncomeManagerController implements ContentCtrl{
         ps.put("mode", OrderPaneController.USING_IN_INCOME);
         orderBtn.setOnAction(event -> QSApp.mainPane.changeTo(MainPaneList.ORDER_PANE, ps));
         annuBtn.setOnAction(event -> QSApp.mainPane.changeTo(MainPaneList.INCOME_ANNUAL));
+        predBtn.setOnAction(event -> QSApp.mainPane.changeTo(MainPaneList.analysis$SELL));
+        graphBtn.setOnAction(event -> QSApp.mainPane.changeTo(MainPaneList.analysis$CUSTOM));
+        profitBtn.setOnAction(event -> QSApp.mainPane.changeTo(MainPaneList.analysis$PRODUCTS));
+        staticBtn.setOnAction(event -> QSApp.mainPane.changeTo(MainPaneList.STATIC_TOTAL));
+        pieBtn.setOnAction(event -> QSApp.mainPane.changeTo(MainPaneList.analysis$PIE));
+        tradeBtn.setOnAction(event -> QSApp.mainPane.changeTo(MainPaneList.STATIC_TOTAL_TRADE));
     }
 
     @Override

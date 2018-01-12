@@ -28,7 +28,7 @@ import java.util.stream.LongStream;
  * 订单面板
  * Created by tom on 2017/7/28.
  */
-public class OrderPaneController implements ContentCtrl, Initializable{
+public class OrderPaneController implements ContentCtrl, Initializable {
     @FXML
     private VBox root;
     @FXML
@@ -57,21 +57,21 @@ public class OrderPaneController implements ContentCtrl, Initializable{
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        orderList.setCellFactory(param->new OrderListCell(this));
+        orderList.setCellFactory(param -> new OrderListCell(this));
 
         // 设置客户下拉转换器、年转换器
-        cust_sel.setConverter(FXUtils.converter(x->x.getSerial()+"-"+x.getName(), "全部客户"));
-        year_sel.setConverter(FXUtils.converter(x->x+"年", "全部年份"));
+        cust_sel.setConverter(FXUtils.converter(x -> x.getSerial() + "-" + x.getName(), "全部客户"));
+        year_sel.setConverter(FXUtils.converter(x -> x + "年", "全部年份"));
 
-        month_sel.setConverter(FXUtils.converter(x->x+"月", "全部月份"));
+        month_sel.setConverter(FXUtils.converter(x -> x + "月", "全部月份"));
         month_sel.setItems(FXCollections.observableList(LongStream.range(1, 13).boxed().collect(Collectors.toList())));
         month_sel.getItems().add(null);
 
-        day_sel.setConverter(FXUtils.converter(x->x+"号", "当月全部"));
+        day_sel.setConverter(FXUtils.converter(x -> x + "号", "当月全部"));
         day_sel.setItems(FXCollections.observableList(LongStream.range(1, 32).boxed().collect(Collectors.toList())));
         day_sel.getItems().add(null);
 
-        load.setOnAction(e-> loadOrders());
+        load.setOnAction(e -> loadOrders());
     }
 
     @Override
@@ -93,8 +93,9 @@ public class OrderPaneController implements ContentCtrl, Initializable{
 
     @Override
     public void showed(Properties params) {
+        orderList.getItems().clear();
         String mode = params.getProperty("mode");
-        if (USING_IN_ORDERS.equals(mode)){
+        if (USING_IN_ORDERS.equals(mode)) {
             label.setText("(下单请先选择客户)");
             add_order.setText("我要下单");
             add_order.disableProperty().bind(cust_sel.getSelectionModel().selectedItemProperty().isNull());
@@ -118,17 +119,17 @@ public class OrderPaneController implements ContentCtrl, Initializable{
                 source.setMonth((long) localDate.getMonthValue());
                 source.setItem(orderModel.getId());
                 QSPrintType t;
-                if (cust_sel.getSelectionModel().getSelectedItem().getName()!=null
-                        && cust_sel.getSelectionModel().getSelectedItem().getName().contains("安利")){
+                if (cust_sel.getSelectionModel().getSelectedItem().getName() != null
+                        && cust_sel.getSelectionModel().getSelectedItem().getName().contains("安利")) {
                     t = QSPrintType.DELIVERY_ANLI;
-                }else {
+                } else {
                     t = QSPrintType.DELIVERY;
 //                    QSApp.service.getPrintService().build(new PrintSelection(QSPrintType.DELIVERY, source));
                 }
                 QSApp.mainPane.changeTo(MainPaneList.PRINT_MANAGER, FXUtils.ps(new Pair<>("selection", new PrintSelection(t, source))));
 //                loadOrders();
             });
-        }else if (USING_IN_INCOME.equals(mode)){
+        } else if (USING_IN_INCOME.equals(mode)) {
             label.setText("(月账请先选择客户、年份和月份)");
             add_order.setText("打印月账");
             add_order.disableProperty().bind(cust_sel.getSelectionModel().selectedItemProperty().isNull()
@@ -178,12 +179,13 @@ public class OrderPaneController implements ContentCtrl, Initializable{
             }
         });
     }
+
     /**
      * 所谓事件处理器，加载对账表
      */
     private void loadOrders() {
         CustomModel selCust = cust_sel.getSelectionModel().getSelectedItem();
-        Long cid = selCust==null?null:selCust.getId();
+        Long cid = selCust == null ? null : selCust.getId();
         Long year = year_sel.getSelectionModel().getSelectedItem();
         Long month = month_sel.getSelectionModel().getSelectedItem();
         Long day = day_sel.getSelectionModel().getSelectedItem();
@@ -223,11 +225,7 @@ public class OrderPaneController implements ContentCtrl, Initializable{
 
         OrderListCell(OrderPaneController c) {
             this.c = c;
-            try {
-                controller = ViewPathUtil.loadViewForController("orderform.fxml");
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            controller = ViewPathUtil.loadViewForController("orderform.fxml");
         }
 
         @Override

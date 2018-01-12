@@ -16,6 +16,7 @@ import javafx.scene.layout.VBox;
 import javafx.util.StringConverter;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.sql.Date;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
@@ -58,16 +59,18 @@ public class ReceiptAddController implements DialogContent<ReceiptModelFull> {
     @FXML
     private TableColumn<ReceiptDetailModel, String> tab_unit;
     @FXML
-    private TableColumn<ReceiptDetailModel, String> tab_price;
+    private TableColumn<ReceiptDetailModel, BigDecimal> tab_price;
     @FXML
-    private TableColumn<ReceiptDetailModel, String> tab_num;
+    private TableColumn<ReceiptDetailModel, BigDecimal> tab_num;
     @FXML
-    private TableColumn<ReceiptDetailModel, String> tab_total;
+    private TableColumn<ReceiptDetailModel, BigDecimal> tab_total;
     @FXML
     private Label all_total;
 
+    private ReceiptModelFull receiptModelFull = new ReceiptModelFull();
+
     // 子界面
-    private ReceiptItemAddController addController;
+    private ReceiptItemAddController addController = ViewPathUtil.loadViewForController("receipt_item_add.fxml");;
 
     @FXML
     public void initialize() {
@@ -80,14 +83,15 @@ public class ReceiptAddController implements DialogContent<ReceiptModelFull> {
         rdate.setValue(localDate);
 
 
-        FXWidgetUtil.connect(tab_serial, ReceiptDetailModel::serialProperty);
-        FXWidgetUtil.connect(tab_name, ReceiptDetailModel::nameProperty);
-        FXWidgetUtil.connect(tab_color, ReceiptDetailModel::colorProperty);
-        FXWidgetUtil.connect(tab_spec, ReceiptDetailModel::specProperty);
-        FXWidgetUtil.connect(tab_unit, ReceiptDetailModel::unitProperty);
-        FXWidgetUtil.connectDecimalObj(tab_price, ReceiptDetailModel::priceProperty);
-        FXWidgetUtil.connectDecimalObj(tab_num, ReceiptDetailModel::numProperty);
-        FXWidgetUtil.connectDecimalObj(tab_total, ReceiptDetailModel::totalProperty);
+        FXWidgetUtil.connectStrColumn(tab_serial, ReceiptDetailModel::serialProperty);
+        FXWidgetUtil.connectStrColumn(tab_name, ReceiptDetailModel::nameProperty);
+        FXWidgetUtil.connectStrColumn(tab_color, ReceiptDetailModel::colorProperty);
+        FXWidgetUtil.connectStrColumn(tab_spec, ReceiptDetailModel::specProperty);
+        FXWidgetUtil.connectStrColumn(tab_unit, ReceiptDetailModel::unitProperty);
+        FXWidgetUtil.connectDecimalColumn(tab_price, ReceiptDetailModel::priceProperty);
+        FXWidgetUtil.connectDecimalColumn(tab_num, ReceiptDetailModel::numProperty);
+        FXWidgetUtil.connectDecimalColumn(tab_total, ReceiptDetailModel::totalProperty);
+        FXWidgetUtil.cellMoney(tab_price, tab_num, tab_total);
 
         // 新增明细按钮
         item_add.setOnMouseClicked(e -> {
@@ -125,21 +129,11 @@ public class ReceiptAddController implements DialogContent<ReceiptModelFull> {
         tabs.getItems().clear();
         // 加载列表
         loadSupply();
-
-        // 加载 FXML
-        if (addController == null) {
-            Platform.runLater(() -> {
-                try {
-                    addController = ViewPathUtil.loadViewForController("receipt_item_add.fxml");
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            });
-        }
     }
 
     @Override
     public void fill(ReceiptModelFull receiptModelFull) {
+        this.receiptModelFull = receiptModelFull;
         serial.setText(receiptModelFull.getSerial());
         Platform.runLater(() -> {
             for (SupplyModel supplyModel : sid.getItems()) {
@@ -171,7 +165,7 @@ public class ReceiptAddController implements DialogContent<ReceiptModelFull> {
 
     @Override
     public ReceiptModelFull pack() {
-        ReceiptModelFull res = new ReceiptModelFull();
+        ReceiptModelFull res = receiptModelFull;
         res.setSerial(serial.getText());
         res.setRdate(Date.valueOf(rdate.getValue()).getTime());
         res.setSid(sid.getSelectionModel().getSelectedItem().getId());

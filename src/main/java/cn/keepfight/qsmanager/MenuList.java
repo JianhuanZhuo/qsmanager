@@ -38,18 +38,19 @@ public enum MenuList {
         ps = new Properties();
 
         // 这是一场意外
-        if (name().toLowerCase().equals("income")){
-            view="income_manager.fxml";
-        }else if(name().toLowerCase().equals("outcome")){
-            view="outcome_manager.fxml";
-        }else if(name().toLowerCase().equals("orders")){
-            view="order_pane.fxml";
+        if (name().toLowerCase().equals("income")) {
+            view = "income_manager.fxml";
+        } else if (name().toLowerCase().equals("outcome")) {
+            view = "outcome_manager.fxml";
+        } else if (name().toLowerCase().equals("orders")) {
+            view = "order_pane.fxml";
             ps.put("mode", OrderPaneController.USING_IN_ORDERS);
         }
     }
 
     private static boolean loaded = false;
-    public static synchronized void loadMenuView(){
+
+    public static synchronized void loadMenuView() {
         if (loaded) return;
         loaded = true;
         for (MenuList m : MenuList.values()) {
@@ -60,23 +61,17 @@ public enum MenuList {
     /**
      * 获得匹配项
      */
-    public static MenuList getByTittle(String title){
-        for (MenuList m: values()){
-            if (m.getTitle().equals(title)){
+    public static MenuList getByTittle(String title) {
+        for (MenuList m : values()) {
+            if (m.getTitle().equals(title)) {
                 return m;
             }
         }
         return null;
     }
 
-    private void load(){
-        new Thread(() -> {
-            try {
-                controller = ViewPathUtil.loadViewForController(view);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }).start();
+    private void load() {
+        new Thread(() -> controller = ViewPathUtil.loadViewForController(view)).start();
     }
 
     public ContentCtrl getController() {
@@ -95,7 +90,7 @@ public enum MenuList {
         return title;
     }
 
-    public String getName(){
+    public String getName() {
         return name();
     }
 
