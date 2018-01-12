@@ -5,7 +5,6 @@
 <?import javafx.scene.control.Separator?>
 <?import javafx.scene.layout.VBox?>
 
-
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
 <VBox fx:id="root" styleClass="content-pane, vbox-common" stylesheets="@css/common.css"

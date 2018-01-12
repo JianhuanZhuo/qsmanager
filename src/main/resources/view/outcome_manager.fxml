@@ -61,6 +61,14 @@
             </graphic>
         </Button>
         <Pane HBox.hgrow="ALWAYS"/>
+        <Button fx:id="testBtn" contentDisplay="TOP" styleClass="btn-common" text="web测试">
+            <graphic>
+                <ImageView>
+                    <Image url="@img/5.png"/>
+                </ImageView>
+            </graphic>
+        </Button>
+        <Pane HBox.hgrow="ALWAYS"/>
     </HBox>
     <Pane VBox.vgrow="ALWAYS"/>
 </VBox>

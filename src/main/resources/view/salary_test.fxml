@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.web.WebView?>
+
+<VBox fx:id="root" styleClass="content-pane, vbox-common" stylesheets="@css/common.css"
+      xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="cn.keepfight.qsmanager.controller.salary.SalaryTestController">
+    <HBox styleClass="hbox-common">
+        <Label text="在下面的列表中勾选需要新增工资的员工（默认已选择全部在职员工，员工应该现在建立档案）"/>
+        <Pane HBox.hgrow="ALWAYS"/>
+    </HBox>
+    <Separator/>
+    <WebView fx:id="webview" VBox.vgrow="ALWAYS"/>
+</VBox>

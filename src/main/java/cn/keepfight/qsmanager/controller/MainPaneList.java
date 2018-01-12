@@ -27,6 +27,7 @@ public enum MainPaneList {
     SALARY_NEW,
     SALARY_EDIT,
     SALARY_PAY,
+    SALARY_TEST,
     SALARY_CLEAR,
     PREDICT,
     PREDICT_LIST,
@@ -59,13 +60,20 @@ public enum MainPaneList {
     }
 
     private void load() {
-        new Thread(() -> {
+//        new Thread(() -> {
+//            try {
+//                controller = ViewPathUtil.loadViewForController(view);
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            }
+//        }).start();
+        Platform.runLater(()->{
             try {
                 controller = ViewPathUtil.loadViewForController(view);
             } catch (IOException e) {
                 e.printStackTrace();
             }
-        }).start();
+        });
     }
 
     /**

@@ -73,7 +73,7 @@ public class TaxController implements ContentCtrl, Initializable {
     private Long data_year;
     private Long data_month;
     private MonthPicker monthPicker = FXWidgetUtil.getMonthPicker();
-    private TaxDao dao;
+    private TaxDao dao = new TaxDao();
 
     @Override
     public Node getRoot() {

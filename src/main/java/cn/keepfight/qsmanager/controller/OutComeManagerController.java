@@ -16,6 +16,7 @@ import java.util.Properties;
  * Created by tom on 2017/9/4.
  */
 public class OutComeManagerController implements ContentCtrl {
+    public Button testBtn;
     @FXML
     private VBox root;
     @FXML
@@ -44,6 +45,7 @@ public class OutComeManagerController implements ContentCtrl {
         salaryBtn.setOnAction(event -> QSApp.mainPane.changeTo(MainPaneList.SALARY));
         rayBtn.setOnAction(event -> QSApp.mainPane.changeTo(MainPaneList.tax$TAX));
         predBtn.setOnAction(event -> QSApp.mainPane.changeTo(MainPaneList.PREDICT));
+        testBtn.setOnAction(event -> QSApp.mainPane.changeTo(MainPaneList.SALARY_TEST));
     }
 
     @Override
