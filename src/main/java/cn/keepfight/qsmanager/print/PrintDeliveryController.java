@@ -215,6 +215,24 @@ public class PrintDeliveryController extends PrintTemplate<OrderModelFull> imple
         }
     }
 
+    @Override
+    public void reloadFavorList() {
+        // 添加表格可选的菜单下拉
+        try {
+            List<ProductModel> plist = QSApp.service.getOrderFavorService().selectAll(datas.getCid());
+            productList = plist
+                    .stream()
+                    .collect(Collectors.toMap(p->p.getSerial()+"-"+p.getName(), p->p));
+            List<String> ss = plist.stream().map(p->p.getSerial()+"-"+p.getName()).collect(Collectors.toList());
+            ss.add(null);
+            name.setCellFactory(ChoiceBoxTableCell.forTableColumn(ss.toArray(new String[ss.size()])));
+        } catch (Exception e) {
+            //@TODO 这里如果有毛病了，那么该怎么处理？
+            e.printStackTrace();
+            productList = new HashMap<>();
+        }
+    }
+
     private class Item extends OrderItemModel {
         Item(){}
         Item(OrderItemModel m) {
