@@ -3,10 +3,12 @@ package cn.keepfight.qsmanager.controller;
 import cn.keepfight.qsmanager.QSApp;
 import cn.keepfight.qsmanager.model.CustomModel;
 import cn.keepfight.qsmanager.model.ProductModel;
+import cn.keepfight.qsmanager.model.SupplyModel;
 import cn.keepfight.utils.FXWidgetUtil;
 import cn.keepfight.utils.QSUtil;
 import cn.keepfight.utils.ViewPathUtil;
 import cn.keepfight.utils.WarningBuilder;
+import cn.keepfight.widget.ImageManager;
 import javafx.application.Platform;
 import javafx.beans.binding.BooleanBinding;
 import javafx.beans.binding.StringBinding;
@@ -61,7 +63,7 @@ public class CustomController implements ContentCtrl {
     @FXML
     private TextArea info_note;
     @FXML
-    private Label info_attach;
+    private Button info_attach;
 
     // 用户列表
     @FXML
@@ -269,6 +271,19 @@ public class CustomController implements ContentCtrl {
                     QSApp.service.getOrderFavorService().delete(currentModel.getId(), model.getId());
                     loadOrderFavor();
                 }));
+
+
+        info_attach.disableProperty().bind(custList.getSelectionModel().selectedItemProperty().isNull());
+        info_attach.setOnAction(event -> {
+            CustomModel selected = custList.getSelectionModel().getSelectedItem();
+            String category = "Custom-" + selected.getId() + "-" + selected.getSerial();
+            String title = "图片管理器：" + selected.getSerial() + "-" + selected.getName() + "-附件管理";
+            try {
+                ImageManager.newManager(category, title);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
     }
 
 

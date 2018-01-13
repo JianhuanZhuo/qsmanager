@@ -4,6 +4,7 @@ import cn.keepfight.qsmanager.dao.StuffDao;
 import cn.keepfight.qsmanager.dao.StuffWrapper;
 import cn.keepfight.qsmanager.service.StuffServices;
 import cn.keepfight.utils.*;
+import cn.keepfight.widget.ImageManager;
 import cn.keepfight.widget.MenuListChecker;
 import javafx.application.Platform;
 import javafx.beans.binding.StringBinding;
@@ -28,6 +29,7 @@ import static cn.keepfight.utils.FXUtils.limitLength;
  * Created by tom on 2017/7/19.
  */
 public class StuffController implements ContentCtrl, Initializable {
+    public Button attachs;
     @FXML
     private HBox root;
     @FXML
@@ -144,6 +146,18 @@ public class StuffController implements ContentCtrl, Initializable {
             }
             loadStuff();
         });
+
+        attachs.disableProperty().bind(stuffList.getSelectionModel().selectedItemProperty().isNull());
+        attachs.setOnAction(event -> {
+            StuffDao selected = stuffList.getSelectionModel().getSelectedItem();
+            String category = "Stuff-" + selected.getId() + "-" + selected.getSerial();
+            String title = "图片管理器：" + selected.getSerial() + "-" + selected.getName() + "-附件管理";
+            try {
+                ImageManager.newManager(category, title);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
     }
 
     @Override
@@ -169,10 +183,10 @@ public class StuffController implements ContentCtrl, Initializable {
      * 加载全部员工信息
      */
     private void loadStuff() {
-        new Thread(()->{
+        new Thread(() -> {
             try {
                 ObservableList<StuffDao> ls = FXCollections.observableList(StuffServices.selectAll());
-                Platform.runLater(()->stuffList.getItems().setAll(ls));
+                Platform.runLater(() -> stuffList.getItems().setAll(ls));
             } catch (Exception e) {
                 e.printStackTrace();
                 WarningBuilder.build("加载员工信息错误，请保证网络通畅再重试！");

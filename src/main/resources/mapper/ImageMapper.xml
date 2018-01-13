@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.keepfight.qsmanager.Mapper.ImageMapper">
+
+    <select id="selectByCate" parameterType="String" resultType="ImageListDao">
+        SELECT
+            id,
+            category,
+            cdate,
+            pname,
+            note
+        FROM image
+        WHERE category = #{category} AND del = 0
+    </select>
+
+    <!--String getImage(Long id) throws Exception;-->
+    <select id="getImage" resultType="String" parameterType="long">
+        SELECT content
+        FROM image
+        WHERE id = #{id}
+    </select>
+
+    <!--void updateName(Long id, String pname) throws Exception;-->
+    <update id="updateName">
+        UPDATE image
+        SET pname = #{pname}
+        WHERE id = #{id}
+    </update>
+
+    <!--void updateNote(Long id, String note) throws Exception;-->
+    <update id="updateNote">
+        UPDATE image
+        SET note = #{note}
+        WHERE id = #{id}
+    </update>
+
+    <!--void del(Long id) throws Exception;-->
+    <delete id="del" parameterType="long">
+        DELETE FROM image
+        WHERE id = #{id}
+    </delete>
+
+    <!--void insert(ImageDao dao) throws Exception;-->
+    <insert id="insert" parameterType="ImageDao">
+        INSERT INTO image(
+        category, pname, note, content
+        )VALUES (
+        #{category},
+        #{pname},
+        #{note},
+        #{content}
+        )
+        <selectKey keyProperty="id" order="AFTER" resultType="long">
+            SELECT last_insert_id();
+        </selectKey>
+    </insert>
+</mapper>

@@ -1,9 +1,11 @@
 package cn.keepfight.qsmanager.controller;
 
 import cn.keepfight.qsmanager.QSApp;
+import cn.keepfight.qsmanager.dao.StuffDao;
 import cn.keepfight.qsmanager.model.MaterialModel;
 import cn.keepfight.qsmanager.model.SupplyModel;
 import cn.keepfight.utils.*;
+import cn.keepfight.widget.ImageManager;
 import javafx.application.Platform;
 import javafx.beans.binding.StringBinding;
 import javafx.beans.property.ListProperty;
@@ -70,7 +72,7 @@ public class SupplyController implements ContentCtrl {
     private TextField info_name;
 
     @FXML
-    private Label info_attach;
+    private Button info_attach;
     @FXML
     private Button saveInfo;
 
@@ -274,6 +276,18 @@ public class SupplyController implements ContentCtrl {
                 new SimpleListProperty(supList.getSelectionModel().getSelectedIndices());
         infoPane.disableProperty().bind(lp.emptyProperty());
         delSup.disableProperty().bind(lp.emptyProperty());
+
+        info_attach.disableProperty().bind(supList.getSelectionModel().selectedItemProperty().isNull());
+        info_attach.setOnAction(event -> {
+            SupplyModel selected = supList.getSelectionModel().getSelectedItem();
+            String category = "Supply-" + selected.getId() + "-" + selected.getSerial();
+            String title = "图片管理器：" + selected.getSerial() + "-" + selected.getName() + "-附件管理";
+            try {
+                ImageManager.newManager(category, title);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
     }
 
 

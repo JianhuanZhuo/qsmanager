@@ -26,7 +26,6 @@ public interface SalaryMapper extends Mapper {
             @Param("year") Long year,
             @Param("month") Long month) throws Exception;
 
-
     /**
      * 选择指定年月和工人 ID 查询当月工资以便修改
      */
@@ -76,7 +75,6 @@ public interface SalaryMapper extends Mapper {
      * 选择指定员工 ID 的拖欠工资及其月份，这个月份是对齐全部月份的+
      */
     List<StuffTardyDao> selectTardyByStuff(@Param("stuff_id") Long stuff_id) throws Exception;
-
 
     /**
      * 批量插入工资发放

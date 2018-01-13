@@ -6,9 +6,11 @@ import cn.keepfight.qsmanager.controller.MainPaneList;
 import cn.keepfight.qsmanager.dao.salary.SalaryTardyDaoWrapper;
 import cn.keepfight.qsmanager.dao.salary.StuffTardyDao;
 import cn.keepfight.qsmanager.dao.salary.YearStaticDaoWrapper;
+import cn.keepfight.qsmanager.model.CustomModel;
 import cn.keepfight.qsmanager.service.SalaryServices;
 import cn.keepfight.utils.FXUtils;
 import cn.keepfight.utils.FXWidgetUtil;
+import cn.keepfight.widget.ImageManager;
 import cn.keepfight.widget.TableShowGrid;
 import cn.keepfight.widget.YearScrollPicker;
 import javafx.application.Platform;
@@ -34,6 +36,7 @@ import java.util.stream.Collectors;
  * Created by tom on 2017/7/19.
  */
 public class SalaryController implements ContentCtrl, Initializable {
+    public Button attachs;
     @FXML
     private VBox root;
     @FXML
@@ -48,7 +51,6 @@ public class SalaryController implements ContentCtrl, Initializable {
     public Label lab_given;
     public Label lab_tarby;
     public Label lab_stuff_tardy;
-
 
     public Button btn_clear;
     public TableView<SalaryTardyDaoWrapper> table_stuff;
@@ -86,7 +88,6 @@ public class SalaryController implements ContentCtrl, Initializable {
 
         FXWidgetUtil.calculate(table_stuff.getItems(), SalaryTardyDaoWrapper::getSum, lab_stuff_tardy::setText);
 
-
         table_static.setRowFactory(tv -> {
             TableRow<YearStaticDaoWrapper> row = new TableRow<>();
             row.setOnMouseClicked(event -> {
@@ -103,6 +104,16 @@ public class SalaryController implements ContentCtrl, Initializable {
         });
 
         btn_clear.setOnAction(event -> QSApp.mainPane.changeTo(MainPaneList.SALARY_CLEAR));
+
+        attachs.setOnAction(event -> {
+            String category = "Salary-" + yearScrollPicker.get();
+            String title = "图片管理器：" + yearScrollPicker.get() + "年工资管理";
+            try {
+                ImageManager.newManager(category, title);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
     }
 
     @Override
@@ -132,7 +143,7 @@ public class SalaryController implements ContentCtrl, Initializable {
 
         table_stuff.getColumns().removeAll(tabs);
         tabs.clear();
-        new Thread(()->{
+        new Thread(() -> {
             try {
                 List<SalaryTardyDaoWrapper> ss = SalaryServices.selectStuffSalaryTardy().stream()
                         .map(SalaryTardyDaoWrapper::new)
@@ -142,7 +153,7 @@ public class SalaryController implements ContentCtrl, Initializable {
                 if (ss.size() > 0) {
                     for (StuffTardyDao d : ss.get(0).get().getDetails()) {
                         TableColumn<SalaryTardyDaoWrapper, BigDecimal> column = new TableColumn<>(d.getYm());
-                        Platform.runLater(()->table_stuff.getColumns().add(column));
+                        Platform.runLater(() -> table_stuff.getColumns().add(column));
                         tabs.add(column);
                         FXWidgetUtil.cellMoney(column);
                         FXWidgetUtil.connectDecimalColumn(column, k -> new SimpleObjectProperty<>(k.get().getDetailByYM(d.getYm())));

@@ -10,6 +10,7 @@ import cn.keepfight.qsmanager.print.PrintSource;
 import cn.keepfight.qsmanager.print.QSPrintType;
 import cn.keepfight.qsmanager.service.CustAnnualServers;
 import cn.keepfight.utils.*;
+import cn.keepfight.widget.ImageManager;
 import cn.keepfight.widget.YearScrollPicker;
 import javafx.application.Platform;
 import javafx.beans.binding.ObjectBinding;
@@ -41,6 +42,7 @@ public class IncomeAnnualController implements ContentCtrl, Initializable {
     @FXML
     private ChoiceBox<CustomModel> an_cust_sel;
     public Button btn_year_sel;
+    public Button attachs;
     public Button btn_edit;
     public Button btn_add_invoice;
     public Button btn_add_remit;
@@ -116,6 +118,17 @@ public class IncomeAnnualController implements ContentCtrl, Initializable {
         });
         btn_year_sel.setOnAction(event -> yearScrollPicker.show(btn_year_sel, data_year));
 
+        attachs.disableProperty().bind(an_cust_sel.getSelectionModel().selectedItemProperty().isNull());
+        attachs.setOnAction(event -> {
+            CustomModel x = an_cust_sel.getSelectionModel().getSelectedItem();
+            String category = "IncomeAnnual-" + x.getSerial() + "-" + yearScrollPicker.get();
+            String title = "图片管理器：" + x.getSerial() + "-" + x.getName() + "-" + yearScrollPicker.get();
+            try {
+                ImageManager.newManager(category, title);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
 
         // 添加表格转换器
         FXWidgetUtil.connectDecimalColumn(total, AnnualDaoWrapper::tradeTotalProperty);

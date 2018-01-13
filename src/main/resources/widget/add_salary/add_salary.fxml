@@ -13,8 +13,8 @@
     <HBox fx:id="content" styleClass="item-content">
         <Label>工资总额：￥</Label>
         <TextField fx:id="text_total" styleClass="text_edit" text="0"/>
-        <Label>已发工资：￥</Label>
-        <TextField fx:id="text_fix" styleClass="text_edit" text="0"/>
+        <Label visible="false">已发工资：￥</Label>
+        <TextField visible="false" fx:id="text_fix" styleClass="text_edit" text="0"/>
         <Label fx:id="halt" styleClass="warning"/>
     </HBox>
 </HBox>

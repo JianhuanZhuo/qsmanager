@@ -1,0 +1,8 @@
+.head{
+}
+
+.contain{
+    -fx-padding: 5px;
+    -fx-spacing: 5px;
+    -fx-min-width: 600px;
+}

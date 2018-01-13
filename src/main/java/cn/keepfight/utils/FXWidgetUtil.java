@@ -38,6 +38,8 @@ import javafx.util.StringConverter;
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.math.BigDecimal;
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.function.*;
 import java.util.stream.Collectors;
@@ -107,48 +109,23 @@ public class FXWidgetUtil {
     }
 
     public static MonthPicker getMonthPicker() {
-        try {
-            return ViewPathUtil.loadWidgetForController("monthPicker/month_picker.fxml");
-        } catch (IOException e) {
-            e.printStackTrace();
-            throw new RuntimeException(e);
-        }
+        return ViewPathUtil.loadWidgetForController("monthPicker/month_picker.fxml");
     }
 
     public static YearScrollPicker getYearPicker() {
-        try {
-            return ViewPathUtil.loadWidgetForController("yearPicker/year_picker.fxml");
-        } catch (IOException e) {
-            e.printStackTrace();
-            throw new RuntimeException(e);
-        }
+        return ViewPathUtil.loadWidgetForController("yearPicker/year_picker.fxml");
     }
 
     public static <T> UnitScrollPicker<T> getUnitPicker() {
-        try {
-            return ViewPathUtil.loadWidgetForController("unitPicker/unit_Picker.fxml");
-        } catch (IOException e) {
-            e.printStackTrace();
-            throw new RuntimeException(e);
-        }
+        return ViewPathUtil.loadWidgetForController("unitPicker/unit_Picker.fxml");
     }
 
     public static AddSalaryItem getSalaryNewItem() {
-        try {
-            return ViewPathUtil.loadWidgetForController("add_salary/add_salary.fxml");
-        } catch (IOException e) {
-            e.printStackTrace();
-            throw new RuntimeException(e);
-        }
+        return ViewPathUtil.loadWidgetForController("add_salary/add_salary.fxml");
     }
 
     public static PredictItem getPredictItem() {
-        try {
-            return ViewPathUtil.loadWidgetForController("predict/predict_item.fxml");
-        } catch (IOException e) {
-            e.printStackTrace();
-            throw new RuntimeException(e);
-        }
+        return ViewPathUtil.loadWidgetForController("predict/predict_item.fxml");
     }
 
     /**
@@ -452,6 +429,13 @@ public class FXWidgetUtil {
     }
 
     /**
+     * 以字符串的转换方式连接表格列
+     */
+    public static <T> void connectTimestampColumn(TableColumn<T, Timestamp> tab_col, Function<T, ObjectProperty<Timestamp>> x) {
+        tab_col.setCellValueFactory(data -> x.apply(data.getValue()));
+    }
+
+    /**
      * 以指定的转换方式连接表格列
      */
     public static <T> void connectObj(TableColumn<T, String> tab_col, Function<T, ObjectExpression> x) {
@@ -664,6 +648,40 @@ public class FXWidgetUtil {
     }
 
     @SafeVarargs
+    public static <T> void cellTimestamp(StringConverter<Timestamp> converter, TableColumn<T, Timestamp>... cs) {
+        for (TableColumn<T, Timestamp> c : cs) {
+            c.setCellFactory(TextFieldTableCell.forTableColumn(converter));
+        }
+    }
+
+
+    public static SimpleDateFormat default_format_date = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
+
+    @SafeVarargs
+    public static <T> void cellTimestamp(TableColumn<T, Timestamp>... cs) {
+        cellTimestamp(new StringConverter<Timestamp>() {
+
+            @Override
+            public String toString(Timestamp object) {
+                if (object == null) {
+                    return "";
+                }
+                return default_format_date.format(object);
+            }
+
+            @Override
+            public Timestamp fromString(String string) {
+                try {
+                    return Timestamp.valueOf(string);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                return null;
+            }
+        }, cs);
+    }
+
+    @SafeVarargs
     public static <T> void cellRate(TableColumn<T, BigDecimal>... cs) {
         for (TableColumn<T, BigDecimal> c : cs) {
             c.setCellFactory(TextFieldTableCell.forTableColumn(new StringConverter<BigDecimal>() {
@@ -801,7 +819,7 @@ public class FXWidgetUtil {
         Button button = new Button(nodeStr);
         FXUtils.addStyle("url", button);
         button.setBackground(Background.EMPTY);
-        button.setOnAction(event->QSApp.mainPane.changeTo(menuList, params));
+        button.setOnAction(event -> QSApp.mainPane.changeTo(menuList, params));
         HBox hBox3 = new HBox(button);
         if (styleStr != null && !styleStr.equals("")) {
             FXUtils.addStyle(styleStr, hBox3);

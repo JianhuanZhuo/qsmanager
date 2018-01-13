@@ -19,6 +19,7 @@
                 <Label fx:id="label_year" styleClass="url" text="2010"/>
                 <Label text="年度工资总表（年份选择点击橙色链接，查看月份明细双击下面表格月份）"/>
                 <Pane HBox.hgrow="ALWAYS"/>
+                <Button fx:id="attachs" text="附件管理"/>
             </HBox>
             <TableView styleClass="center-table" fx:id="table_static" prefHeight="350.0">
                 <columns>

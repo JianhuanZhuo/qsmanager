@@ -1,17 +1,13 @@
 package cn.keepfight.qsmanager.controller;
 
-import cn.keepfight.qsmanager.MenuList;
 import cn.keepfight.utils.ViewPathUtil;
 import javafx.application.Platform;
-
-import java.io.IOException;
 
 /**
  * 面板列表登记注册类
  * Created by tom on 2017/9/4.
  */
 public enum MainPaneList {
-
     ORDER_PANE,
     INCOME_ANNUAL,
     RECEIPT_LIST,
@@ -76,13 +72,7 @@ public enum MainPaneList {
 //                e.printStackTrace();
 //            }
 //        }).start();
-        Platform.runLater(()->{
-            try {
-                controller = ViewPathUtil.loadViewForController(view);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        });
+        Platform.runLater(()-> controller = ViewPathUtil.loadViewForController(view));
     }
 
     /**

@@ -84,14 +84,14 @@
                     <Label text="客户备注：" GridPane.rowIndex="9"/>
                     <TextArea fx:id="info_note" GridPane.columnIndex="1" GridPane.columnSpan="3" GridPane.rowIndex="9"
                               GridPane.rowSpan="2"/>
-                    <Label fx:id="info_attach" text="附件" textFill="#3366ff" underline="true" GridPane.columnIndex="3"
+                    <Button fx:id="info_attach" text="附件" textFill="#3366ff" underline="true" GridPane.columnIndex="3"
                            GridPane.rowIndex="11">
                         <graphic>
                             <ImageView pickOnBounds="true" preserveRatio="true" styleClass="image-size-common">
                                 <Image url="@img/attachment.png"/>
                             </ImageView>
                         </graphic>
-                    </Label>
+                    </Button>
                     <columnConstraints>
                         <ColumnConstraints/>
                         <ColumnConstraints/>

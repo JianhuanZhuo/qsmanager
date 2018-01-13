@@ -92,7 +92,7 @@ public class PrintYearCustController extends PrintTemplate<CustAnnualModelFull> 
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        anTable.fixedCellSizeProperty().bind(anTable.heightProperty().subtract(27).divide(SIZE_PER_PAGE));
+//        anTable.fixedCellSizeProperty().bind(anTable.heightProperty().subtract(27).divide(SIZE_PER_PAGE));
 
         anTable.setEditable(true);
 

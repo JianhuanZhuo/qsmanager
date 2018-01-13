@@ -50,6 +50,12 @@
             <artifactId>commons-beanutils</artifactId>
             <version>1.9.3</version>
         </dependency>
+        <!--用于 image 操作-->
+        <dependency>
+            <groupId>commons-io</groupId>
+            <artifactId>commons-io</artifactId>
+            <version>2.4</version>
+        </dependency>
         <!--apache httpclient-->
         <dependency>
             <groupId>org.apache.httpcomponents</groupId>

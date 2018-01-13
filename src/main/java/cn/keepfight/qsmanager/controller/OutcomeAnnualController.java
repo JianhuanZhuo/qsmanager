@@ -11,6 +11,9 @@ import cn.keepfight.qsmanager.print.QSPrintType;
 import cn.keepfight.qsmanager.service.SupAnnualServers;
 import cn.keepfight.utils.FXUtils;
 import cn.keepfight.utils.FXWidgetUtil;
+import cn.keepfight.utils.ViewPathUtil;
+import cn.keepfight.utils.WarningBuilder;
+import cn.keepfight.widget.ImageManager;
 import cn.keepfight.widget.YearScrollPicker;
 import javafx.application.Platform;
 import javafx.beans.binding.ObjectBinding;
@@ -19,12 +22,16 @@ import javafx.beans.property.SimpleObjectProperty;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
 import javafx.util.Pair;
 
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.net.URL;
 import java.sql.Date;
@@ -43,6 +50,7 @@ public class OutcomeAnnualController implements ContentCtrl, Initializable {
     @FXML
     private ChoiceBox<SupplyModel> an_sup_sel;
 
+    public Button attachs;
     public Button btn_add_invoice;
     public Button btn_edit;
     public Button btn_add_remit;
@@ -109,6 +117,7 @@ public class OutcomeAnnualController implements ContentCtrl, Initializable {
                 .or(anTable.getSelectionModel().selectedItemProperty().isNull()));
         btn_add_remit.disableProperty().bind(btn_edit.disableProperty());
         btn_add_invoice.disableProperty().bind(btn_edit.disableProperty());
+        attachs.disableProperty().bind(an_print.disableProperty());
 
         yearScrollPicker = FXWidgetUtil.getYearPicker();
         yearScrollPicker.setOnClose(year -> {
@@ -244,6 +253,17 @@ public class OutcomeAnnualController implements ContentCtrl, Initializable {
                 }
             });
             return row;
+        });
+
+        attachs.setOnAction(event -> {
+            SupplyModel x = an_sup_sel.getSelectionModel().getSelectedItem();
+            String category = "OutcomeAnnual-" + x.getSerial() + "-" + yearScrollPicker.get();
+            String title = "图片管理器：" + x.getSerial() + "-" + x.getName() + "-" + yearScrollPicker.get();
+            try {
+                ImageManager.newManager(category, title);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         });
 
         // 打印支持

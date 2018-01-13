@@ -16,16 +16,15 @@ import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextInputDialog;
 import javafx.scene.layout.VBox;
 import javafx.util.Pair;
 
+import java.math.BigDecimal;
 import java.net.URL;
 import java.sql.Date;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Properties;
-import java.util.ResourceBundle;
+import java.util.*;
 
 /**
  * 发现自己并没有任何的艺术天赋、歌舞才艺、运动强项、爱好特长。活生生的咸鱼一条。
@@ -40,6 +39,9 @@ public class SalaryNewController implements ContentCtrl, Initializable {
 
     public Button ok;
     public Button cancel;
+    public Button all;
+    public Button not;
+    public Button fill;
 
     private Long year;
     private Long month;
@@ -82,6 +84,16 @@ public class SalaryNewController implements ContentCtrl, Initializable {
             QSApp.mainPane.backNav();
         });
         cancel.setOnAction(e -> QSApp.mainPane.backNav());
+
+        all.setOnAction(e -> items.forEach(i -> i.setCheck(true)));
+        not.setOnAction(e -> items.forEach(i -> i.setCheck(false)));
+
+        fill.setOnAction(e -> {
+            String s = fillTotal();
+            if (s != null) {
+                items.forEach(item -> item.setTotal(s));
+            }
+        });
     }
 
     @Override
@@ -98,8 +110,8 @@ public class SalaryNewController implements ContentCtrl, Initializable {
     public void showed(Properties params) {
         // 当前时间
         LocalDate now = FXUtils.stampToLocalDate(System.currentTimeMillis());
-        year = (long) params.getOrDefault("year", (long)now.getYear());
-        month = (long) params.getOrDefault("month", (long)now.getMonthValue());
+        year = (long) params.getOrDefault("year", (long) now.getYear());
+        month = (long) params.getOrDefault("month", (long) now.getMonthValue());
 
         stuffList.getChildren().clear();
 
@@ -122,5 +134,16 @@ public class SalaryNewController implements ContentCtrl, Initializable {
     @Override
     public StringBinding getTitle() {
         return FXWidgetUtil.sBinding("新增员工工资");
+    }
+
+    public String fillTotal() {
+        TextInputDialog dialog = new TextInputDialog("2000");
+        dialog.setTitle("使用统一工资额填充");
+        dialog.setHeaderText("使用统一工资额填充");
+        dialog.setContentText("输入填充数：");
+
+        Optional<String> result = dialog.showAndWait();
+
+        return result.orElse(null);
     }
 }

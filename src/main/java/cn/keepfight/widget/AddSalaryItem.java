@@ -73,6 +73,14 @@ public class AddSalaryItem implements Initializable, Widget<AddSalaryItem.AddSal
         return obj;
     }
 
+    public void setCheck(boolean c){
+        check.setSelected(c);
+    }
+
+    public void setTotal(String xx){
+        text_total.setText(xx);
+    }
+
     public static class AddSalaryObj {
         private Boolean select = false;
         private BigDecimal total = new BigDecimal(0);

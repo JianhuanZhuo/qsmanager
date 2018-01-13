@@ -16,6 +16,14 @@
         <Label text="工资年月："/>
         <Button fx:id="yearMonth" styleClass="url" text="2017年8月"/>
     </HBox>
+    <Label text="在下面填写工资总额表示当月的工资数额，基本工资和工龄工资请在员工管理修改，其他工资由 (工资总额 - 基本工资 - 工龄工资) 计算得出"/>
+    <Separator/>
+    <HBox styleClass="hbox-common">
+        <Button fx:id="all" text="全选"/>
+        <Button fx:id="not" text="全不选"/>
+        <Pane HBox.hgrow="ALWAYS"/>
+        <Button fx:id="fill" text="数值填充"/>
+    </HBox>
     <Separator/>
     <VBox fx:id="stuffList"/>
     <HBox styleClass="hbox-common">

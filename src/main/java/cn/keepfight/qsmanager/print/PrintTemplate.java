@@ -63,4 +63,7 @@ public abstract class PrintTemplate<T> {
      */
     public void cancel(){
     }
+
+    public void reloadFavorList(){
+    }
 }

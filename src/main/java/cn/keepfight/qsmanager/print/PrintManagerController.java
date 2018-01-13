@@ -1,8 +1,10 @@
 package cn.keepfight.qsmanager.print;
 
+import cn.keepfight.qsmanager.QSApp;
 import cn.keepfight.qsmanager.controller.ContentCtrl;
-import cn.keepfight.utils.FXUtils;
-import cn.keepfight.utils.FXWidgetUtil;
+import cn.keepfight.qsmanager.controller.ProductAddController;
+import cn.keepfight.qsmanager.model.ProductModel;
+import cn.keepfight.utils.*;
 import javafx.application.Platform;
 import javafx.beans.binding.StringBinding;
 import javafx.beans.property.BooleanProperty;
@@ -15,17 +17,13 @@ import javafx.print.PageLayout;
 import javafx.print.Printer;
 import javafx.print.PrinterAttributes;
 import javafx.scene.Node;
-import javafx.scene.control.Button;
-import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.ScrollPane;
+import javafx.scene.control.*;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
+import java.math.BigDecimal;
 import java.net.URL;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Properties;
-import java.util.ResourceBundle;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
@@ -60,8 +58,11 @@ public class PrintManagerController implements ContentCtrl, Initializable {
     @FXML
     private Button compute;
     public Button save;
+    public Button add_product;
     @FXML
     private ScrollPane printScrollPane;
+
+    private ProductAddController addController;
 
     /**
      * 打印中标志位
@@ -90,15 +91,41 @@ public class PrintManagerController implements ContentCtrl, Initializable {
         // 打印动作
         action.setOnAction(event -> printAction());
         save.setOnAction(event -> saveActoion());
+
+        add_product.setDisable(true);
+        add_product.setOnAction(event -> {
+            if (selection == null) {
+                return;
+            }
+            Long cid = selection.getPrintSource().getCust();
+            if (cid == null) {
+                return;
+            }
+            Optional<ProductModel> op = CustomDialog.gen().build(addController);
+            op.ifPresent(model -> {
+                try {
+                    QSApp.service.getProductService().insert(model);
+                    QSApp.service.getOrderFavorService().insert(cid, model.getId());
+                    printController.get().reloadFavorList();
+                } catch (Exception e1) {
+                    e1.printStackTrace();
+                    WarningBuilder.build("新增产品失败", "新增产品失败，请检查网络是否通畅");
+                }
+            });
+        });
+
+        Platform.runLater(() -> addController = ViewPathUtil.loadViewForController("product_add.fxml"));
     }
 
     public void fill(PrintSelection s) {
         this.selection = s;
+        add_product.setDisable(true);
         switch (s.getType()) {
             case DELIVERY:
             case DELIVERY_SIMPLE:
             case RECEIPT:
             case DELIVERY_ANLI:
+                add_product.setDisable(false);
                 type_sel.getItems().setAll(Arrays.asList(
                         QSPrintType.DELIVERY,
                         QSPrintType.DELIVERY_SIMPLE,
@@ -163,7 +190,7 @@ public class PrintManagerController implements ContentCtrl, Initializable {
         compute.disableProperty().unbind();
     }
 
-    private void saveActoion(){
+    private void saveActoion() {
         QSPrintType type = type_sel.getValue();
         type.getController(PrintTemplate::printBefore);
         type.getController(PrintTemplate::printAfter);
@@ -261,7 +288,7 @@ public class PrintManagerController implements ContentCtrl, Initializable {
         return true;
     }
 
-    private void loadPrintPane(){
+    private void loadPrintPane() {
         // 非空时设置模板
         type_sel.getSelectionModel().getSelectedItem().getController(c -> {
             printScrollPane.setContent(c.getRoot());
@@ -273,7 +300,7 @@ public class PrintManagerController implements ContentCtrl, Initializable {
             try {
                 c.fill(selection.getType().getLocate().query(selection.getPrintSource()));
                 // 自动计算
-                if (c.autoComputable().get()){
+                if (c.autoComputable().get()) {
                     c.autoCalculate();
                 }
             } catch (Exception e) {
@@ -303,7 +330,7 @@ public class PrintManagerController implements ContentCtrl, Initializable {
         checkSupport();
 
         PrintSelection s = (PrintSelection) params.get("selection");
-        System.out.println("s:"+s.getPrintSource().getCust());
+        System.out.println("s:" + s.getPrintSource().getCust());
         fill(s);
     }
 

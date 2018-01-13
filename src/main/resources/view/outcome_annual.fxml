@@ -20,6 +20,7 @@
         <ChoiceBox fx:id="an_sup_sel" prefWidth="130" />
         <Button fx:id="btn_year_sel" styleClass="url" text="2017年" />
         <Pane HBox.hgrow="ALWAYS" />
+        <Button fx:id="attachs" text="查看附件" />
         <Button fx:id="btn_edit" text="编辑选中" />
         <Button fx:id="btn_add_invoice" text="添加发票" />
         <Button fx:id="btn_add_remit" text="添加汇款" />

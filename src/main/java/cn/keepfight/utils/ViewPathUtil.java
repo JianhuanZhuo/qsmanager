@@ -101,9 +101,15 @@ public class ViewPathUtil {
         return new FXMLLoader(ViewPathUtil.getWidgetView(viewURL));
     }
 
-    public static <T> T loadWidgetForController(String viewURL) throws IOException {
+    public static <T> T loadWidgetForController(String viewURL){
         FXMLLoader loader = getWidgetLoader(viewURL);
-        loader.load();
+        try {
+            loader.load();
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.err.println("viewURL:"+viewURL);
+            throw new RuntimeException(e);
+        }
         return loader.getController();
     }
 }

@@ -1,12 +1,19 @@
 package cn.keepfight.qsmanager.print;
 
 import cn.keepfight.qsmanager.QSApp;
+import cn.keepfight.qsmanager.dao.annual.AnnualDaoWrapper;
+import cn.keepfight.qsmanager.dao.annual.InvoiceDao;
+import cn.keepfight.qsmanager.dao.annual.RemitDao;
 import cn.keepfight.qsmanager.model.*;
 import cn.keepfight.qsmanager.print.PrintTemplate;
+import cn.keepfight.qsmanager.service.CustAnnualServers;
+import cn.keepfight.qsmanager.service.SupAnnualServers;
 import cn.keepfight.utils.FXUtils;
 import cn.keepfight.utils.FXWidgetUtil;
 import javafx.beans.binding.IntegerBinding;
+import javafx.beans.binding.ObjectBinding;
 import javafx.beans.property.*;
+import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
@@ -19,6 +26,8 @@ import javafx.util.Pair;
 
 import java.math.BigDecimal;
 import java.net.URL;
+import java.sql.Date;
+import java.util.List;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 
@@ -40,19 +49,30 @@ public class PrintYearSupController extends PrintTemplate<SupAnnualModelFull> im
     public TextField pbacc;
     public TextField pbbcc;
 
-    public TableView<Item> table;
-    public TableColumn<Item, String> mon;
-    public TableColumn<Item, BigDecimal> total;
-    public TableColumn<Item, String> billunit;
-    public TableColumn<Item, Long> billdate;
-    public TableColumn<Item, BigDecimal> billtotal;
-    public TableColumn<Item, BigDecimal> rate;
-    public TableColumn<Item, BigDecimal> ratetotal;
-    public TableColumn<Item, String> remitunit;
-    public TableColumn<Item, String> pattern;
-    public TableColumn<Item, Long> remitdate;
-    public TableColumn<Item, BigDecimal> paytotal;
-    public TableColumn<Item, String> note;
+    public TableView<AnnualDaoWrapper> anTable;
+    public TableColumn<AnnualDaoWrapper, String> mon;
+    public TableColumn<AnnualDaoWrapper, BigDecimal> total;
+    @FXML
+    private TableColumn<AnnualDaoWrapper, List<String>> billunit;
+    @FXML
+    private TableColumn<AnnualDaoWrapper, List<Date>> billdate;
+    @FXML
+    private TableColumn<AnnualDaoWrapper, List<BigDecimal>> billtotal;
+    @FXML
+    private TableColumn<AnnualDaoWrapper, List<BigDecimal>> rate;
+    @FXML
+    private TableColumn<AnnualDaoWrapper, List<BigDecimal>> ratetotal;
+
+    @FXML
+    private TableColumn<AnnualDaoWrapper, List<String>> remitunit;
+    @FXML
+    private TableColumn<AnnualDaoWrapper, List<String>> pattern;
+    @FXML
+    private TableColumn<AnnualDaoWrapper, List<Date>> remitdate;
+    @FXML
+    private TableColumn<AnnualDaoWrapper, List<BigDecimal>> paytotal;
+    @FXML
+    private TableColumn<AnnualDaoWrapper, List<String>> note;
 
     private static final int SIZE_PER_PAGE = 12;
     public Label resp_name;
@@ -69,43 +89,91 @@ public class PrintYearSupController extends PrintTemplate<SupAnnualModelFull> im
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        table.fixedCellSizeProperty().bind(table.heightProperty().subtract(27).divide(SIZE_PER_PAGE));
+//        anTable.fixedCellSizeProperty().bind(anTable.heightProperty().subtract(27).divide(SIZE_PER_PAGE));
 
-        table.setEditable(true);
-        total.setCellFactory(TextFieldTableCell.forTableColumn(FXUtils.decimalConverter("0")));
-        billunit.setCellFactory(TextFieldTableCell.forTableColumn());
-        billdate.setCellFactory(TextFieldTableCell.forTableColumn(FXUtils.timestampConverter()));
-        billtotal.setCellFactory(TextFieldTableCell.forTableColumn(FXUtils.decimalConverter("0")));
-        rate.setCellFactory(TextFieldTableCell.forTableColumn(FXUtils.rateConverter()));
-        ratetotal.setCellFactory(TextFieldTableCell.forTableColumn(FXUtils.decimalConverter("0")));
-        remitunit.setCellFactory(TextFieldTableCell.forTableColumn());
-        pattern.setCellFactory(TextFieldTableCell.forTableColumn());
-        remitdate.setCellFactory(TextFieldTableCell.forTableColumn(FXUtils.timestampConverter()));
-        paytotal.setCellFactory(TextFieldTableCell.forTableColumn(FXUtils.decimalConverter("0")));
-        note.setCellFactory(TextFieldTableCell.forTableColumn());
+        anTable.setEditable(true);
 
         // 添加表格转换器
-        mon.setCellValueFactory(cellFeature ->
-                new SimpleStringProperty("" + cellFeature.getValue().getMon() + "月"));
-        billunit.setCellValueFactory(cellFeature ->
-                new SimpleStringProperty(cellFeature.getValue().getBillunit()));
-        billdate.setCellValueFactory(cellFeature ->
-                new SimpleObjectProperty<>(cellFeature.getValue().getBilldate()));
-        remitunit.setCellValueFactory(cellFeature ->
-                new SimpleStringProperty(cellFeature.getValue().getRemitunit()));
-        pattern.setCellValueFactory(cellFeature ->
-                new SimpleStringProperty(cellFeature.getValue().getPattern()));
-        remitdate.setCellValueFactory(cellFeature ->
-                new SimpleObjectProperty<>(cellFeature.getValue().getRemitdate()));
-        note.setCellValueFactory(cellFeature ->
-                new SimpleStringProperty(cellFeature.getValue().getNote()));
+        FXWidgetUtil.connectDecimalColumn(total, AnnualDaoWrapper::tradeTotalProperty);
+        FXWidgetUtil.cellMoney(total);
+        FXWidgetUtil.connect(mon, x -> x.monthProperty().asString().concat("月"));
 
-        billtotal.setCellValueFactory(cellFeature -> cellFeature.getValue().billtotalPropert);
-        rate.setCellValueFactory(cellFeature -> cellFeature.getValue().ratePropert);
-        total.setCellValueFactory(cellFeature -> cellFeature.getValue().totalPropert);
-        paytotal.setCellValueFactory(cellFeature -> cellFeature.getValue().paytotalPropert);
-        ratetotal.setCellValueFactory(cellFeature -> cellFeature.getValue().ratetotalProperty);
+        billunit.setCellValueFactory(param -> new SimpleObjectProperty<>(
+                param.getValue().getInvoice().stream().map(
+                        InvoiceDao::getUnit).collect(Collectors.toList())));
+        FXWidgetUtil.cellList(billunit, x -> x);
 
+        billdate.setCellValueFactory(param -> new SimpleObjectProperty<>(
+                param.getValue().getInvoice().stream().map(
+                        InvoiceDao::getDate).collect(Collectors.toList())));
+        FXWidgetUtil.cellList(billdate, x -> FXUtils.stampToDate(x.getTime()));
+
+        billtotal.setCellValueFactory(param -> new SimpleObjectProperty<>(
+                param.getValue().getInvoice().stream().map(
+                        InvoiceDao::getTotal).collect(Collectors.toList())));
+        FXWidgetUtil.cellList(billtotal, FXUtils::deciToMoney);
+
+        rate.setCellValueFactory(param -> new SimpleObjectProperty<>(
+                param.getValue().getInvoice().stream().map(
+                        InvoiceDao::getRate).collect(Collectors.toList())));
+        FXWidgetUtil.cellList(rate, FXUtils::decimalRateStr);
+
+        ratetotal.setCellValueFactory(param -> new SimpleObjectProperty<>(
+                param.getValue().getInvoice().stream().map(
+                        InvoiceDao::getRateTotal).collect(Collectors.toList())));
+        FXWidgetUtil.cellList(ratetotal, FXUtils::deciToMoney);
+
+        /////////////////////////////////////////////////////////////////////////////
+        // 汇款
+        remitunit.setCellValueFactory(param -> new SimpleObjectProperty<>(
+                param.getValue().getRemit().stream().map(
+                        RemitDao::getUnit).collect(Collectors.toList())));
+        FXWidgetUtil.cellList(remitunit, x -> x);
+
+        pattern.setCellValueFactory(param -> new SimpleObjectProperty<>(
+                param.getValue().getRemit().stream().map(
+                        RemitDao::getMode).collect(Collectors.toList())));
+        FXWidgetUtil.cellList(pattern, x -> x);
+
+        note.setCellValueFactory(param -> new SimpleObjectProperty<>(
+                param.getValue().getRemit().stream().map(
+                        RemitDao::getNote).collect(Collectors.toList())));
+        FXWidgetUtil.cellList(note, x -> x);
+
+        remitdate.setCellValueFactory(param -> new SimpleObjectProperty<>(
+                param.getValue().getRemit().stream().map(
+                        RemitDao::getDate).collect(Collectors.toList())));
+        FXWidgetUtil.cellList(remitdate, x -> FXUtils.stampToDate(x.getTime()));
+
+        paytotal.setCellValueFactory(param -> new SimpleObjectProperty<>(
+                param.getValue().getRemit().stream().map(
+                        RemitDao::getTotal).collect(Collectors.toList())));
+        FXWidgetUtil.cellList(paytotal, FXUtils::deciToMoney);
+
+
+        //计算
+        FXWidgetUtil.calculate(anTable.getItems(), AnnualDaoWrapper::getTradeTotal, an_total::setText);
+        FXWidgetUtil.calculate(anTable.getItems(), AnnualDaoWrapper::getInvoicesRateTotal, rate_total::setText);
+        FXWidgetUtil.calculate(anTable.getItems(), AnnualDaoWrapper::getRemitTotal, pay_total::setText);
+
+        // 计算实际应付合计
+        all_total.textProperty().bind(new ObjectBinding<String>() {
+            {
+                this.bind(bf_total.textProperty(),
+                        an_total.textProperty(),
+                        rate_total.textProperty(),
+                        pay_total.textProperty());
+            }
+
+            @Override
+            protected String computeValue() {
+                BigDecimal bf = FXUtils.getDecimal(bf_total.getText(), new BigDecimal(0L));
+                BigDecimal annu = FXUtils.getDecimal(an_total.getText(), new BigDecimal(0L));
+                BigDecimal rate = FXUtils.getDecimal(rate_total.getText(), new BigDecimal(0L));
+                BigDecimal pay = FXUtils.getDecimal(pay_total.getText(), new BigDecimal(0L));
+                return FXUtils.deciToMoney(annu.add(rate).add(bf).subtract(pay));
+            }
+        });
     }
 
     @Override
@@ -140,12 +208,20 @@ public class PrintYearSupController extends PrintTemplate<SupAnnualModelFull> im
             e.printStackTrace();
         }
 
-        table.getItems().setAll(
-                datas.getMons().stream().map(Item::new).collect(Collectors.toList()).subList(
-                        0,
-                        Math.min(SIZE_PER_PAGE, datas.getMons().size())
-                )
-        );
+        try {
+            bf_total.setText(FXUtils.deciToMoney(SupAnnualServers.staticAnnualLeft(datas.getSid(), datas.getYear())));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        try {
+            anTable.getItems().setAll(
+                    SupAnnualServers.staticAnnualMonByMonAndSup(datas.getSid(), datas.getYear())
+                            .stream().map(AnnualDaoWrapper::new)
+                            .collect(Collectors.toList()));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
 
@@ -157,24 +233,24 @@ public class PrintYearSupController extends PrintTemplate<SupAnnualModelFull> im
 
     @Override
     public void autoCalculate() {
-        table.getItems().forEach(x -> x.ratetotalProperty.setValue(x.getRateTotalProperty()));
-        FXWidgetUtil.compute(table.getItems(),
-                Item::getTotalPropert,
-                an_total::setText);
-        FXWidgetUtil.compute(table.getItems(),
-                Item::getRatetotalProperty,
-                rate_total::setText);
-        FXWidgetUtil.compute(table.getItems(),
-                Item::getPaytotalPropert,
-                pay_total::setText);
-
-        // 总应付金额
-        all_total.setText(
-                FXUtils.getDecimal(an_total.getText(), new BigDecimal(0))
-                        .add(FXUtils.getDecimal(rate_total.getText(), new BigDecimal(0)))
-                        .add(FXUtils.getDecimal(bf_total.getText(), new BigDecimal(0)))
-                        .subtract(FXUtils.getDecimal(pay_total.getText(), new BigDecimal(0))).toString()
-        );
+//        table.getItems().forEach(x -> x.ratetotalProperty.setValue(x.getRateTotalProperty()));
+//        FXWidgetUtil.compute(table.getItems(),
+//                Item::getTotalPropert,
+//                an_total::setText);
+//        FXWidgetUtil.compute(table.getItems(),
+//                Item::getRatetotalProperty,
+//                rate_total::setText);
+//        FXWidgetUtil.compute(table.getItems(),
+//                Item::getPaytotalPropert,
+//                pay_total::setText);
+//
+//        // 总应付金额
+//        all_total.setText(
+//                FXUtils.getDecimal(an_total.getText(), new BigDecimal(0))
+//                        .add(FXUtils.getDecimal(rate_total.getText(), new BigDecimal(0)))
+//                        .add(FXUtils.getDecimal(bf_total.getText(), new BigDecimal(0)))
+//                        .subtract(FXUtils.getDecimal(pay_total.getText(), new BigDecimal(0))).toString()
+//        );
     }
 
     @Override
@@ -207,100 +283,100 @@ public class PrintYearSupController extends PrintTemplate<SupAnnualModelFull> im
         }
     }
 
-    private class Item extends SupAnnualMonModel {
-        Property<BigDecimal> ratetotalProperty = new SimpleObjectProperty<>();
-        Property<BigDecimal> billtotalPropert = new SimpleObjectProperty<>();
-        Property<BigDecimal> ratePropert = new SimpleObjectProperty<>();
-        Property<BigDecimal> totalPropert = new SimpleObjectProperty<>();
-        Property<BigDecimal> paytotalPropert = new SimpleObjectProperty<>();
-
-        Item(SupAnnualMonModel m) {
-            super(m);
-            setBilltotalPropert(m.getBilltotal());
-            setRatePropert(m.getRate());
-            setTotalPropert(m.getTotal());
-            setPaytotalPropert(m.getPaytotal());
-        }
-
-        public BigDecimal getRatetotalProperty() {
-            return ratetotalProperty.getValue();
-        }
-
-        public Property<BigDecimal> ratetotalPropertyProperty() {
-            return ratetotalProperty;
-        }
-
-        public void setRatetotalProperty(BigDecimal ratetotalProperty) {
-            this.ratetotalProperty.setValue(ratetotalProperty);
-        }
-
-        public BigDecimal getBilltotalPropert() {
-            return billtotalPropert.getValue();
-        }
-
-        public Property<BigDecimal> billtotalPropertProperty() {
-            return billtotalPropert;
-        }
-
-        public void setBilltotalPropert(BigDecimal billtotalPropert) {
-            this.billtotalPropert.setValue(billtotalPropert);
-        }
-
-        public BigDecimal getRatePropert() {
-            return ratePropert.getValue();
-        }
-
-        public Property<BigDecimal> ratePropertProperty() {
-            return ratePropert;
-        }
-
-        public void setRatePropert(BigDecimal ratePropert) {
-            this.ratePropert.setValue(ratePropert);
-        }
-
-        public BigDecimal getTotalPropert() {
-            return totalPropert.getValue();
-        }
-
-        public Property<BigDecimal> totalPropertProperty() {
-            return totalPropert;
-        }
-
-        public void setTotalPropert(BigDecimal totalPropert) {
-            this.totalPropert.setValue(totalPropert);
-        }
-
-        public BigDecimal getPaytotalPropert() {
-            return paytotalPropert.getValue();
-        }
-
-        public Property<BigDecimal> paytotalPropertProperty() {
-            return paytotalPropert;
-        }
-
-        public void setPaytotalPropert(BigDecimal paytotalPropert) {
-            this.paytotalPropert.setValue(paytotalPropert);
-        }
-
-
-        public BigDecimal getRateTotalProperty() {
-            try {
-                return getRatePropert().multiply(getBilltotalPropert());
-            } catch (Exception e) {
-                return new BigDecimal(0);
-            }
-        }
-
-        /**
-         * 获得实际需要支付的金额
-         */
-        public BigDecimal getNeedPayTotalValue() {
-            // 金额 + 税金 - 付款
-            try {
-                return getTotalPropert().add(getRateTotalProperty()).subtract(getPaytotalPropert());
-            } catch (Exception e) {
-                return new BigDecimal(0);
-            }
-        }
-    }
+//    private class Item extends SupAnnualMonModel {
+//        Property<BigDecimal> ratetotalProperty = new SimpleObjectProperty<>();
+//        Property<BigDecimal> billtotalPropert = new SimpleObjectProperty<>();
+//        Property<BigDecimal> ratePropert = new SimpleObjectProperty<>();
+//        Property<BigDecimal> totalPropert = new SimpleObjectProperty<>();
+//        Property<BigDecimal> paytotalPropert = new SimpleObjectProperty<>();
+//
+//        Item(SupAnnualMonModel m) {
+//            super(m);
+//            setBilltotalPropert(m.getBilltotal());
+//            setRatePropert(m.getRate());
+//            setTotalPropert(m.getTotal());
+//            setPaytotalPropert(m.getPaytotal());
+//        }
+//
+//        public BigDecimal getRatetotalProperty() {
+//            return ratetotalProperty.getValue();
+//        }
+//
+//        public Property<BigDecimal> ratetotalPropertyProperty() {
+//            return ratetotalProperty;
+//        }
+//
+//        public void setRatetotalProperty(BigDecimal ratetotalProperty) {
+//            this.ratetotalProperty.setValue(ratetotalProperty);
+//        }
+//
+//        public BigDecimal getBilltotalPropert() {
+//            return billtotalPropert.getValue();
+//        }
+//
+//        public Property<BigDecimal> billtotalPropertProperty() {
+//            return billtotalPropert;
+//        }
+//
+//        public void setBilltotalPropert(BigDecimal billtotalPropert) {
+//            this.billtotalPropert.setValue(billtotalPropert);
+//        }
+//
+//        public BigDecimal getRatePropert() {
+//            return ratePropert.getValue();
+//        }
+//
+//        public Property<BigDecimal> ratePropertProperty() {
+//            return ratePropert;
+//        }
+//
+//        public void setRatePropert(BigDecimal ratePropert) {
+//            this.ratePropert.setValue(ratePropert);
+//        }
+//
+//        public BigDecimal getTotalPropert() {
+//            return totalPropert.getValue();
+//        }
+//
+//        public Property<BigDecimal> totalPropertProperty() {
+//            return totalPropert;
+//        }
+//
+//        public void setTotalPropert(BigDecimal totalPropert) {
+//            this.totalPropert.setValue(totalPropert);
+//        }
+//
+//        public BigDecimal getPaytotalPropert() {
+//            return paytotalPropert.getValue();
+//        }
+//
+//        public Property<BigDecimal> paytotalPropertProperty() {
+//            return paytotalPropert;
+//        }
+//
+//        public void setPaytotalPropert(BigDecimal paytotalPropert) {
+//            this.paytotalPropert.setValue(paytotalPropert);
+//        }
+//
+//
+//        public BigDecimal getRateTotalProperty() {
+//            try {
+//                return getRatePropert().multiply(getBilltotalPropert());
+//            } catch (Exception e) {
+//                return new BigDecimal(0);
+//            }
+//        }
+//
+//        /**
+//         * 获得实际需要支付的金额
+//         */
+//        public BigDecimal getNeedPayTotalValue() {
+//            // 金额 + 税金 - 付款
+//            try {
+//                return getTotalPropert().add(getRateTotalProperty()).subtract(getPaytotalPropert());
+//            } catch (Exception e) {
+//                return new BigDecimal(0);
+//            }
+//        }
+//    }
 }

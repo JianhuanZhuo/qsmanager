@@ -59,5 +59,8 @@
         <!--分析表-->
         <mapper resource="mapper/AnalysisMapper.xml"/>
         <mapper resource="mapper/StaticTotalMapper.xml"/>
+
+
+        <mapper resource="mapper/ImageMapper.xml"/>
     </mappers>
 </configuration>

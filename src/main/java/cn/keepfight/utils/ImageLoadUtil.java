@@ -22,8 +22,8 @@ public class ImageLoadUtil {
 
     private static final String VIEW_IMAGE_URL = "graph/";
 
-    private static final Image preloadImage = new Image(VIEW_IMAGE_URL + "picture_preload.png");
-    private static final Image loadfailImage = new Image(VIEW_IMAGE_URL + "picture_loadfail.png");
+    public static final Image preloadImage = new Image(VIEW_IMAGE_URL + "picture_preload.png");
+    public static final Image loadfailImage = new Image(VIEW_IMAGE_URL + "picture_loadfail.png");
 
     public static final String LOCAL_PROTOCOL_PREFIX="qslocal";
     public static final String REMOTE_PROTOCOL_PREFIX="qsremote";

@@ -70,6 +70,7 @@
             <TextField fx:id="info_salary_annual" layoutX="85.0" layoutY="131.0" GridPane.columnIndex="1"
                        GridPane.rowIndex="5"/>
             <Button mnemonicParsing="false" text="查看工资" GridPane.columnIndex="2" GridPane.rowIndex="4"/>
+            <Button fx:id="attachs" mnemonicParsing="false" text="附件管理" GridPane.columnIndex="2" GridPane.rowIndex="1"/>
             <CheckBox fx:id="check_halt" text="停用该员工" GridPane.columnIndex="2"/>
             <columnConstraints>
                 <ColumnConstraints/>

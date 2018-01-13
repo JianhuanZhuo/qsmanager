@@ -76,13 +76,13 @@
                 <TextField fx:id="info_addr" GridPane.columnIndex="1" GridPane.columnSpan="3" GridPane.rowIndex="8" />
                 <Label text="供应商备注：" GridPane.rowIndex="9" />
                 <TextArea fx:id="info_note" GridPane.columnIndex="1" GridPane.columnSpan="3" GridPane.rowIndex="9" GridPane.rowSpan="4" />
-                <Label fx:id="info_attach" styleClass="attach-icon" text="附件" GridPane.columnIndex="3" GridPane.rowIndex="13">
+                <Button fx:id="info_attach" styleClass="attach-icon" text="附件" GridPane.columnIndex="3" GridPane.rowIndex="13">
                     <graphic>
                         <ImageView>
                             <Image url="@img/attachment.png" />
                         </ImageView>
                     </graphic>
-                </Label>
+                </Button>
             </GridPane>
         </VBox>
         <VBox styleClass="title-pane">

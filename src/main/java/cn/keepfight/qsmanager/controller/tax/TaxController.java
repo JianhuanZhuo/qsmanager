@@ -11,11 +11,8 @@ import cn.keepfight.utils.FXWidgetUtil;
 import cn.keepfight.utils.WarningBuilder;
 import cn.keepfight.widget.MonthPicker;
 import javafx.application.Platform;
-import javafx.beans.binding.BooleanBinding;
 import javafx.beans.binding.StringBinding;
 import javafx.beans.property.ReadOnlyObjectWrapper;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
@@ -23,12 +20,13 @@ import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.util.Pair;
-import sun.awt.windows.ThemeReader;
 
 import java.math.BigDecimal;
 import java.net.URL;
 import java.time.LocalDate;
-import java.util.*;
+import java.util.Optional;
+import java.util.Properties;
+import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 
 public class TaxController implements ContentCtrl, Initializable {
@@ -218,7 +216,6 @@ public class TaxController implements ContentCtrl, Initializable {
         });
 
         btn_save_param.setOnAction(event -> saveParam(tf_k.getText()));
-        tf_k.textProperty().addListener((observable, oldValue, newValue) -> saveParam(newValue));
 
         FXWidgetUtil.calculate(table_out.getItems(), TaxInvoiceDaoWrapper::getTotal, tf_a::setText);
         FXWidgetUtil.simpleTriOper(tf_b, (x, y) -> x.divide(y, 2, BigDecimal.ROUND_UP), BigDecimal::multiply, tf_a, tf_p2, tf_p3, FXUtils::deciToMoney);
@@ -258,6 +255,8 @@ public class TaxController implements ContentCtrl, Initializable {
                 }
             }
         });
+
+        tf_k.textProperty().addListener((observable, oldValue, newValue) -> saveParam(newValue));
     }
 
     private Optional<TaxInvoiceDao> getTaxInvoice(Long tid, Long category) {
@@ -276,17 +275,25 @@ public class TaxController implements ContentCtrl, Initializable {
 
         TextField unit = new TextField();
         unit.setPromptText("开票单位");
+        TextField price = new TextField();
+        price.setPromptText("单价");
+        TextField num = new TextField();
+        num.setPromptText("数量");
         TextField total = new TextField();
-        unit.setPromptText("含税金额");
+        total.setPromptText("含税金额");
         TextField note = new TextField();
         unit.setPromptText("备注信息");
 
         grid.add(new Label("开票单位:"), 0, 0);
         grid.add(unit, 1, 0);
+        grid.add(new Label("开票单价:"), 0, 2);
+        grid.add(price, 1, 2);
+        grid.add(new Label("开票数量:"), 0, 3);
+        grid.add(num, 1, 3);
         grid.add(new Label("含税金额:"), 0, 1);
         grid.add(total, 1, 1);
-        grid.add(new Label("备注信息:"), 0, 2);
-        grid.add(note, 1, 2);
+        grid.add(new Label("备注信息:"), 0, 4);
+        grid.add(note, 1, 4);
 
         Node loginButton = dialog.getDialogPane().lookupButton(okButtonType);
         loginButton.setDisable(true);
@@ -299,6 +306,37 @@ public class TaxController implements ContentCtrl, Initializable {
             }
         });
 
+        // 添加监听
+        price.textProperty().addListener((observable, oldValue, newValue) -> {
+            BigDecimal n;
+            BigDecimal p;
+            try{
+                n = new BigDecimal(num.getText());
+            }catch (Exception e){
+                n = new BigDecimal(0);
+            }
+            try{
+                p = new BigDecimal(newValue);
+            }catch (Exception e){
+                p = new BigDecimal(0);
+            }
+            total.setText(FXUtils.deciToMoney(n.multiply(p)));
+        });
+        num.textProperty().addListener((observable, oldValue, newValue) -> {
+            BigDecimal n;
+            BigDecimal p;
+            try{
+                n = new BigDecimal(newValue);
+            }catch (Exception e){
+                n = new BigDecimal(0);
+            }
+            try{
+                p = new BigDecimal(price.getText());
+            }catch (Exception e){
+                p = new BigDecimal(0);
+            }
+            total.setText(FXUtils.deciToMoney(n.multiply(p)));
+        });
 
         dialog.getDialogPane().setContent(grid);
 
