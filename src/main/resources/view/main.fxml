@@ -1,31 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Separator?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
-
 <?import javafx.scene.layout.VBox?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.Separator?>
-<BorderPane styleClass="mainpane"
-            stylesheets="@css/main.css, @css/common.css"
-            xmlns="http://javafx.com/javafx/8.0.111"
-            xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="cn.keepfight.qsmanager.controller.MainPane">
+
+<BorderPane styleClass="mainpane" stylesheets="@css/main.css, @css/common.css" xmlns="http://javafx.com/javafx/8.0.111"
+            xmlns:fx="http://javafx.com/fxml/1" fx:controller="cn.keepfight.qsmanager.controller.MainPane">
     <top>
         <HBox styleClass="headpane" BorderPane.alignment="CENTER">
             <HBox>
                 <ImageView>
                     <Image url="@img/main-head.png"/>
                 </ImageView>
-                <ImageView>
-                    <Image url="@img/main-head-beta.png"/>
-                </ImageView>
+                <Label styleClass="beta" text="Beta 1.0.2"/>
             </HBox>
             <Pane HBox.hgrow="ALWAYS"/>
             <HBox fx:id="action" styleClass="hide">
@@ -42,7 +37,7 @@
         </HBox>
     </top>
     <left>
-        <ScrollPane styleClass="menuScp" fx:id="menuScrollPane">
+        <ScrollPane fx:id="menuScrollPane" styleClass="menuScp">
             <BorderPane.margin>
                 <Insets bottom="10.0" top="10.0"/>
             </BorderPane.margin>
@@ -65,9 +60,9 @@
                 <Separator orientation="VERTICAL"/>
                 <Label fx:id="title" text="晴旭管理系统"/>
                 <Pane HBox.hgrow="ALWAYS"/>
-                <HBox styleClass="menu-bar-line" alignment="CENTER_RIGHT" fx:id="btnList"/>
+                <HBox fx:id="btnList" alignment="CENTER_RIGHT" styleClass="menu-bar-line"/>
             </HBox>
-            <ScrollPane VBox.vgrow="ALWAYS" styleClass="centerScp" fx:id="centerScp">
+            <ScrollPane fx:id="centerScp" styleClass="centerScp" VBox.vgrow="ALWAYS">
                 <!--<fx:include source="custom.fxml"/>-->
                 <!--<fx:include source="login.fxml"/>-->
                 <!--<fx:include source="predict.fxml"/>-->

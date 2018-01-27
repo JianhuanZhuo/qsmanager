@@ -18,7 +18,7 @@
         <Label text="在下面的列表中编辑员工的工资属性，点击确定保存修改"/>
         <Pane HBox.hgrow="ALWAYS"/>
         <Label text="工资年月："/>
-        <Label text="2017年8月"/>
+        <Label fx:id="year_month" text="2017年8月"/>
     </HBox>
     <Separator/>
     <GridPane>

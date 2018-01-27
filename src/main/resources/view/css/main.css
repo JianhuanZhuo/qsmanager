@@ -68,3 +68,10 @@
 .transparent-title .centerScp > .viewport, .transparent-title .centerScp {
     -fx-background-color: transparent;
 }
+
+
+.beta{
+    -fx-background-color: #0096C9;
+    -fx-background-radius: 15px;
+    -fx-padding: 2px 5px;
+}

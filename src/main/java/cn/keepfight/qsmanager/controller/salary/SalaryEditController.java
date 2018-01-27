@@ -12,6 +12,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 
@@ -37,6 +38,7 @@ public class SalaryEditController implements ContentCtrl, Initializable {
     public TextField salary_age;
     public TextField salary_other;
     public TextField salary_total;
+    public Label year_month;
 
     private long year;
     private long month;
@@ -86,6 +88,9 @@ public class SalaryEditController implements ContentCtrl, Initializable {
         LocalDate now = FXUtils.stampToLocalDate(System.currentTimeMillis());
         year = (long) params.getOrDefault("year", (long) now.getYear());
         month = (long) params.getOrDefault("month", (long) now.getMonthValue());
+
+
+        year_month.setText(year+"年"+month+"月");
 
         stuffID = (long) params.get("stuff");
 

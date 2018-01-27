@@ -117,7 +117,7 @@ public class FXWidgetUtil {
     }
 
     public static <T> UnitScrollPicker<T> getUnitPicker() {
-        return ViewPathUtil.loadWidgetForController("unitPicker/unit_Picker.fxml");
+        return ViewPathUtil.loadWidgetForController("unitPicker/unit_picker.fxml");
     }
 
     public static AddSalaryItem getSalaryNewItem() {
